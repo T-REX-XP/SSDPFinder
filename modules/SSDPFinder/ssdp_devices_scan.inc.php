@@ -61,7 +61,7 @@ function Scan()
                 "UPDATED" => '',
                 "MODEL" => $info["modelName"],
                 "MANUFACTURER" => $info["manufacturer"],
-                "IP" =>explode(":", $info["presentationURL"])[1] ,
+                "IP" =>getIp($info),
             ];
         }
     }
@@ -86,6 +86,12 @@ function array_search_result($array,$key,$value)
    // return $result;;
 }
 
+
+function getIp($dev)
+{
+  $result=  explode(":", $dev["presentationURL"])[1];
+    return str_replace("//","", $result);
+}
 function getDefImg($dev)
 {
 //print ("<pre>DIR: " .DIR_MODULES.$this->name );
@@ -93,22 +99,26 @@ function getDefImg($dev)
     {
         return  "/templates/SSDPFinder/img/chromecast.png";
     }
-    if(($dev["manufacturer"]== "LG Electronics." || $dev["manufacturer"]== "LG Electronics") && ($dev["modelName"] =="LG TV" || $dev["modelName"] =="LG Smart TV"))
+    elseif(($dev["manufacturer"]== "LG Electronics." || $dev["manufacturer"]== "LG Electronics") && ($dev["modelName"] =="LG TV" || $dev["modelName"] =="LG Smart TV"))
     {
         return "/templates/SSDPFinder/img/tv.png";
     }
-    if($dev["manufacturer"]== "Synology" || $dev["manufacturer"]=="Synology Inc")
+    elseif($dev["manufacturer"]== "Synology" || $dev["manufacturer"]=="Synology Inc")
     {
         return "/templates/SSDPFinder/img/synology.png";
     }
-    if($dev["manufacturer"]== "Emby" && $dev["modelName"] == "Emby")
+    elseif($dev["manufacturer"]== "Emby" && $dev["modelName"] == "Emby")
     {
         return $dev["presentationURL"] . $dev["iconList"]["icon"]["4"]["url"];
     }
-    if($dev["manufacturer"]== "Linksys" || $dev["manufacturer"] == "Cisco")
+    elseif($dev["manufacturer"]== "Linksys" || $dev["manufacturer"] == "Cisco")
     {
         return "/templates/SSDPFinder/img/router.png";
     }
+    elseif($dev["manufacturer"]== "XBMC Foundation")
+    {
+        return "/templates/SSDPFinder/img/kodi.png";
+    } //
   //  return $result;
 }
 
