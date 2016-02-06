@@ -1,0 +1,50 @@
+
+ <!-- action usual -->
+ <!-- table ssdp_devices search -->
+ [#if VIEW_MODE="search_ssdp_devices" || VIEW_MODE=""#]
+<!-- table zwave_devices search -->
+<div>
+ [ <a href="#" onClick="$('#api_settings').toggle();return false;"><#LANG_SETUP#></a> |  <a href="?view_mode=scan_ssdp_devices">Scan</a> ]
+</div>
+<div style="display:none" id='api_settings'>
+&nbsp;
+<form action="?" method="post" enctype="multipart/form-data" name="frmEdit" class="form-horizontal">
+<fieldset>
+<div class="form-group">
+ <label class="control-label"[#if ERR_API_USERNAME#] style="color:red;font-weight:bold"[#endif#]>
+ API Username:
+ </label>
+ <div class="controls"><input type="text" name="api_username" value="[#API_USERNAME#]" class="input"></div>
+</div>
+<div class="form-group">
+ <label class="control-label"[#if ERR_API_PASSWORD#] style="color:red;font-weight:bold"[#endif#]>
+ API Password:
+ </label>
+ <div class="controls"><input type="password" name="api_password" value="[#API_PASSWORD#]" class="input"></div>
+</div>
+<div class="form-actions">
+<button type="submit" name="subm" value="Submit" class="btn btn-primary"><#LANG_UPDATE#></button>
+<input type="hidden" name="view_mode" value="update_settings">
+<input type="hidden" name="mode" value="update">
+</div>
+</fieldset>
+</form>
+</div>
+  [#inc ssdp_devices_search_admin.html#]
+ [#endif VIEW_MODE#]
+ <!-- / table ssdp_devices search -->
+ <!-- table ssdp_devices edit -->
+ [#if VIEW_MODE="edit_ssdp_devices"#]
+   [#inc ssdp_devices_edit.html#]
+ [#endif VIEW_MODE#]
+
+ <!-- table ssdp_devices edit -->
+ [#if VIEW_MODE="scan_ssdp_devices"#]
+ [#inc ssdp_devices_scan.html#]
+ [#endif VIEW_MODE#]
+ <!-- / table ssdp_devices edit -->
+ <!-- table ssdp_devices view --> 
+ [#if VIEW_MODE="view_ssdp_devices"#]
+   [#inc ssdp_devices_view.html#]
+ [#endif VIEW_MODE#]
+ <!-- / table ssdp_devices view -->
