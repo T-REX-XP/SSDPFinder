@@ -118,7 +118,11 @@ function getDefImg($dev)
     elseif($dev["manufacturer"]== "XBMC Foundation")
     {
         return "/templates/SSDPFinder/img/kodi.png";
-    } //
+    }
+    if($dev["manufacturer"]== "BlackBerry")
+    {
+        return "/templates/SSDPFinder/img/blackberry.jpg";
+    }//
   //  return $result;
 }
 
