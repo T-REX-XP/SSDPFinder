@@ -64,6 +64,17 @@ function getParams() {
   global $view_mode;
   global $edit_mode;
   global $tab;
+
+  global $title;
+  global $address;
+  global $uuid;
+  global $description;
+  global $type;
+  global $serial;
+  global $manufacturerurl;
+  global $model;
+  global $manufacturer;
+
   if (isset($id)) {
    $this->id=$id;
   }
@@ -79,6 +90,27 @@ function getParams() {
   if (isset($tab)) {
    $this->tab=$tab;
   }
+
+  if (isset($title)) {
+   $this->title=$title;
+  }
+  if (isset($address)) {
+   $this->address=$address;
+  }
+  if (isset($description)) {
+   $this->description=$description;
+  }
+   if (isset($type)) {
+   $this->type=$type;
+  }
+   if (isset($serial)) {
+   $this->serial=$serial;
+  }
+   if (isset($uuid)) {
+   $this->uuid=$uuid;
+  }
+
+
 }
 /**
 * Run

@@ -110,9 +110,16 @@ function getDefImg($dev)
         return "/templates/SSDPFinder/img/bubleupnp.png";
     }elseif ($dev["manufacturer"] == "BlackBerry") {
         return "/templates/SSDPFinder/img/blackberry.jpg";
+    }elseif ($dev["manufacturer"] == "ASUSTeK Corporation" || $dev["manufacturer"] == "ASUSTeK Computer Inc.") {
+        return "/templates/SSDPFinder/img/ASUSRouter.png";
+    }elseif ($dev["manufacturer"] == "HIKVISION") {
+        return "/templates/SSDPFinder/img/hikvision.jpg";
+    }elseif ($dev["manufacturer"] == "Samsung Electronics") {
+        return "/templates/SSDPFinder/img/samsung_printer.png";
     }
     else  {
-     return $dev["presentationURL"] . $dev["iconList"]["icon"]["0"]["url"];
+    // return $dev["presentationURL"] . $dev["iconList"]["icon"]["0"]["url"];
+    return "/templates/SSDPFinder/img/dlna.png";
     }
     //
     //  return $result;
