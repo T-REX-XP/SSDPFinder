@@ -47,7 +47,7 @@ function Scan()
         $info = $device['description']['device'];
 
         // print array_search(, array_column( $result, 'ADDRESS'));
-        if (!array_search_result($result, 'UUID', $info["UDN"])) {
+        if (!array_search_result($result, 'UUID', $info["UDN"]) && !is_null($info["UDN"])) {
             $result[] = [
                 "ID" => $info["UDN"],
                 "TITLE" => $info["friendlyName"],
@@ -110,8 +110,15 @@ function getDefImg($dev)
         return "/templates/SSDPFinder/img/bubleupnp.png";
     }elseif ($dev["manufacturer"] == "BlackBerry") {
         return "/templates/SSDPFinder/img/blackberry.jpg";
-    }
-    else  {
+    }elseif ($dev["manufacturer"] == "NVIDIA") {
+        return "/templates/SSDPFinder/img/nvidia.png";
+    }elseif ($dev["manufacturer"] == "Plex, Inc.") {
+        return "/templates/SSDPFinder/img/plex.png";
+    }elseif ($dev["manufacturer"] == "HIKVISION") {
+        return "/templates/SSDPFinder/img/ip_camera.png";
+    }elseif ($dev["manufacturer"] == "FreeBSD") {
+        return "/templates/SSDPFinder/img/freebsd.png";
+    }else  {
      return $dev["presentationURL"] . $dev["iconList"]["icon"]["0"]["url"];
     }
     //
