@@ -1,43 +1,40 @@
 [#if VIEW_MODE="scan_ssdp_devices" || VIEW_MODE=""#]
 <!-- table ssdp_devices search -->
 <p>
- <a href="?view_mode=scan_ssdp_devices" class="btn btn-default" title="Refresh"><i class="glyphicon glyphicon-refresh"></i> Refresh</a>
+    <a href="?view_mode=scan_ssdp_devices" class="btn btn-default" title="Refresh"><i class="glyphicon glyphicon-refresh"></i> Refresh</a>
 
 </p>
-<table width=100% border=0><tr>
- <td valign=top>
-  <!-- results -->
-  [#if RESULT#]
-  <!-- paging -->
-  [#if PAGES#]
-  <table border=0>
-   <td align=right><b>Pages:</b>&nbsp;</td>
-   [#begin PREVPAGE#]<td><a href="?view_mode=<#VIEW_MODE#>&mode=<#MODE#>&save_qry=1&page=[#NUM#]">&lt;&lt;&lt;</a></td>[#end PREVPAGE#]
-   <td>
-    [#begin PAGES#]
-    [#if !SELECTED#]<a href="?view_mode=<#VIEW_MODE#>&mode=<#MODE#>&save_qry=1&page=[#NUM#]">[#else#]<b>[#endif#][#NUM#]</b></a>
-    [#end PAGES#]
-   </td>
-   [#begin NEXTPAGE#]<td><a href="?view_mode=<#VIEW_MODE#>&mode=<#MODE#>&save_qry=1&page=[#NUM#]">&gt;&gt;&gt;</a></td>[#end NEXTPAGE#]
-  </table>
-  [#endif PAGES#]
-  <!-- / paging -->
-  <!-- search results (list) -->
-  <form action="?" method="post" name="frmList_ssdp_devices" style="padding:0px" class="form">
-   <table  align=center class="table table-striped">
-    <tbody>
-    [#begin RESULT#]
-    <tr style="height:52px" class="hover_btn2">
-     <td style="vertical-align:middle">
-      [#if LOGO!=""#]
-      <img src=" [#LOGO#]" alt="Device Logo" width="32" height="32">
-      [#else#]
-      &nbsp;
-      [#endif#]
-     </td>
-     <td style="vertical-align:middle"
-             >
-      <b>
+<table width=100% border=0>
+    <tr>
+        <td valign=top>
+            <!-- results -->
+            [#if RESULT#]
+            <!-- paging -->
+            [#if PAGES#]
+            <table border=0>
+                <td align=right><b>Pages:</b>&nbsp;</td>
+                [#begin PREVPAGE#]
+                <td><a href="?view_mode=<#VIEW_MODE#>&mode=<#MODE#>&save_qry=1&page=[#NUM#]">&lt;&lt;&lt;</a></td>[#end PREVPAGE#]
+                <td>
+                    [#begin PAGES#] [#if !SELECTED#]<a href="?view_mode=<#VIEW_MODE#>&mode=<#MODE#>&save_qry=1&page=[#NUM#]">[#else#]<b>[#endif#][#NUM#]</b></a> [#end PAGES#]
+                </td>
+                [#begin NEXTPAGE#]
+                <td><a href="?view_mode=<#VIEW_MODE#>&mode=<#MODE#>&save_qry=1&page=[#NUM#]">&gt;&gt;&gt;</a></td>[#end NEXTPAGE#]
+            </table>
+            [#endif PAGES#]
+            <!-- / paging -->
+            <!-- search results (list) -->
+            <form action="?" method="post" name="frmList_ssdp_devices" style="padding:0px" class="form">
+                <table align=center class="table table-striped">
+                    <tbody>
+                        [#begin RESULT#]
+                        <tr style="height:52px" class="hover_btn2">
+                            <td style="vertical-align:middle">
+                                [#if LOGO!=""#]
+                                <img src=" [#LOGO#]" alt="Device Logo" width="32" height="32"> [#else#] &nbsp; [#endif#]
+                            </td>
+                            <td style="vertical-align:middle">
+                                <b>
        [#if ADDRESS!=""#]
        <a href="[#ADDRESS#]">[#TITLE#]</a>
        [#else#]
@@ -45,74 +42,58 @@
        [#endif#]
 
        </a></b>
-     </td>
-     <td style="vertical-align:middle"
-             >
-      [#if IP!=""#]
-     [#IP#]
-      [#else#]
-      &nbsp;
-      [#endif#]
-     </td>
-     <td style="vertical-align:middle"
-             >
-      [#if MANUFACTURER!=""#]
-      [#MANUFACTURER#]
-      [#else#]
-      &nbsp;
-      [#endif#]
-     </td>
-     <td style="vertical-align:middle"
-             >
-      [#if DESCRIPTION!=""#]
-      [#DESCRIPTION#]
-      [#else#]
-      &nbsp;
-      [#endif#]
-     </td>
-     <td style="vertical-align:middle"
-             >
-      [#if MODEL!=""#]
-      [#MODEL#]
-      [#else#]
-      &nbsp;
-      [#endif#]
-     </td>
+                            </td>
+                            <td style="vertical-align:middle">
+                                [#if IP!=""#] [#IP#] [#else#] &nbsp; [#endif#]
+                            </td>
+                            <td style="vertical-align:middle">
+                                [#if MANUFACTURER!=""#] [#MANUFACTURER#] [#else#] &nbsp; [#endif#]
+                            </td>
+                            <td style="vertical-align:middle">
+                                [#if DESCRIPTION!=""#] [#DESCRIPTION#] [#else#] &nbsp; [#endif#]
+                            </td>
+                            <td style="vertical-align:middle">
+                                [#if MODEL!=""#] [#MODEL#] [#else#] &nbsp; [#endif#]
+                            </td>
 
-     <td style="vertical-align:middle" width="1%" nowrap>
-      <div style="width:120px">
-       [#if "<#ACTION#>"=="admin"#]
-       <a href="?view_mode=edit_ssdp_devices&id=[#ID#]" class="btn btn-default" title="Add"><i class="glyphicon glyphicon-plus"></i></a>
-       [#endif ACTION#]
-      </div>
-     </td>
+                            <td style="vertical-align:middle" width="1%" nowrap>
+                                <div style="width:120px">
+                                    [#if "
+                                    <#ACTION#>"=="admin"#]
+                                        <a href="?view_mode=edit_ssdp_devices&id=[#ID#]" class="btn btn-default" title="Add"><i class="glyphicon glyphicon-plus"></i></a> [#endif ACTION#]
+                                </div>
+                            </td>
+                        </tr>
+                        [#end RESULT#]
+                    </tbody>
+                </table>
+                <input type="hidden" name="data_source" value="<#DATA_SOURCE#>">
+                <input type="hidden" name="view_mode" value="multiple_ssdp_devices">
+            </form>
+            <!-- / search results (list) -->
+            <!-- paging -->
+            [#if PAGES#]
+            <table border=0>
+                <td align=right><b>Pages:</b>&nbsp;</td>
+                [#begin PREVPAGE#]
+                <td><a href="?view_mode=<#VIEW_MODE#>&mode=<#MODE#>&save_qry=1&page=[#NUM#]">&lt;&lt;&lt;</a></td>[#end PREVPAGE#]
+                <td>
+                    [#begin PAGES#] [#if !SELECTED#]<a href="?view_mode=<#VIEW_MODE#>&mode=<#MODE#>&save_qry=1&page=[#NUM#]">[#else#]<b>[#endif#][#NUM#]</b></a> [#end PAGES#]
+                </td>
+                [#begin NEXTPAGE#]
+                <td><a href="?view_mode=<#VIEW_MODE#>&mode=<#MODE#>&save_qry=1&page=[#NUM#]">&gt;&gt;&gt;</a></td>[#end NEXTPAGE#]
+            </table>
+            [#endif PAGES#]
+            <!-- / paging -->
+            [#else RESULT#]
+            <p>
+                <font color="red">
+                    <#LANG_NO_RECORDS_FOUND#>
+                </font>
+            </p>
+            [#endif RESULT#]
+            <!-- / results -->
+        </td>
     </tr>
-    [#end RESULT#]
-    </tbody>
-   </table>
-   <input type="hidden" name="data_source" value="<#DATA_SOURCE#>">
-   <input type="hidden" name="view_mode" value="multiple_ssdp_devices">
-  </form>
-  <!-- / search results (list) -->
-  <!-- paging -->
-  [#if PAGES#]
-  <table border=0>
-   <td align=right><b>Pages:</b>&nbsp;</td>
-   [#begin PREVPAGE#]<td><a href="?view_mode=<#VIEW_MODE#>&mode=<#MODE#>&save_qry=1&page=[#NUM#]">&lt;&lt;&lt;</a></td>[#end PREVPAGE#]
-   <td>
-    [#begin PAGES#]
-    [#if !SELECTED#]<a href="?view_mode=<#VIEW_MODE#>&mode=<#MODE#>&save_qry=1&page=[#NUM#]">[#else#]<b>[#endif#][#NUM#]</b></a>
-    [#end PAGES#]
-   </td>
-   [#begin NEXTPAGE#]<td><a href="?view_mode=<#VIEW_MODE#>&mode=<#MODE#>&save_qry=1&page=[#NUM#]">&gt;&gt;&gt;</a></td>[#end NEXTPAGE#]
-  </table>
-  [#endif PAGES#]
-  <!-- / paging -->
-  [#else RESULT#]
-  <p>
-   <font color="red"><#LANG_NO_RECORDS_FOUND#></font>
-  </p>
-  [#endif RESULT#]
-  <!-- / results -->
- </td></tr></table>
+</table>
 [#endif VIEW_MODE#]
