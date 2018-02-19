@@ -24,40 +24,19 @@
 <!-- search results (list) -->
 <form action="?" method="post" name="frmList_ssdp_devices" style="padding:0px" class="form">
 <table  align=center class="table table-striped">
-         <tr>
-           <td></td>
-  <td>Название</td>
-  <td>Адрес</td>
-  <td>UUID</td>
-  <td></td>
-  <td></td>
-  <td>Производитель</td>
-  <td>Описание</td>
-  <td>Обновлено</td>
-  <td>Добавить</td>
-  <td></td>
- </tr
 <tbody>
 [#begin RESULT#]
 <tr style="height:52px" class="hover_btn2">
-     <td style="vertical-align:middle">
-      [#if LOGO!=""#]
-        <a href="[#ADDRESS#]"> <img src=" [#LOGO#]" alt="Device Logo" width="32" height="32">    </a>
-
-      [#else#]
-      &nbsp;
-      [#endif#]
-     </td>
-
- <td style="vertical-align:middle">
+ <td style="vertical-align:middle"
+  >
   <b>
    [#TITLE#]
- </b>
+  </a></b>
  </td>
  <td style="vertical-align:middle"
    >
   [#if ADDRESS!=""#]
-     <a href="[#ADDRESS#]">[#ADDRESS#]</a>
+   [#ADDRESS#]
   [#else#]
    &nbsp;
   [#endif#]
@@ -100,6 +79,14 @@
    >
   [#if TYPE!=""#]
    [#TYPE#]
+  [#else#]
+   &nbsp;
+  [#endif#]
+ </td>
+ <td style="vertical-align:middle"
+   >
+  [#if LOGO!=""#]
+   [#LOGO#]
   [#else#]
    &nbsp;
   [#endif#]

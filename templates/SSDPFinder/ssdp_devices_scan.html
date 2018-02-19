@@ -25,15 +25,6 @@
   <!-- search results (list) -->
   <form action="?" method="post" name="frmList_ssdp_devices" style="padding:0px" class="form">
    <table  align=center class="table table-striped">
-         <tr>
-  <td></td>
-  <td>Адрес</td>
-  <td>IP</td>
-  <td>Производитель</td>
-  <td>Описание</td>
-  <td>Серийный номер</td>
-  <td>Добавить</td>
- </tr>
     <tbody>
     [#begin RESULT#]
     <tr style="height:52px" class="hover_btn2">
@@ -91,7 +82,7 @@
      <td style="vertical-align:middle" width="1%" nowrap>
       <div style="width:120px">
        [#if "<#ACTION#>"=="admin"#]
-       <a href="?view_mode=edit_ssdp_devices&mode=add&id=[#ID#]&title=[#TITLE#]&address=[#ADDRESS#]&uuid=[#UUID#]&description=[#DESCRIPTION#]&type=[#TYPE#]&serial=[#SERIAL#]&manufacturerurl=[#MANUFACTURERURL#]&model=[#MODEL#]&manufacturer=[#MANUFACTURER#]&logo=[#LOGO#]" class="btn btn-default" title="Add"><i class="glyphicon glyphicon-plus"></i></a>
+       <a href="?view_mode=edit_ssdp_devices&id=[#ID#]" class="btn btn-default" title="Add"><i class="glyphicon glyphicon-plus"></i></a>
        [#endif ACTION#]
       </div>
      </td>
