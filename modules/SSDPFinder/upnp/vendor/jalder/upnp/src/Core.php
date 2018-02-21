@@ -30,7 +30,9 @@ class Core {
         $response = array();
         do {
             $buf = null;
-            socket_recvfrom($socket, $buf, 1024, MSG_WAITALL, $from, $port);
+            if ($len = @socket_recvfrom($socket, $buf, 1024, MSG_WAITALL, $from, $port) == -1) {
+	        echo "socket read failed: " ;
+	        }
             if(!is_null($buf)){
                 $data = $this->parseSearchResponse($buf);
                 $response[$data['usn']] = $data;
