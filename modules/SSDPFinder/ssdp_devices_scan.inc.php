@@ -93,36 +93,12 @@ function getIp($dev)
 
 function getDefImg($dev)
 {
-//print ("<pre>DIR: " .DIR_MODULES.$this->name );
-    if ($dev["manufacturer"] == "Google Inc." && $dev["modelName"] == "Eureka Dongle") {
-        return "/templates/SSDPFinder/img/chromecast.png";
-    } elseif (($dev["manufacturer"] == "LG Electronics." || $dev["manufacturer"] == "LG Electronics") && ($dev["modelName"] == "LG TV" || $dev["modelName"] == "LG Smart TV")) {
-        return "/templates/SSDPFinder/img/tv.png";
-    } elseif ($dev["manufacturer"] == "Synology" || $dev["manufacturer"] == "Synology Inc") {
-        return "/templates/SSDPFinder/img/synology.png";
-    } elseif ($dev["manufacturer"] == "Emby" && $dev["modelName"] == "Emby") {
-        return $dev["presentationURL"] . $dev["iconList"]["icon"]["4"]["url"];
-    } elseif ($dev["manufacturer"] == "Linksys" || $dev["manufacturer"] == "Cisco") {
-        return "/templates/SSDPFinder/img/router.png";
-    } elseif ($dev["manufacturer"] == "XBMC Foundation") {
-        return "/templates/SSDPFinder/img/kodi.png";
-    }elseif ($dev["manufacturer"] == "Bubblesoft") {
-        return "/templates/SSDPFinder/img/bubleupnp.png";
-    }elseif ($dev["manufacturer"] == "BlackBerry") {
-        return "/templates/SSDPFinder/img/blackberry.jpg";
-    }elseif ($dev["manufacturer"] == "NVIDIA") {
-        return "/templates/SSDPFinder/img/nvidia.png";
-    }elseif ($dev["manufacturer"] == "Plex, Inc.") {
-        return "/templates/SSDPFinder/img/plex.png";
-    }elseif ($dev["manufacturer"] == "HIKVISION") {
-        return "/templates/SSDPFinder/img/ip_camera.png";
-    }elseif ($dev["manufacturer"] == "FreeBSD") {
-        return "/templates/SSDPFinder/img/freebsd.png";
+$result = "/templates/SSDPFinder/img/".$dev["manufacturer"].".png";
+    if (!$result) {
+        return "/templates/SSDPFinder/img/unknow.png";
     }else  {
-     return $dev["presentationURL"] . $dev["iconList"]["icon"]["0"]["url"];
+     return $result;
     }
-    //
-    //  return $result;
 }
 
 
