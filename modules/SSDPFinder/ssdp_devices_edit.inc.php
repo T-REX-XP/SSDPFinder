@@ -7,63 +7,6 @@
   }
   $table_name='ssdp_devices';
   $rec=SQLSelectOne("SELECT * FROM $table_name WHERE ID='$id'");
-    if ($this->mode=='add') {
-   $ok=1;
-  //updating '<%LANG_TITLE%>' (varchar, required)
-   global $title;
-   $rec['TITLE']=$title;
-   if ($rec['TITLE']=='') {
-    $out['ERR_TITLE']=1;
-    $ok=0;
-   }
-  //updating 'Address' (varchar)
-   global $address;
-   $rec['ADDRESS']=$address;
-  //updating 'Uuid' (varchar)
-   global $uuid;
-   $rec['UUID']=$uuid;
-  //updating 'Name' (varchar)
-   global $name;
-   //$rec['NAME']=$title;
-  //updating 'Description' (varchar)
-   global $description;
-   $rec['DESCRIPTION']=$description;
-  //updating 'Location' (varchar)
-   global $location;
-   $rec['LOCATION']=$location;
-  //updating 'Type' (varchar)
-   global $type;
-   $rec['TYPE']=$type;
-  //updating 'Logo' (varchar)
-   global $logo;
-   $rec['LOGO']=$logo;
-  //updating '<%LANG_LINKED_OBJECT%>' (varchar)
-   global $linked_object;
-   $rec['LINKED_OBJECT']=$linked_object;
-  //updating '<%LANG_LINKED_PROPERTY%>' (varchar)
-   global $linked_property;
-   $rec['LINKED_PROPERTY']=$linked_property;
-  //updating '<%LANG_METHOD%>' (varchar)
-   global $linked_method;
-   $rec['LINKED_METHOD']=$linked_method;
-  //updating '<%LANG_UPDATED%>' (datetime)
-   global $updated_date;
-   global $updated_minutes;
-   global $updated_hours;
-  // $rec['UPDATED']=toDBDate($updated_date)." $updated_hours:$updated_minutes:00";
-  //UPDATING RECORD
-   if ($ok) {
-    if ($rec['ID']) {
-     SQLUpdate($table_name, $rec); // update
-    } else {
-     $new_rec=1;
-     $rec['ID']=SQLInsert($table_name, $rec); // adding new record
-    }
-    $out['OK']=1;
-   } else {
-    $out['ERR']=1;
-   }
-  }
   if ($this->mode=='update') {
    $ok=1;
   //updating '<%LANG_TITLE%>' (varchar, required)
