@@ -253,6 +253,7 @@ ssdp_devices -
  ssdp_devices: ID int(10) unsigned NOT NULL auto_increment
  ssdp_devices: TITLE varchar(100) NOT NULL DEFAULT ''
  ssdp_devices: ADDRESS varchar(255) NOT NULL DEFAULT ''
+ ssdp_devices: SERIAL varchar(32) NOT NULL DEFAULT ''
  ssdp_devices: IP varchar(255) NOT NULL DEFAULT ''
  ssdp_devices: UUID varchar(255) NOT NULL DEFAULT ''
  ssdp_devices: MODEL varchar(255) NOT NULL DEFAULT ''
