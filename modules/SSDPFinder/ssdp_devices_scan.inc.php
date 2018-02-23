@@ -93,6 +93,10 @@ function getIp($dev)
 
 function getDefImg($dev)
 {
+$result = $dev["presentationURL"] . $dev["iconList"]["icon"]["0"]["url"];
+if($result) {
+    return $dev["presentationURL"] . $dev["iconList"]["icon"]["0"]["url"];
+}   
 $result = "/templates/SSDPFinder/img/".$dev["manufacturer"].".png";
     if (!$result) {
         return "/templates/SSDPFinder/img/unknow.png";
@@ -100,8 +104,3 @@ $result = "/templates/SSDPFinder/img/".$dev["manufacturer"].".png";
      return $result;
     }
 }
-
-
-
-
-
