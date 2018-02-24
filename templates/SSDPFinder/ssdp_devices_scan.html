@@ -26,6 +26,15 @@
             <!-- search results (list) -->
             <form action="?" method="post" name="frmList_ssdp_devices" style="padding:0px" class="form">
                 <table align=center class="table table-striped">
+<tr>
+  <th></th>
+  <th><#LANG_TITLE#></th>
+  <th>IP</th>
+  <th>Description</th>
+  <th><#LANG_TYPE#></th>
+  <th><#LANG_UPDATED#></th>
+  <th>&nbsp;</th>
+ </tr>
                     <tbody>
                         [#begin RESULT#]
                         <tr style="height:52px" class="hover_btn2">
@@ -34,22 +43,28 @@
                                 <img src=" [#LOGO#]" alt="Device Logo" width="32" height="32"> [#else#] &nbsp; [#endif#]
                             </td>
                             <td style="vertical-align:middle">
-                                <b>
+				<div>
                                 [#if ADDRESS!=""#]
-                                <a href="[#ADDRESS#]">[#TITLE#]</a>
-                                [#else#]
-                                [#TITLE#]
-                                [#endif#]
-                                </a></b>
+				<h4 class="list-group-item-heading"><strong><a href="[#ADDRESS#]">[#TITLE#]</a></strong></h4>
+      				<p class="list-group-item-text small">[#if MANUFACTURER!=""#] [#MANUFACTURER#] [#else#] &nbsp; [#endif#]</p>
+     				<span style="clear: both;"></span>
+				[#else#]
+				<h4 class="list-group-item-heading"><strong>[#TITLE#]</strong></h4>
+      				<p class="list-group-item-text small">[#if MANUFACTURER!=""#] [#MANUFACTURER#] [#else#] &nbsp; [#endif#]</p>
+     				<span style="clear: both;"></span>
+				</ul>
+				 [#endif#]
+                                
+				</div>
                             </td>
                             <td style="vertical-align:middle">
-                                [#if IP!=""#] [#IP#] [#else#] &nbsp; [#endif#]
-                            </td>
-                            <td style="vertical-align:middle">
-                                [#if MANUFACTURER!=""#] [#MANUFACTURER#] [#else#] &nbsp; [#endif#]
-                            </td>
-                            <td style="vertical-align:middle">
+				 [#if IP!=""#] [#IP#] [#else#] &nbsp; [#endif#]</li>
+			                            </td>
+                              <td style="vertical-align:middle">
                                 [#if DESCRIPTION!=""#] [#DESCRIPTION#] [#else#] &nbsp; [#endif#]
+                            </td>
+                            <td style="vertical-align:middle">
+                                [#if TYPE!=""#] [#TYPE#] [#else#] &nbsp; [#endif#]
                             </td>
                             <td style="vertical-align:middle">
                                 [#if MODEL!=""#] [#MODEL#] [#else#] &nbsp; [#endif#]
