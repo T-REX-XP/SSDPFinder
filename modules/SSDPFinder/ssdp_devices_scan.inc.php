@@ -40,16 +40,18 @@ function Scan()
     print('searching...' . PHP_EOL);
     $everything = $upnp->discover();
     $result = [];
+    $table_name='ssdp_devices';
 
     foreach ($everything as $device) {
         //print_r($device);  //uncomment to see all available array elements for a device.
 
         $info = $device['description']['device'];
-
+        $uuid = $info["UDN"];
+        $existed = $rec=SQLSelectOne("SELECT * FROM $table_name WHERE UUID='$uuid'");
         // print array_search(, array_column( $result, 'ADDRESS'));
         if (!array_search_result($result, 'UUID', $info["UDN"]) && !is_null($info["UDN"])) {
             $result[] = [
-              //  "ID" => $info["UDN"],
+                "ID" => $existed["ID"],
                 "TITLE" => $info["friendlyName"],
                 "ADDRESS" => $info["presentationURL"],
                 "UUID" => $info["UDN"],
