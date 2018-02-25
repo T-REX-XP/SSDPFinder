@@ -46,6 +46,9 @@ function saveParams($data=0) {
  if (IsSet($this->edit_mode)) {
   $p["edit_mode"]=$this->edit_mode;
  }
+ if (IsSet($this->data_source)) {
+  $p["data_source"]=$this->data_source;
+ }
  if (IsSet($this->tab)) {
   $p["tab"]=$this->tab;
  }
@@ -64,6 +67,7 @@ function getParams() {
   global $view_mode;
   global $edit_mode;
   global $tab;
+  global $data_source;
   if (isset($id)) {
    $this->id=$id;
   }
@@ -79,6 +83,9 @@ function getParams() {
   if (isset($tab)) {
    $this->tab=$tab;
   }
+  if (isset($data_source)) {
+    $this->data_source=$data_source;
+   }
 }
 /**
 * Run
@@ -105,6 +112,7 @@ function run() {
   $out['EDIT_MODE']=$this->edit_mode;
   $out['MODE']=$this->mode;
   $out['ACTION']=$this->action;
+  $out['DATA_SOURCE']=$this->data_source;
   $out['TAB']=$this->tab;
   $this->data=$out;
   $p=new parser(DIR_TEMPLATES.$this->name."/".$this->name.".html", $this->data, $this);
@@ -151,6 +159,9 @@ function admin(&$out) {
   if ($this->view_mode=='edit_ssdp_devices') {
    $this->edit_ssdp_devices($out, $this->id);
   }
+  if (isset($this->data_source) && !$_GET['data_source'] && !$_POST['data_source']) {
+    $out['SET_DATASOURCE']=1;
+   }
   if ($this->view_mode=='delete_ssdp_devices') {
    $this->delete_ssdp_devices($this->id);
    $this->redirect("?");
@@ -252,6 +263,8 @@ ssdp_devices -
   $data = <<<EOD
  ssdp_devices: ID int(10) unsigned NOT NULL auto_increment
  ssdp_devices: TITLE varchar(100) NOT NULL DEFAULT ''
+ ssdp_devices: NAME varchar(100) NOT NULL DEFAULT ''
+ ssdp_devices: SERVICES varchar(500) NOT NULL DEFAULT ''
  ssdp_devices: ADDRESS varchar(255) NOT NULL DEFAULT ''
  ssdp_devices: IP varchar(255) NOT NULL DEFAULT ''
  ssdp_devices: UUID varchar(255) NOT NULL DEFAULT ''

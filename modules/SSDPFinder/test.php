@@ -15,7 +15,7 @@ foreach($everything as $device){
 	print '<pre>';
 	print "Services: ". getServices($current_dev);
 //	return;
-	//print_r($current_dev);
+	print_r($current_dev);
 	//u	ncomment to see all available array elements for a device.
 		   // 	$info = $device['description']['device'];
 	// 	$summary = $info['friendlyName'].', '.$info['modelName'].', '.$info['UDN'];
@@ -74,13 +74,24 @@ function SearchArray($array, $searchIndex, $searchValue)
 
 function getDefImg($dev)
 {
-	$baseUrl = $dev["presentationURL"];
+    $baseUrl = $dev["presentationURL"];
+    print "BAse URL:" . $baseUrl;
 	if( !empty($baseUrl) && endsWith($baseUrl,"/")){
+		print "First improove ->";
 		$baseUrl=  rtrim($baseUrl,"/");//$baseUrl . ;
-	}
+    }
+    else if( $dev["location"]){
+		print "Second improove ->";
+        $img_url = str_replace('\\','', $dev["location"]);
+		$parsed_url = parse_url($img_url);
+		$baseUrl = $parsed_url['scheme'].'://'.$parsed_url['host'].':'.$parsed_url['port'];//.$dev["iconList"]["icon"]["0"]["url"];
+    }
+    print "Base url after improove:" . $baseUrl;
 
-	if( $dev["iconList"]["icon"]){
-		$icons = $dev["iconList"]["icon"];
+
+	if( $dev["iconList"]["icon"]["0"]["url"]){
+        
+        /*$icons = $dev["iconList"]["icon"];
 
 		$searchedValue = 48; // Value to search.
 		$index48 = SearchArray($icons,"width",48);
@@ -91,10 +102,11 @@ function getDefImg($dev)
 		}else{
 			$img48 = $icons[0]["url"];
 		}
-		return $baseUrl . $img48;
-		
+		return $baseUrl . $img48;*/
+		return $baseUrl . $dev["iconList"]["icon"]["0"]["url"];
 	}else{
-		return  "Icons not found... (((";
+        $type =explode(":", $dev["deviceType"])[3];
+		return "/templates/SSDPFinder/img/".$type. ".png";//"Icons not found... (((";
 	}
 }
 ?>

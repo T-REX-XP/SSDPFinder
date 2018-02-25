@@ -3,10 +3,10 @@
 [#if VIEW_MODE="search_ssdp_devices" || VIEW_MODE=""#]
 <!-- table zwave_devices search -->
 <div>
-    [
-    <a href="#" onClick="$('#api_settings').toggle();return false;">
-        <#LANG_SETUP#>
-    </a> | <a href="?view_mode=scan_ssdp_devices">Scan</a> ]
+    <div class="btn-group">
+    <a href="#" class="btn btn-primary" onClick="$('#api_settings').toggle();return false;"><#LANG_SETUP#></a> 
+    <a class="btn btn-success" href="?view_mode=scan_ssdp_devices"><i class="glyphicon glyphicon-search"></i> Поиск устройств</a>
+</div>
 </div>
 <div style="display:none" id='api_settings'>
     &nbsp;

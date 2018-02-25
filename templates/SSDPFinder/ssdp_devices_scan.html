@@ -40,7 +40,7 @@
                         <th><#LANG_TITLE#></th>
                         <th>IP</th>
                         <th>Description</th>
-                        <th><#LANG_TYPE#></th>
+                        <th data-field="TYPE" data-sortable="true"><#LANG_TYPE#></th>
                         <th> Model</th>
                         <th>Services</th>
                         <th>Actions</th>
@@ -89,11 +89,16 @@
                                 [#if SERVICES!=""#] [#SERVICES#] [#else#] &nbsp; [#endif#]
                             </td>
                             <td style="vertical-align:middle" width="1%" nowrap>
-                                <div style="width:120px">
-                                        <a href="?view_mode=edit_ssdp_devices&id=[#ID#]" class="btn btn-default" title="Add">
+                                    <div style="width:120px">
+                                    <div class="btn-group">
+                                        <a href="?data_source=<#DATA_SOURCE#>&mode=add&view_mode=edit_ssdp_devices&title=[#TITLE#]&type=[#TYPE#]&uuid=[#UUID#]&services=[#SERVICES#]" class="btn btn-success" title="Add">
                                             <i class="glyphicon glyphicon-plus"></i>
                                         </a>
+                                        <a href="?view_mode=edit_ssdp_devices&id=[#ID#]" class="btn btn-info" title="Help">
+                                                <i class="glyphicon glyphicon-info-sign"></i>
+                                            </a>
                                 </div>
+                            </div>
                             </td>
                         </tr>
                         [#end RESULT#]
