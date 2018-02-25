@@ -55,13 +55,13 @@ function Scan()
                 "UUID" => $info["UDN"],
                 "DESCRIPTION" => is_array($info["modelDescription"]) ? implode(',', $info["modelDescription"]) : $info["modelDescription"],
                 "TYPE" => explode(":", $info["deviceType"])[3],
-                "LOGO" => getDefImg($info),
+                "LOGO" => getDefImg($device),//$info
                 "SERIAL" => $info["serialNumber"],
                 "MANUFACTURERURL" => $info["manufacturerURL"],
                 "UPDATED" => '',
                 "MODEL" => $info["modelName"],
                 "MANUFACTURER" => $info["manufacturer"],
-                "IP" => getIp($info),
+                "IP" => getIp($device),
                 "SERVICES"=> getServices($info),
             ];
         }
@@ -86,10 +86,15 @@ function array_search_result($array, $key, $value)
 }
 
 
-function getIp($dev)
+function getIp($device)
 {
-    $result = explode(":", $dev["presentationURL"])[1];
-    return str_replace("//", "", $result);
+    $baseUrl = $device["location"];
+	if( !empty($baseUrl) ){
+		$parsed_url = parse_url($baseUrl);
+		$baseUrl = $parsed_url['scheme'].'://'.$parsed_url['host'].':'.$parsed_url['port'];
+    }
+    
+    return  $baseUrl;
 }
 
 function startsWith($haystack, $needle)
@@ -142,26 +147,30 @@ function SearchArray($array, $searchIndex, $searchValue)
     return false;
 }
 
-function getDefImg($dev)
+function getDefImg($device)
 {
-	$baseUrl = $dev["presentationURL"];
-	if( !empty($baseUrl) && endsWith($baseUrl,"/")){
-		$baseUrl=  rtrim($baseUrl,"/");//$baseUrl . ;
-	}
+    $dev = $device['description']['device'];
+	$baseUrl = getIp($device);
 
-	if( $dev["iconList"]["icon"]){
+	if($baseUrl && $dev["iconList"]["icon"]){
 		$icons = $dev["iconList"]["icon"];
 
-		$searchedValue = 48; // Value to search.
-		$index48 = SearchArray($icons,"width",48);
-
-		$img48 =""; //empty by def
-		if($index48 !=false){
-			$img48 = $icons[$index48]["url"];
-		}else{
-			$img48 = $icons[0]["url"];
-		}
-		return $baseUrl . $img48;
+        $img48 =""; //empty by def
+        if($icons["url"]){
+            $img48 =$icons["url"];
+        }
+        else{
+            $searchedValue = 48; // Value to search.
+            $index48 = SearchArray($icons,"width",48);
+    
+           
+            if($index48 !=false){
+                $img48 = $icons[$index48]["url"];
+            }else{
+                $img48 = $icons[0]["url"];
+            }
+        }
+        return $baseUrl . $img48;
 		
 	}else{
         $type =explode(":", $dev["deviceType"])[3];

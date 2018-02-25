@@ -38,20 +38,17 @@
                     <tr>
                         <th></th>
                         <th><#LANG_TITLE#></th>
-                        <th>IP</th>
                         <th>Description</th>
                         <th data-field="TYPE" data-sortable="true"><#LANG_TYPE#></th>
-                        <th> Model</th>
                         <th>Services</th>
                         <th>Actions</th>
-                       
                     </tr>
                     <tbody>
                         [#begin RESULT#]
                         <tr style="height:52px" class="hover_btn2">
                             <td style="vertical-align:middle">
                                 [#if LOGO!=""#]
-                                <img src=" [#LOGO#]" alt="Device Logo" width="32" height="32"> [#else#] &nbsp; [#endif#]
+                                <img src=" [#LOGO#]" alt="Device Logo" width="48" height="48"> [#else#] &nbsp; [#endif#]
                             </td>
                             <td style="vertical-align:middle">
                                 <div>
@@ -74,16 +71,10 @@
                                 </div>
                             </td>
                             <td style="vertical-align:middle">
-                                [#if IP!=""#] [#IP#] [#else#] &nbsp; [#endif#]</li>
-                            </td>
-                            <td style="vertical-align:middle">
                                 [#if DESCRIPTION!=""#] [#DESCRIPTION#] [#else#] &nbsp; [#endif#]
                             </td>
                             <td style="vertical-align:middle">
-                                [#if TYPE!=""#] [#TYPE#] [#else#] &nbsp; [#endif#]
-                            </td>
-                            <td style="vertical-align:middle">
-                                [#if MODEL!=""#] [#MODEL#] [#else#] &nbsp; [#endif#]
+                                    [#if TYPE!=""#] <a href="[#IP#]">[#TYPE#]</a> [#else#] &nbsp; [#endif#]
                             </td>
                             <td style="vertical-align:middle">
                                 [#if SERVICES!=""#] [#SERVICES#] [#else#] &nbsp; [#endif#]

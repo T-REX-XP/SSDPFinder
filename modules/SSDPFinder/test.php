@@ -11,11 +11,11 @@ if(!count($everything)){
 foreach($everything as $device){
 	$current_dev = $device['description']['device'];
 	print '<pre>';
-	print getDefImg($current_dev);
+	//print getDefImg($current_dev);
 	print '<pre>';
-	print "Services: ". getServices($current_dev);
+//	print "Services: ". getServices($current_dev);
 //	return;
-	print_r($current_dev);
+	print_r($device);
 	//u	ncomment to see all available array elements for a device.
 		   // 	$info = $device['description']['device'];
 	// 	$summary = $info['friendlyName'].', '.$info['modelName'].', '.$info['UDN'];
