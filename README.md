@@ -1,9 +1,25 @@
+
 # SSDPFinder
-initial commit
-This module for Majordomo (majordomo.smartliving.ru) provide opportunity for browsing UPNP devices
+
+Модуль для открытой платформы домашней автоматизации [Majordomo](majordomo.smartliving.ru)
+
+**Возможности:**
+
+ - Поиск устройств в локальной сети на основании UPNP протокола
+ - Добавление устройств в систему
+ - Получение списка сервисов уствройства
+ 
+ 
+ ![ScreenShot](/screen.png)
 
 
-![ScreenShot](/screen.png)
+**TODO:**
+
+ - Добавление простых устройств с помощью модуля (Сначала MediaServer, MediaRender, dial(Chromecast))
+ - Получения дополнитеньных устройств с одно UPNP 
+
+
+
 
 Запись для себя
 выключатель - состояние on off
