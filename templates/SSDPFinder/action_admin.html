@@ -2,30 +2,108 @@
 <!-- table ssdp_devices search -->
 [#if VIEW_MODE="search_ssdp_devices" || VIEW_MODE=""#]
 <!-- table zwave_devices search -->
+<div class="float-right">
+    <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#myModal">About
+        <span class="glyphicon glyphicon-info-sign icon-white"></span>
+    </button>
+</div>
 <div>
     <div class="btn-group">
-    <a href="#" class="btn btn-primary" onClick="$('#api_settings').toggle();return false;"><#LANG_SETUP#></a> 
-    <a class="btn btn-success" href="?view_mode=scan_ssdp_devices"><i class="glyphicon glyphicon-search"></i> Поиск устройств</a>
+        <a href="#" class="btn btn-primary" onClick="$('#api_settings').toggle();return false;">
+            <#LANG_SETUP#>
+        </a>
+        <a class="btn btn-success" href="?view_mode=scan_ssdp_devices">
+            <i class="glyphicon glyphicon-search"></i> Поиск устройств</a>
+    </div>
 </div>
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Модуль - SSDP Finder v.0.9</h4>
+            </div>
+            <div class="modal-body">
+                <p>Поиск и добавление в систему UPNP устройств.</p>
+                <div class="btn-group btn-group-primary">
+                    <button class="btn btn-default" data-toggle="collapse" data-target="#ssdp">SSDP</button>
+                    <button class="btn btn-default" data-toggle="collapse" data-target="#upnp">UPNP</button>
+                    <button class="btn btn-default" data-toggle="collapse" data-target="#dlna">DLNA</button>
+                </div>
+                <div id="ssdp" class="collapse">
+                    <strong>Простой протокол обнаружения сервисов</strong> — написанный компаниями Microsoft и Hewlett-Packard. Данный
+                    протокол является основой протокола обнаружения Universal plug-and-play. SSDP описывает механизм, согласно
+                    которому сетевые клиенты могут обнаружить различные сетевые сервисы. Клиенты используют SSDP без предварительной
+                    конфигурации. SSDP поддерживает обнаружение при помощи мультикаста, уведомления от серверов и маршрутизацию.
+                    Данная служба включает обнаружение UPnP-устройств в домашней сети. Например, телевизор с поддержкой DLNA/UPNP
+                    находит медиа-серверы в локальной сети с использованием этого протокола. Домашние маршрутизаторы тоже,
+                    как правило, обнаруживаются компьютерами с помощью SSDP (для отображении информации о маршрутизаторах
+                    и медиа-серверах в "Сетевом окружении" эти устройства также должны поддерживать протокол HTTP, т. к.
+                    SSDP сообщает устройствам http-ссылку на узел управления устройством). SSDP использует XML UDP пакеты
+                    как в одноадресной, так и в многоадресной рассылке для объявлений о сервисах. Используется мультикаст-адреса
+                    IPv4: 239.255.255.250, IPv6: FF01::C, FF02::C, FF05::C (в зависимости от типа узла)[1]. В операционной
+                    системе Windows для нормального функционирования «Службы Обнаружения SSDP» никаких других служб не требуется.
+                    От работы этого сервиса зависит «Узел универсальных PnP-устройств» (Universal Plug and Play Device Host).
+                </div>
+                <div id="upnp" class="collapse">
+                    <strong> Universal Plug and Play (UPnP)</strong> — набор сетевых протоколов, публикуемых форумом UPnP. Цель UPnP
+                    — универсальная автоматическая настройка сетевых устройств, как дома, так и в корпоративной среде. Состоит
+                    из набора сопутствующих протоколов, построенных на открытых интернет-стандартах. UPnP (Universal Plug
+                    and Play) — это архитектура многоранговых соединений между персональными компьютерами и интеллектуальными
+                    устройствами, установленными, например, дома. UPnP строится на основе стандартов и технологий интернета,
+                    таких как TCP/IP, HTTP и XML, и обеспечивает автоматическое подключение подобных устройств друг к другу
+                    и их совместную работу в сетевой среде, в результате чего сеть (например, домашняя) становится лёгкой
+                    для настройки большему числу пользователей.
+                </div>
+                <div id="dlna" class="collapse">
+                    <strong>DLNA (англ. Digital Living Network Alliance)</strong> — набор стандартов, позволяющих совместимым устройствам
+                    передавать и принимать по домашней сети различный медиа-контент (изображения, музыку, видео), а также
+                    отображать его в режиме реального времени. То есть — технология для соединения домашних компьютеров,
+                    мобильных телефонов, ноутбуков и бытовой электроники в единую цифровую сеть. Устройства, которые поддерживают
+                    спецификацию DLNA, по желанию пользователя могут настраиваться и объединяться в сеть в автоматическом
+                    режиме. Средой передачи медиаконтента обычно является домашняя локальная сеть (IP-сеть). Подключение
+                    DLNA-совместимых устройств к домашней сети может быть как проводным (Ethernet), так и беспроводным (Wi-Fi).
+                </div>
+            </div>
+
+
+            <div class="modal-footer container-fluid">
+                    <span class="form-control-static pull-left">Авторы: <a href="https://majordomo.smartliving.ru/forum/memberlist.php?mode=viewprofile&u=1623">T-REX-XP</a>, <a href="https://majordomo.smartliving.ru/forum/memberlist.php?mode=viewprofile&u=2303">tarasfrompir1</a></span>
+              
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
 </div>
+
 <div style="display:none" id='api_settings'>
     &nbsp;
     <form action="?" method="post" enctype="multipart/form-data" name="frmEdit" class="form-horizontal">
         <fieldset>
             <div class="form-group">
                 <label class="control-label" [#if ERR_API_USERNAME#] style="color:red;font-weight:bold" [#endif#]>
- API Username:
- </label>
-                <div class="controls"><input type="text" name="api_username" value="[#API_USERNAME#]" class="input"></div>
+                    API Username:
+                </label>
+                <div class="controls">
+                    <input type="text" name="api_username" value="[#API_USERNAME#]" class="input">
+                </div>
             </div>
             <div class="form-group">
                 <label class="control-label" [#if ERR_API_PASSWORD#] style="color:red;font-weight:bold" [#endif#]>
- API Password:
- </label>
-                <div class="controls"><input type="password" name="api_password" value="[#API_PASSWORD#]" class="input"></div>
+                    API Password:
+                </label>
+                <div class="controls">
+                    <input type="password" name="api_password" value="[#API_PASSWORD#]" class="input">
+                </div>
             </div>
             <div class="form-actions">
-                <button type="submit" name="subm" value="Submit" class="btn btn-primary"><#LANG_UPDATE#></button>
+                <button type="submit" name="subm" value="Submit" class="btn btn-primary">
+                    <#LANG_UPDATE#>
+                </button>
                 <input type="hidden" name="view_mode" value="update_settings">
                 <input type="hidden" name="mode" value="update">
             </div>
