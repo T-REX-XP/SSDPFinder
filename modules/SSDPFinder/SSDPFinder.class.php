@@ -166,6 +166,10 @@ function admin(&$out) {
    $this->delete_ssdp_devices($this->id);
    $this->redirect("?");
   }
+  if ($this->view_mode=='add_to_SSDPdevices') {
+   $this->add_to_SSDPdevices($this->id);
+   $this->redirect("/admin.php?pd=&md=panel&inst=&action=ssdpdevices");
+  }
  }
 }
 /**
@@ -198,6 +202,36 @@ function usual(&$out) {
  function edit_ssdp_devices(&$out, $id) {
   require(DIR_MODULES.$this->name.'/ssdp_devices_edit.inc.php');
  }
+///////////////////////////////////////////////////////////////////////
+/**
+* ssdp_devices add record to SSDPdevice
+*
+* @access public
+*/
+ function add_to_SSDPdevices($id) {
+  $ssdp=SQLSelectOne("SELECT * FROM ssdp_devices WHERE ID='$id'");
+  
+  require_once (DIR_MODULES.'SSDPdevices/ssdpdevices.class.php');
+  $dev=new ssdpdevices();
+
+  $device_type=$ssdp['TYPE']; // тип устройства (см выше допустимые типы)
+  $options=array(); // опции добавления
+
+  //$options['TABLE']='objects'; // таблица, куда потом запишется LINKED_OBJECT и LINKED_PROPERTY
+  //$options['TABLE_ID']=22; // ID записи в вышеназванной таблице (запись уже должна быть создана такая)
+  //$options['LOCATION_ID']=1; // ID расположения (не обязательно)
+  //$options['LINKED_OBJECT']=$ssdp['TITLE'].$cont; // название связанного объекта, который создастся автоматически, если такого нет (не обязательно)      if ($linked_object!='') {
+  $options['TITLE']=$ssdp['TITLE']; // название устройства (не обязательно)
+
+  //$options['ADD_MENU']=1; // добавлять интерфейс работы с устройством в  меню (не обязательно)
+  //$options['ADD_SCENE']=1; // добавлять интерфейс работы с устройством на сцену (не обязательно)
+
+  $result=$dev->addDevice($device_type, $options); // добавляем устройство -- возвращает 1 в случа  е успешного добавления
+
+
+ }
+////////////////////////////////////////////////////////////////////////
+
 /**
 * ssdp_devices delete record
 *
@@ -247,6 +281,7 @@ function usual(&$out) {
 */
  function uninstall() {
   SQLExec('DROP TABLE IF EXISTS ssdp_devices');
+  unsubscribeToEvent($this->name, 'SAY');
   parent::uninstall();
  }
 /**
@@ -256,7 +291,7 @@ function usual(&$out) {
 *
 * @access private
 */
- function dbInstall() {
+ function dbInstall($data) {
 /*
 ssdp_devices - 
 */

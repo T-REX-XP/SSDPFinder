@@ -3,7 +3,8 @@
 * @version 0.1 (wizard)
 */
 
-require_once('ssdp/upnp.php');
+require('upnp/vendor/autoload.php');
+use jalder\Upnp\Upnp;
 
 global $session;
 if ($this->owner->name == 'panel') {
