@@ -37,9 +37,13 @@
                 <table align=center class="table table-striped">
                     <tr>
                         <th></th>
-                        <th><#LANG_TITLE#></th>
+                        <th>
+                            <#LANG_TITLE#>
+                        </th>
                         <th>Description</th>
-                        <th data-field="TYPE" data-sortable="true"><#LANG_TYPE#></th>
+                        <th data-field="TYPE" data-sortable="true">
+                            <#LANG_TYPE#>
+                        </th>
                         <th>Services</th>
                         <th>Actions</th>
                     </tr>
@@ -58,13 +62,14 @@
                                             <a href="[#ADDRESS#]">[#TITLE#]</a>
                                         </strong>
                                     </h5>
-                                    <p style="font-size:10px"class="list-group-item-text small">[#if MANUFACTURER!=""#] [#MANUFACTURER#] [#else#] &nbsp; [#endif#]</p>
+                                    <p style="font-size:10px" class="list-group-item-text small">[#if MANUFACTURER!=""#] [#MANUFACTURER#] [#else#] &nbsp; [#endif#]</p>
                                     <span style="clear: both;"></span>
                                     [#else#]
                                     <h4 class="list-group-item-heading">
                                         <strong>[#TITLE#]</strong>
                                     </h4>
-                                    <p style="font-size:10px" class="list-group-item-text small">[#if MANUFACTURER!=""#] [#MANUFACTURER#] [#else#] &nbsp; [#endif#]</p>
+                                    <p style="font-size:10px" class="list-group-item-text small">[#if MANUFACTURER!=""#]
+                                        <a href="[#MANUFACTURERURL#]">[#MANUFACTURER#]</a> [#else#] &nbsp; [#endif#]</p>
                                     <span style="clear: both;"></span>
                                     </ul>
                                     [#endif#]
@@ -74,15 +79,23 @@
                                 [#if DESCRIPTION!=""#] [#DESCRIPTION#] [#else#] &nbsp; [#endif#]
                             </td>
                             <td style="vertical-align:middle">
-                                    [#if TYPE!=""#] <a href="[#IP#]">[#TYPE#]</a> [#else#] &nbsp; [#endif#]
+                                [#if TYPE!=""#]
+                                <a href="[#IP#]">[#TYPE#]</a> [#else#] &nbsp; [#endif#]
+                                <p style="font-size:10px" class="list-group-item-text small">Model:[#if MODEL!=""#] [#MODEL#] [#else#] &nbsp; [#endif#]</p>
+                                <span style="clear: both;"></span>
                             </td>
                             <td style="vertical-align:middle">
                                 [#if SERVICES!=""#] [#SERVICES#] [#else#] &nbsp; [#endif#]
                             </td>
                             <td style="vertical-align:middle" width="1%" nowrap>
-                                    <div style="width:120px">
+                                <div style="width:120px">
                                     <div class="btn-group">[#if ID=""#]
-                                        <a href="?data_source=<#DATA_SOURCE#>&mode=add&view_mode=edit_ssdp_devices&title=[#TITLE#]&type=[#TYPE#]&uuid=[#UUID#]&services=[#SERVICES#]" class="btn btn-success" title="Add">
+                                        <a href=""
+                                            class="btn btn-warning" title="Add Simple device">
+                                            <i class="glyphicon glyphicon-plus"></i>
+                                        </a>
+                                        <a href="?data_source=<#DATA_SOURCE#>&mode=add&view_mode=edit_ssdp_devices&title=[#TITLE#]&type=[#TYPE#]&uuid=[#UUID#]&services=[#SERVICES#]"
+                                            class="btn btn-success" title="Add">
                                             <i class="glyphicon glyphicon-plus"></i>
                                         </a>
                                         [#else#]
@@ -91,33 +104,33 @@
                                         </a>
                                         [#endif#]
                                         <a href="" data-toggle="modal" data-target="#myModal" class="btn btn-default" title="Device Info">
-                                                <i class="glyphicon glyphicon-info-sign"></i>
-                                            </a>
+                                            <i class="glyphicon glyphicon-info-sign"></i>
+                                        </a>
+                                    </div>
                                 </div>
-                            </div>
                             </td>
                         </tr>
 
-                                    <!-- Modal -->
-  <div class="modal fade" id="myModal" role="dialog">
-        <div class="modal-dialog">
-        
-          <!-- Modal content-->
-          <div class="modal-content">
-            <div class="modal-header">
-              <button type="button" class="close" data-dismiss="modal">&times;</button>
-              <h4 class="modal-title"> [#TITLE#]</h4>
-            </div>
-            <div class="modal-body">
-              <p>Some text in the modal.</p>
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            </div>
-          </div>
-          
-        </div>
-      </div>
+                        <!-- Modal -->
+                        <div class="modal fade" id="myModal" role="dialog">
+                            <div class="modal-dialog">
+
+                                <!-- Modal content-->
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                        <h4 class="modal-title"> [#TITLE#]</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <p>Some text in the modal.</p>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
                         [#end RESULT#]
                     </tbody>
                 </table>

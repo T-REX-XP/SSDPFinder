@@ -2,8 +2,8 @@
 /*
 * @version 0.1 (wizard)
 */
-require('upnp/vendor/autoload.php');
-use jalder\Upnp\Upnp;
+
+require_once('ssdp/upnp.php');
 
 global $session;
 if ($this->owner->name == 'panel') {
@@ -51,20 +51,20 @@ function Scan()
         // print array_search(, array_column( $result, 'ADDRESS'));
         if (!array_search_result($result, 'UUID', $info["UDN"]) && !is_null($info["UDN"])) {
             $result[] = [
-                "ID" => $existed["ID"],
-                "TITLE" => $info["friendlyName"],
-                "ADDRESS" => $info["presentationURL"],
+                "ID" => $existed["ID"], //existed id Majordomo
+                "TITLE" => $info["friendlyName"],//friendly name
+                "ADDRESS" => $info["presentationURL"],//presentation url (web UI of device)
                 "UUID" => $info["UDN"],
-                "DESCRIPTION" => is_array($info["modelDescription"]) ? implode(',', $info["modelDescription"]) : $info["modelDescription"],
-                "TYPE" => explode(":", $info["deviceType"])[3],
+                "DESCRIPTION" => is_array($info["modelDescription"]) ? implode(',', $info["modelDescription"]) : $info["modelDescription"],//description
+                "TYPE" => explode(":", $info["deviceType"])[3],//DeviceType
                 "LOGO" => getDefImg($device),//$info
-                "SERIAL" => $info["serialNumber"],
-                "MANUFACTURERURL" => $info["manufacturerURL"],
+                "SERIAL" => $info["serialNumber"],//serialnumber
+                "MANUFACTURERURL" => $info["manufacturerURL"],//manufacturer url
                 "UPDATED" => '',
-                "MODEL" => $info["modelName"],
-                "MANUFACTURER" => $info["manufacturer"],
-                "IP" => getIp($device),
-                "SERVICES"=> getServices($info),
+                "MODEL" => $info["modelName"],//model
+                "MANUFACTURER" => $info["manufacturer"],//Manufacturer
+                "IP" => getIp($device,true),//Ip address with port (http://bla-bla:port)
+                "SERVICES"=> getServices($info),//list services of device
             ];
         }
     }
@@ -88,12 +88,16 @@ function array_search_result($array, $key, $value)
 }
 
 
-function getIp($device)
+function getIp($device,$withPort)
 {
     $baseUrl = $device["location"];
 	if( !empty($baseUrl) ){
-		$parsed_url = parse_url($baseUrl);
-		$baseUrl = $parsed_url['scheme'].'://'.$parsed_url['host'].':'.$parsed_url['port'];
+        $parsed_url = parse_url($baseUrl);
+        if($withPort ==true){
+            $baseUrl = $parsed_url['scheme'].'://'.$parsed_url['host'].':'.$parsed_url['port'];
+        }else{
+            $baseUrl = $parsed_url['scheme'].'://'.$parsed_url['host'];
+        }
     }
     
     return  $baseUrl;
@@ -152,7 +156,7 @@ function SearchArray($array, $searchIndex, $searchValue)
 function getDefImg($device)
 {
     $dev = $device['description']['device'];
-	$baseUrl = getIp($device);
+	$baseUrl = getIp($device,true);
 
 	if($baseUrl && $dev["iconList"]["icon"]){
 		$icons = $dev["iconList"]["icon"];
