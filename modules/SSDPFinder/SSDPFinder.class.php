@@ -209,25 +209,47 @@ function usual(&$out) {
 * @access public
 */
  function add_to_SSDPdevices($id) {
-  $ssdp=SQLSelectOne("SELECT * FROM ssdp_devices WHERE ID='$id'");
-  
-  require_once (DIR_MODULES.'SSDPdevices/ssdpdevices.class.php');
-  $dev=new ssdpdevices();
+  $id = ($_GET["id"]);
+  $file = 'people.txt';
+  // Пишем содержимое обратно в файл
+  file_put_contents($file, $id);
 
-  $device_type=$ssdp['TYPE']; // тип устройства (см выше допустимые типы)
+
+  require_once (DIR_MODULES.'SSDPdevices/ssdpdevices.class.php');
+  /////////////////////////// берем значения данних по устройству
+  $ssdpdevice=SQLSelectOne("SELECT * FROM ssdp_devices WHERE ID='".$id."'");
+  
+   //заполняем данные устройства
+  $dev=new ssdpdevices();
+  $device_type=$ssdpdevice['TYPE']; // тип устройства (см выше допустимые типы)
   $options=array(); // опции добавления
 
-  //$options['TABLE']='objects'; // таблица, куда потом запишется LINKED_OBJECT и LINKED_PROPERTY
-  //$options['TABLE_ID']=22; // ID записи в вышеназванной таблице (запись уже должна быть создана такая)
+  $options['TITLE']=$ssdpdevice['TITLE']; // название устройства (не обязательно)
+  $options['TABLE']='ssdp_devices'; // таблица, куда потом запишется LINKED_OBJECT и LINKED_PROPERTY
   //$options['LOCATION_ID']=1; // ID расположения (не обязательно)
-  //$options['LINKED_OBJECT']=$ssdp['TITLE'].$cont; // название связанного объекта, который создастся автоматически, если такого нет (не обязательно)      if ($linked_object!='') {
-  $options['TITLE']=$ssdp['TITLE']; // название устройства (не обязательно)
-
+  $options['TABLE_ID']=$id; // ID записи в вышеназванной таблице (запись уже должна быть создана такая)
+  //$options['LINKED_OBJECT']=$LinkedName; // название связанного объекта, который создастся автоматически, если такого нет (не обязательно)
   //$options['ADD_MENU']=1; // добавлять интерфейс работы с устройством в  меню (не обязательно)
   //$options['ADD_SCENE']=1; // добавлять интерфейс работы с устройством на сцену (не обязательно)
+  $result=$dev->addDevice($device_type, $options); // добавляем устройство -- возвращает 1 в случае успешного добавления
+  /////////////////////////
 
-  $result=$dev->addDevice($device_type, $options); // добавляем устройство -- возвращает 1 в случа  е успешного добавления
+  // zaplatka
+  // berem poslednuu sozdannuu zapis 
+  //$devedit = SQLSelectOne("SELECT * FROM objects WHERE id=(SELECT max(id) FROM objects)");
+  //$devedit['CLASS_ID'] = $ClasID['ID'];
+  //$devedit['DESCRIPTION'] = $ssdpdevice['TITLE'];
+  //SQLUpdate('objects', $devedit);
+  
 
+
+
+  // создаем запись для таблицы обджектс
+  //$Record = Array();
+  //$Record['CLASS_ID'] = $ClasID['ID'];
+  //$Record['DESCRIPTION'] = $ssdpdevice['TITLE'];
+  // получаем ИД записи для связанного устройства
+  //$Record['ID']=SQLInsert('objects', $Record);
 
  }
 ////////////////////////////////////////////////////////////////////////
