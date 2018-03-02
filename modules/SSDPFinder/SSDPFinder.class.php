@@ -217,7 +217,7 @@ function usual(&$out) {
 
   require_once (DIR_MODULES.'SSDPdevices/ssdpdevices.class.php');
   /////////////////////////// берем значения данних по устройству
-  $ssdpdevice=SQLSelectOne("SELECT * FROM ssdp_devices WHERE ID='".$id."'");
+  $ssdpdevice=SQLSelectOne("SELECT * FROM ssdp_devices WHERE ID=".(int)$id);
   
    //заполняем данные устройства
   $dev=new ssdpdevices();
