@@ -212,22 +212,25 @@ function usual(&$out) {
   $id = ($_GET["id"]);
   $file = 'people.txt';
   // Пишем содержимое обратно в файл
-  file_put_contents($file, $id);
 
 
-  require_once (DIR_MODULES.'SSDPdevices/ssdpdevices.class.php');
+  include_once (DIR_MODULES.'SSDPdevices/ssdpdevices.class.php');
   /////////////////////////// берем значения данних по устройству
-  $ssdpdevice=SQLSelectOne("SELECT * FROM ssdp_devices WHERE ID=".(int)$id);
-  
+  $ssdpdevice=SQLSelectOne("SELECT * FROM ssdp_devices WHERE ID='".$id."'");
+
    //заполняем данные устройства
   $dev=new ssdpdevices();
-  $device_type=$ssdpdevice['TYPE']; // тип устройства (см выше допустимые типы)
+  $device_type=$ssdpdevice['TYPE']; // тип устройства (см выше допустимые типы) 
   $options=array(); // опции добавления
+  $options['TABLE'] = 'ssdp_devices'; // таблица, куда потом запишется LINKED_OBJECT и LINKED_PROPERTY
+  $options['TABLE_ID'] = $id; // ID записи в вышеназванной таблице (запись уже должна быть создана такая)
+  $options['TITLE'] = $ssdpdevice['TITLE']; // название устройства (не обязательно)
 
-  $options['TITLE']=$ssdpdevice['TITLE']; // название устройства (не обязательно)
-  $options['TABLE']='ssdp_devices'; // таблица, куда потом запишется LINKED_OBJECT и LINKED_PROPERTY
+  file_put_contents($file, $ssdpdevice['TITLE']. " ".$ssdpdevice['TYPE']." ".$id);
+
+
+
   //$options['LOCATION_ID']=1; // ID расположения (не обязательно)
-  $options['TABLE_ID']=$id; // ID записи в вышеназванной таблице (запись уже должна быть создана такая)
   //$options['LINKED_OBJECT']=$LinkedName; // название связанного объекта, который создастся автоматически, если такого нет (не обязательно)
   //$options['ADD_MENU']=1; // добавлять интерфейс работы с устройством в  меню (не обязательно)
   //$options['ADD_SCENE']=1; // добавлять интерфейс работы с устройством на сцену (не обязательно)
