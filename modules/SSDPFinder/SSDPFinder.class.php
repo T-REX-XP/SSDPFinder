@@ -210,7 +210,7 @@ function usual(&$out) {
 */
  function add_to_SSDPdevices($id) {
   $id = ($_GET["id"]);
-  $file = 'people.txt';
+
   // Пишем содержимое обратно в файл
 
 
@@ -225,35 +225,12 @@ function usual(&$out) {
   $options['TABLE'] = 'ssdp_devices'; // таблица, куда потом запишется LINKED_OBJECT и LINKED_PROPERTY
   $options['TABLE_ID'] = $id; // ID записи в вышеназванной таблице (запись уже должна быть создана такая)
   $options['TITLE'] = $ssdpdevice['TITLE']; // название устройства (не обязательно)
-
-  file_put_contents($file, $ssdpdevice['TITLE']. " ".$ssdpdevice['TYPE']." ".$id);
-
-
-
   //$options['LOCATION_ID']=1; // ID расположения (не обязательно)
   //$options['LINKED_OBJECT']=$LinkedName; // название связанного объекта, который создастся автоматически, если такого нет (не обязательно)
   //$options['ADD_MENU']=1; // добавлять интерфейс работы с устройством в  меню (не обязательно)
   //$options['ADD_SCENE']=1; // добавлять интерфейс работы с устройством на сцену (не обязательно)
   $result=$dev->addDevice($device_type, $options); // добавляем устройство -- возвращает 1 в случае успешного добавления
-  /////////////////////////
-
-  // zaplatka
-  // berem poslednuu sozdannuu zapis 
-  //$devedit = SQLSelectOne("SELECT * FROM objects WHERE id=(SELECT max(id) FROM objects)");
-  //$devedit['CLASS_ID'] = $ClasID['ID'];
-  //$devedit['DESCRIPTION'] = $ssdpdevice['TITLE'];
-  //SQLUpdate('objects', $devedit);
-  
-
-
-
-  // создаем запись для таблицы обджектс
-  //$Record = Array();
-  //$Record['CLASS_ID'] = $ClasID['ID'];
-  //$Record['DESCRIPTION'] = $ssdpdevice['TITLE'];
-  // получаем ИД записи для связанного устройства
-  //$Record['ID']=SQLInsert('objects', $Record);
-
+  ///////////////////////// устройство добавлено
  }
 ////////////////////////////////////////////////////////////////////////
 
