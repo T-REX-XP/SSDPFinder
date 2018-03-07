@@ -168,7 +168,7 @@ function admin(&$out) {
   }
   if ($this->view_mode=='add_to_SSDPdevices') {
    $this->add_to_SSDPdevices($this->id);
-   $this->redirect("/admin.php?pd=&md=panel&inst=&action=ssdpdevices");
+   $this->redirect("?");
   }
  }
 }
@@ -211,25 +211,24 @@ function usual(&$out) {
  function add_to_SSDPdevices($id) {
   $id = ($_GET["id"]);
 
-  // Пишем содержимое обратно в файл
-
-
   include_once (DIR_MODULES.'SSDPdevices/ssdpdevices.class.php');
   /////////////////////////// берем значения данних по устройству
   $ssdpdevice=SQLSelectOne("SELECT * FROM ssdp_devices WHERE ID='".$id."'");
+  //$new_object_title=$out['PREFIX'].ucfirst($ssdpdevice['TYPE']).$dev->getNewObjectIndex($type_details['CLASS']);
 
    //заполняем данные устройства
   $dev=new ssdpdevices();
   $device_type=$ssdpdevice['TYPE']; // тип устройства (см выше допустимые типы) 
+
   $options=array(); // опции добавления
   $options['TABLE'] = 'ssdp_devices'; // таблица, куда потом запишется LINKED_OBJECT и LINKED_PROPERTY
   $options['TABLE_ID'] = $id; // ID записи в вышеназванной таблице (запись уже должна быть создана такая)
+  //$options['LINKED_OBJECT'] = $new_object_title; // название связанного объекта
   $options['TITLE'] = $ssdpdevice['TITLE']; // название устройства (не обязательно)
   //$options['LOCATION_ID']=1; // ID расположения (не обязательно)
-  //$options['LINKED_OBJECT']=$LinkedName; // название связанного объекта, который создастся автоматически, если такого нет (не обязательно)
   //$options['ADD_MENU']=1; // добавлять интерфейс работы с устройством в  меню (не обязательно)
   //$options['ADD_SCENE']=1; // добавлять интерфейс работы с устройством на сцену (не обязательно)
-  $result=$dev->addDevice($device_type, $options); // добавляем устройство -- возвращает 1 в случае успешного добавления
+  $result=$dev->addSSDPDevice($device_type, $options); // добавляем устройство -- возвращает 1 в случае успешного добавления
   ///////////////////////// устройство добавлено
  }
 ////////////////////////////////////////////////////////////////////////
