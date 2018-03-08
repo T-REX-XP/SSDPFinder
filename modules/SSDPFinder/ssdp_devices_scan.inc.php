@@ -5,7 +5,6 @@
 
 require('upnp/vendor/autoload.php');
 use jalder\Upnp\Upnp;
-
 global $session;
 if ($this->owner->name == 'panel') {
     $out['CONTROLPANEL'] = 1;
