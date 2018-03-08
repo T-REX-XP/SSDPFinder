@@ -6,9 +6,11 @@ $this->ssdpdevices_types=array(
         'PARENT_CLASS'=>'SDevices',
         'DESCRIPTION'=>'Auto finded devices',
         'PROPERTIES'=>array(
+            'Logo'=>array('DESCRIPTION'=>'Логотип','_CONFIG_TYPE'=>'text'),
             'UUID'=>array('DESCRIPTION'=>'UUID device','_CONFIG_TYPE'=>'text'),
             'IP'=>array('DESCRIPTION'=>'IP Adress device','_CONFIG_TYPE'=>'text'),
             'Type'=>array('DESCRIPTION'=>' Тип устройства','ONCHANGE'=>'updatePreview','_CONFIG_TYPE'=>'text'),
+            'Services'=>array('DESCRIPTION'=>' Сервисы','_CONFIG_TYPE'=>'text'),
             'MANUFACTURER'=>array('DESCRIPTION'=>'Разработчик устройства','ONCHANGE'=>'updatePreview','_CONFIG_TYPE'=>'text'),
             'Model'=>array('DESCRIPTION'=>' Имя устройства','ONCHANGE'=>'updatePreview','_CONFIG_TYPE'=>'text'),
             'DESCRIPTION'=>array('DESCRIPTION'=>'Описание устройства','ONCHANGE'=>'updatePreview','_CONFIG_TYPE'=>'text'),
@@ -19,9 +21,7 @@ $this->ssdpdevices_types=array(
         'PARENT_CLASS'=>'UPNPdevices',
         'CLASS'=>'SMediaServer',
         'PROPERTIES'=>array(
-            'Logo'=>array('DESCRIPTION'=>'Логотип','_CONFIG_TYPE'=>'text'),
-            'Username'=>array('DESCRIPTION'=>'Username','_CONFIG_TYPE'=>'text'),
-            'Password'=>array('DESCRIPTION'=>'Password','ONCHANGE'=>'updatePreview','_CONFIG_TYPE'=>'text'),
+
        ),
     ),
     'dial'=>array(
@@ -29,10 +29,8 @@ $this->ssdpdevices_types=array(
         'PARENT_CLASS'=>'UPNPdevices',
         'CLASS'=>'Sdial',
         'PROPERTIES'=>array(
-            'streamURL'=>array('DESCRIPTION'=>LANG_DEVICES_CAMERA_STREAM_URL.' (LQ)','ONCHANGE'=>'updatePreview','_CONFIG_TYPE'=>'text'),
-            'streamURL_HQ'=>array('DESCRIPTION'=>LANG_DEVICES_CAMERA_STREAM_URL.' (HQ)','ONCHANGE'=>'updatePreview','_CONFIG_TYPE'=>'text'),
-            'Username'=>array('DESCRIPTION'=>'Username','_CONFIG_TYPE'=>'text'),
-            'Password'=>array('DESCRIPTION'=>'Password','ONCHANGE'=>'updatePreview','_CONFIG_TYPE'=>'text'),
+            'PlayURL'=>array('DESCRIPTION'=>' Play Url','ONCHANGE'=>'updatePreview','_CONFIG_TYPE'=>'text'),
+            'Applications'=>array('DESCRIPTION'=>' Приложения','_CONFIG_TYPE'=>'text'),
         ),
      ),
     'Basic'=>array(
