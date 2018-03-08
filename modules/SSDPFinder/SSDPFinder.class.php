@@ -166,6 +166,10 @@ function admin(&$out) {
    $this->delete_ssdp_devices($this->id);
    $this->redirect("?");
   }
+  if ($this->view_mode=='add_to_SSDPdevices') {
+   $this->add_to_SSDPdevices($this->id);
+   $this->redirect("?");
+  }
  }
 }
 /**
@@ -198,6 +202,37 @@ function usual(&$out) {
  function edit_ssdp_devices(&$out, $id) {
   require(DIR_MODULES.$this->name.'/ssdp_devices_edit.inc.php');
  }
+///////////////////////////////////////////////////////////////////////
+/**
+* ssdp_devices add record to SSDPdevice
+*
+* @access public
+*/
+ function add_to_SSDPdevices($id) {
+  $id = ($_GET["id"]);
+
+  include_once (DIR_MODULES.'SSDPdevices/ssdpdevices.class.php');
+  /////////////////////////// берем значения данних по устройству
+  $ssdpdevice=SQLSelectOne("SELECT * FROM ssdp_devices WHERE ID='".$id."'");
+  //$new_object_title=$out['PREFIX'].ucfirst($ssdpdevice['TYPE']).$dev->getNewObjectIndex($type_details['CLASS']);
+
+   //заполняем данные устройства
+  $dev=new ssdpdevices();
+  $device_type=$ssdpdevice['TYPE']; // тип устройства (см выше допустимые типы) 
+
+  $options=array(); // опции добавления
+  $options['TABLE'] = 'ssdp_devices'; // таблица, куда потом запишется LINKED_OBJECT и LINKED_PROPERTY
+  $options['TABLE_ID'] = $id; // ID записи в вышеназванной таблице (запись уже должна быть создана такая)
+  //$options['LINKED_OBJECT'] = $new_object_title; // название связанного объекта
+  $options['TITLE'] = $ssdpdevice['TITLE']; // название устройства (не обязательно)
+  //$options['LOCATION_ID']=1; // ID расположения (не обязательно)
+  //$options['ADD_MENU']=1; // добавлять интерфейс работы с устройством в  меню (не обязательно)
+  //$options['ADD_SCENE']=1; // добавлять интерфейс работы с устройством на сцену (не обязательно)
+  $result=$dev->addSSDPDevice($device_type, $options); // добавляем устройство -- возвращает 1 в случае успешного добавления
+  ///////////////////////// устройство добавлено
+ }
+////////////////////////////////////////////////////////////////////////
+
 /**
 * ssdp_devices delete record
 *
@@ -247,6 +282,7 @@ function usual(&$out) {
 */
  function uninstall() {
   SQLExec('DROP TABLE IF EXISTS ssdp_devices');
+  unsubscribeToEvent($this->name, 'SAY');
   parent::uninstall();
  }
 /**
@@ -256,7 +292,7 @@ function usual(&$out) {
 *
 * @access private
 */
- function dbInstall() {
+ function dbInstall($data) {
 /*
 ssdp_devices - 
 */
