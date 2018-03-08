@@ -14,16 +14,16 @@ use jalder\Upnp\Upnp;
 */
 //
 //
-class SSDPFinder extends module {
+class ssdp_finder extends module {
 /**
-* SSDPFinder
+* ssdp_finder
 *
 * Module class constructor
 *
 * @access private
 */
-function SSDPFinder() {
-  $this->name="SSDPFinder";
+function ssdp_finder() {
+  $this->name="ssdp_finder";
   $this->title="SSDP Finder";
   $this->module_category="<#LANG_SECTION_DEVICES#>";
   $this->checkInstalled();
@@ -211,7 +211,7 @@ function usual(&$out) {
  function add_to_SSDPdevices($id) {
   $id = ($_GET["id"]);
 
-  include_once (DIR_MODULES.'SSDPdevices/ssdpdevices.class.php');
+  include_once (DIR_MODULES.'ssdpdevices/ssdpdevices.class.php');
   /////////////////////////// берем значения данних по устройству
   $ssdpdevice=SQLSelectOne("SELECT * FROM ssdp_devices WHERE ID='".$id."'");
   //$new_object_title=$out['PREFIX'].ucfirst($ssdpdevice['TYPE']).$dev->getNewObjectIndex($type_details['CLASS']);

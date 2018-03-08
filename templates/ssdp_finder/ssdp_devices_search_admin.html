@@ -35,10 +35,14 @@
             <form action="?" method="post" name="frmList_ssdp_devices" style="padding:0px" class="form">
                 <table align=center class="table table-striped">
                     <tr>
-                        <th> <#LANG_TITLE#></th>
+                        <th>
+                            <#LANG_TITLE#>
+                        </th>
                         <th>UUID</th>
                         <th>Location</th>
-                        <th><#LANG_TYPE#></th>
+                        <th>
+                            <#LANG_TYPE#>
+                        </th>
                         <th>Services</th>
                         <th>Actions</th>
                     </tr>
@@ -46,7 +50,8 @@
                         [#begin RESULT#]
                         <tr style="height:52px" class="hover_btn2">
                             <td style="vertical-align:middle">
-                                <b>[#TITLE#]</a></b>
+                                <b>[#TITLE#]</a>
+                                </b>
                             </td>
                             <td style="vertical-align:middle">
                                 [#if UUID!=""#] [#UUID#] [#else#] &nbsp; [#endif#]
@@ -58,14 +63,15 @@
                                 [#if TYPE!=""#] [#TYPE#] [#else#] &nbsp; [#endif#]
                             </td>
                             <td style="vertical-align:middle">
-                                    [#if SERVICES!=""#] [#SERVICES#] [#else#] &nbsp; [#endif#]
-                                </td>
+                                [#if SERVICES!=""#] [#SERVICES#] [#else#] &nbsp; [#endif#]
+                            </td>
                             <td style="vertical-align:middle" width="1%" nowrap>
                                 <div style="width:160px">
 
                                     <div class="btn-group">
-					<a href="?view_mode=add_to_SSDPdevices&id=[#ID#]" onClick="return confirm('Are you sure? Please confirm.')" class="btn btn-danger" title="Добавить к простым устройствам">
-                                            <i class="lyphicon glyphicon-plus"></i>
+                                        <a href="?view_mode=add_to_SSDPdevices&id=[#ID#]" onClick="return confirm('Are you sure? Please confirm.')" class="btn btn-success"
+                                            title="Добавить к простым устройствам">
+                                            <i class="glyphicon glyphicon-plus"></i>
                                         </a>
                                         <a href="?view_mode=edit_ssdp_devices&id=[#ID#]" class="btn btn-info" title="Edit">
                                             <i class="glyphicon glyphicon-pencil"></i>

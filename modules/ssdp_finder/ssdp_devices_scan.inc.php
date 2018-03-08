@@ -180,6 +180,6 @@ function getDefImg($device)
 		
 	}else{
         $type =explode(":", $dev["deviceType"])[3];
-		return "/templates/SSDPFinder/img/".$type. ".png";//"Icons not found... (((";
+		return "/templates/ssdp_finder/img/".$type. ".png";//"Icons not found... (((";
 	}
 }
