@@ -39,7 +39,7 @@
                             <#LANG_TITLE#>
                         </th>
                         <th>UUID</th>
-                        <th>Location</th>
+                        <th>Linked Object</th>
                         <th>
                             <#LANG_TYPE#>
                         </th>
@@ -57,7 +57,7 @@
                                 [#if UUID!=""#] [#UUID#] [#else#] &nbsp; [#endif#]
                             </td>
                             <td style="vertical-align:middle">
-                                [#if LOCATION!=""#] [#LOCATION#] [#else#] &nbsp; [#endif#]
+                                [#if LINKED_OBJECT!=""#] [#LINKED_OBJECT#] [#else#] &nbsp; [#endif#]
                             </td>
                             <td style="vertical-align:middle">
                                 [#if TYPE!=""#] [#TYPE#] [#else#] &nbsp; [#endif#]
@@ -69,10 +69,12 @@
                                 <div style="width:160px">
 
                                     <div class="btn-group">
+                                            [#if SERVICES==""#]
                                         <a href="?view_mode=add_to_SSDPdevices&id=[#ID#]" onClick="return confirm('Are you sure? Please confirm.')" class="btn btn-success"
                                             title="Добавить к простым устройствам">
                                             <i class="glyphicon glyphicon-plus"></i>
                                         </a>
+                                        [#endif#]
                                         <a href="?view_mode=edit_ssdp_devices&id=[#ID#]" class="btn btn-info" title="Edit">
                                             <i class="glyphicon glyphicon-pencil"></i>
                                         </a>

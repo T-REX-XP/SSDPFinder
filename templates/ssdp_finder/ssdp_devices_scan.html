@@ -90,7 +90,7 @@
                             <td style="vertical-align:middle" width="1%" nowrap>
                                 <div style="width:120px">
                                     <div class="btn-group">[#if ID=""#]
-                                       
+
                                         <a href="?data_source=<#DATA_SOURCE#>&mode=add&view_mode=edit_ssdp_devices&title=[#TITLE#]&type=[#TYPE#]&uuid=[#UUID#]&services=[#SERVICES#]"
                                             class="btn btn-success" title="Add">
                                             <i class="glyphicon glyphicon-plus"></i>
@@ -100,7 +100,7 @@
                                             <i class="glyphicon glyphicon-pencil"></i>
                                         </a>
                                         [#endif#]
-                                        <a href="" data-toggle="modal" data-target="#myModal" class="btn btn-default" title="Device Info">
+                                        <a data-toggle="modal" data-target="#myModal" class="btn btn-default" title="Device Info">
                                             <i class="glyphicon glyphicon-info-sign"></i>
                                         </a>
                                     </div>
@@ -119,7 +119,58 @@
                                         <h4 class="modal-title"> [#TITLE#]</h4>
                                     </div>
                                     <div class="modal-body">
-                                        <p>Some text in the modal.</p>
+                                        <form class="form-horizontal">
+                                            <fieldset>
+                                                <div class="form-group">
+                                                    <label class="control-label col-sm-2" for="MANUFACTURER">Manufacturer:</label>
+                                                    <div class="col-sm-10">
+                                                        <input  class="form-control" id="MANUFACTURER" value="[#MANUFACTURER#]">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="control-label col-sm-2" for="address">Address:</label>
+                                                    <div class="col-sm-10">
+                                                        <input type="text" class="form-control" id="address" value="[#ADDRESS#]">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="control-label col-sm-2" for="model">Model:</label>
+                                                    <div class="col-sm-10">
+                                                        <input type="text" class="form-control" id="model" value="[#MODEL#]">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="control-label col-sm-2" for="description">Description:</label>
+                                                    <div class="col-sm-10">
+                                                        <textarea type="text" rows="4" class="form-control" id="description">[#DESCRIPTION#]</textarea>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="control-label col-sm-2" for="serial">Serial:</label>
+                                                    <div class="col-sm-10">
+                                                        <input type="text" class="form-control" id="serial" value="[#SERIAL#]">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="control-label col-sm-2" for="type">Type:</label>
+                                                    <div class="col-sm-10">
+                                                        <input type="text" class="form-control" id="type" value="[#TYPE#]">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="control-label col-sm-2" for="uuid">UUID:</label>
+                                                    <div class="col-sm-10">
+                                                        <input type="text" class="form-control" id="uuid" value="[#UUID#]">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="control-label col-sm-2" for="modelNumber">Model Number:</label>
+                                                    <div class="col-sm-10">
+                                                        <input type="text" class="form-control" id="modelNumber" value="[#MODELNUMBER#]">
+                                                    </div>
+                                                </div>
+                                            </fieldset>
+                                        </form>
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>

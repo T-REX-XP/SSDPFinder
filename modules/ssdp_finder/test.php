@@ -1,7 +1,7 @@
 <?php
-require_once('ssdp/upnp.php');
-//require('vendor/autoload.php');
-//use jalder\Upnp\Upnp;
+require('upnp/vendor/autoload.php');
+use jalder\Upnp\Upnp;
+
 $upnp = new Upnp();
 print('searching...'.PHP_EOL);
 $everything = $upnp->discover();

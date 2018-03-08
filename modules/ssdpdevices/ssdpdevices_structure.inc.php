@@ -25,7 +25,7 @@ $this->ssdpdevices_types=array(
        ),
     ),
     'dial'=>array(
-        'TITLE'=>'UPNP Какое то устройство',
+        'TITLE'=>'UPNP DIAL устройство',
         'PARENT_CLASS'=>'UPNPdevices',
         'CLASS'=>'Sdial',
         'PROPERTIES'=>array(
