@@ -39,7 +39,7 @@
                             <#LANG_TITLE#>
                         </th>
                         <th>UUID</th>
-                        <th>Linked Object</th>
+                        <th><#LANG_LINKED_OBJECT#></th>
                         <th>
                             <#LANG_TYPE#>
                         </th>
@@ -69,7 +69,7 @@
                                 <div style="width:160px">
 
                                     <div class="btn-group">
-                                            [#if SERVICES==""#]
+                                            [#if LINKED_OBJECT==""#]
                                         <a href="?view_mode=add_to_SSDPdevices&id=[#ID#]" onClick="return confirm('Are you sure? Please confirm.')" class="btn btn-success"
                                             title="Добавить к простым устройствам">
                                             <i class="glyphicon glyphicon-plus"></i>
