@@ -110,14 +110,23 @@ function addSSDPDevice($device_type, $options=0) {
   // berem zapis svoystv
   $props = SQLSelect("SELECT * FROM properties WHERE CLASS_ID='".$clas['ID']."' OR CLASS_ID='".$clas['PARENT_ID']."'");
   
+  $ssdp = SQLSelect("SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE table_name = 'ssdp_devices'");
+
+  $file = 'people.txt';
+  file_put_contents($file, serialize($ssdp));
+
   foreach($props as $k=>$v) {
-    $ssdpinf=SQLSelectOne("SELECT ".DBSafe($v[TITLE])." FROM ssdp_devices WHERE LINKED_OBJECT LIKE '".DBSafe($new_object_title)."'");
-    $pval = Array();
-    $pval['PROPERTY_ID'] = $v[ID];
-    $pval['OBJECT_ID'] = $obj_id;
-    $pval['VALUE'] = $ssdpinf[DBSafe($v[TITLE])];
-    $pval['PROPERTY_NAME'] = $obj_title.".".$v[TITLE];
-    $pval=SQLInsert('pvalues', $pval);
+      foreach($ssdp as $i=>$t_name) {
+          if ( $v['TITLE'] = $t_name ['COLUMN_NAME']){
+	            $ssdpinf=SQLSelectOne("SELECT ".DBSafe($v['TITLE'])." FROM ssdp_devices WHERE LINKED_OBJECT LIKE '".DBSafe($new_object_title)."'");
+		    $pval = Array();
+		    $pval['PROPERTY_ID'] = $v['ID'];
+		    $pval['OBJECT_ID'] = $obj_id;
+		    $pval['VALUE'] = $ssdpinf[DBSafe($v['TITLE'])];
+		    $pval['PROPERTY_NAME'] = $obj_title.".".$v['TITLE'];
+		    $pval=SQLInsert('pvalues', $pval);
+            }
+      }
   }
 return 1;
 
