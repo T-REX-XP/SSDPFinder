@@ -62,6 +62,7 @@ function Scan()
                 "MANUFACTURERURL" => $info["manufacturerURL"],//manufacturer url
                 "UPDATED" => '',
                 "MODEL" => $info["modelName"],//model
+                "MODELNUMBER" => $info["modelNumber"],//modelNumber
                 "MANUFACTURER" => $info["manufacturer"],//Manufacturer
                 "IP" => getIp($device,true),//Ip address with port (http://bla-bla:port)
                 "SERVICES"=> getServices($info),//list services of device

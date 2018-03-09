@@ -1,4 +1,5 @@
 <!-- action usual -->
+[#if DATA_SOURCE="ssdp_devices" || DATA_SOURCE=""#]
 <!-- table ssdp_devices search -->
 [#if VIEW_MODE="search_ssdp_devices" || VIEW_MODE=""#]
 <!-- table zwave_devices search -->
@@ -8,13 +9,10 @@
     </button>
 </div>
 <div>
-    <div class="btn-group">
-        <a href="#" class="btn btn-primary" onClick="$('#api_settings').toggle();return false;">
-            <#LANG_SETUP#>
-        </a>
-        <a class="btn btn-success" href="?view_mode=scan_ssdp_devices">
-            <i class="glyphicon glyphicon-search"></i> Поиск устройств</a>
-    </div>
+    <a href="#" class="btn btn-default" onClick="$('#api_settings').toggle();return false;">
+        <i class="glyphicon glyphicon-cog"></i> <#LANG_SETUP#></a>
+    <a class="btn btn-default" href="?view_mode=scan_ssdp_devices">
+        <i class="glyphicon glyphicon-search"></i> Сканировать устройства</a>
 </div>
 
 <!-- Modal -->
@@ -71,8 +69,11 @@
 
 
             <div class="modal-footer container-fluid">
-                    <span class="form-control-static pull-left">Авторы: <a href="https://majordomo.smartliving.ru/forum/memberlist.php?mode=viewprofile&u=1623">T-REX-XP</a>, <a href="https://majordomo.smartliving.ru/forum/memberlist.php?mode=viewprofile&u=2303">tarasfrompir1</a></span>
-              
+                <span class="form-control-static pull-left">Авторы:
+                    <a href="https://majordomo.smartliving.ru/forum/memberlist.php?mode=viewprofile&u=1623">T-REX-XP</a>,
+                    <a href="https://majordomo.smartliving.ru/forum/memberlist.php?mode=viewprofile&u=2303">tarasfrompir1</a>
+                </span>
+
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
             </div>
         </div>

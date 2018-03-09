@@ -20,7 +20,7 @@
 
 **TODO:**
 
- - Добавление простых устройств с помощью модуля (Сначала MediaServer, MediaRender, dial(Chromecast))
+ - ~~Добавление простых устройств с помощью модуля (Сначала MediaServer, MediaRender, dial(Chromecast))~~
  - Получения дополнитеньных устройств с одного UPNP 
 
 
