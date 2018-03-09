@@ -119,19 +119,11 @@ function addSSDPDevice($device_type, $options=0) {
     $pval['PROPERTY_NAME'] = $obj_title.".".$v[TITLE];
     $pval=SQLInsert('pvalues', $pval);
   }
-
-
-
-$file = 'people.txt';
-file_put_contents($file, serialize($s));
-
- 
-
 return 1;
 
  }
 /////////////////////////
-/**
+/*
 * devices search
 *
 * @access public
@@ -176,7 +168,6 @@ return 1;
 * @access public
 */
  function uninstall() {
-  SQLExec('DROP TABLE IF EXISTS devices');
   parent::uninstall();
  }
 /**
