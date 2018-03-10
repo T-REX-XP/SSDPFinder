@@ -112,8 +112,8 @@ function addSSDPDevice($device_type, $options=0) {
   
   $ssdp = SQLSelect("SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE table_name = 'ssdp_devices'");
 
-  $file = 'people.txt';
-  file_put_contents($file, serialize($ssdp));
+ // $file = 'people.txt';
+  //file_put_contents($file, serialize($ssdp));
 
   foreach($props as $k=>$v) {
       foreach($ssdp as $i=>$t_name) {
