@@ -168,7 +168,11 @@ function admin(&$out) {
   }
   if ($this->view_mode=='add_to_SSDPdevices') {
    $this->add_to_SSDPdevices($this->id);
-   $this->redirect("?");
+   $this->redirect("/admin.php?pd=&md=panel&inst=&action=ssdpdevices");
+  }
+  if ($this->view_mode=='add_to_pinghost') {
+   $this->add_to_pinghost($this->id);
+   $this->redirect("/admin.php?pd=&md=panel&inst=&action=pinghosts");
   }
  }
 }
@@ -202,7 +206,7 @@ function usual(&$out) {
  function edit_ssdp_devices(&$out, $id) {
   require(DIR_MODULES.$this->name.'/ssdp_devices_edit.inc.php');
  }
-///////////////////////////////////////////////////////////////////////
+
 /**
 * ssdp_devices add record to SSDPdevice
 *
@@ -212,26 +216,46 @@ function usual(&$out) {
   $id = ($_GET["id"]);
 
   include_once (DIR_MODULES.'ssdpdevices/ssdpdevices.class.php');
-  /////////////////////////// берем значения данних по устройству
   $ssdpdevice=SQLSelectOne("SELECT * FROM ssdp_devices WHERE ID='".$id."'");
-  //$new_object_title=$out['PREFIX'].ucfirst($ssdpdevice['TYPE']).$dev->getNewObjectIndex($type_details['CLASS']);
-
-   //заполняем данные устройства
   $dev=new ssdpdevices();
   $device_type=$ssdpdevice['TYPE']; // тип устройства (см выше допустимые типы) 
 
   $options=array(); // опции добавления
   $options['TABLE'] = 'ssdp_devices'; // таблица, куда потом запишется LINKED_OBJECT и LINKED_PROPERTY
   $options['TABLE_ID'] = $id; // ID записи в вышеназванной таблице (запись уже должна быть создана такая)
-  //$options['LINKED_OBJECT'] = $new_object_title; // название связанного объекта
   $options['TITLE'] = $ssdpdevice['TITLE']; // название устройства (не обязательно)
   //$options['LOCATION_ID']=1; // ID расположения (не обязательно)
   //$options['ADD_MENU']=1; // добавлять интерфейс работы с устройством в  меню (не обязательно)
   //$options['ADD_SCENE']=1; // добавлять интерфейс работы с устройством на сцену (не обязательно)
   $result=$dev->addSSDPDevice($device_type, $options); // добавляем устройство -- возвращает 1 в случае успешного добавления
-  ///////////////////////// устройство добавлено
  }
-////////////////////////////////////////////////////////////////////////
+
+/**
+* ssdp_devices add record to pinghost
+*
+* @access public
+*/
+ function add_to_pinghost($id) {
+  $id = ($_GET["id"]);
+
+
+  $ssdpdevice=SQLSelectOne("SELECT * FROM ssdp_devices WHERE ID='".$id."'");
+  $pinghosts=array(); // опции добавления
+  $pinghosts['TITLE'] = $ssdpdevice['TITLE'];
+  $pinghosts['TYPE'] = '0';
+  $pinghosts['OFFLINE_INTERVAL'] = '600';
+  $pinghosts['ONLINE_INTERVAL'] = '600';
+  $pinghosts['HOSTNAME'] = $ssdpdevice['IP'];
+  $pinghosts['CODE_ONLINE'] = 'say("Устройство ".$host[\'TITLE\']." пропало из сети, возможно его отключили" ,2);';
+  $pinghosts['CODE_OFFLINE'] = 'say("Устройство ".$host[\'TITLE\']." появилось в сети." ,2);';
+  $pinghosts['LINKED_OBJECT'] = $ssdpdevice['LINKED_OBJECT'];
+  $chek=SQLSelectOne("SELECT * FROM pinghosts WHERE HOSTNAME='".$ssdpdevice['IP']."'");
+  if ($chek['ID']) {
+          $chek['ID'] = SQLUpdate('pinghosts', $pinghosts);
+      } else {	
+          SQLInsert('pinghosts', $pinghosts);
+     }
+ }
 
 /**
 * ssdp_devices delete record
