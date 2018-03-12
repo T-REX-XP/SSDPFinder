@@ -41,20 +41,17 @@ function addSSDPDevice($device_type, $options=0) {
      if (!is_array($this->device_types[$device_type])) {
          return 0;
      }
-
      if ($options['TABLE'] && $options['TABLE_ID']) {
          $table_rec=SQLSelectOne("SELECT * FROM ".$options['TABLE']." WHERE ID=".$options['TABLE_ID']);
          if (!$table_rec['ID']) {
              return 0;
          }
      }
-
      if ($options['LINKED_OBJECT']!='') {
          $old_device=SQLSelectOne("SELECT ID FROM devices WHERE LINKED_OBJECT LIKE '".DBSafe($options['LINKED_OBJECT'])."'");
          if ($old_device['ID']) return $old_device['ID'];
          $rec['LINKED_OBJECT']=$options['LINKED_OBJECT'];
      }
-     
      $rec=array();
      $rec['TYPE']=$device_type;
      if ($options['TITLE']) {
@@ -80,41 +77,26 @@ function addSSDPDevice($device_type, $options=0) {
          }
          SQLUpdate('devices',$rec);
      }
-
      if ($table_rec['ID']) {
          $this->addDeviceToSourceTable($options['TABLE'],$table_rec['ID'],$rec['ID']);
      }
-
      if ($options['ADD_MENU']) {
          $this->addDeviceToMenu($rec['ID']);
      }
-
      if ($options['ADD_SCENE']) {
          $this->addDeviceToScene($rec['ID']);
      }
-
-   /// svoya dobavka dlya izmeneniy tablicy objects
    $obj = SQLSelectOne("SELECT * FROM objects WHERE TITLE='".$new_object_title."'");
    $obj['DESCRIPTION'] = $options['TITLE'];
    If (IsSet($obj['ID'])) {
       SQLUpdate('objects', $obj);
    }
-  ////////////////////////////////
-  // berem zapis objektov
   $obj = SQLSelectOne("SELECT * FROM objects WHERE TITLE='".$new_object_title."'");
   $obj_id = $obj[ID];
   $obj_title = $obj[TITLE];
-
-  // berem zapis klasov
   $clas = SQLSelectOne("SELECT * FROM classes WHERE TITLE='".'S'.$device_type."'");
-  // berem zapis svoystv
   $props = SQLSelect("SELECT * FROM properties WHERE CLASS_ID='".$clas['ID']."' OR CLASS_ID='".$clas['PARENT_ID']."'");
-  
   $ssdp = SQLSelect("SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE table_name = 'ssdp_devices'");
-
- // $file = 'people.txt';
-  //file_put_contents($file, serialize($ssdp));
-
   foreach($props as $k=>$v) {
       foreach($ssdp as $i=>$t_name) {
           if ( $v['TITLE'] = $t_name ['COLUMN_NAME']){
@@ -126,12 +108,11 @@ function addSSDPDevice($device_type, $options=0) {
 		    $pval['PROPERTY_NAME'] = $obj_title.".".$v['TITLE'];
 		    $pval=SQLInsert('pvalues', $pval);
             }
-      }
-  }
+        }
+     }
 return 1;
 
  }
-/////////////////////////
 /*
 * devices search
 *
