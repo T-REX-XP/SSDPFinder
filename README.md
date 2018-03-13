@@ -1,8 +1,4 @@
-вкинуть 
 
-      // moya dobavka
-      //$this->add_to_SSDPdevices($rec['ID']);
-      //$this->add_to_pinghost($rec['ID']);
 
 # SSDP Finder
 
@@ -72,3 +68,9 @@
 </serviceList>
 </device>
 </root>
+
+вкинуть 
+
+      // moya dobavka
+      //$this->add_to_SSDPdevices($rec['ID']);
+      //$this->add_to_pinghost($rec['ID']);
