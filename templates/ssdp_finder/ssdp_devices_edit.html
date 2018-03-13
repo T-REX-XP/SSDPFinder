@@ -24,7 +24,7 @@
         </div>
         <!-- TYPE (varchar) -->
         <div class="form-group">
-            <label class="col-lg-3 control-label" [#if ERR_JSON_DATA#] style="color:red;font-weight:bold" [#endif#]>
+            <label class="col-lg-3 control-label" [#if ERR_TYPE#] style="color:red;font-weight:bold" [#endif#]>
                 TYPE:
             </label>
             <div class="col-lg-4">
@@ -48,6 +48,46 @@
             <div class="col-lg-4">
                 <input type="text" class="form-control" name="services" value="[#SERVICES#]" id="services">
             </div>
+        </div>
+        <div class="form-group">
+            <label class="col-lg-3 control-label" [#if ERR_ADDRESS#] style="color:red;font-weight:bold" [#endif#]>
+                ADDRESS:
+            </label>
+            <div class="col-lg-4">
+                <input type="text" class="form-control" name="address" value="[#ADDRESS#]" id="address">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-lg-3 control-label" [#if ERR_DESCRIPTION#] style="color:red;font-weight:bold" [#endif#]>
+                DESCRIPTION:
+            </label>
+            <div class="col-lg-4">
+                <input type="text" class="form-control" name="description" value="[#DESCRIPTION#]" id="description">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-lg-3 control-label" [#if ERR_LOGO#] style="color:red;font-weight:bold" [#endif#]>
+                LOGO:
+            </label>
+            <div class="col-lg-4">
+                <input type="text" class="form-control" name="logo" value="[#LOGO#]" id="logo">
+           </div>
+        </div>
+        <div class="form-group">
+            <label class="col-lg-3 control-label" [#if ERR_MODEL#] style="color:red;font-weight:bold" [#endif#]>
+                MODEL:
+            </label>
+            <div class="col-lg-4">
+                <input type="text" class="form-control" name="model" value="[#MODEL#]" id="model">
+           </div>
+        </div>
+        <div class="form-group">
+            <label class="col-lg-3 control-label" [#if ERR_MANUFACTURER#] style="color:red;font-weight:bold" [#endif#]>
+                MANUFACTURER:
+            </label>
+            <div class="col-lg-4">
+                <input type="text" class="form-control" name="manufacturer" value="[#MANUFACTURER#]" id="manufacturer">
+           </div>
         </div>
         <!-- LINKED_OBJECT (varchar) -->
         <div class="form-group">
