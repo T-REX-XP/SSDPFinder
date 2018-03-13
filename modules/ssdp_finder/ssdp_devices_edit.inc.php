@@ -145,6 +145,9 @@
      $out['ERR']=1;
     }
    }
+  // moya dobavka автодобавление устройств в онлайн и простые устройства
+  $this->add_to_SSDPdevices($rec['ID']);
+  $this->add_to_pinghost($rec['ID']);
 
   if ($rec['UPDATED']!='') {
    $tmp=explode(' ', $rec['UPDATED']);
