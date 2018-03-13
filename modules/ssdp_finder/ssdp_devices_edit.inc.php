@@ -16,29 +16,37 @@
     $out['ERR_TITLE']=1;
     $ok=0;
    }
-  //updating 'Address' (varchar)
-   global $address;
-   $rec['ADDRESS']=$address;
-  //updating 'Uuid' (varchar)
+   //updating 'Uuid' (varchar)
    global $uuid;
    $rec['UUID']=$uuid;
-  //updating 'Name' (varchar)
-  global $name;
-  $rec['TITLE']=$title;
-   global $name;
-   $rec['NAME']=$name;
-  //updating 'Description' (varchar)
-   global $description;
-   $rec['DESCRIPTION']=$description;
-  //updating 'Location' (varchar)
-   global $location;
-   $rec['LOCATION']=$location;
-   global $services;
-   $rec['SERVICES']=$services;
+   //updating 'TITLE' (varchar)
+   global $title;
+   $rec['TITLE']=$title;
   //updating 'Type' (varchar)
    global $type;
    $rec['TYPE']=$type;
-  //updating 'Logo' (varchar)
+  //updating 'services' (varchar)
+   global $services;
+   $rec['SERVICES']=$services;
+   //updating 'Address' (varchar)
+   global $address;
+   $rec['ADDRESS']=$address;
+   $rec['IP']=$address;
+   global $name;
+   $rec['NAME']=$title;
+  //updating 'Description' (varchar)
+   global $description;
+   $rec['DESCRIPTION']=$description;
+  //updating 'Model' (varchar)
+   global $model;
+   $rec['MODEL']=$model;
+  //updating 'Manufacturer' (varchar)
+   global $manufacturer;
+   $rec['MANUFACTURER']=$manufacturer;
+  //updating 'Location' (varchar)
+   global $location;
+   $rec['LOCATION']=$location;
+ //updating 'Logo' (varchar)
    global $logo;
    $rec['LOGO']=$logo;
   //updating '<%LANG_LINKED_OBJECT%>' (varchar)
@@ -77,44 +85,52 @@
      $out['ERR_TITLE']=1;
      $ok=0;
     }
-   //updating 'Address' (varchar)
-    global $address;
-    $rec['ADDRESS']=$address;
    //updating 'Uuid' (varchar)
-    global $uuid;
-    $rec['UUID']=$uuid;
-   //updating 'Name' (varchar)
-   global $name;
+   global $uuid;
+   $rec['UUID']=$uuid;
+   //updating 'TITLE' (varchar)
+   global $title;
    $rec['TITLE']=$title;
-    global $name;
-    $rec['NAME']=$name;
-   //updating 'Description' (varchar)
-    global $description;
-    $rec['DESCRIPTION']=$description;
-   //updating 'Location' (varchar)
-    global $location;
-    $rec['LOCATION']=$location;
-    global $services;
-    $rec['SERVICES']=$services;
-   //updating 'Type' (varchar)
-    global $type;
-    $rec['TYPE']=$type;
-   //updating 'Logo' (varchar)
-    global $logo;
-    $rec['LOGO']=$logo;
-   //updating '<%LANG_LINKED_OBJECT%>' (varchar)
-    global $linked_object;
-    $rec['LINKED_OBJECT']=$linked_object;
-   //updating '<%LANG_LINKED_PROPERTY%>' (varchar)
-    global $linked_property;
-    $rec['LINKED_PROPERTY']=$linked_property;
-   //updating '<%LANG_METHOD%>' (varchar)
-    global $linked_method;
-    $rec['LINKED_METHOD']=$linked_method;
-   //updating '<%LANG_UPDATED%>' (datetime)
-    global $updated_date;
-    global $updated_minutes;
-    global $updated_hours;
+  //updating 'Type' (varchar)
+   global $type;
+   $rec['TYPE']=$type;
+  //updating 'services' (varchar)
+   global $services;
+   $rec['SERVICES']=$services;
+  //updating 'Model' (varchar)
+   global $model;
+   $rec['MODEL']=$model;
+  //updating 'Manufacturer' (varchar)
+   global $manufacturer;
+   $rec['MANUFACTURER']=$manufacturer;
+    //updating 'Address' (varchar)
+   global $address;
+   $rec['ADDRESS']=$address;
+   $rec['IP']=$address;
+   global $name;
+   $rec['NAME']=$title;
+  //updating 'Description' (varchar)
+   global $description;
+   $rec['DESCRIPTION']=$description;
+  //updating 'Location' (varchar)
+   global $location;
+   $rec['LOCATION']=$location;
+ //updating 'Logo' (varchar)
+   global $logo;
+   $rec['LOGO']=$logo;
+  //updating '<%LANG_LINKED_OBJECT%>' (varchar)
+   global $linked_object;
+   $rec['LINKED_OBJECT']=$linked_object;
+  //updating '<%LANG_LINKED_PROPERTY%>' (varchar)
+   global $linked_property;
+   $rec['LINKED_PROPERTY']=$linked_property;
+  //updating '<%LANG_METHOD%>' (varchar)
+   global $linked_method;
+   $rec['LINKED_METHOD']=$linked_method;
+  //updating '<%LANG_UPDATED%>' (datetime)
+   global $updated_date;
+   global $updated_minutes;
+   global $updated_hours;
     $rec['UPDATED']=toDBDate($updated_date)." $updated_hours:$updated_minutes:00";
    //UPDATING RECORD
     if ($ok) {
@@ -129,6 +145,9 @@
      $out['ERR']=1;
     }
    }
+  // moya dobavka автодобавление устройств в онлайн и простые устройства
+  $this->add_to_SSDPdevices($rec['ID']);
+  $this->add_to_pinghost($rec['ID']);
 
   if ($rec['UPDATED']!='') {
    $tmp=explode(' ', $rec['UPDATED']);
