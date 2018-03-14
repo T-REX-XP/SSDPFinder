@@ -74,3 +74,12 @@
       // moya dobavka
       //$this->add_to_SSDPdevices($rec['ID']);
       //$this->add_to_pinghost($rec['ID']);
+
+
+M-SEARCH * HTTP/1.1
+HOST: 239.255.255.250:1900
+MAN: "ssdp:discover"
+MX: 3
+ST: upnp:rootdevice
+USER-AGENT: Android/19 UPnP/1.1 UPnPTool/1.4.9
+
