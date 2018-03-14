@@ -92,8 +92,8 @@ function addSSDPDevice($device_type, $options=0) {
       SQLUpdate('objects', $obj);
    }
   $obj = SQLSelectOne("SELECT * FROM objects WHERE TITLE='".$new_object_title."'");
-  $obj_id = $obj[ID];
-  $obj_title = $obj[TITLE];
+  $obj_id = $obj['ID'];
+  $obj_title = $obj['TITLE'];
   $clas = SQLSelectOne("SELECT * FROM classes WHERE TITLE='".'S'.$device_type."'");
   $props = SQLSelect("SELECT * FROM properties WHERE CLASS_ID='".$clas['ID']."' OR CLASS_ID='".$clas['PARENT_ID']."'");
   $ssdp = SQLSelect("SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE table_name = 'ssdp_devices'");
