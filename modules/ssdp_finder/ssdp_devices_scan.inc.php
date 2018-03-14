@@ -71,25 +71,7 @@ function Scan()
             ];
         }
     }
-    $uuid = 'uuid 12345678913456789';
-    $existed = $rec=SQLSelectOne("SELECT * FROM $table_name WHERE UUID='$uuid'");
-    $result[] = [
-                "ID" => $existed["ID"], //existed id Majordomo
-                "TITLE" => 'TVPLAYER',//friendly name
-                "ADDRESS" => '192.168.1.1',//presentation url (web UI of device)
-                "UUID" => $uuid,
-                "DESCRIPTION" => 'Description',//description
-                "TYPE" => 'MediaServer',//DeviceType
-                "LOGO" => 'device/logo',//$info
-                "SERIAL" => 'serial123456',//serialnumber
-                "MANUFACTURERURL" => "url//OSMC manufakturer",//manufacturer url
-                "UPDATED" => '',
-                "MODEL" => 'Model 121',//model
-                "MODELNUMBER" => '1324444',//modelNumber
-                "MANUFACTURER" => "OSMC manufakturer",//Manufacturer
-                "IP" => '192.168.1.1',//Ip address with port (http://bla-bla:port)
-                "SERVICES"=> 'dial',//list services of device
-            ];
+    
     /*
     print("<pre>");
     print_r($result);
