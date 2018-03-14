@@ -69,13 +69,6 @@
 </device>
 </root>
 
-вкинуть 
-
-      // moya dobavka
-      //$this->add_to_SSDPdevices($rec['ID']);
-      //$this->add_to_pinghost($rec['ID']);
-
-
 M-SEARCH * HTTP/1.1
 HOST: 239.255.255.250:1900
 MAN: "ssdp:discover"
