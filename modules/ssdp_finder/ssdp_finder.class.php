@@ -1,8 +1,8 @@
 <?php
 
-require('upnp/vendor/autoload.php');
+//require('upnp/vendor/autoload.php');
 
-use jalder\Upnp\Upnp;
+//use jalder\Upnp\Upnp;
 
 
 /**
@@ -213,8 +213,9 @@ function usual(&$out) {
 * @access public
 */
  function add_to_SSDPdevices($id) {
-  $id = ($_GET["id"]);
-
+  if (!$id) {
+      $id = ($_GET["id"]);
+  }
   include_once (DIR_MODULES.'ssdpdevices/ssdpdevices.class.php');
   $ssdpdevice=SQLSelectOne("SELECT * FROM ssdp_devices WHERE ID='".$id."'");
   $dev=new ssdpdevices();
@@ -236,7 +237,9 @@ function usual(&$out) {
 * @access public
 */
  function add_to_pinghost($id) {
-  $id = ($_GET["id"]);
+  if (!$id) {
+      $id = ($_GET["id"]);
+  }
 
 
   $ssdpdevice=SQLSelectOne("SELECT * FROM ssdp_devices WHERE ID='".$id."'");
@@ -257,6 +260,42 @@ function usual(&$out) {
      }
  }
 
+/**
+* ssdp_devices сканирование устройств
+*
+* @access public
+*/
+// ssdp:all
+function upnp_scan_devices($st = 'upnp:rootdevice', $mx = 2, $man = 'ssdp:discover', $from = null, $port = null, $sockTimout = '2')
+    {
+        $request = 'M-SEARCH * HTTP/1.1'."\r\n";
+        $request .= 'HOST: 239.255.255.250:1900'."\r\n";
+        $request .= 'MAN: "ssdp:discover"'."\r\n";
+        $request .= 'MX: '.$mx.''."\r\n";
+        $request .= 'ST: '.$st.''."\r\n";
+        $request .= 'USER-AGENT: Android/19 UPnP/1.1 Majordomo/1.0.0'."\r\n";
+        $request .= "\r\n";
+
+        $socket = socket_create(AF_INET, SOCK_DGRAM, 0);
+        socket_set_option($socket, SOL_SOCKET, SO_BROADCAST, true);
+        socket_sendto($socket, $request, strlen($request), 0, '239.255.255.250', 1900);
+        socket_set_option($socket, SOL_SOCKET, SO_RCVTIMEO, array('sec'=>$sockTimout, 'usec'=>'0'));
+        $response = array();
+        do {
+            $buf = null;
+            if ($len = @socket_recvfrom($socket, $buf, 1024, MSG_WAITALL, $from, $port) == -1) {
+	        echo "socket read failed: " ;
+	        }
+            if(!is_null($buf)){
+                $data = $this->parseSearchResponse($buf);
+                $response[$data['usn']] = $data;
+            }
+        } while(!is_null($buf));
+        socket_close($socket);
+        return $response;
+    }
+
+////////////////////////////////// конец моей вставки
 /**
 * ssdp_devices delete record
 *

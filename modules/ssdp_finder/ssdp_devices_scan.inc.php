@@ -3,8 +3,10 @@
 * @version 0.1 (wizard)
 */
 
-require('upnp/vendor/autoload.php');
-use jalder\Upnp\Upnp;
+///require('upnp/vendor/autoload.php');
+//use jalder\Upnp\Upnp;
+
+
 global $session;
 if ($this->owner->name == 'panel') {
     $out['CONTROLPANEL'] = 1;
@@ -36,9 +38,9 @@ if ($res[0]['UUID']) {
 
 function Scan()
 {
-    $upnp = new Upnp();
+    $upnp = new ssdp_finder();
     print('searching...' . PHP_EOL);
-    $everything = $upnp->discover();
+    $everything = $upnp->upnp_scan_devices();
     $result = [];
     $table_name='ssdp_devices';
 
@@ -69,6 +71,25 @@ function Scan()
             ];
         }
     }
+    $uuid = 'uuid 12345678913456789';
+    $existed = $rec=SQLSelectOne("SELECT * FROM $table_name WHERE UUID='$uuid'");
+    $result[] = [
+                "ID" => $existed["ID"], //existed id Majordomo
+                "TITLE" => 'TVPLAYER',//friendly name
+                "ADDRESS" => '192.168.1.1',//presentation url (web UI of device)
+                "UUID" => $uuid,
+                "DESCRIPTION" => 'Description',//description
+                "TYPE" => 'MediaServer',//DeviceType
+                "LOGO" => 'device/logo',//$info
+                "SERIAL" => 'serial123456',//serialnumber
+                "MANUFACTURERURL" => "url//OSMC manufakturer",//manufacturer url
+                "UPDATED" => '',
+                "MODEL" => 'Model 121',//model
+                "MODELNUMBER" => '1324444',//modelNumber
+                "MANUFACTURER" => "OSMC manufakturer",//Manufacturer
+                "IP" => '192.168.1.1',//Ip address with port (http://bla-bla:port)
+                "SERVICES"=> 'dial',//list services of device
+            ];
     /*
     print("<pre>");
     print_r($result);
@@ -184,3 +205,4 @@ function getDefImg($device)
 		return "/templates/ssdp_finder/img/".$type. ".png";//"Icons not found... (((";
 	}
 }
+

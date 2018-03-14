@@ -70,6 +70,10 @@
     } else {
      $new_rec=1;
      $rec['ID']=SQLInsert($table_name, $rec); // adding new record
+      // moya dobavka автодобавление устройств в онлайн и простые устройства
+      $this->add_to_SSDPdevices($rec['ID']);
+      $this->add_to_pinghost($rec['ID']);
+
     }
     $out['OK']=1;
    } else {
@@ -145,9 +149,7 @@
      $out['ERR']=1;
     }
    }
-  // moya dobavka автодобавление устройств в онлайн и простые устройства
-  $this->add_to_SSDPdevices($rec['ID']);
-  $this->add_to_pinghost($rec['ID']);
+ 
 
   if ($rec['UPDATED']!='') {
    $tmp=explode(' ', $rec['UPDATED']);
