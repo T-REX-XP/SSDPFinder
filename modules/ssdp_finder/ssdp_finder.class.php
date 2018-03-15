@@ -240,8 +240,6 @@ function usual(&$out) {
   if (!$id) {
       $id = ($_GET["id"]);
   }
-
-
   $ssdpdevice=SQLSelectOne("SELECT * FROM ssdp_devices WHERE ID='".$id."'");
   $pinghosts=array(); // опции добавления
   $pinghosts['TITLE'] = $ssdpdevice['TITLE'];
