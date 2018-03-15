@@ -38,7 +38,7 @@ if ($res[0]['UUID']) {
 
 function Scan()
 {
-	 $upnp = new Upnp();
+	$upnp = new Upnp();
     print('searching...' . PHP_EOL);
     $everything = $upnp->discover();
     $result = [];
