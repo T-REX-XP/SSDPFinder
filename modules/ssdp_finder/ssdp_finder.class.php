@@ -213,8 +213,9 @@ function usual(&$out) {
 * @access public
 */
  function add_to_SSDPdevices($id) {
-  $id = ($_GET["id"]);
-
+  if (!$id) {
+      $id = ($_GET["id"]);
+  }
   include_once (DIR_MODULES.'ssdpdevices/ssdpdevices.class.php');
   $ssdpdevice=SQLSelectOne("SELECT * FROM ssdp_devices WHERE ID='".$id."'");
   $dev=new ssdpdevices();
@@ -236,9 +237,9 @@ function usual(&$out) {
 * @access public
 */
  function add_to_pinghost($id) {
-  $id = ($_GET["id"]);
-
-
+  if (!$id) {
+      $id = ($_GET["id"]);
+  }
   $ssdpdevice=SQLSelectOne("SELECT * FROM ssdp_devices WHERE ID='".$id."'");
   $pinghosts=array(); // опции добавления
   $pinghosts['TITLE'] = $ssdpdevice['TITLE'];
@@ -256,7 +257,7 @@ function usual(&$out) {
           SQLInsert('pinghosts', $pinghosts);
      }
  }
-
+////////////////////////////////// конец моей вставки
 /**
 * ssdp_devices delete record
 *
@@ -306,7 +307,7 @@ function usual(&$out) {
 */
  function uninstall() {
   SQLExec('DROP TABLE IF EXISTS ssdp_devices');
-  unsubscribeToEvent($this->name, 'SAY');
+  unsubscribeFromEvent($this->name, 'SAY');
   parent::uninstall();
  }
 /**
