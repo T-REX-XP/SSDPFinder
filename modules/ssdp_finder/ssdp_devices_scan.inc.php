@@ -3,8 +3,8 @@
 * @version 0.1 (wizard)
 */
 
-///require('upnp/vendor/autoload.php');
-//use jalder\Upnp\Upnp;
+require('upnp/vendor/autoload.php');
+use jalder\Upnp\Upnp;
 
 
 global $session;
@@ -38,9 +38,9 @@ if ($res[0]['UUID']) {
 
 function Scan()
 {
-    $upnp = new ssdp_finder();
+	 $upnp = new Upnp();
     print('searching...' . PHP_EOL);
-    $everything = $upnp->upnp_scan_devices();
+    $everything = $upnp->discover();
     $result = [];
     $table_name='ssdp_devices';
 
@@ -71,7 +71,6 @@ function Scan()
             ];
         }
     }
-    
     /*
     print("<pre>");
     print_r($result);
