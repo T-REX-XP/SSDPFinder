@@ -21,7 +21,7 @@ $this->ssdpdevices_types=array(
         'PARENT_CLASS'=>'UPNPdevices',
         'CLASS'=>'SMediaServer',
         'PROPERTIES'=>array(
-
+             'FileList'=>array('DESCRIPTION'=>'Список файлов на медиасервере','_CONFIG_TYPE'=>'text'),
        ),
     ),
     'dial'=>array(
