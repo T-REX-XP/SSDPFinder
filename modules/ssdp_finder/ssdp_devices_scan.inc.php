@@ -5,6 +5,8 @@
 
 require('upnp/vendor/autoload.php');
 use jalder\Upnp\Upnp;
+
+
 global $session;
 if ($this->owner->name == 'panel') {
     $out['CONTROLPANEL'] = 1;
@@ -36,7 +38,7 @@ if ($res[0]['UUID']) {
 
 function Scan()
 {
-    $upnp = new Upnp();
+	$upnp = new Upnp();
     print('searching...' . PHP_EOL);
     $everything = $upnp->discover();
     $result = [];
@@ -184,3 +186,4 @@ function getDefImg($device)
 		return "/templates/ssdp_finder/img/".$type. ".png";//"Icons not found... (((";
 	}
 }
+
