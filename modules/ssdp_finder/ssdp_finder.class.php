@@ -307,7 +307,7 @@ function usual(&$out) {
 */
  function uninstall() {
   SQLExec('DROP TABLE IF EXISTS ssdp_devices');
-  unsubscribeToEvent($this->name, 'SAY');
+  unsubscribeFromEvent($this->name, 'HOURLY');
   parent::uninstall();
  }
 /**
