@@ -58,7 +58,6 @@ $this->ssdpdevices_types=array(
             'Password'=>array('DESCRIPTION'=>'Password','ONCHANGE'=>'updatePreview','_CONFIG_TYPE'=>'text'),
        ),
      ),
-
     'InternetGatewayDevice'=>array(
         'TITLE'=>'UPNP Роутер',
         'PARENT_CLASS'=>'UPNPdevices',
@@ -66,6 +65,13 @@ $this->ssdpdevices_types=array(
         'PROPERTIES'=>array(
             'Username'=>array('DESCRIPTION'=>'Username','_CONFIG_TYPE'=>'text'),
             'Password'=>array('DESCRIPTION'=>'Password','ONCHANGE'=>'updatePreview','_CONFIG_TYPE'=>'text'),
+        ),
+    ),
+    'MediaRenderer'=>array(
+        'TITLE'=>'UPNP Телевизор',
+        'PARENT_CLASS'=>'UPNPdevices',
+        'CLASS'=>'SMediaRenderer',
+        'PROPERTIES'=>array(
         ),
     ),
 );
