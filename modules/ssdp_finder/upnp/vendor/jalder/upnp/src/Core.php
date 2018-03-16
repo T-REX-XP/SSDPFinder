@@ -9,7 +9,7 @@ class Core {
 
     public function __construct()
     {
-        $this->user_agent = 'Roku/DVP-5.5 (025.05E00410A)';
+        $this->user_agent = 'Majordomo/ver-x.x (Dlya prikola)';
         //$this->user_agent = 'Xbox';
     }
     
@@ -30,9 +30,9 @@ class Core {
         $response = array();
         do {
             $buf = null;
-            if ($len = @socket_recvfrom($socket, $buf, 1024, MSG_WAITALL, $from, $port) == -1) {
-	        echo "socket read failed: " ;
-	        }
+            if (($len = @socket_recvfrom($socket, $buf, 1024, 0, $ip, $port)) == -1) {
+                echo "socket_read() failed: " . socket_strerror(socket_last_error()) . "\n";
+            }
             if(!is_null($buf)){
                 $data = $this->parseSearchResponse($buf);
                 $response[$data['usn']] = $data;
