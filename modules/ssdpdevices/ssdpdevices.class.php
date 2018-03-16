@@ -113,6 +113,104 @@ function addSSDPDevice($device_type, $options=0) {
 return 1;
 
  }
+////////////// render structure /////
+function renderStructure() {
+
+  if (defined('DISABLE_SIMPLE_DEVICES') && DISABLE_SIMPLE_DEVICES==1) return;
+
+  foreach($this->device_types as $k=>$v) {
+      //$v['CLASS']
+      //$v['PARENT_CLASS']
+      //$v['PROPERTIES']
+      //$v['METHODS']
+
+      //CLASS
+      if ($v['PARENT_CLASS']) {
+          $class_id=addClass($v['CLASS'],$v['PARENT_CLASS']);
+      } else {
+          $class_id=addClass($v['CLASS']);
+      }
+      if ($class_id) {
+          $class=SQLSelectOne("SELECT * FROM classes WHERE ID=".$class_id);
+          if ($v['DESCRIPTION']) {
+            $class['DESCRIPTION']=$v['DESCRIPTION'];
+            SQLUpdate('classes',$class);
+          }
+      }
+
+      //PROPERTIES
+      if (is_array($v['PROPERTIES'])) {
+          foreach($v['PROPERTIES'] as $pk=>$pv) {
+            $prop_id=addClassProperty($v['CLASS'],$pk,(int)$pv['KEEP_HISTORY']);
+              if ($prop_id) {
+                  $property=SQLSelectOne("SELECT * FROM properties WHERE ID=".$prop_id);
+                  if (is_array($pv)) {
+                      foreach($pv as $ppk=>$ppv) {
+                          if (substr($ppk,0,1)=='_') continue;
+                          $property[$ppk]=$ppv;
+                      }
+                      SQLUpdate('properties',$property);
+                  }
+              }
+          }
+      }
+
+      //METHODS
+      if (is_array($v['METHODS'])) {
+          foreach($v['METHODS'] as $mk=>$mv) {
+              $method_id=addClassMethod($v['CLASS'],$mk,"require(DIR_MODULES.'ssdpdevices/".$v['CLASS']."_".$mk.".php');",'SDevices');
+              if (!file_exists(DIR_MODULES."ssdpdevices/".$v['CLASS']."_".$mk.".php")) {
+               $code='<?php'."\n\n";
+               @SaveFile(DIR_MODULES."ssdpdevices/".$v['CLASS']."_".$mk.".php", $code);
+              }
+              if ($method_id) {
+                  $method=SQLSelectOne("SELECT * FROM methods WHERE ID=".$method_id);
+                  if (is_array($mv)) {
+                       foreach($mv as $mmk=>$mmv) {
+                           if (substr($mmk,0,1)=='_') continue;
+                           $method[$mmk]=$mmv;
+                       }
+                       SQLUpdate('methods',$method);
+                  }
+              }
+          }
+      }
+
+      if (is_array($v['INJECTS'])) {
+          foreach($v['INJECTS'] as $class_name=>$methods) {
+              addClass($class_name);
+              foreach($methods as $mk=>$mv) {
+                  list($object,$method_name)=explode('.',$mk);
+                  addClassObject($class_name,$object);
+                  if (!file_exists(DIR_MODULES."ssdpdevices/".$mv.".php")) {
+                      $code='<?php'."\n\n";
+                      @SaveFile(DIR_MODULES."ssdpdevices/".$mv.".php", $code);
+                  }
+                  injectObjectMethodCode($mk,'SDevices',"require(DIR_MODULES.'ssdpdevices/".$mv.".php');");
+              }
+          }
+      }
+  }
+  subscribeToEvent('devices', 'COMMAND', '', 100);
+
+  //update cameras
+    $objects = getObjectsByClass('SCameras');
+    $total = count($objects);
+    for ($i = 0; $i < $total; $i++) {
+        $ot = $objects[$i]['TITLE'];
+        callMethod($ot.'.updatePreview');
+    }
+    //update SDigitalSecurityCamera
+    $objects = getObjectsByClass('SDigitalSecurityCamera');
+    $total = count($objects);
+    for ($i = 0; $i < $total; $i++) {
+        $ot = $objects[$i]['TITLE'];
+        callMethod($ot.'.updatePreview');
+    }
+
+}
+
+
 /*
 * devices search
 *

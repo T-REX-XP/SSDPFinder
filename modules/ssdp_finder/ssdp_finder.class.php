@@ -243,7 +243,7 @@ function usual(&$out) {
   $ssdpdevice=SQLSelectOne("SELECT * FROM ssdp_devices WHERE ID='".$id."'");
   $pinghosts=array(); // опции добавления
   $pinghosts['TITLE'] = $ssdpdevice['TITLE'];
-  $pinghosts['TYPE'] = '0';
+  $pinghosts['TYPE'] = '1';
   $pinghosts['OFFLINE_INTERVAL'] = '600';
   $pinghosts['ONLINE_INTERVAL'] = '600';
   $pinghosts['HOSTNAME'] = $ssdpdevice['ADDRESS'];

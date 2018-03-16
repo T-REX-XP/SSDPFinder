@@ -21,8 +21,11 @@ $this->ssdpdevices_types=array(
         'PARENT_CLASS'=>'UPNPdevices',
         'CLASS'=>'SMediaServer',
         'PROPERTIES'=>array(
-             'FileList'=>array('DESCRIPTION'=>'Список файлов на медиасервере','_CONFIG_TYPE'=>'text'),
+	    'mute'=>array('DESCRIPTION'=>'Отключение/включение звука', 'KEEP_HISTORY'=>1, 'ONCHANGE'=>'mute-unmute', 'DATA_KEY'=>1),
        ),
+    'METHODS'=>array(
+            'mute-unmute'=>array('DESCRIPTION'=>'Отключение/включение звука'),
+        ),
     ),
     'dial'=>array(
         'TITLE'=>'UPNP DIAL устройство',
