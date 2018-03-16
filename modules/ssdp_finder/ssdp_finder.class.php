@@ -243,10 +243,18 @@ function usual(&$out) {
   $ssdpdevice=SQLSelectOne("SELECT * FROM ssdp_devices WHERE ID='".$id."'");
   $pinghosts=array(); // опции добавления
   $pinghosts['TITLE'] = $ssdpdevice['TITLE'];
-  $pinghosts['TYPE'] = '1';
+  $pinghosts['TYPE'] = '0';
   $pinghosts['OFFLINE_INTERVAL'] = '600';
   $pinghosts['ONLINE_INTERVAL'] = '600';
-  $pinghosts['HOSTNAME'] = $ssdpdevice['ADDRESS'];
+  //чистый айпи берем
+  if (strpos($ssdpdevice['ADDRESS'],'http://')>-1){
+      $ip = str_replace('http://','',$ssdpdevice['ADDRESS']);
+   }
+  if (strpos($ip,':')>-1){
+      $ip = stristr($ip, ':', true);
+   }
+// konec obrezki ip
+  $pinghosts['HOSTNAME'] = $ip;
   $pinghosts['CODE_ONLINE'] = 'say("Устройство ".$host[\'TITLE\']." пропало из сети, возможно его отключили" ,2);';
   $pinghosts['CODE_OFFLINE'] = 'say("Устройство ".$host[\'TITLE\']." появилось в сети." ,2);';
   $pinghosts['LINKED_OBJECT'] = $ssdpdevice['LINKED_OBJECT'];
