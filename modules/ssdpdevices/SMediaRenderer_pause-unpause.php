@@ -1,6 +1,6 @@
 <?php
 
-require(dirname(__FILE__).'/upnp/vendor/autoload.php');
+require(dirname(__FILE__).'/../ssdp_finder/upnp/vendor/autoload.php');
 
 use jalder\Upnp\Renderer;
 
