@@ -21,15 +21,8 @@ $this->ssdpdevices_types=array(
         'PARENT_CLASS'=>'UPNPdevices',
         'CLASS'=>'SMediaServer',
         'PROPERTIES'=>array(
-	    'mute_unmute'=>array('DESCRIPTION'=>'Отключение/включение звука', 'KEEP_HISTORY'=>1, 'ONCHANGE'=>'mute-unmute', 'DATA_KEY'=>1),
-            'pause_unpause'=>array('DESCRIPTION'=>'Отключение/включение паузы', 'KEEP_HISTORY'=>1, 'ONCHANGE'=>'pause-unpause', 'DATA_KEY'=>1),
-       ),
-    'METHODS'=>array(
-            'mute-unmute'=>array('DESCRIPTION'=>'Отключение/включение звука'),
-            'pause-unpause'=>array('DESCRIPTION'=>'Отключение/включение паузы'),
-
-        ),
-    ),
+           ),
+     ),
     'dial'=>array(
         'TITLE'=>'UPNP DIAL устройство',
         'PARENT_CLASS'=>'UPNPdevices',
@@ -72,6 +65,12 @@ $this->ssdpdevices_types=array(
         'PARENT_CLASS'=>'UPNPdevices',
         'CLASS'=>'SMediaRenderer',
         'PROPERTIES'=>array(
+            'mute_unmute'=>array('DESCRIPTION'=>'Отключение/включение звука', 'KEEP_HISTORY'=>1, 'ONCHANGE'=>'mute-unmute', 'DATA_KEY'=>1),
+            'pause_unpause'=>array('DESCRIPTION'=>'Отключение/включение паузы', 'KEEP_HISTORY'=>1, 'ONCHANGE'=>'pause-unpause', 'DATA_KEY'=>1),
+       ),
+        'METHODS'=>array(
+            'mute-unmute'=>array('DESCRIPTION'=>'Отключение/включение звука'),
+            'pause-unpause'=>array('DESCRIPTION'=>'Отключение/включение паузы'),
         ),
     ),
 );
