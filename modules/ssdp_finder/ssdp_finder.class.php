@@ -261,11 +261,11 @@ function usual(&$out) {
   $pinghosts['TYPE'] = '0';
   $pinghosts['OFFLINE_INTERVAL'] = '600';
   $pinghosts['ONLINE_INTERVAL'] = '600';
-  $pinghosts['HOSTNAME'] = $this->getIp($ssdpdevice['ADDRESS']);
+  $pinghosts['HOSTNAME'] = $this->getIp($ssdpdevice['IP']);
   $pinghosts['CODE_ONLINE'] = 'say("Устройство ".$host[\'TITLE\']." пропало из сети, возможно его отключили" ,2);';
   $pinghosts['CODE_OFFLINE'] = 'say("Устройство ".$host[\'TITLE\']." появилось в сети." ,2);';
   $pinghosts['LINKED_OBJECT'] = $ssdpdevice['LINKED_OBJECT'];
-  $chek=SQLSelectOne("SELECT * FROM pinghosts WHERE HOSTNAME='".$ssdpdevice['IP']."'");
+  $chek=SQLSelectOne("SELECT * FROM pinghosts WHERE HOSTNAME='".$pinghosts['HOSTNAME']."'");
   if ($chek['ID']) {
           $chek['ID'] = SQLUpdate('pinghosts', $pinghosts);
       } else {	
