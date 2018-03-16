@@ -225,11 +225,26 @@ function usual(&$out) {
   $options['TABLE'] = 'ssdp_devices'; // таблица, куда потом запишется LINKED_OBJECT и LINKED_PROPERTY
   $options['TABLE_ID'] = $id; // ID записи в вышеназванной таблице (запись уже должна быть создана такая)
   $options['TITLE'] = $ssdpdevice['TITLE']; // название устройства (не обязательно)
-  //$options['LOCATION_ID']=1; // ID расположения (не обязательно)
+  $options['LOCATION_ID']=$ssdpdevice['LOCATION_ID']; // ID расположения (не обязательно)
   //$options['ADD_MENU']=1; // добавлять интерфейс работы с устройством в  меню (не обязательно)
   //$options['ADD_SCENE']=1; // добавлять интерфейс работы с устройством на сцену (не обязательно)
   $result=$dev->addSSDPDevice($device_type, $options); // добавляем устройство -- возвращает 1 в случае успешного добавления
  }
+
+
+/**
+* get ip from url
+*
+* @access public
+*/
+ function getIp($address){
+  $baseUrl="";
+	if( !empty($address) ){
+        $parsed_url = parse_url($address);
+        $baseUrl = $parsed_url['host'];
+        }
+    return  $baseUrl;
+}
 
 /**
 * ssdp_devices add record to pinghost
@@ -246,7 +261,7 @@ function usual(&$out) {
   $pinghosts['TYPE'] = '1';
   $pinghosts['OFFLINE_INTERVAL'] = '600';
   $pinghosts['ONLINE_INTERVAL'] = '600';
-  $pinghosts['HOSTNAME'] = $ssdpdevice['ADDRESS'];
+  $pinghosts['HOSTNAME'] = $this->getIp($ssdpdevice['ADDRESS']);
   $pinghosts['CODE_ONLINE'] = 'say("Устройство ".$host[\'TITLE\']." пропало из сети, возможно его отключили" ,2);';
   $pinghosts['CODE_OFFLINE'] = 'say("Устройство ".$host[\'TITLE\']." появилось в сети." ,2);';
   $pinghosts['LINKED_OBJECT'] = $ssdpdevice['LINKED_OBJECT'];
