@@ -27,6 +27,22 @@ use jalder\Upnp\Upnp;
    $total=count($res);
    for($i=0;$i<$total;$i++) {
     // some action for every record if required
+
+    $ip = $res[$i]['ADDRESS'];
+    if($ip){
+      $ip = parse_url($ip)['host'];
+
+      $table_name='pinghosts';
+      $pingHostExist=SQLSelectOne("SELECT * FROM $table_name WHERE HOSTNAME='$ip'");
+  
+      if($pingHostExist && $pingHostExist['ID']){
+        $res[$i]['DEVICE_ONLINE_ID'] = $pingHostExist['ID'];
+      }
+
+    }
+   
+
+
     $tmp=explode(' ', $res[$i]['UPDATED']);
     $res[$i]['UPDATED']=fromDBDate($tmp[0])." ".$tmp[1];
    }

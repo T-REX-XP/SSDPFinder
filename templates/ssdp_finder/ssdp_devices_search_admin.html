@@ -39,7 +39,9 @@
                             <#LANG_TITLE#>
                         </th>
                         <th>UUID</th>
-                        <th><#LANG_LINKED_OBJECT#></th>
+                        <th>
+                            <#LANG_LINKED_OBJECT#>
+                        </th>
                         <th>
                             <#LANG_TYPE#>
                         </th>
@@ -67,13 +69,15 @@
                             </td>
                             <td style="vertical-align:middle" width="1%" nowrap>
                                 <div style="width:160px">
-
+                                    [#if DEVICE_ONLINE_ID==""#]
                                     <div class="btn-group">
                                         <a href="?view_mode=add_to_pinghost&id=[#ID#]" onClick="return confirm('Are you sure? Please confirm.')" class="btn btn-success"
                                             title="Добавить к устройствам ОнЛайн">
-                                            <i class="glyphicon glyphicon-plus"></i>
+                                            <i class="glyphicon glyphicon-plus"></i>[#DEVICE_ONLINE_ID#]
                                         </a>
-                                            [#if LINKED_OBJECT==""#]
+                                        [#endif#]
+
+                                         [#if LINKED_OBJECT==""#]
                                         <a href="?view_mode=add_to_SSDPdevices&id=[#ID#]" onClick="return confirm('Are you sure? Please confirm.')" class="btn btn-success"
                                             title="Добавить к простым устройствам">
                                             <i class="glyphicon glyphicon-plus"></i>
