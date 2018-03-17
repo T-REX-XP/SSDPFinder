@@ -11,16 +11,17 @@ $renderers = $renderer->discover();
 if(!count($renderers)){
     print_r('no upnp renderers found'.PHP_EOL);
 }
-$pause = $this->getProperty("pause_unpause");
+$stop = $this->getProperty("stop");
 
 foreach($renderers as $r){
 
     print($r['description']['device']['friendlyName']);
     $remote = new Renderer\Remote($r);
     if ( $pause) {
-            $result = $remote->pause();
+            $result = $remote->stop();
+            $this->setProperty("stop",0);
         } else {
-            $result = $remote->unpause();
+            $this->setProperty("stop",0);
         }
 }
 
