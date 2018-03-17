@@ -67,10 +67,16 @@ $this->ssdpdevices_types=array(
         'PROPERTIES'=>array(
             'mute_unmute'=>array('DESCRIPTION'=>'Отключение/включение звука', 'KEEP_HISTORY'=>1, 'ONCHANGE'=>'mute-unmute', 'DATA_KEY'=>1),
             'pause_unpause'=>array('DESCRIPTION'=>'Отключение/включение паузы', 'KEEP_HISTORY'=>1, 'ONCHANGE'=>'pause-unpause', 'DATA_KEY'=>1),
+            'next'=>array('DESCRIPTION'=>'Следующая запись', 'KEEP_HISTORY'=>1, 'ONCHANGE'=>'next', 'DATA_KEY'=>1),
+            'previous'=>array('DESCRIPTION'=>'Предыдущая запись', 'KEEP_HISTORY'=>1, 'ONCHANGE'=>'previous', 'DATA_KEY'=>1),
+            'stop'=>array('DESCRIPTION'=>'Стоп', 'KEEP_HISTORY'=>1, 'ONCHANGE'=>'stop', 'DATA_KEY'=>1),
        ),
         'METHODS'=>array(
             'mute-unmute'=>array('DESCRIPTION'=>'Отключение/включение звука'),
             'pause-unpause'=>array('DESCRIPTION'=>'Отключение/включение паузы'),
+            'next'=>array('DESCRIPTION'=>'Следующий трек'),
+            'previous'=>array('DESCRIPTION'=>'Предыдущий трек'),
+            'stop'=>array('DESCRIPTION'=>'Стоп'),
         ),
     ),
 );
