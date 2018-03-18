@@ -266,6 +266,7 @@ function usual(&$out) {
   $pinghosts['CODE_OFFLINE'] = 'say("Устройство ".$host[\'TITLE\']." появилось в сети." ,2);';
   $pinghosts['LINKED_OBJECT'] = $ssdpdevice['LINKED_OBJECT'];
   $pinghosts['LINKED_PROPERTY'] = "alive";
+  $pinghosts['CHECK_NEXT'] = date("Y-m-d H:i:s");  
   $chek=SQLSelectOne("SELECT * FROM pinghosts WHERE HOSTNAME='".$pinghosts['HOSTNAME']."'");
   if ($chek['ID']) {
           $chek['ID'] = SQLUpdate('pinghosts', $pinghosts);
