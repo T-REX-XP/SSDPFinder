@@ -97,9 +97,9 @@ function addSSDPDevice($device_type, $options=0) {
   $clas = SQLSelectOne("SELECT * FROM classes WHERE TITLE='".'S'.$device_type."'");
   $props = SQLSelect("SELECT * FROM properties WHERE CLASS_ID='".$clas['ID']."' OR CLASS_ID='".$clas['PARENT_ID']."'");
   $ssdp = SQLSelect("SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE table_name = 'ssdp_devices'");
-  foreach($props as $k=>$v) {
-      foreach($ssdp as $i=>$t_name) {
-          if ( $v['TITLE'] = $t_name ['COLUMN_NAME']){
+  foreach($props as $v) {
+      foreach($ssdp as $t_name) {
+          if ( mb_strtolower($v['TITLE']) == mb_strtolower($t_name ['COLUMN_NAME'])){
 	            $ssdpinf=SQLSelectOne("SELECT ".DBSafe($v['TITLE'])." FROM ssdp_devices WHERE LINKED_OBJECT LIKE '".DBSafe($new_object_title)."'");
 		    $pval = Array();
 		    $pval['PROPERTY_ID'] = $v['ID'];
