@@ -46,7 +46,7 @@
   //updating 'Manufacturer' (varchar)
    global $manufacturer;
    $rec['MANUFACTURER']=$manufacturer;
-  //updating 'Location' (varchar)
+  //updating 'location' (varchar)
    global $location;
    $rec['LOCATION']=$location;
  //updating 'Logo' (varchar)
