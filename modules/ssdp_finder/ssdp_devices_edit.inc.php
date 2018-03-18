@@ -191,3 +191,4 @@
    }
   }
   outHash($rec, $out);
+$out['LOCATIONS']=SQLSelect("SELECT ID, TITLE FROM locations ORDER BY TITLE");
