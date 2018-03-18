@@ -225,7 +225,7 @@ function usual(&$out) {
   $options['TABLE'] = 'ssdp_devices'; // таблица, куда потом запишется LINKED_OBJECT и LINKED_PROPERTY
   $options['TABLE_ID'] = $id; // ID записи в вышеназванной таблице (запись уже должна быть создана такая)
   $options['TITLE'] = $ssdpdevice['TITLE']; // название устройства (не обязательно)
-  $options['LOCATION_ID']=$ssdpdevice['LOCATION_ID']; // ID расположения (не обязательно)
+  $options['LOCATION_ID']=$ssdpdevice['LOCATION']; // ID расположения (не обязательно)
   //$options['ADD_MENU']=1; // добавлять интерфейс работы с устройством в  меню (не обязательно)
   //$options['ADD_SCENE']=1; // добавлять интерфейс работы с устройством на сцену (не обязательно)
   $result=$dev->addSSDPDevice($device_type, $options); // добавляем устройство -- возвращает 1 в случае успешного добавления
