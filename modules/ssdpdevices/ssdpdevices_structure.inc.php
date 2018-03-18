@@ -70,6 +70,7 @@ $this->ssdpdevices_types=array(
             'next'=>array('DESCRIPTION'=>'Следующая запись', 'KEEP_HISTORY'=>1, 'ONCHANGE'=>'next', 'DATA_KEY'=>1),
             'previous'=>array('DESCRIPTION'=>'Предыдущая запись', 'KEEP_HISTORY'=>1, 'ONCHANGE'=>'previous', 'DATA_KEY'=>1),
             'stop'=>array('DESCRIPTION'=>'Стоп', 'KEEP_HISTORY'=>1, 'ONCHANGE'=>'stop', 'DATA_KEY'=>1),
+            'playUrl'=>array('DESCRIPTION'=>'Воспроизвести ссылку', 'KEEP_HISTORY'=>1, 'ONCHANGE'=>'playUrl', 'DATA_KEY'=>1),
        ),
         'METHODS'=>array(
             'mute-unmute'=>array('DESCRIPTION'=>'Отключение/включение звука'),
@@ -77,6 +78,7 @@ $this->ssdpdevices_types=array(
             'next'=>array('DESCRIPTION'=>'Следующий трек'),
             'previous'=>array('DESCRIPTION'=>'Предыдущий трек'),
             'stop'=>array('DESCRIPTION'=>'Стоп'),
+            'playUrl'=>array('DESCRIPTION'=>'Воспроизвести ссылку'),
         ),
     ),
 );
