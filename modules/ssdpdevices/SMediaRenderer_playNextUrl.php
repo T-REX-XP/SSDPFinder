@@ -12,16 +12,15 @@ if(!count($renderers)){
     print_r('no upnp renderers found'.PHP_EOL);
 }
 $uuid = $this->getProperty("UUID");
-$mute_unmute = $this->getProperty("mute_unmute");
+$playUrl = $this->getProperty("playNextUrl");
 foreach($renderers as $r){
     $remote = new Renderer\Remote($r);
-    if ( $mute_unmute AND $uuid == $r['description']['device']['UDN']) {
-            $result = $remote->mute();
-            
+    if ( $playUrl  AND $uuid == $r['description']['device']['UDN']) {
+            $result = $remote->setNext($playUrl);
+            $this->setProperty("playUrl",0);
         } else {
-            $result = $remote->unmute();
+            $this->setProperty("playUrl",0);
         }
-echo $result;
 }
 
 

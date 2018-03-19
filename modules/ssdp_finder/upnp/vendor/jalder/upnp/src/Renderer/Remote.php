@@ -47,6 +47,9 @@ class Remote
                 if($service['serviceId'] == 'urn:upnp-org:serviceId:AVTransport'){
                     $this->ctrlurl = $this->upnp->baseUrl($device['location']).$service['controlURL'];
                 }
+                if($service['serviceId'] == 'urn:upnp-org:serviceId:RenderingControl'){
+                    $this->ctrlurl = $this->upnp->baseUrl($device['location']).$service['controlURL'];
+                }
             }
         }
 
@@ -77,6 +80,9 @@ class Remote
 		{
 			case 'AVTransport':
 				$serviceType = 'urn:schemas-upnp-org:service:AVTransport:1';
+				break;
+			case 'RenderingControl':
+				$serviceType = 'urn:schemas-upnp-org:service:RenderingControl:1';
 				break;
 			default:
 				$serviceType = 'urn:schemas-upnp-org:service:AVTransport:1';
@@ -127,6 +133,23 @@ class Remote
 		return $this->instanceOnly('GetMediaInfo');
 	}
 
+	public function SetVolume($volume)
+	{
+		$args = array('InstanceId' => 0,'Channel' => 'Master','DesiredVolume' => $volume);
+		return $this->upnp->sendRequestToDevice('SetVolume',$args,$this->ctrlurl,$type = 'RenderingControl');
+	}
+
+	public function mute()
+	{
+		$args = array('InstanceId' => 0,'Channel' => 'Master','DesiredMute' => 1);
+		return $this->upnp->sendRequestToDevice('SetMute',$args,$this->ctrlurl,$type = 'RenderingControl');
+	}
+	public function unmute()
+	{
+		$args = array('InstanceId' => 0,'Channel' => 'Master','DesiredMute' => 0);
+		return $this->upnp->sendRequestToDevice('SetMute',$args,$this->ctrlurl,$type = 'RenderingControl');
+	}
+
 	public function stop()
 	{
 		return $this->instanceOnly('Stop');
@@ -135,7 +158,7 @@ class Remote
 	public function unpause()
 	{
 		$args = array('InstanceID'=>0,'Speed'=>1);
-		return $this->upnp->sendRequestToDevice('Play',$args,$this->ctrlurl,$type = 'AVTransport');
+		return $this->upnp->sendRequestToDevice('Play',$args,$this->ctrlurl,$type = 'AVTransport');     
 	}
 
 	public function pause()
@@ -153,15 +176,15 @@ class Remote
 		return $this->instanceOnly('Previous');
 	}
 
-    public function fforward()
-    {
-        return $this->next();
-    }
+        public function fforward()
+        {
+               return $this->next();
+        }
 
-    public function rewind()
-    {
-        return $this->previous();
-    }
+        public function rewind()
+        {
+               return $this->previous();
+        }
 
 	public function seek($unit = 'TRACK_NR', $target=0)
 	{

@@ -81,6 +81,9 @@
      if($create_od==true){
       $this->add_to_pinghost($rec['ID']);
      }
+     if($create_term==true){
+      $this->add_to_pinghost($rec['ID']);
+     }
     }
     $out['OK']=1;
    } else {

@@ -1,5 +1,4 @@
 <?php
-
 $this->ssdpdevices_types=array(
         'ssdpdevices'=>array(
         'CLASS'=>'UPNPdevices',
@@ -14,6 +13,11 @@ $this->ssdpdevices_types=array(
             'MANUFACTURER'=>array('DESCRIPTION'=>'Разработчик устройства','ONCHANGE'=>'updatePreview','_CONFIG_TYPE'=>'text'),
             'Model'=>array('DESCRIPTION'=>' Имя устройства','ONCHANGE'=>'updatePreview','_CONFIG_TYPE'=>'text'),
             'DESCRIPTION'=>array('DESCRIPTION'=>'Описание устройства','ONCHANGE'=>'updatePreview','_CONFIG_TYPE'=>'text'),
+            'groupEco'=>array('DESCRIPTION'=>LANG_DEVICES_GROUP_ECO,'_CONFIG_TYPE'=>'yesno'),
+            'groupEcoOn'=>array('DESCRIPTION'=>LANG_DEVICES_GROUP_ECO_ON,'_CONFIG_TYPE'=>'yesno'),            
+            'groupSunrise'=>array('DESCRIPTION'=>LANG_DEVICES_GROUP_SUNRISE,'_CONFIG_TYPE'=>'yesno'),
+            'isActivity'=>array('DESCRIPTION'=>LANG_DEVICES_IS_ACTIVITY,'_CONFIG_TYPE'=>'yesno'),
+
         ),
     ),
     'MediaServer'=>array(
@@ -66,19 +70,24 @@ $this->ssdpdevices_types=array(
         'CLASS'=>'SMediaRenderer',
         'PROPERTIES'=>array(
             'mute_unmute'=>array('DESCRIPTION'=>'Отключение/включение звука', 'KEEP_HISTORY'=>1, 'ONCHANGE'=>'mute-unmute', 'DATA_KEY'=>1),
+            'volume'=>array('DESCRIPTION'=>'Уровень звука', 'KEEP_HISTORY'=>1, 'ONCHANGE'=>'volume', 'DATA_KEY'=>1),
             'pause_unpause'=>array('DESCRIPTION'=>'Отключение/включение паузы', 'KEEP_HISTORY'=>1, 'ONCHANGE'=>'pause-unpause', 'DATA_KEY'=>1),
             'next'=>array('DESCRIPTION'=>'Следующая запись', 'KEEP_HISTORY'=>1, 'ONCHANGE'=>'next', 'DATA_KEY'=>1),
             'previous'=>array('DESCRIPTION'=>'Предыдущая запись', 'KEEP_HISTORY'=>1, 'ONCHANGE'=>'previous', 'DATA_KEY'=>1),
             'stop'=>array('DESCRIPTION'=>'Стоп', 'KEEP_HISTORY'=>1, 'ONCHANGE'=>'stop', 'DATA_KEY'=>1),
             'playUrl'=>array('DESCRIPTION'=>'Воспроизвести ссылку', 'KEEP_HISTORY'=>1, 'ONCHANGE'=>'playUrl', 'DATA_KEY'=>1),
+            'playNextUrl'=>array('DESCRIPTION'=>'Воспроизвести следующую ссылку без прерывания предыдущей', 'KEEP_HISTORY'=>1, 'ONCHANGE'=>'playNextUrl', 'DATA_KEY'=>1),
        ),
         'METHODS'=>array(
             'mute-unmute'=>array('DESCRIPTION'=>'Отключение/включение звука'),
+            'volume'=>array('DESCRIPTION'=>'Уровень звука'),
             'pause-unpause'=>array('DESCRIPTION'=>'Отключение/включение паузы'),
             'next'=>array('DESCRIPTION'=>'Следующий трек'),
             'previous'=>array('DESCRIPTION'=>'Предыдущий трек'),
             'stop'=>array('DESCRIPTION'=>'Стоп'),
             'playUrl'=>array('DESCRIPTION'=>'Воспроизвести ссылку'),
+            'playNextUrl'=>array('DESCRIPTION'=>'Воспроизвести следующую ссылку без прерывания предыдущей'),
+
         ),
     ),
 );
