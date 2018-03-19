@@ -270,7 +270,7 @@ function usual(&$out) {
   $ssdpdevice=SQLSelectOne("SELECT * FROM ssdp_devices WHERE ID='".$id."'");
   $terminal=array(); // опции добавления
   $terminal['NAME'] = $ssdpdevice['TITLE'];
-  $terminal['TITLE'] = ;
+  $terminal['TITLE'] = '';
   $terminal['HOST'] = $this->getIp($ssdpdevice['ADDRESS']);
   $terminal['CANPLAY'] = '600';
   $terminal['PLAYER_TYPE'] = 'xbmc';
