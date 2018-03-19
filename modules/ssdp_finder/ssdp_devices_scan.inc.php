@@ -46,7 +46,6 @@ function Scan()
 
     foreach ($everything as $device) {
         //print_r($device);  //uncomment to see all available array elements for a device.
-
         $info = $device['description']['device'];
         $uuid = $info["UDN"];
         $existed = $rec=SQLSelectOne("SELECT * FROM $table_name WHERE UUID='$uuid'");
@@ -55,7 +54,7 @@ function Scan()
             $result[] = [
                 "ID" => $existed["ID"], //existed id Majordomo
                 "TITLE" => $info["friendlyName"],//friendly name
-                "ADDRESS" => $info["presentationURL"],//presentation url (web UI of device)
+                "ADDRESS" => $info["presentationURL"]!="" ?$info["presentationURL"] :getIp($device,false) ,//presentation url (web UI of device)
                 "UUID" => $info["UDN"],
                 "DESCRIPTION" => is_array($info["modelDescription"]) ? implode(',', $info["modelDescription"]) : $info["modelDescription"],//description
                 "TYPE" => explode(":", $info["deviceType"])[3],//DeviceType
@@ -66,7 +65,7 @@ function Scan()
                 "MODEL" => $info["modelName"],//model
                 "MODELNUMBER" => $info["modelNumber"],//modelNumber
                 "MANUFACTURER" => $info["manufacturer"],//Manufacturer
-                "IP" => getIp($device,true),//Ip address with port (http://bla-bla:port)
+               // "IP" => ,//Ip address with port (http://bla-bla:port)
                 "SERVICES"=> getServices($info),//list services of device
             ];
         }
@@ -99,7 +98,7 @@ function getIp($device,$withPort)
         if($withPort ==true){
             $baseUrl = $parsed_url['scheme'].'://'.$parsed_url['host'].':'.$parsed_url['port'];
         }else{
-            $baseUrl = $parsed_url['scheme'].'://'.$parsed_url['host'];
+            $baseUrl = $parsed_url['host'];
         }
     }
     
