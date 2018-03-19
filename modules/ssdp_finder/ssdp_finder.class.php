@@ -245,7 +245,47 @@ function usual(&$out) {
         }
     return  $baseUrl;
 }
-
+/**
+* get port from url
+*
+* @access public
+*/
+ function getPort($address){
+  $baseUrl="";
+	if( !empty($address) ){
+        $parsed_url = parse_url($address);
+        $baseUrl = $parsed_url['port'];
+        }
+    return  $baseUrl;
+}
+/**
+* ssdp_devices add record to terminal
+*
+* @access public
+*/
+ function add_to_terminal($id) {
+  if (!$id) {
+      $id = ($_GET["id"]);
+  }
+  $ssdpdevice=SQLSelectOne("SELECT * FROM ssdp_devices WHERE ID='".$id."'");
+  $terminal=array(); // опции добавления
+  $terminal['NAME'] = $ssdpdevice['TITLE'];
+  $terminal['TITLE'] = ;
+  $terminal['HOST'] = $this->getIp($ssdpdevice['ADDRESS']);
+  $terminal['CANPLAY'] = '600';
+  $terminal['PLAYER_TYPE'] = 'xbmc';
+  $terminal['PLAYER_PORT'] = $this->getPort($ssdpdevice['ADDRESS']);
+  $terminal['IS_ONLINE'] = '1';
+  $terminal['LINKED_OBJECT'] = $ssdpdevice['LINKED_OBJECT'];
+  $terminal['LINKED_PROPERTY'] = "alive";
+  $terminal['LATEST_ACTIVITY'] = date("Y-m-d H:i:s");  
+  $chek=SQLSelectOne("SELECT * FROM terminals WHERE HOSTNAME='".$terminal['HOSTNAME']."'");
+  if ($chek['ID']) {
+          $chek['ID'] = SQLUpdate('pinghosts', $pinghosts);
+      } else {	
+          SQLInsert('pinghosts', $pinghosts);
+     }
+ }
 /**
 * ssdp_devices add record to pinghost
 *
