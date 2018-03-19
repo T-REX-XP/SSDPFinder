@@ -12,16 +12,12 @@ if(!count($renderers)){
     print_r('no upnp renderers found'.PHP_EOL);
 }
 $uuid = $this->getProperty("UUID");
-$mute_unmute = $this->getProperty("mute_unmute");
+$volume = $this->getProperty("volume");
 foreach($renderers as $r){
     $remote = new Renderer\Remote($r);
-    if ( $mute_unmute AND $uuid == $r['description']['device']['UDN']) {
-            $result = $remote->mute();
-            
-        } else {
-            $result = $remote->unmute();
-        }
-echo $result;
+    if ($uuid == $r['description']['device']['UDN']) {
+            $result = $remote->SetVolume($volume);
+    }
 }
 
 
