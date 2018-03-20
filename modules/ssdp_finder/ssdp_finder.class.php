@@ -270,20 +270,19 @@ function usual(&$out) {
   $ssdpdevice=SQLSelectOne("SELECT * FROM ssdp_devices WHERE ID='".$id."'");
   $terminal=array(); // опции добавления
   $terminal['NAME'] = $ssdpdevice['TITLE'];
-  $terminal['TITLE'] = ;
+  $terminal['TITLE'] = $ssdpdevice['DESCRIPTION'];
   $terminal['HOST'] = $this->getIp($ssdpdevice['ADDRESS']);
-  $terminal['CANPLAY'] = '600';
+  $terminal['CANPLAY'] = '1';
   $terminal['PLAYER_TYPE'] = 'xbmc';
   $terminal['PLAYER_PORT'] = $this->getPort($ssdpdevice['ADDRESS']);
   $terminal['IS_ONLINE'] = '1';
   $terminal['LINKED_OBJECT'] = $ssdpdevice['LINKED_OBJECT'];
-  $terminal['LINKED_PROPERTY'] = "alive";
   $terminal['LATEST_ACTIVITY'] = date("Y-m-d H:i:s");  
-  $chek=SQLSelectOne("SELECT * FROM terminals WHERE HOSTNAME='".$terminal['HOSTNAME']."'");
+  $chek=SQLSelectOne("SELECT * FROM terminals WHERE HOST='".$terminal['HOST']."'");
   if ($chek['ID']) {
-          $chek['ID'] = SQLUpdate('pinghosts', $pinghosts);
+          $chek['ID'] = SQLUpdate('terminals', $terminal);
       } else {	
-          SQLInsert('pinghosts', $pinghosts);
+          SQLInsert('terminals', $terminal);
      }
  }
 /**
