@@ -313,7 +313,6 @@ function add_to_terminal($id) {
           SQLInsert('pinghosts', $pinghosts);
      }
  }
-////////////////////////////////// конец моей вставки
 /**
 * ssdp_devices delete record
 *
@@ -321,9 +320,22 @@ function add_to_terminal($id) {
 */
  function delete_ssdp_devices($id) {
   $rec=SQLSelectOne("SELECT * FROM ssdp_devices WHERE ID='$id'");
-  // some action for related tables
-  SQLExec("DELETE FROM ssdp_devices WHERE ID='".$rec['ID']."'");
+
+  /// delete from simple device
+  $sdev_del=SQLSelectOne("SELECT * FROM devices WHERE LINKED_OBJECT='".$rec['LINKED_OBJECT']."'");
+  $sdevice = $sdev_del['ID'];
+  include_once (DIR_MODULES.'ssdpdevices/ssdpdevices.class.php');
+  $dev=new ssdpdevices();
+  $dev->delete_devices($sdevice);
+  // delete from pinghost
+  SQLExec("DELETE FROM pinghosts WHERE LINKED_OBJECT='".$rec['LINKED_OBJECT']."'"); 
+  // delete from terminals
+  SQLExec("DELETE FROM terminals WHERE LINKED_OBJECT='".$rec['LINKED_OBJECT']."'"); 
+  // standart code
+  // delete fromp tables ssdp_devices
+  SQLExec("DELETE FROM ssdp_devices WHERE ID='".$rec['ID']."'"); 
  }
+////////////////////////////////// конец моей вставки	
  function propertySetHandle($object, $property, $value) {
   $this->getConfig();
    $table='ssdp_devices';

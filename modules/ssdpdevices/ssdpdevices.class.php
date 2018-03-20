@@ -88,6 +88,7 @@ function addSSDPDevice($device_type, $options=0) {
      }
    $obj = SQLSelectOne("SELECT * FROM objects WHERE TITLE='".$new_object_title."'");
    $obj['DESCRIPTION'] = $options['TITLE'];
+   $obj['LOCATION_ID'] = $options['LOCATION_ID'];
    If (IsSet($obj['ID'])) {
       SQLUpdate('objects', $obj);
    }
