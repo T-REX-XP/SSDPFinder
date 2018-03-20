@@ -263,7 +263,7 @@ function usual(&$out) {
 *
 * @access public
 */
- function add_to_terminal($id) {
+function add_to_terminal($id) {
   if (!$id) {
       $id = ($_GET["id"]);
   }
