@@ -19,6 +19,7 @@
 
    global $create_sd;
    global $create_od;
+   global $create_term;
    //updating 'Uuid' (varchar)
    global $uuid;
    $rec['UUID']=$uuid;
@@ -81,8 +82,8 @@
      if($create_od==true){
       $this->add_to_pinghost($rec['ID']);
      }
-     if($create_term==true){
-      $this->add_to_pinghost($rec['ID']);
+     if($create_term==true AND $type=='MediaRenderer'){
+      $this->add_to_terminal($rec['ID']);
      }
     }
     $out['OK']=1;
