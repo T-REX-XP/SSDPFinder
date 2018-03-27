@@ -21,11 +21,6 @@ class Upnp extends Core{
         return parent::search();
     }
 
-    public function discover_uuid($uuid)
-    {
-        return parent::search($uuid);
-    }
-
     public function alive()
     {
         return (bool)count($this->discover($data));
