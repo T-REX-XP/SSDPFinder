@@ -65,7 +65,7 @@ function Scan()
                 "MODEL" => $info["modelName"],//model
                 "MODELNUMBER" => $info["modelNumber"],//modelNumber
                 "MANUFACTURER" => $info["manufacturer"],//Manufacturer
-               // "IP" => ,//Ip address with port (http://bla-bla:port)
+                "JSON_DATA" => json_decode($device),
                 "SERVICES"=> getServices($info),//list services of device
             ];
         }
