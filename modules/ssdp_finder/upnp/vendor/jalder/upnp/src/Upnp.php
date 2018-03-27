@@ -16,14 +16,14 @@ class Upnp extends Core{
 
     }
 
-    public function discover()
+    public function discover($data)
     {
-        return parent::search();
+        return parent::search($data);
     }
 
     public function alive()
     {
-        return (bool)count($this->discover());
+        return (bool)count($this->discover($data));
     }
 
 }
