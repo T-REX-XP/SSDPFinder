@@ -20,6 +20,7 @@
    global $create_sd;
    global $create_od;
    global $create_term;
+   global $create_templ;
    //updating 'Uuid' (varchar)
    global $uuid;
    $rec['UUID']=$uuid;
@@ -84,6 +85,9 @@
      }
      if($create_term==true AND $type=='MediaRenderer'){
       $this->add_to_terminal($rec['ID']);
+     }
+     if($create_templ==true AND $type=='MediaRenderer'){
+      $this->add_to_template($rec['ID']);
      }
     }
     $out['OK']=1;
