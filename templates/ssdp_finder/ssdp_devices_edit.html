@@ -89,6 +89,14 @@
                 <input type="text" class="form-control" name="manufacturer" value="[#MANUFACTURER#]" id="manufacturer">
             </div>
         </div>
+        <div class="form-group">
+            <label class="col-lg-3 control-label" [#if ERR_JSON_DATA#] style="color:red;font-weight:bold" [#endif#]>
+                JSON_DATA:
+            </label>
+            <div class="col-lg-4">
+                <input type="text" class="form-control" name="json_data" value="[#JSON_DATA#]" id="json_data">
+            </div>
+        </div>
         <div class="form-group ">
             <label class="col-lg-4 control-label"><#LANG_LOCATION#>:</label>
             <div class="col-lg-4"><select name="location" class="form-control">
@@ -109,25 +117,24 @@
         <div class="form-group">
             <label class="control-label">
                 Создать простое устройство
+   
+                Создать устройство онлайн
+
+                Создать терминал устройства
+
+                Создать шаблон управления
             </label>
             <div class="controls">
                 <input type="checkbox" name="create_sd" checked>
             </div>
-        </div>
-        <div class="form-group">
-            <label class="control-label">
-                Создать устройство онлайн
-            </label>
             <div class="controls">
                 <input type="checkbox" name="create_od" checked>
             </div>
-        </div>
-        <div class="form-group">
-            <label class="control-label">
-                Создать терминал
-            </label>
             <div class="controls">
                 <input type="checkbox" name="create_term" checked>
+            </div>
+            <div class="controls">
+                <input type="checkbox" name="create_templ" checked>
             </div>
         </div>
         [#module name="linkedobject" object_field="linked_object" property_field="linked_property" method_field="linked_method"#]

@@ -23,7 +23,7 @@ class Upnp extends Core{
 
     public function alive()
     {
-        return (bool)count($this->discover());
+        return (bool)count($this->discover($data));
     }
 
 }

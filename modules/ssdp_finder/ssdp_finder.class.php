@@ -313,6 +313,24 @@ function add_to_terminal($id) {
           SQLInsert('pinghosts', $pinghosts);
      }
  }
+
+/**
+* ssdp_devices add record to template
+*
+* @access public
+*/
+ function add_to_template($id) {
+  if (!$id) {
+      $id = ($_GET["id"]);
+  }
+  $ssdpdevice=SQLSelectOne("SELECT * FROM ssdp_devices WHERE ID='".$id."'");
+  $templ=SQLSelectOne("SELECT * FROM classes WHERE TITLE='".'S'.$ssdpdevice['TYPE']."'");
+  if ($templ['ID'] AND file_exists(DIR_MODULES.'ssdpdevices/'.'S'.$ssdpdevice['TYPE'].'.template')) {
+          $templ['TEMPLATE'] = file_get_contents(DIR_MODULES.'ssdpdevices/'.'S'.$ssdpdevice['TYPE'].'.template');
+          $templ['ID'] = SQLUpdate('classes',$templ);
+      }
+
+ }
 /**
 * ssdp_devices delete record
 *
@@ -395,7 +413,7 @@ ssdp_devices -
  ssdp_devices: NAME varchar(100) NOT NULL DEFAULT ''
  ssdp_devices: SERVICES varchar(500) NOT NULL DEFAULT ''
  ssdp_devices: ADDRESS varchar(255) NOT NULL DEFAULT ''
- ssdp_devices: IP varchar(255) NOT NULL DEFAULT ''
+ ssdp_devices: JSON_DATA TEXT NOT NULL DEFAULT ''
  ssdp_devices: UUID varchar(255) NOT NULL DEFAULT ''
  ssdp_devices: MODEL varchar(255) NOT NULL DEFAULT ''
  ssdp_devices: MANUFACTURER varchar(255) NOT NULL DEFAULT ''
