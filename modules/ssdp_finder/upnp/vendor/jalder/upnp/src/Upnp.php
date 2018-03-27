@@ -16,9 +16,9 @@ class Upnp extends Core{
 
     }
 
-    public function discover($data)
+    public function discover()
     {
-        return parent::search($data);
+        return parent::search();
     }
 
     public function alive()
