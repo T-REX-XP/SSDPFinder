@@ -19,6 +19,3 @@ foreach($renderers as $r){
             $result = $remote->SetVolume($volume);
     }
 }
-
-
-
