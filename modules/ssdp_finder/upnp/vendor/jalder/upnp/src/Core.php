@@ -13,10 +13,10 @@ class Core {
         //$this->user_agent = 'Xbox';
     }
     
-    public function search($host = '239.255.255.250', $st = 'ssdp:all', $mx = 2, $man = 'ssdp:discover', $from = null, $port = null, $sockTimout = '2')
+    public function search($st = 'ssdp:all', $mx = 2, $man = 'ssdp:discover', $from = null, $port = null, $sockTimout = '2')
     {
         $request = 'M-SEARCH * HTTP/1.1'."\r\n";
-        $request .= 'HOST:  239.255.255.250:1900'."\r\n";
+        $request .= 'HOST: 239.255.255.250:1900'."\r\n";
         $request .= 'MAN: "'.$man.'"'."\r\n";
         $request .= 'MX: '.$mx.''."\r\n";
         $request .= 'ST: '.$st.''."\r\n";
