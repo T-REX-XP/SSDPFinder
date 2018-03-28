@@ -7,7 +7,7 @@ $this->ssdpdevices_types=array(
         'PROPERTIES'=>array(
             'Logo'=>array('DESCRIPTION'=>'Логотип','_CONFIG_TYPE'=>'text'),
             'UUID'=>array('DESCRIPTION'=>'UUID device','_CONFIG_TYPE'=>'text'),
-            'IP'=>array('DESCRIPTION'=>'IP Adress device','_CONFIG_TYPE'=>'text'),
+            'ADDRESS'=>array('DESCRIPTION'=>'IP Adress device','_CONFIG_TYPE'=>'text'),
             'Type'=>array('DESCRIPTION'=>' Тип устройства','ONCHANGE'=>'updatePreview','_CONFIG_TYPE'=>'text'),
             'Services'=>array('DESCRIPTION'=>' Сервисы','_CONFIG_TYPE'=>'text'),
             'MANUFACTURER'=>array('DESCRIPTION'=>'Разработчик устройства','ONCHANGE'=>'updatePreview','_CONFIG_TYPE'=>'text'),
