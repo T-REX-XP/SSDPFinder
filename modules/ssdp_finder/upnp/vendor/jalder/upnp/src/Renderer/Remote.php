@@ -47,9 +47,6 @@ class Remote
                 if($service['serviceId'] == 'urn:upnp-org:serviceId:AVTransport'){
                     $this->ctrlurl = $this->upnp->baseUrl($device['location']).$service['controlURL'];
                 }
-                if($service['serviceId'] == 'urn:upnp-org:serviceId:RenderingControl'){
-                    $this->ctrlurl = $this->upnp->baseUrl($device['location']).$service['controlURL'];
-                }
             }
         }
 
