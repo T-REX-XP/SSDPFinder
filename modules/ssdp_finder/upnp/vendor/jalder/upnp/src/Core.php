@@ -13,10 +13,10 @@ class Core {
         //$this->user_agent = 'Xbox';
     }
     
-    public function search($st = 'ssdp:all', $mx = 2, $man = 'ssdp:discover', $from = null, $port = null, $sockTimout = '2')
+    public function search($host = '239.255.255.250', $st = 'ssdp:all', $mx = 2, $man = 'ssdp:discover', $from = null, $port = null, $sockTimout = '2')
     {
         $request = 'M-SEARCH * HTTP/1.1'."\r\n";
-        $request .= 'HOST: 239.255.255.250:1900'."\r\n";
+        $request .= 'HOST:  239.255.255.250:1900'."\r\n";
         $request .= 'MAN: "'.$man.'"'."\r\n";
         $request .= 'MX: '.$mx.''."\r\n";
         $request .= 'ST: '.$st.''."\r\n";
@@ -26,6 +26,34 @@ class Core {
         $socket = socket_create(AF_INET, SOCK_DGRAM, 0);
         socket_set_option($socket, SOL_SOCKET, SO_BROADCAST, true);
         socket_sendto($socket, $request, strlen($request), 0, '239.255.255.250', 1900);
+        socket_set_option($socket, SOL_SOCKET, SO_RCVTIMEO, array('sec'=>$sockTimout, 'usec'=>'0'));
+        $response = array();
+        do {
+            $buf = null;
+            if (($len = @socket_recvfrom($socket, $buf, 1024, 0, $ip, $port)) == -1) {
+                echo "socket_read() failed: " . socket_strerror(socket_last_error()) . "\n";
+            }
+            if(!is_null($buf)){
+                $data = $this->parseSearchResponse($buf);
+                $response[$data['usn']] = $data;
+            }
+        } while(!is_null($buf));
+        socket_close($socket);
+        return $response;
+    }
+    public function search_ip($host = '239.255.255.250', $st = 'ssdp:all', $mx = 1, $man = 'ssdp:discover', $from = null, $port = null, $sockTimout = '1')
+    {
+        $request = 'M-SEARCH * HTTP/1.1'."\r\n";
+        $request .= 'HOST:  239.255.255.250:1900'."\r\n";
+        $request .= 'MAN: "'.$man.'"'."\r\n";
+        $request .= 'MX: '.$mx.''."\r\n";
+        $request .= 'ST: '.$st.''."\r\n";
+        $request .= 'USER-AGENT: '.$this->user_agent."\r\n";
+        $request .= "\r\n";
+
+        $socket = socket_create(AF_INET, SOCK_DGRAM, 0);
+        socket_set_option($socket, SOL_SOCKET, SO_BROADCAST, true);
+        socket_sendto($socket, $request, strlen($request), 0, $host, 1900);
         socket_set_option($socket, SOL_SOCKET, SO_RCVTIMEO, array('sec'=>$sockTimout, 'usec'=>'0'));
         $response = array();
         do {
