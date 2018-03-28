@@ -21,9 +21,7 @@
    global $create_od;
    global $create_term;
    global $create_templ;
-   //updating 'JSON_DATA' (varchar)
-   global $json_data;
-   $rec['JSON_DATA']=$json_data;
+   
    //updating 'Uuid' (varchar)
    global $uuid;
    $rec['UUID']=$uuid;
@@ -106,9 +104,7 @@
      $out['ERR_TITLE']=1;
      $ok=0;
     }
-   //updating 'JSON_DATA' (varchar)
-   global $json_data;
-   $rec['JSON_DATA']=$json_data;
+  
    //updating 'Uuid' (varchar)
    global $uuid;
    $rec['UUID']=$uuid;
