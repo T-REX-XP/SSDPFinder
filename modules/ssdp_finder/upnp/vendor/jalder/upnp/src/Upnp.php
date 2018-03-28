@@ -17,10 +17,15 @@ class Upnp extends Core{
     }
 
     public function discover()
-    {
+    {   
         return parent::search();
     }
-
+    public function discover_ip($host)
+    {   if (!$host) {
+         $host = '239.255.255.250';
+         }
+        return parent::search_ip($host);
+    }
     public function alive()
     {
         return (bool)count($this->discover($data));
