@@ -81,9 +81,6 @@ class Remote
 			case 'AVTransport':
 				$serviceType = 'urn:schemas-upnp-org:service:AVTransport:1';
 				break;
-			case 'RenderingControl':
-				$serviceType = 'urn:schemas-upnp-org:service:RenderingControl:1';
-				break;
 			default:
 				$serviceType = 'urn:schemas-upnp-org:service:AVTransport:1';
 				break;
