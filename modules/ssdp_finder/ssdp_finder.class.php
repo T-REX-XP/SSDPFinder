@@ -413,7 +413,6 @@ ssdp_devices -
  ssdp_devices: NAME varchar(100) NOT NULL DEFAULT ''
  ssdp_devices: SERVICES varchar(500) NOT NULL DEFAULT ''
  ssdp_devices: ADDRESS varchar(255) NOT NULL DEFAULT ''
- ssdp_devices: JSON_DATA TEXT NOT NULL DEFAULT ''
  ssdp_devices: UUID varchar(255) NOT NULL DEFAULT ''
  ssdp_devices: MODEL varchar(255) NOT NULL DEFAULT ''
  ssdp_devices: MANUFACTURER varchar(255) NOT NULL DEFAULT ''
