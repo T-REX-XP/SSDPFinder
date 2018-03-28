@@ -65,7 +65,6 @@ function Scan()
                 "MODEL" => $info["modelName"],//model
                 "MODELNUMBER" => $info["modelNumber"],//modelNumber
                 "MANUFACTURER" => $info["manufacturer"],//Manufacturer
-                "JSON_DATA" => json_decode($device),
                 "SERVICES"=> getServices($info),//list services of device
             ];
         }
