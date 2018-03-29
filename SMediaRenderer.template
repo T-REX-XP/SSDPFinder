@@ -1,6 +1,6 @@
 <div class="device-details">%.object_description%</div>
 
-<link rel="stylesheet" href="\bootstrap\css/bootstrap.min.css">
+<link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">
  
  <input type="range" onChange='ajaxSetGlobal("%.object_title%.volume", value);' value=%.volume%  min="0" max="100" step="5" ></input> 
 
