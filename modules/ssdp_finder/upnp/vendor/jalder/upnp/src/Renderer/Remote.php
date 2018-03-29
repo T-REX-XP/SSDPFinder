@@ -97,7 +97,7 @@ class Remote
 	{
 		$args = array(
 			'InstanceID'=>0,
-			'NextURI'=>$url,
+			'NextURI'=>'<![CDATA['.$url.']]>',
 			'NextURIMetaData'=>'testmetadata'
 		);
 		return $this->upnp->sendRequestToDevice('SetNextAVTransportURI',$args,$this->ctrlurl,$type = 'AVTransport');
