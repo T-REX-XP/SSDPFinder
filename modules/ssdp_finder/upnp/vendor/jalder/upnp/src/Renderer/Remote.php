@@ -5,7 +5,7 @@
  * @author jalder
  */
 
-namespace jalder\Upnp\Renderer;
+namespace jalder\Upnp\RendererVolume;
 
 use jalder\Upnp;
 
@@ -67,7 +67,15 @@ class Remote
 		$this->upnp->sendRequestToDevice('Play',$args,$this->ctrlurl,$type = 'AVTransport');
 		return $response;
 	}
-
+    public function setNext($url)
+	{
+		$args = array(
+			'InstanceID'=>0,
+			'NextURI'=>'<![CDATA['.$url.']]>',
+			'NextURIMetaData'=>'testmetadata'
+		);
+		return $this->upnp->sendRequestToDevice('SetNextAVTransportURI',$args,$this->ctrlurl,$type = 'AVTransport');
+	}
 	//this should be moved to the upnp and renderer model
 	public function getControlURL($description_url, $service = 'AVTransport')
 	{
@@ -93,16 +101,6 @@ class Remote
 		}
 	}
 
-	public function setNext($url)
-	{
-		$args = array(
-			'InstanceID'=>0,
-			'NextURI'=>'<![CDATA['.$url.']]>',
-			'NextURIMetaData'=>'testmetadata'
-		);
-		return $this->upnp->sendRequestToDevice('SetNextAVTransportURI',$args,$this->ctrlurl,$type = 'AVTransport');
-	}
-
 	public function getState()
 	{
 		return $this->instanceOnly('GetTransportInfo');
@@ -126,24 +124,6 @@ class Remote
 	{
 		return $this->instanceOnly('GetMediaInfo');
 	}
-
-	public function SetVolume($volume)
-	{
-		$args = array('InstanceId' => 0,'Channel' => 'Master','DesiredVolume' => $volume);
-		return $this->upnp->sendRequestToDevice('SetVolume',$args,$this->ctrlurl,$type = 'RenderingControl');
-	}
-
-	public function mute()
-	{
-		$args = array('InstanceId' => 0,'Channel' => 'Master','DesiredMute' => 1);
-		return $this->upnp->sendRequestToDevice('SetMute',$args,$this->ctrlurl,$type = 'RenderingControl');
-	}
-	public function unmute()
-	{
-		$args = array('InstanceId' => 0,'Channel' => 'Master','DesiredMute' => 0);
-		return $this->upnp->sendRequestToDevice('SetMute',$args,$this->ctrlurl,$type = 'RenderingControl');
-	}
-
 	public function stop()
 	{
 		return $this->instanceOnly('Stop');
