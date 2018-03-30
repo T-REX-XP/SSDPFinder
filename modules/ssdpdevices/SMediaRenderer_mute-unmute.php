@@ -15,11 +15,9 @@ $uuid = $this->getProperty("UUID");
 $mute_unmute = $this->getProperty("mute_unmute");
 foreach($renderers as $r){
     $remote = new Renderer\RemoteVolume($r);
-	print_r(serialize($r));
     if ( $mute_unmute AND $uuid == $r['description']['device']['UDN']) {
             $result = $remote->mute();
 		} else {
             $result = $remote->unmute();
         }
-echo $result;
 }
