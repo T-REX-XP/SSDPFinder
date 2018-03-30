@@ -11,6 +11,12 @@ class Renderer extends Core
         return parent::search('urn:schemas-upnp-org:service:AVTransport:1');
        }
     }
+	    public function discover_ip($host)
+    {
+       if ($type = 'AVTransport') {
+        return parent::search_ip($host, 'urn:schemas-upnp-org:service:AVTransport:1');
+       }
+    }
     /**
      * if a previous ran upnp core search is available in memory, just filter for the renderers
      *
