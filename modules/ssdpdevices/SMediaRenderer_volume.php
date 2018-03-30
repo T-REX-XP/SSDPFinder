@@ -14,7 +14,7 @@ if(!count($renderers)){
 $uuid = $this->getProperty("UUID");
 $volume = $this->getProperty("volume");
 foreach($renderers as $r){
-    $remote = new Renderer\Remote($r);
+    $remote = new Renderer\RemoteVolume($r);
     if ($uuid == $r['description']['device']['UDN']) {
             $result = $remote->SetVolume($volume);
     }
