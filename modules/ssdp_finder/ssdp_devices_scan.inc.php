@@ -46,7 +46,8 @@ function Scan()
 
     foreach ($everything as $device) {
         //print_r($device);  //uncomment to see all available array elements for a device.
-		$xml=simplexml_load_file(str_ireplace("Location:", "", $device['location']));
+		$cont_url = str_ireplace("Location:", "", $device['location']);
+		$xml=simplexml_load_file($cont_url);
         $info = $device['description']['device'];
         $uuid = $xml->device->UDN;
         $existed = $rec=SQLSelectOne("SELECT * FROM $table_name WHERE UUID='$uuid'");
@@ -67,6 +68,7 @@ function Scan()
                 "MODELNUMBER" => $xml->device->modelNumber,//modelNumber
                 "MANUFACTURER" => $xml->device->manufacturer,//Manufacturer
                 "SERVICES"=> getServices($info),//list services of device
+				"CONTROLADDRESS"=> $cont_url,//list services of device
             ];
         }
     }
