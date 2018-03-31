@@ -46,25 +46,26 @@ function Scan()
 
     foreach ($everything as $device) {
         //print_r($device);  //uncomment to see all available array elements for a device.
+		$xml=simplexml_load_file(str_ireplace("Location:", "", $device['location']));
         $info = $device['description']['device'];
-        $uuid = $info["UDN"];
+        $uuid = $xml->device->UDN;
         $existed = $rec=SQLSelectOne("SELECT * FROM $table_name WHERE UUID='$uuid'");
         // print array_search(, array_column( $result, 'ADDRESS'));
         if (!array_search_result($result, 'UUID', $info["UDN"]) && !is_null($info["UDN"])) {
             $result[] = [
                 "ID" => $existed["ID"], //existed id Majordomo
-                "TITLE" => $info["friendlyName"],//friendly name
-                "ADDRESS" => $info["presentationURL"]!="" ?$info["presentationURL"] :getIp($device,false) ,//presentation url (web UI of device)
-                "UUID" => $info["UDN"],
-                "DESCRIPTION" => is_array($info["modelDescription"]) ? implode(',', $info["modelDescription"]) : $info["modelDescription"],//description
-                "TYPE" => explode(":", $info["deviceType"])[3],//DeviceType
+                "TITLE" => $xml->device->friendlyName,//friendly name
+                "ADDRESS" => $xml->device->presentationURL,//presentation url (web UI of device)
+                "UUID" => $xml->device->UDN,
+                "DESCRIPTION" => $xml->device->modelDescription,//description
+                "TYPE" => explode(":", $xml->device->deviceType)[3],//DeviceType
                 "LOGO" => getDefImg($device),//$info
-                "SERIAL" => $info["serialNumber"],//serialnumber
-                "MANUFACTURERURL" => $info["manufacturerURL"],//manufacturer url
+                "SERIAL" => $xml->device->serialNumber,//serialnumber
+                "MANUFACTURERURL" => $xml->device->manufacturerURL,//manufacturer url
                 "UPDATED" => '',
-                "MODEL" => $info["modelName"],//model
-                "MODELNUMBER" => $info["modelNumber"],//modelNumber
-                "MANUFACTURER" => $info["manufacturer"],//Manufacturer
+                "MODEL" => $xml->device->modelName,//model
+                "MODELNUMBER" => $xml->device->modelNumber,//modelNumber
+                "MANUFACTURER" => $xml->device->manufacturer,//Manufacturer
                 "SERVICES"=> getServices($info),//list services of device
             ];
         }
