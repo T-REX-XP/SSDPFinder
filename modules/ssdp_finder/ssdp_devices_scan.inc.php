@@ -68,7 +68,7 @@ function Scan()
                 "MODELNUMBER" => $xml->device->modelNumber,//modelNumber
                 "MANUFACTURER" => $xml->device->manufacturer,//Manufacturer
                 "SERVICES"=> getServices($xml),//list services of device
-				"CONTROLADDRESS"=> $cont_url,//list services of device
+		"CONTROLADDRESS"=> $cont_url,//list services of device
             ];
         }
     }
