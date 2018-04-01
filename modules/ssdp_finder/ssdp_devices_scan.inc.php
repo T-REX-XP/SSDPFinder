@@ -52,7 +52,7 @@ function Scan()
         $uuid = $xml->device->UDN;
         $existed = $rec=SQLSelectOne("SELECT * FROM $table_name WHERE UUID='$uuid'");
         // print array_search(, array_column( $result, 'ADDRESS'));
-        if (!array_search_result($result, 'UUID', $info["UDN"]) && !is_null($info["UDN"])) {
+        if (!array_search_result($result, 'CONTROLADDRESS', $cont_url) && !is_null($uuid)) {
             $result[] = [
                 "ID" => $existed["ID"], //existed id Majordomo
                 "TITLE" => $xml->device->friendlyName,//friendly name
