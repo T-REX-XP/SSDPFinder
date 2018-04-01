@@ -56,11 +56,11 @@ function Scan()
             $result[] = [
                 "ID" => $existed["ID"], //existed id Majordomo
                 "TITLE" => $xml->device->friendlyName,//friendly name
-                "ADDRESS" => $xml->device->presentationURL,//presentation url (web UI of device)
+                "ADDRESS" => $xml->device->presentationURL!="" ?$cont_url :getIp($cont_url,false) ,//presentation url (web UI of device),//presentation url (web UI of device)
                 "UUID" => $xml->device->UDN,
                 "DESCRIPTION" => $xml->device->modelDescription,//description
                 "TYPE" => explode(":", $xml->device->deviceType)[3],//DeviceType
-                "LOGO" => getDefImg($device),//$info
+                "LOGO" => getDefImg($device, $cont_url, $xml),//$info
                 "SERIAL" => $xml->device->serialNumber,//serialnumber
                 "MANUFACTURERURL" => $xml->device->manufacturerURL,//manufacturer url
                 "UPDATED" => '',
@@ -68,7 +68,7 @@ function Scan()
                 "MODELNUMBER" => $xml->device->modelNumber,//modelNumber
                 "MANUFACTURER" => $xml->device->manufacturer,//Manufacturer
                 "SERVICES"=> getServices($xml),//list services of device
-		"CONTROLADDRESS"=> $cont_url,//list services of device
+				"CONTROLADDRESS"=> $cont_url,//list services of device
             ];
         }
     }
@@ -92,11 +92,10 @@ function array_search_result($array, $key, $value)
 }
 
 
-function getIp($device,$withPort)
+function getIp($cont_url,$withPort)
 {
-    $baseUrl = $device["location"];
-	if( !empty($baseUrl) ){
-        $parsed_url = parse_url($baseUrl);
+ 	if( !empty($cont_url) ){
+        $parsed_url = parse_url($cont_url);
         if($withPort ==true){
             $baseUrl = $parsed_url['scheme'].'://'.$parsed_url['host'].':'.$parsed_url['port'];
         }else{
@@ -142,14 +141,11 @@ function SearchArray($array, $searchIndex, $searchValue)
     return false;
 }
 
-function getDefImg($device)
-{
+function getDefImg($device, $cont_url, $xml){
     $dev = $device['description']['device'];
 	$baseUrl = getIp($device,true);
-
 	if($baseUrl && $dev["iconList"]["icon"]){
 		$icons = $dev["iconList"]["icon"];
-
         $img48 =""; //empty by def
         if($icons["url"]){
             $img48 =$icons["url"];
@@ -167,9 +163,24 @@ function getDefImg($device)
         }
         return $baseUrl . $img48;
 		
-	}else{
-        $type =explode(":", $dev["deviceType"])[3];
-		return "/templates/ssdp_finder/img/".$type. ".png";//"Icons not found... (((";
+	} else if (!$img48){ // иначе выбираем картинку из xml файла
+        $sizeold='32';
+		foreach($xml->device->iconList->icon as $icon) {
+			$size = $icon->width;
+			echo ($size);
+			if ($size == '48'){
+				$url= $icon->url;
+				break;    // получена картинка размером 48
+			}else if ($size <= $sizeold){
+				$url= $icon->url;
+				$sizeold = $size; // выбираем наименьшую картинку
+			}
+		}
+		$ip_port = getIp($cont_url,True);
+		if ($url){
+		    return $ip_port.$url;
+		} else { //  берем картинки из заготовок
+		    return "/templates/ssdp_finder/img/".explode(":", $xml->device->deviceType)[3]. ".png";//"Icons not found... (((";
+	    }
 	}
 }
-
