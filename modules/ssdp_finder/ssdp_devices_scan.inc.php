@@ -45,27 +45,29 @@ function Scan()
     $table_name='ssdp_devices';
 
     foreach ($everything as $device) {
-        //print_r($device);  //uncomment to see all available array elements for a device.
+        $cont_url = str_ireplace("Location:", "", $device['location']);
+		$xml=simplexml_load_file($cont_url);
         $info = $device['description']['device'];
-        $uuid = $info["UDN"];
+        $uuid = $xml->device->UDN;
         $existed = $rec=SQLSelectOne("SELECT * FROM $table_name WHERE UUID='$uuid'");
         // print array_search(, array_column( $result, 'ADDRESS'));
-        if (!array_search_result($result, 'UUID', $info["UDN"]) && !is_null($info["UDN"])) {
+        if (!array_search_result($result, 'CONTROLADDRESS', $cont_url) && !is_null($uuid)) {
             $result[] = [
                 "ID" => $existed["ID"], //existed id Majordomo
-                "TITLE" => $info["friendlyName"],//friendly name
-                "ADDRESS" => $info["presentationURL"]!="" ?$info["presentationURL"] :getIp($device,false) ,//presentation url (web UI of device)
-                "UUID" => $info["UDN"],
-                "DESCRIPTION" => is_array($info["modelDescription"]) ? implode(',', $info["modelDescription"]) : $info["modelDescription"],//description
-                "TYPE" => explode(":", $info["deviceType"])[3],//DeviceType
-                "LOGO" => getDefImg($device),//$info
-                "SERIAL" => $info["serialNumber"],//serialnumber
-                "MANUFACTURERURL" => $info["manufacturerURL"],//manufacturer url
+                "TITLE" => $xml->device->friendlyName,//friendly name
+                "ADDRESS" => $xml->device->presentationURL!="" ?$cont_url :getIp($cont_url,false) ,//presentation url (web UI of device),//presentation url (web UI of device)
+                "UUID" => $xml->device->UDN,
+                "DESCRIPTION" => $xml->device->modelDescription,//description
+                "TYPE" => explode(":", $xml->device->deviceType)[3],//DeviceType
+                "LOGO" => getDefImg($device,$xml),//$info
+                "SERIAL" => $xml->device->serialNumber,//serialnumber
+                "MANUFACTURERURL" => $xml->device->manufacturerURL,//manufacturer url
                 "UPDATED" => '',
-                "MODEL" => $info["modelName"],//model
-                "MODELNUMBER" => $info["modelNumber"],//modelNumber
-                "MANUFACTURER" => $info["manufacturer"],//Manufacturer
-                "SERVICES"=> getServices($info),//list services of device
+                "MODEL" => $xml->device->modelName,//model
+                "MODELNUMBER" => $xml->device->modelNumber,//modelNumber
+                "MANUFACTURER" => $xml->device->manufacturer,//Manufacturer
+                "SERVICES"=> getServices($xml),//list services of device
+				"CONTROLADDRESS"=> $cont_url,//list services of device
             ];
         }
     }
@@ -110,31 +112,15 @@ function startsWith($haystack, $needle)
      return (substr($haystack, 0, $length) === $needle);
 }
 
-function getServices($dev){
-	$services = $dev["serviceList"]["service"];
+function getServices($xml){
 	$result = array();
-	if($services){
-		$servType = $services["serviceType"];
-		//print "Serv Type: " . $servType;
-		if(startsWith($servType,"urn") ){ // && empty($servType)
-			//print "First cond->";
-			$name = explode(":", $servType)[3];
-			array_push($result,$name);
-		}
-		else{
-		
-			foreach($services as $k => $v){
-					$value = $v["serviceType"];
-				
-						$name = explode(":", $value)[3];
-					
-						array_push($result,$name);
-					}
-			}
-	}
+	foreach($xml->device->serviceList->service as $type)
+    {
+        $name = explode(":", $type->serviceType)[3];
+		array_push($result,$name);
+    }
 	return implode(",",$result);
 }
-
 function endsWith($haystack, $needle)
 {
 	return $needle === '' || substr_compare($haystack, $needle, -strlen($needle)) === 0;
@@ -154,7 +140,7 @@ function SearchArray($array, $searchIndex, $searchValue)
     return false;
 }
 
-function getDefImg($device)
+function getDefImg($device,$xml)
 {
     $dev = $device['description']['device'];
 	$baseUrl = getIp($device,true);
@@ -180,8 +166,6 @@ function getDefImg($device)
         return $baseUrl . $img48;
 		
 	}else{
-        $type =explode(":", $dev["deviceType"])[3];
-		return "/templates/ssdp_finder/img/".$type. ".png";//"Icons not found... (((";
+		return "/templates/ssdp_finder/img/".explode(":", $xml->device->deviceType)[3]. ".png";//"Icons not found... (((";
 	}
 }
-

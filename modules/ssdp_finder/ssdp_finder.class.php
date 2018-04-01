@@ -424,6 +424,7 @@ ssdp_devices -
  ssdp_devices: LINKED_PROPERTY varchar(100) NOT NULL DEFAULT ''
  ssdp_devices: LINKED_METHOD varchar(100) NOT NULL DEFAULT ''
  ssdp_devices: UPDATED datetime
+ ssdp_devices: CONTROLADDRESS varchar(255) NOT NULL DEFAULT ''
 
 
 EOD;

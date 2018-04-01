@@ -22,6 +22,9 @@
    global $create_term;
    global $create_templ;
    
+   //updating 'controladdress' (varchar)
+   global $controladdress;
+   $rec['CONTROLADDRESS']=$controladdress;
    //updating 'Uuid' (varchar)
    global $uuid;
    $rec['UUID']=$uuid;
@@ -105,6 +108,8 @@
      $ok=0;
     }
   
+   global $controladdress;
+   $rec['CONTROLADDRESS']=$controladdress;
    //updating 'Uuid' (varchar)
    global $uuid;
    $rec['UUID']=$uuid;
