@@ -106,6 +106,15 @@
                 <input type="text" class="form-control" name="linked_object" value="[#LINKED_OBJECT#]" id="linked_object">
             </div>
         </div>
+        <!-- CONTROL ADDRESS (varchar) -->
+        <div class="form-group">
+            <label class="col-lg-3 control-label" [#if ERR_CONTROLADDRESS#] style="color:red;font-weight:bold" [#endif#]>
+                XML path:
+            </label>
+            <div class="col-lg-4">
+                <input type="text" class="form-control" name="controladdress" value="[#CONTROLADDRESS#]" id="controladdress">
+            </div>
+        </div>
         <div class="form-group">
             <label class="control-label">
                 Создать простое устройство
