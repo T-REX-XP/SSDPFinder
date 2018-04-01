@@ -67,7 +67,7 @@ function Scan()
                 "MODEL" => $xml->device->modelName,//model
                 "MODELNUMBER" => $xml->device->modelNumber,//modelNumber
                 "MANUFACTURER" => $xml->device->manufacturer,//Manufacturer
-                "SERVICES"=> getServices($info),//list services of device
+                "SERVICES"=> getServices($xml),//list services of device
 				"CONTROLADDRESS"=> $cont_url,//list services of device
             ];
         }
@@ -113,28 +113,13 @@ function startsWith($haystack, $needle)
      return (substr($haystack, 0, $length) === $needle);
 }
 
-function getServices($dev){
-	$services = $dev["serviceList"]["service"];
+function getServices($xml){
 	$result = array();
-	if($services){
-		$servType = $services["serviceType"];
-		//print "Serv Type: " . $servType;
-		if(startsWith($servType,"urn") ){ // && empty($servType)
-			//print "First cond->";
-			$name = explode(":", $servType)[3];
-			array_push($result,$name);
-		}
-		else{
-		
-			foreach($services as $k => $v){
-					$value = $v["serviceType"];
-				
-						$name = explode(":", $value)[3];
-					
-						array_push($result,$name);
-					}
-			}
-	}
+	foreach($xml->device->serviceList->service as $type)
+    {
+        $name = explode(":", $type->serviceType)[3];
+		array_push($result,$name);
+    }
 	return implode(",",$result);
 }
 
