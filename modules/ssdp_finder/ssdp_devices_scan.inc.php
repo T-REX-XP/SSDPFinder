@@ -45,8 +45,7 @@ function Scan()
     $table_name='ssdp_devices';
 
     foreach ($everything as $device) {
-        //print_r($device);  //uncomment to see all available array elements for a device.
-		$cont_url = str_ireplace("Location:", "", $device['location']);
+        $cont_url = str_ireplace("Location:", "", $device['location']);
 		$xml=simplexml_load_file($cont_url);
         $info = $device['description']['device'];
         $uuid = $xml->device->UDN;
@@ -60,7 +59,7 @@ function Scan()
                 "UUID" => $xml->device->UDN,
                 "DESCRIPTION" => $xml->device->modelDescription,//description
                 "TYPE" => explode(":", $xml->device->deviceType)[3],//DeviceType
-                "LOGO" => getDefImg($device, $cont_url, $xml),//$info
+                "LOGO" => getDefImg($device,$xml),//$info
                 "SERIAL" => $xml->device->serialNumber,//serialnumber
                 "MANUFACTURERURL" => $xml->device->manufacturerURL,//manufacturer url
                 "UPDATED" => '',
@@ -92,10 +91,11 @@ function array_search_result($array, $key, $value)
 }
 
 
-function getIp($cont_url,$withPort)
+function getIp($device,$withPort)
 {
- 	if( !empty($cont_url) ){
-        $parsed_url = parse_url($cont_url);
+    $baseUrl = $device["location"];
+	if( !empty($baseUrl) ){
+        $parsed_url = parse_url($baseUrl);
         if($withPort ==true){
             $baseUrl = $parsed_url['scheme'].'://'.$parsed_url['host'].':'.$parsed_url['port'];
         }else{
@@ -121,7 +121,6 @@ function getServices($xml){
     }
 	return implode(",",$result);
 }
-
 function endsWith($haystack, $needle)
 {
 	return $needle === '' || substr_compare($haystack, $needle, -strlen($needle)) === 0;
@@ -141,11 +140,14 @@ function SearchArray($array, $searchIndex, $searchValue)
     return false;
 }
 
-function getDefImg($device, $cont_url, $xml){
+function getDefImg($device,$xml)
+{
     $dev = $device['description']['device'];
 	$baseUrl = getIp($device,true);
+
 	if($baseUrl && $dev["iconList"]["icon"]){
 		$icons = $dev["iconList"]["icon"];
+
         $img48 =""; //empty by def
         if($icons["url"]){
             $img48 =$icons["url"];
@@ -163,24 +165,7 @@ function getDefImg($device, $cont_url, $xml){
         }
         return $baseUrl . $img48;
 		
-	} else if (!$img48){ // иначе выбираем картинку из xml файла
-        $sizeold='32';
-		foreach($xml->device->iconList->icon as $icon) {
-			$size = $icon->width;
-			echo ($size);
-			if ($size == '48'){
-				$url= $icon->url;
-				break;    // получена картинка размером 48
-			}else if ($size <= $sizeold){
-				$url= $icon->url;
-				$sizeold = $size; // выбираем наименьшую картинку
-			}
-		}
-		$ip_port = getIp($cont_url,True);
-		if ($url){
-		    return $ip_port.$url;
-		} else { //  берем картинки из заготовок
-		    return "/templates/ssdp_finder/img/".explode(":", $xml->device->deviceType)[3]. ".png";//"Icons not found... (((";
-	    }
+	}else{
+		return "/templates/ssdp_finder/img/".explode(":", $xml->device->deviceType)[3]. ".png";//"Icons not found... (((";
 	}
 }
