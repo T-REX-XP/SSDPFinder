@@ -370,6 +370,10 @@ function add_to_terminal($id) {
   if ($event=='SAY') {
    $level=$details['level'];
    $message=$details['message'];
+   $cached_filename = 'cached/voice/rh_' . md5($message) . '.wav';
+   $url=$_SERVER['SERVER_ADDR'].$cached_filename; 
+   sg('MultiCastBathroom.playUrl',$url);
+   DebMes($url,'googlenotifier');
    //...
   }
  }

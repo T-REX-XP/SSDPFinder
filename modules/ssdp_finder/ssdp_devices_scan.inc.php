@@ -39,27 +39,26 @@ if ($res[0]['UUID']) {
 function Scan()
 {
 	$upnp = new Upnp();
-    print('searching...' . PHP_EOL);
+    #print('searching...' . PHP_EOL);
     $everything = $upnp->discover();
     $result = [];
     $table_name='ssdp_devices';
 
     foreach ($everything as $device) {
-        $cont_url = str_ireplace("Location:", "", $device['location']);
-		$xml=simplexml_load_file($cont_url);
-        $info = $device['description']['device'];
+        $control_url = str_ireplace("Location:", "", $device['location']);
+	$xml=simplexml_load_file($control_url);
         $uuid = $xml->device->UDN;
         $existed = $rec=SQLSelectOne("SELECT * FROM $table_name WHERE UUID='$uuid'");
         // print array_search(, array_column( $result, 'ADDRESS'));
-        if (!array_search_result($result, 'CONTROLADDRESS', $cont_url) && !is_null($uuid)) {
+        if (!array_search_result($result, 'CONTROLADDRESS', $control_url) && !is_null($uuid)) {
             $result[] = [
                 "ID" => $existed["ID"], //existed id Majordomo
                 "TITLE" => $xml->device->friendlyName,//friendly name
-                "ADDRESS" => $xml->device->presentationURL!="" ?$cont_url :getIp($cont_url,false) ,//presentation url (web UI of device),//presentation url (web UI of device)
+                "ADDRESS" => getIp($control_url,false) ,//presentation url (web UI of device),//presentation url (web UI of device)
                 "UUID" => $xml->device->UDN,
-                "DESCRIPTION" => $xml->device->modelDescription,//description
+                "DESCRIPTION" => $xml->device->modelDescription.$device['server'],//description get from xml or field "server"
                 "TYPE" => explode(":", $xml->device->deviceType)[3],//DeviceType
-                "LOGO" => getDefImg($device,$xml),//$info
+                "LOGO" => getDefImg($control_url,$xml),//Logo 
                 "SERIAL" => $xml->device->serialNumber,//serialnumber
                 "MANUFACTURERURL" => $xml->device->manufacturerURL,//manufacturer url
                 "UPDATED" => '',
@@ -67,7 +66,7 @@ function Scan()
                 "MODELNUMBER" => $xml->device->modelNumber,//modelNumber
                 "MANUFACTURER" => $xml->device->manufacturer,//Manufacturer
                 "SERVICES"=> getServices($xml),//list services of device
-				"CONTROLADDRESS"=> $cont_url,//list services of device
+		"CONTROLADDRESS"=> $control_url,//list services of device
             ];
         }
     }
@@ -91,9 +90,8 @@ function array_search_result($array, $key, $value)
 }
 
 
-function getIp($device,$withPort)
+function getIp($baseUrl,$withPort)
 {
-    $baseUrl = $device["location"];
 	if( !empty($baseUrl) ){
         $parsed_url = parse_url($baseUrl);
         if($withPort ==true){
@@ -140,32 +138,24 @@ function SearchArray($array, $searchIndex, $searchValue)
     return false;
 }
 
-function getDefImg($device,$xml)
+function getDefImg($control_url,$xml)
 {
-    $dev = $device['description']['device'];
-	$baseUrl = getIp($device,true);
+    $baseUrl = getIp($control_url,True);
+    if (!$xml->device->iconList->icon){
+        return "/templates/ssdp_finder/img/".explode(":", $xml->device->deviceType)[3]. ".png";//"Icons not found..."
+    } else {
+        foreach ($xml->device->iconList->icon as $icon) {
+	    if ($icon->with = 48){
+	        $url = $icon->url;
+	        break;
+	    } else if ($with < $icon->with) {
+	        $url = $icon->url;
+	        $with = $icon->with;
+	    } else {
+	        $url = $icon->url;}
+	    }    
+	        return $baseUrl.$url;
+    }
 
-	if($baseUrl && $dev["iconList"]["icon"]){
-		$icons = $dev["iconList"]["icon"];
-
-        $img48 =""; //empty by def
-        if($icons["url"]){
-            $img48 =$icons["url"];
-        }
-        else{
-            $searchedValue = 48; // Value to search.
-            $index48 = SearchArray($icons,"width",48);
     
-           
-            if($index48 !=false){
-                $img48 = $icons[$index48]["url"];
-            }else{
-                $img48 = $icons[0]["url"];
-            }
-        }
-        return $baseUrl . $img48;
-		
-	}else{
-		return "/templates/ssdp_finder/img/".explode(":", $xml->device->deviceType)[3]. ".png";//"Icons not found... (((";
-	}
 }
