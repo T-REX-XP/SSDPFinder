@@ -15,9 +15,9 @@ if(!count($everything)){
 }
 
 foreach($everything as $device){
-    //print_r($device);  //uncomment to see all available array elements for a device.
+    print_r($device);  //uncomment to see all available array elements for a device.
     $info = $device['description']['device'];
     $summary = $info['friendlyName'].', '.$info['modelName'].', '.$info['UDN'];
-    print($summary.PHP_EOL);
+    //print($summary.PHP_EOL);
 }
 
