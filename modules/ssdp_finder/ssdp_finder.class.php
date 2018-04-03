@@ -371,11 +371,11 @@ function add_to_terminal($id) {
    $levelmes = getGlobal('ThisComputer.minMsgLevel');
    $level=$details['level'];
    $message=$details['message'];
-   $cached_filename = ROOT . 'cached/voice/' . md5($message) . '.mp3';
+   $cached_filename = .$_SERVER['REMOTE_ADDR'] . '/cached/voice/' . md5($message) . '.mp3';
    $usedsay=SQLSelect("SELECT * FROM ssdp_devices WHERE USE_TO_SAY='".'1'."'");
    foreach ($usedsay as $saydev) {
-        if ($saydev['TYPE']=='MediaRenderer' AND $saydev['USE_TO_SAY']=='1' AND $levelmes<=$level){
-          setGlobal($saydev['LINKED_OBJECT']'.playUrl', $cached_filename);
+        if ($saydev['TYPE']=='MediaRenderer' AND $saydev['USE_TO_SAY']=='1' AND $levelmes<=$level) {
+          setGlobal($saydev['LINKED_OBJECT'].'.playUrl', $cached_filename);
         }
    }
    //playSound($cached_filename,1);
