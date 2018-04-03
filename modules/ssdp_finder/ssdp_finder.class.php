@@ -368,12 +368,17 @@ function add_to_terminal($id) {
  function processSubscription($event, $details='') {
  $this->getConfig();
   if ($event=='SAY') {
+   $levelmes = getGlobal('ThisComputer.minMsgLevel');
    $level=$details['level'];
    $message=$details['message'];
-   $cached_filename = 'cached/voice/rh_' . md5($message) . '.wav';
-   $url=$_SERVER['SERVER_ADDR'].$cached_filename; 
-   sg('MultiCastBathroom.playUrl',$url);
-   DebMes($url,'googlenotifier');
+   $cached_filename = ROOT . 'cached/voice/' . md5($message) . '.mp3';
+   $usedsay=SQLSelect("SELECT * FROM ssdp_devices WHERE USE_TO_SAY='".'1'."'");
+   foreach ($usedsay as $saydev) {
+        if ($saydev['TYPE']=='MediaRenderer' AND $saydev['USE_TO_SAY']=='1' AND $levelmes<=$level){
+          setGlobal($saydev['LINKED_OBJECT']'.playUrl', $cached_filename);
+        }
+   }
+   //playSound($cached_filename,1);
    //...
   }
  }
@@ -426,7 +431,7 @@ ssdp_devices -
  ssdp_devices: LOGO varchar(255) NOT NULL DEFAULT ''
  ssdp_devices: LINKED_OBJECT varchar(100) NOT NULL DEFAULT ''
  ssdp_devices: LINKED_PROPERTY varchar(100) NOT NULL DEFAULT ''
- ssdp_devices: LINKED_METHOD varchar(100) NOT NULL DEFAULT ''
+ ssdp_devices: USE_TO_SAY int(1) unsigned NOT NULL DEFAULT 0
  ssdp_devices: UPDATED datetime
  ssdp_devices: CONTROLADDRESS varchar(255) NOT NULL DEFAULT ''
 
