@@ -21,7 +21,9 @@
    global $create_od;
    global $create_term;
    global $create_templ;
-   
+
+   //updating 'use_to_say' (varchar)
+   global $use_to_say;
    //updating 'controladdress' (varchar)
    global $controladdress;
    $rec['CONTROLADDRESS']=$controladdress;
@@ -70,6 +72,9 @@
    global $updated_date;
    global $updated_minutes;
    global $updated_hours;
+   if($use_to_say==true and $model=='MediaRenderer'){
+      $rec['USE_TO_SAY']=1;
+     }
    $rec['UPDATED']=toDBDate($updated_date)." $updated_hours:$updated_minutes:00";
   //UPDATING RECORD
    if ($ok) {
@@ -108,6 +113,8 @@
      $ok=0;
     }
   
+   //updating 'use_to_say' (varchar)
+   global $use_to_say;
    global $controladdress;
    $rec['CONTROLADDRESS']=$controladdress;
    //updating 'Uuid' (varchar)
@@ -155,6 +162,9 @@
    global $updated_date;
    global $updated_minutes;
    global $updated_hours;
+   if($use_to_say==true and $model=='MediaRenderer'){
+      $rec['USE_TO_SAY']=1;
+     }
     $rec['UPDATED']=toDBDate($updated_date)." $updated_hours:$updated_minutes:00";
    //UPDATING RECORD
     if ($ok) {

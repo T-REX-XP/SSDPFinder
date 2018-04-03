@@ -13,13 +13,14 @@ class Browse
     public function __construct($server)
     {
         $this->upnp = new Mediaserver();
-        if(is_array($server['description']['device']['serviceList']['service'])){
-            foreach($server['description']['device']['serviceList']['service'] as $service){
-                if($service['serviceId'] == 'urn:upnp-org:serviceId:ContentDirectory'){
-                    $this->ctrlurl = $this->upnp->baseUrl($server['location']).$service['controlURL'];
+        $control_url = str_ireplace("Location:", "", $server['location']);
+        $xml=simplexml_load_file($control_url);
+            foreach($xml->device->serviceList->service as $service){
+                if($service->serviceId == 'urn:upnp-org:serviceId:ContentDirectory'){
+                    $this->ctrlurl = ($this->upnp->baseUrl($control_url,True).$service->controlURL);
+                    echo ($this->ctrlurl);
                 }
             }
-        }
     }
 
     //BrowseDirectChildren or BrowseMetadata

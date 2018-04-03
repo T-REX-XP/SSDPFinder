@@ -19,7 +19,14 @@ foreach($servers as $server){
     $directories = $browse->browse();
     $info = $server['description']['device'];
     $summary = $info['friendlyName'].', '.$info['modelDescription'].', '.$info['modelName'].', '.$info['UDN'];
-    print($summary.PHP_EOL);
-    print_r($directories);
+    //print($server);
+    //print_r($directories);
+    foreach($directories as $list){
+      print_r($list);
+      //print_r($list['dc:title']); // выводит имена папок
+     //Array ( [parentID] => 0 [dc:title] => Списки воспроизведения [upnp:class] => object.container )
+
+      
+   }
 }
 
