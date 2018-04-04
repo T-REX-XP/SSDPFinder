@@ -38,17 +38,16 @@ class RemoteVolume
 	public $ctrlurl;
 	private $upnp;
 
-	public function __construct($device)
+	public function __construct($server)
 	{
         $this->upnp = new Upnp\Core();
-        $this->ctrlurl = $device;
-        if(is_array($device['description']['device']['serviceList']['service'])){
-            foreach($device['description']['device']['serviceList']['service'] as $service){
-                if($service['serviceId'] == 'urn:upnp-org:serviceId:RenderingControl'){
-                    $this->ctrlurl = $this->upnp->baseUrl($device['location']).$service['controlURL'];
+		$control_url = str_ireplace("Location:", "", $server['location']);
+        $xml=simplexml_load_file($control_url);
+            foreach($xml->device->serviceList->service as $service){
+                if($service->serviceId == 'urn:upnp-org:serviceId:AVTransport'){
+                    $this->ctrlurl = ($this->upnp->baseUrl($control_url,True).$service->controlURL);
                 }
             }
-        }
 	}
 
 	public function SetVolume($volume)
