@@ -173,14 +173,12 @@ class Core {
         $body .='</s:Envelope>';
  
         $header = array(
-            'SOAPAction: "urn:schemas-upnp-org:service:'.$type.':1#'.$method.'"',
-            'Content-Type: text/xml; charset="utf-8"',
-            'Host: '.$hostIp.':'.$hostPort,
-            'Connection: close',
-            'Accept-Language: en-us;q=1, en;q=0.5',
-            'Accept-Encoding: gzip',
+			'Host: '.$hostIp.':'.$hostPort,
             'User-Agent: '.$this->user_agent, //fudge the user agent to get desired video format
             'Content-Length: ' . strlen($body),
+			'Connection: close',
+            'Content-Type: text/xml; charset="utf-8"',
+			'SOAPAction: "urn:schemas-upnp-org:service:'.$type.':1#'.$method.'"',
         );
 
         $ch = curl_init();
