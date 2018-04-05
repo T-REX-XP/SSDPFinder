@@ -12,11 +12,9 @@ use jalder\Upnp;
 class RemoteVolume
 {
 
-
-	public $ctrlurl;
-	private $upnp;
-    public function __construct($server)
-	{
+    public $ctrlurl;
+    private $upnp;
+    public function __construct($server){
     $this->upnp = new Upnp\Core();
 	$control_url = str_ireplace("Location:", "", $server['location']);
     $xml=simplexml_load_file($control_url);
