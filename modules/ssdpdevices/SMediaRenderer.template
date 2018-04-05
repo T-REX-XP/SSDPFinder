@@ -2,7 +2,7 @@
 
 <div class="device-details" style="font-size: 150%; text-align:center; font-family: monospace; ">%.object_description%</div>
    
- <input type="range" style="-webkit-appearance: none; -moz-appearance: none; horizontal-align:middle; vertical-align:middle; appearance: none; width: 450px; height: 20px; background: #ddd; border-radius: 8px;" onChange='ajaxSetGlobal("%.object_title%.volume", value);' value=%.volume%  min="0" max="100" step="5" ></input> 
+ <input type="range" onChange='ajaxSetGlobal("%.object_title%.volume", value);' value=%.volume%  min="0" max="100" step="5" ></input> 
 <p style="font-size: 110%; text-align:center; font-family: monospace; ">Ссылка для воспроизведения текущим устройством</p>
 <input type="text" style="text-align:center; margin: 0; top: 50%;" maxlength="1024" size="80" onChange='ajaxSetGlobal("%.object_title%.playUrl", value);' value=%.playUrl% ></input> 
 <div class="group"> 
