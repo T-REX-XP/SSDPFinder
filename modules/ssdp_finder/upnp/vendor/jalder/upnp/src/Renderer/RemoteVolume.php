@@ -15,13 +15,13 @@ class RemoteVolume
 
 	public $ctrlurl;
 	private $upnp;
-
+    public function __construct($server)
 	{
-        $this->upnp = new Upnp\Core();
+    $this->upnp = new Upnp\Core();
 	$control_url = str_ireplace("Location:", "", $server['location']);
-        $xml=simplexml_load_file($control_url);
-        foreach($xml->device->serviceList->service as $service){
-          if($service->serviceId == 'urn:upnp-org:serviceId:AVTransport'){
+    $xml=simplexml_load_file($control_url);
+    foreach($xml->device->serviceList->service as $service){
+        if($service->serviceId == 'urn:upnp-org:serviceId:AVTransport'){
             if ($service->controlURL{0} == '/') {
               $this->ctrlurl = ($this->upnp->baseUrl($control_url,True).$service->controlURL);
               } else {
