@@ -12,45 +12,25 @@ use jalder\Upnp;
 class Remote
 {
 
-	/**
-	 * Renderers may have the following UPnP Methods:
-	 * SetAVTransportURI
-	 * SetNextAVTransportURI
-	 * GetMediaInfo
-	 * GetMediaInfo_Ext
-	 * GetTransportInfo
-	 * GetPositionInfo
-	 * GetDeviceCapabilities
-	 * GetTransportSettings
-	 * Stop
-	 * Play
-	 * Pause
-	 * Record
-	 * Seek
-	 * Next
-	 * Previous
-	 * Ext_Exit
-	 * SetPlayMode
-	 * SetRecordQualityMode
-	 * GetCurrentTransportActions
-	 */
-
-	public $ctrlurl;
-	private $upnp;
-
-	public function __construct($device)
-	{
-        $this->upnp = new Upnp\Core();
-        $this->ctrlurl = $device;
-        if(is_array($device['description']['device']['serviceList']['service'])){
-            foreach($device['description']['device']['serviceList']['service'] as $service){
-                if($service['serviceId'] == 'urn:upnp-org:serviceId:AVTransport'){
-                    $this->ctrlurl = $this->upnp->baseUrl($device['location']).$service['controlURL'];
-                }
+  public $ctrlurl;
+  private $upnp;
+  public function __construct($server) {
+    $this->upnp = new Upnp\Core();
+    $control_url = str_ireplace("Location:", "", $server['location']);
+    $xml=simplexml_load_file($control_url);
+    foreach($xml->device->serviceList->service as $service){
+          if($service->serviceId == 'urn:upnp-org:serviceId:AVTransport'){
+            if ($service->controlURL{0} == '/') {
+              $this->ctrlurl = ($this->upnp->baseUrl($control_url,True).$service->controlURL);
+			  print ($this->ctrlurl );
+              } else {
+              $this->ctrlurl = ($this->upnp->baseUrl($control_url,True).'/'.$service->controlURL);
+			  print ($this->ctrlurl.' ggg' );
             }
+          }
+         }
         }
 
-	}
 
 	public function play($url = "")
     {

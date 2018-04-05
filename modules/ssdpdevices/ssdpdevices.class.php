@@ -271,26 +271,10 @@ function renderStructure() {
 devices - 
 */
   $data = <<<EOD
- devices: ID int(10) unsigned NOT NULL auto_increment
- devices: TITLE varchar(100) NOT NULL DEFAULT ''
- devices: TYPE varchar(100) NOT NULL DEFAULT ''
- devices: LINKED_OBJECT varchar(100) NOT NULL DEFAULT ''
- devices: LOCATION_ID int(10) unsigned NOT NULL DEFAULT 0  
- devices: FAVORITE int(3) unsigned NOT NULL DEFAULT 0 
-
- devices: SYSTEM varchar(255) NOT NULL DEFAULT ''
- devices: SUBTYPE varchar(100) NOT NULL DEFAULT ''
- devices: ENDPOINT_MODULE varchar(255) NOT NULL DEFAULT ''
- devices: ENDPOINT_NAME varchar(255) NOT NULL DEFAULT ''
- devices: ENDPOINT_TITLE varchar(255) NOT NULL DEFAULT ''
- devices: ROLES varchar(100) NOT NULL DEFAULT ''
-
- devices_linked: ID int(10) unsigned NOT NULL auto_increment
- devices_linked: DEVICE1_ID int(10) unsigned NOT NULL DEFAULT 0
- devices_linked: DEVICE2_ID int(10) unsigned NOT NULL DEFAULT 0
- devices_linked: LINK_TYPE varchar(100) NOT NULL DEFAULT ''
- devices_linked: LINK_SETTINGS text
- devices_linked: COMMENT varchar(255) NOT NULL DEFAULT '' 
+ playlist_render: ID int(10) unsigned NOT NULL auto_increment
+ playlist_render: TITLE varchar(100) NOT NULL DEFAULT ''
+ playlist_render: URL_LINK varchar(250) NOT NULL DEFAULT ''
+ playlist_render: FAVORITE int(3) unsigned NOT NULL DEFAULT 0 
 
 
 EOD;
