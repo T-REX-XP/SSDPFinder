@@ -73,3 +73,30 @@
 </serviceList>
 </device>
 </root>
+
+скрипт оперделения папок переделка и не забыть в рендерер исправить $control_url = str_ireplace("Location:", "", $server['location']); удалить ['location'] 
+<?php
+
+require(dirname(__FILE__).'/../../../autoload.php');
+
+use jalder\Upnp\Mediaserver;
+
+$mediaserver = new Mediaserver();
+
+$browse = new Mediaserver\Browse('http://192.168.1.20:2869/upnphost/udhisapi.dll?content=uuid:cc3558a5-ce9c-4a9e-a898-38cd8e4ade29');
+$directories = $browse->browse();
+foreach($directories as $list){
+      print_r($list['dc:title'].'<br> ');
+      //print_r($list['dc:title']); // выводит имена папок
+     //Array ( [parentID] => 0 [dc:title] => Списки воспроизведения [upnp:class] => object.container )
+     $s = new SplObjectStorage($list['upnp:class']);
+     var_dump($s->count());
+     //var_dump($s->serialize());
+     //var_dump($s->getinfo());
+     $base = get_class_methods($s);
+     print_r($base);
+     print_r($base['getInfo']);
+      
+   }
+
+
