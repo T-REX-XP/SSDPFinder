@@ -17,7 +17,7 @@ class RemoteVolume {
     $control_url = str_ireplace("Location:", "", $server);
     $xml=simplexml_load_file($control_url);
     foreach($xml->device->serviceList->service as $service){
-          if($service->serviceId == 'urn:upnp-org:serviceId:AVTransport'){
+          if($service->serviceId == 'urn:upnp-org:serviceId:RenderingControl'){
                 $chek_url = (substr($service->controlURL,0,1));
                 if ($chek_url == '/') {
                    $this->ctrlurl = ($this->upnp->baseUrl($control_url,True).$service->controlURL);
@@ -27,6 +27,7 @@ class RemoteVolume {
           }
          }
         }
+
 
 	public function SetVolume($volume)
 	{
