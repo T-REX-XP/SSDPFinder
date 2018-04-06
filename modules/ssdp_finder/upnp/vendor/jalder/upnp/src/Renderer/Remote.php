@@ -104,17 +104,16 @@ class Remote
 		$response = $this->instanceOnly('GetMediaInfo');
 		// сохраняет данные в файл
 		//$file = 'people.txt';
-        //file_put_contents($file, $response);
+                //file_put_contents($file, $response);
 		// создает документ хмл
 		$doc = new \DOMDocument();
 		//  загружет его
-        $doc->loadXML($response);
+                $doc->loadXML($response);
 		//  выбирает поле соответсвтуещее
-        $result = $doc->getElementsByTagName('CurrentURI');
-        foreach ($result as $item) {
-             $track = $item->nodeValue . "\n";
-			 
-         }
+               $result = $doc->getElementsByTagName('CurrentURI');
+               foreach ($result as $item) {
+                        $track = $item->nodeValue;
+			}
 		return $track;
 	}
 	public function stop()
