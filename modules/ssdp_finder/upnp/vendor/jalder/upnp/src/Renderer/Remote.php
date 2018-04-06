@@ -96,12 +96,26 @@ class Remote
 			'InstanceID'=>$id
 		);
 		$response = $this->upnp->sendRequestToDevice($command,$args,$this->ctrlurl,$type);
-		return $response['s:Body']['u:'.$command.'Response'];
+        return $response;
 	}
 
 	public function getMedia()
 	{
-		return $this->instanceOnly('GetMediaInfo');
+		$response = $this->instanceOnly('GetMediaInfo');
+		// сохраняет данные в файл
+		//$file = 'people.txt';
+        //file_put_contents($file, $response);
+		// создает документ хмл
+		$doc = new \DOMDocument();
+		//  загружет его
+        $doc->loadXML($response);
+		//  выбирает поле соответсвтуещее
+        $result = $doc->getElementsByTagName('CurrentURI');
+        foreach ($result as $item) {
+             $track = $item->nodeValue . "\n";
+			 
+         }
+		return $track;
 	}
 	public function stop()
 	{
