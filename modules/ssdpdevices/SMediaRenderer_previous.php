@@ -8,9 +8,7 @@ $renderer = new Renderer();
 
 $adress = $this->getProperty("CONTROLADDRESS");
 $remote = new Renderer\Remote($adress);
-
 $previous = $this->getProperty("previous");
-$remote = new Renderer\Remote($adress);
 if ( $previous ) {
     $result = $remote->previous();
     $this->setProperty("previous",0);
