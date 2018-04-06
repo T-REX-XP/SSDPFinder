@@ -6,23 +6,12 @@ use jalder\Upnp\Renderer;
 
 $renderer = new Renderer();
 
-$renderers = $renderer->discover();
-
-if(!count($renderers)){
-    print_r('no upnp renderers found'.PHP_EOL);
-}
-$uuid = $this->getProperty("UUID");
+$adress = $this->getProperty("CONTROLADDRESS");
+$remote = new Renderer\Remote($adress);
 $next = $this->getProperty("next");
-
-foreach($renderers as $r){
-    $remote = new Renderer\Remote($r);
-    if ( $next AND $uuid == $r['description']['device']['UDN']) {
-            $result = $remote->next();
-            $this->setProperty("next",0);
-        } else {
-            $this->setProperty("next",0);
-        }
+if ( $next ) {
+    $result = $remote->next();
+    $this->setProperty("next",0);
+} else {
+    $this->setProperty("next",0);
 }
-
-
-
