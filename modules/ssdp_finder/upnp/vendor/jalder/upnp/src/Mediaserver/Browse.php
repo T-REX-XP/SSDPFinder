@@ -17,8 +17,12 @@ class Browse
         $xml=simplexml_load_file($control_url);
             foreach($xml->device->serviceList->service as $service){
                 if($service->serviceId == 'urn:upnp-org:serviceId:ContentDirectory'){
-                    $this->ctrlurl = ($this->upnp->baseUrl($control_url,True).$service->controlURL);
-                    echo ($this->ctrlurl);
+                    $chek_url = (substr($service->controlURL,0,1));
+                    if ($chek_url == '/') {
+                       $this->ctrlurl = ($this->upnp->baseUrl($control_url,True).$service->controlURL);
+                     } else {
+                        $this->ctrlurl = ($this->upnp->baseUrl($control_url,True).'/'.$service->controlURL);
+                    }
                 }
             }
     }
