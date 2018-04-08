@@ -164,14 +164,8 @@ class Core {
         curl_close( $ch );
 
         //var_dump($response);
-
-        $doc = new \DOMDocument();
-        $doc->loadXML($response);
-        $result = $doc->getElementsByTagName('Result');
-        if(is_object($result->item(0))){
-            return $result->item(0)->nodeValue;
-        }
-        return false;
+      
+        return $response;
 
     }
 

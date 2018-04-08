@@ -10,3 +10,4 @@ $result = $remote->getMedia();
 print_r($result);
 
 
+получает данные о текущем файле что воспроизводится
