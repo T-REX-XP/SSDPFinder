@@ -436,7 +436,7 @@ ssdp_devices -
  ssdp_devices: UPDATED datetime
  ssdp_devices: CONTROLADDRESS varchar(255) NOT NULL DEFAULT ''
 
- playlist_render: ID int(10000) unsigned NOT NULL auto_increment
+ playlist_render: ID int(255) unsigned NOT NULL auto_increment
  playlist_render: TITLE varchar(100) NOT NULL DEFAULT ''
  playlist_render: DESCRIPTION varchar(300) NOT NULL DEFAULT ''
  playlist_render: GENRE varchar(50) NOT NULL DEFAULT ''
