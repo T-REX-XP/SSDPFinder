@@ -13,7 +13,7 @@ class Browse
     public function __construct($server)
     {
         $this->upnp = new Mediaserver();
-        $control_url = str_ireplace("Location:", "", $server['location']);
+        $control_url = str_ireplace("Location:", "", $server);
         $xml=simplexml_load_file($control_url);
             foreach($xml->device->serviceList->service as $service){
                 if($service->serviceId == 'urn:upnp-org:serviceId:ContentDirectory'){
@@ -28,18 +28,19 @@ class Browse
     }
 
     //BrowseDirectChildren or BrowseMetadata
-    public function browse($base = '0', $browseflag = 'BrowseDirectChildren', $start = 0, $count = 0)
+    public function browse($base = '0', $browseflag = 'BrowseDirectChildren', $start = 0, $count = 10000)
     {
         libxml_use_internal_errors(true); //is this still needed?
         $args = array(
             'ObjectID'=>$base,
             'BrowseFlag'=>$browseflag,
-            'Filter'=>'',
+            'Filter'=>'*',
             'StartingIndex'=>$start,
             'RequestedCount'=>$count,
             'SortCriteria'=>'',
         );
         $response = $this->upnp->sendRequestToDevice('Browse', $args, $this->ctrlurl, $type = 'ContentDirectory');
+		print_r($response);
         if($response){
             $doc = new \DOMDocument();
             $doc->loadXML($response);
