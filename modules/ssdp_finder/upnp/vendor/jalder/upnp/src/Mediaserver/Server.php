@@ -33,11 +33,11 @@ class Server
 
         var_dump($this->request);
         $this->parsed = [
-            'ObjectID'=>'10',
+            'ObjectID'=>'0',
             'BrowseFlag'=>'BrowseDirectChildren',
-            'Filter'=>'',
+            'Filter'=>'*',
             'StartingIndex'=>0,
-            'RequestedCount'=>0
+            'RequestedCount'=>10000
         ];
     }
 }
