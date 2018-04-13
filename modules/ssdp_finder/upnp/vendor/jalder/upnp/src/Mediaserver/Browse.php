@@ -28,7 +28,7 @@ class Browse
     }
 
     //BrowseDirectChildren or BrowseMetadata
-    public function browse($base = 'musicdb://', $browseflag = 'BrowseDirectChildren', $start = 0, $count = 10000)
+    public function browse($base = '0', $browseflag = 'BrowseDirectChildren', $start = 0, $count = 10000)
     {
         libxml_use_internal_errors(true); //is this still needed?
         $args = array(
@@ -44,7 +44,7 @@ class Browse
         if($response){
             $doc = new \DOMDocument();
             $doc->loadXML($response);
-			$doc->save("test.xml");
+	    $doc->save("test.xml");
             $containers = $doc->getElementsByTagName('container');
             $items = $doc->getElementsByTagName('item');
             $directories = array();
