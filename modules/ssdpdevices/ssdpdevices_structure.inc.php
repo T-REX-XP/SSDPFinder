@@ -26,8 +26,13 @@ $this->ssdpdevices_types=array(
         'PARENT_CLASS'=>'UPNPdevices',
         'CLASS'=>'SMediaServer',
         'PROPERTIES'=>array(
-           ),
-     ),
+            'getFileList'=>array('DESCRIPTION'=>'При изменении Получает список файлов на устройстве', 'KEEP_HISTORY'=>1, 'ONCHANGE'=>'getFileList', 'DATA_KEY'=>1),
+       ),
+        'METHODS'=>array(
+            'getFileList'=>array('DESCRIPTION'=>'Получает список файлов на устройстве'),
+
+        ),
+    ),
     'dial'=>array(
         'TITLE'=>'UPNP DIAL устройство',
         'PARENT_CLASS'=>'UPNPdevices',
