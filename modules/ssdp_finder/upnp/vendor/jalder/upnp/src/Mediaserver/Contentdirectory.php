@@ -31,6 +31,7 @@ class Contentdirectory
 
     public static function formatXml($directory)
     {
+		//print_r(serialize($directory));
         $dom = new \DOMDocument();
         $root = $dom->createElement('DIDL-Lite');
         $root = $dom->appendChild($root);

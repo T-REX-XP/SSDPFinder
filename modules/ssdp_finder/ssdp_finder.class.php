@@ -436,6 +436,13 @@ ssdp_devices -
  ssdp_devices: UPDATED datetime
  ssdp_devices: CONTROLADDRESS varchar(255) NOT NULL DEFAULT ''
 
+ mediaservers_playlist: ID int(255) unsigned NOT NULL auto_increment
+ mediaservers_playlist: TITLE varchar(100) NOT NULL DEFAULT ''
+ mediaservers_playlist: DESCRIPTION varchar(300) NOT NULL DEFAULT ''
+ mediaservers_playlist: GENRE varchar(50) NOT NULL DEFAULT ''
+ mediaservers_playlist: URL_LINK varchar(250) NOT NULL DEFAULT ''
+ mediaservers_playlist: LINKED_OBJECT varchar(100) NOT NULL DEFAULT ''
+ mediaservers_playlist: FAVORITE int(3) unsigned NOT NULL DEFAULT 0 
 
 EOD;
   parent::dbInstall($data);

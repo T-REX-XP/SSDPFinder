@@ -1,0 +1,7 @@
+<link rel="stylesheet" href="<#ROOTHTML#>bootstrap/css/bootstrap[#if "<#SETTINGS_THEME#>"=="dark"#]_dark[#endif#].min.css" type="text/css">
+
+<div class="group"> 
+ <button onClick='callMethod("%.object_title%.getFileList");' class="btn btn-custom"><span title="Get filelist" id="Get filelist" class="glyphicon glyphicon-list-alt aligned"></span></button> 
+</div>
+
+ 
