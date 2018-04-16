@@ -94,7 +94,7 @@
      if($create_term==true AND $type=='MediaRenderer'){
       $this->add_to_terminal($rec['ID']);
      }
-     if($create_templ==true AND $type=='MediaRenderer'){
+     if($create_templ==true){
       $this->add_to_template($rec['ID']);
      }
     }
@@ -113,6 +113,11 @@
      $ok=0;
     }
   
+
+   global $create_sd;
+   global $create_od;
+   global $create_term;
+   global $create_templ;
    //updating 'use_to_say' (varchar)
    global $use_to_say;
    global $controladdress;
@@ -172,7 +177,20 @@
       SQLUpdate($table_name, $rec); // update
      } else {
       $new_rec=1;
-      $rec['ID']=SQLInsert($table_name, $rec); // adding new record
+      $rec['ID']=SQLInsert($table_name, $rec); // adding new record]
+      // moya dobavka автодобавление устройств в онлайн и простые устройства
+      if($create_sd==true){
+       $this->add_to_SSDPdevices($rec['ID']);
+      }
+      if($create_od==true){
+       $this->add_to_pinghost($rec['ID']);
+      }
+      if($create_term==true AND $type=='MediaRenderer'){
+       $this->add_to_terminal($rec['ID']);
+      }
+      if($create_templ==true){
+       $this->add_to_template($rec['ID']);
+     }
      }
      $out['OK']=1;
     } else {
