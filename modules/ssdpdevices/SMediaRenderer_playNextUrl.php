@@ -8,10 +8,10 @@ $renderer = new Renderer();
 
 $adress = $this->getProperty("CONTROLADDRESS");
 $remote = new Renderer\Remote($adress);
-$playUrl = $this->getProperty("playNextUrl");
-if ( $playUrl) {
-    $result = $remote->setNext($playUrl);
-    $this->setProperty("playUrl",0);
+$playNextUrl = $this->getProperty("playNextUrl");
+if ( $playNextUrl) {
+    $result = $remote->setNext($playNextUrl);
+    $this->setProperty("playNextUrl",0);
 } else {
-    $this->setProperty("playUrl",0);
+    $this->setProperty("playNextUrl",0);
 }
