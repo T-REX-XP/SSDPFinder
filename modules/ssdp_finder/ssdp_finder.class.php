@@ -219,6 +219,7 @@ function usual(&$out) {
   include_once (DIR_MODULES.'ssdpdevices/ssdpdevices.class.php');
   $ssdpdevice=SQLSelectOne("SELECT * FROM ssdp_devices WHERE ID='".$id."'");
   $dev=new ssdpdevices();
+  $dev->renderStructure();
   $device_type=$ssdpdevice['TYPE']; // тип устройства (см выше допустимые типы) 
 
   $options=array(); // опции добавления
@@ -324,7 +325,7 @@ function add_to_terminal($id) {
       $id = ($_GET["id"]);
   }
   $ssdpdevice=SQLSelectOne("SELECT * FROM ssdp_devices WHERE ID='".$id."'");
-  $templ=SQLSelectOne("SELECT * FROM classes WHERE TITLE='".'S'.$ssdpdevice['TYPE']."'");
+  $templ=SQLSelectOne("SELECT * FROM classes WHERE TITLE LIKE'".'S'.$ssdpdevice['TYPE']."'");
   if ($templ['ID'] AND file_exists(DIR_MODULES.'ssdpdevices/'.'S'.$ssdpdevice['TYPE'].'.template')) {
           $templ['TEMPLATE'] = file_get_contents(DIR_MODULES.'ssdpdevices/'.'S'.$ssdpdevice['TYPE'].'.template');
           $templ['ID'] = SQLUpdate('classes',$templ);
@@ -371,7 +372,7 @@ function add_to_terminal($id) {
    $levelmes = getGlobal('ThisComputer.minMsgLevel');
    $level=$details['level'];
    $message=$details['message'];
-   $cached_filename = $_SERVER['REMOTE_ADDR'] . '/cached/voice/' . md5($message) . '.mp3';
+   $cached_filename = $_SERVER['REMOTE_ADDR'] . '/cached/voice/*' . md5($message) . '*.mp3';
    $usedsay=SQLSelect("SELECT * FROM ssdp_devices WHERE USE_TO_SAY='".'1'."'");
    foreach ($usedsay as $saydev) {
         if ($saydev['TYPE']=='MediaRenderer' AND $saydev['USE_TO_SAY']=='1' AND $levelmes<=$level) {

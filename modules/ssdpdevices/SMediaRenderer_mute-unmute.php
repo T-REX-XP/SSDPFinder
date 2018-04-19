@@ -4,20 +4,11 @@ require(dirname(__FILE__).'/../ssdp_finder/upnp/vendor/autoload.php');
 
 use jalder\Upnp\Renderer;
 
-$renderer = new Renderer();
-
-$renderers = $renderer->discover();
-
-if(!count($renderers)){
-    print_r('no upnp renderers found'.PHP_EOL);
-}
-$uuid = $this->getProperty("UUID");
+$adress = $this->getProperty("CONTROLADDRESS");
+$remote = new Renderer\RemoteVolume($adress);
 $mute_unmute = $this->getProperty("mute_unmute");
-foreach($renderers as $r){
-    $remote = new Renderer\RemoteVolume($r);
-    if ( $mute_unmute AND $uuid == $r['description']['device']['UDN']) {
+if ( $mute_unmute ) {
             $result = $remote->mute();
 		} else {
             $result = $remote->unmute();
         }
-}
