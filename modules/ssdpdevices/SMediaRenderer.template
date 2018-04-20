@@ -1,15 +1,11 @@
 <link rel="stylesheet" href="<#ROOTHTML#>bootstrap/css/bootstrap[#if "<#SETTINGS_THEME#>"=="dark"#]_dark[#endif#].min.css" type="text/css">
 
-<div class="device-details" >%.object_description%</div>
+<div class="device-details" style="font-size: 150%; text-align:center; font-family: monospace; ">%.object_description%</div>
    
  <input type="range" onChange='ajaxSetGlobal("%.object_title%.volume", value);' value=%.volume%  min="0" max="100" step="5" ></input> 
-<p >Ссылка для воспроизведения текущим устройством</p>
-   <input type="text" id="play_url" value="" />
-
-<div name="selectDataRegion" style="float:left;" ></div>
-
-
- <button onClick='ajaxSetGlobal("%.object_title%.playUrl", document.getElementById ("play_url").value);' class="btn btn-custom"><span value="" title="Play" id="play" class="glyphicon glyphicon-play aligned"></span></button> 
+<p style="font-size: 110%; text-align:center; font-family: monospace; ">Ссылка для воспроизведения текущим устройством</p>
+<input type="text" style="text-align:center; margin: 0; top: 50%;" maxlength="1024" size="65" onChange='ajaxSetGlobal("%.object_title%.playUrl", value);' value=%.playUrl% ></input> 
+ <button onClick='ajaxSetGlobal("%.object_title%.pause_unpause", 0);' class="btn btn-custom"><span title="Play" id="play" class="glyphicon glyphicon-play aligned"></span></button> 
  <button onClick='ajaxSetGlobal("%.object_title%.pause_unpause", 1);' class="btn btn-custom"><span title="Pause" id="pause" class="glyphicon glyphicon-pause aligned"></span></button> 
  <button onclick='ajaxSetGlobal("%.object_title%.stop", 1);' class="btn btn-custom"><span title="Stop" id="stop" class="glyphicon glyphicon-stop aligned"></span></button> 
  <button onclick='ajaxSetGlobal("%.object_title%.mute_unmute", 1);' class="btn btn-custom"><span title="Mute" id="Mute" class="glyphicon glyphicon-volume-off aligned"></span></button> 
@@ -18,21 +14,3 @@
  <button onclick="Forward5('music.mp3','audio');" class="btn btn-custom"><span title="+5 seconds" id="+5second" class="glyphicon glyphicon-fast-forward aligned"></span></button> 
  <button onclick='ajaxSetGlobal("%.object_title%.previous", 1)' class="btn btn-custom"><span title="previous" id="previous" class="glyphicon glyphicon-chevron-left aligned"></span></button> 
  <button onclick='ajaxSetGlobal("%.object_title%.next", 1)' class="btn btn-custom"><span title="next" id="next" class="glyphicon glyphicon-chevron-right aligned"></span></button> 
-
-
-
- 
-<script type = "text/javascript">
- window.onload = function selectRegion(){
-     $.ajax({
-            type: "POST",
-            url: "/modules/ssdpdevices/medaiserver.urllist.php",
-            data: { },
-            cache: false,
-            success: function(responce){ $('div[name="selectDataRegion"]').html(responce); }
-            });
- };
-
-</script>
-
-
