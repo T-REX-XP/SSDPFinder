@@ -11,7 +11,7 @@ $remote = new Renderer\Remote($adress);
 $playUrl = $this->getProperty("playUrl");
 if ( $playUrl ) {
     $result = $remote->play($playUrl);
-    $this->setProperty("playUrl",0);
+    //$this->setProperty("playUrl",0);
 } else {
-    $this->setProperty("playUrl",0);
+    //$this->setProperty("playUrl",0);
 }
