@@ -1,18 +1,23 @@
-<!--- подгрузка ксс ---!>
+<!--- подгрузка ксс --->
 <link rel="stylesheet" href="<#ROOTHTML#>bootstrap/css/bootstrap[#if "<#SETTINGS_THEME#>"=="dark"#]_dark[#endif#].min.css" type="text/css">
-<!--- название обьекта ---!>
+
+<!--- название обьекта --->
  <p style="font-size: 150%; text-align:center; font-family: monospace; ">%.object_description%</p>
-<!--- регулировка звука ---!>
+
+<!--- регулировка звука --->
  <input type="range" onChange='ajaxSetGlobal("%.object_title%.volume", value);' value=%.volume%  min="0" max="100" step="5" ></input> 
  <p style="font-size: 110%; text-align:center; font-family: monospace; ">Ссылка для воспроизведения текущим устройством</p>
- <!--- поле ссылки для воспроизведения ---!>
- <input type="text" id="%.object_title%play_url" value="" />
-<!--- формирование списка из бд---!>
- <div name="selectDataRegion" style="float:left;" ></div>
- <!--- кнопка воспроизведения урла ---!>
- <button onClick='ajaxSetGlobal("%.object_title%.playUrl", document.getElementById ("%.object_title%play_url").value);' class="btn btn-custom"><span value="" title="Play" id="play" class="glyphicon glyphicon-play aligned"></span></button> 
  
- <!--- остальные кнопки---!>
+ <!--- поле ссылки для воспроизведения --->
+ <input type="text" id="play_url" value="" />
+
+ <!--- формирование списка из бд--->
+ <div name="selectDataRegion" style="float:left;" ></div>
+
+ <!--- кнопка воспроизведения урла --->
+ <button onClick='ajaxSetGlobal("%.object_title%.playUrl", document.getElementById ("play_url").value);' class="btn btn-custom"><span value="" title="Play" id="play" class="glyphicon glyphicon-play aligned"></span></button> 
+ 
+ <!--- остальные кнопки--->
  <button onClick='ajaxSetGlobal("%.object_title%.pause_unpause", 1);' class="btn btn-custom"><span title="Pause" id="pause" class="glyphicon glyphicon-pause aligned"></span></button> 
  <button onclick='ajaxSetGlobal("%.object_title%.stop", 1);' class="btn btn-custom"><span title="Stop" id="stop" class="glyphicon glyphicon-stop aligned"></span></button> 
  <button onclick='ajaxSetGlobal("%.object_title%.mute_unmute", 1);' class="btn btn-custom"><span title="Mute" id="Mute" class="glyphicon glyphicon-volume-off aligned"></span></button> 
@@ -23,7 +28,7 @@
  <button onclick='ajaxSetGlobal("%.object_title%.next", 1)' class="btn btn-custom"><span title="next" id="next" class="glyphicon glyphicon-chevron-right aligned"></span></button> 
 
 
- <!--- скрипт формирования выпадающего списка ---!>         
+ <!--- скрипт формирования выпадающего списка --->         
 <script type = "text/javascript">
  window.onload = function selectRegion(){
    $.ajax({
