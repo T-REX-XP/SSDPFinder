@@ -14,3 +14,21 @@
  <button onclick="Forward5('music.mp3','audio');" class="btn btn-custom"><span title="+5 seconds" id="+5second" class="glyphicon glyphicon-fast-forward aligned"></span></button> 
  <button onclick='ajaxSetGlobal("%.object_title%.previous", 1)' class="btn btn-custom"><span title="previous" id="previous" class="glyphicon glyphicon-chevron-left aligned"></span></button> 
  <button onclick='ajaxSetGlobal("%.object_title%.next", 1)' class="btn btn-custom"><span title="next" id="next" class="glyphicon glyphicon-chevron-right aligned"></span></button> 
+
+<div name="selectDataRegion" style="float:left;" ></div>
+<input type="text" id="price_item_1" value=""/>
+ 
+<script type = "text/javascript">
+ window.onload = function selectRegion(){
+     $.ajax({
+            type: "POST",
+            url: "/modules/ssdpdevices/medaiserver.urllist.php",
+            data: { },
+            cache: false,
+            success: function(responce){ $('div[name="selectDataRegion"]').html(responce); }
+            });
+ };
+
+</script>
+
+
