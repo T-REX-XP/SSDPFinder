@@ -71,7 +71,7 @@ $this->ssdpdevices_types=array(
         ),
     ),
     'MediaRenderer'=>array(
-        'TITLE'=>'UPNP Телевизор',
+        'TITLE'=>'UPNP Медиа рендер',
         'PARENT_CLASS'=>'UPNPdevices',
         'CLASS'=>'SMediaRenderer',
         'PROPERTIES'=>array(
