@@ -272,7 +272,7 @@ function add_to_terminal($id) {
   $terminal=array(); // опции добавления
   $terminal['NAME'] = $ssdpdevice['TITLE'];
   $terminal['TITLE'] = $ssdpdevice['DESCRIPTION'];
-  $terminal['HOST'] = $this->getIp($ssdpdevice['ADDRESS']);
+  $terminal['HOST'] = $ssdpdevice['ADDRESS'];
   $terminal['CANPLAY'] = '1';
   $terminal['PLAYER_TYPE'] = 'xbmc';
   $terminal['PLAYER_PORT'] = $this->getPort($ssdpdevice['ADDRESS']);
@@ -301,7 +301,7 @@ function add_to_terminal($id) {
   $pinghosts['TYPE'] = '0';
   $pinghosts['OFFLINE_INTERVAL'] = '600';
   $pinghosts['ONLINE_INTERVAL'] = '600';
-  $pinghosts['HOSTNAME'] = $this->getIp($ssdpdevice['ADDRESS']);
+  $pinghosts['HOSTNAME'] = $ssdpdevice['ADDRESS'];
   $pinghosts['CODE_ONLINE'] = 'say("Устройство ".$host[\'TITLE\']." пропало из сети, возможно его отключили" ,2);';
   $pinghosts['CODE_OFFLINE'] = 'say("Устройство ".$host[\'TITLE\']." появилось в сети." ,2);';
   $pinghosts['LINKED_OBJECT'] = $ssdpdevice['LINKED_OBJECT'];
