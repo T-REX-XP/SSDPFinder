@@ -19,7 +19,7 @@ foreach($directories as $list){
         $Record = SQLSelectOne("SELECT * FROM mediaservers_playlist WHERE URL_LINK='".$file ['link']."'");
         $Record['URL_LINK'] = $file ['link'];
         $Record['TITLE'] = $file ['title'];
-        $Record['DESCRIPTION'] = m$file ['creator'];
+        $Record['DESCRIPTION'] = $file ['creator'];
         $Record['GENRE'] = $file ['genre'];
         $Record['LINKED_OBJECT'] = $this->title;
         SQLUpdateInsert('mediaservers_playlist', $Record);
