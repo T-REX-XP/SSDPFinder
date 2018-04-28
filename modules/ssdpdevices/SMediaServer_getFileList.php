@@ -21,7 +21,7 @@ foreach($directories as $list){
         $Record['TITLE'] = $file ['title'];
         $Record['DESCRIPTION'] = $file ['creator'];
         $Record['GENRE'] = $file ['genre'];
-        $Record['LINKED_OBJECT'] = "Privet";
+        $Record['LINKED_OBJECT'] = $this->title;
         SQLUpdateInsert('mediaservers_playlist', $Record);
     }
    }
