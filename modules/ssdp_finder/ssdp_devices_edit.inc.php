@@ -42,8 +42,6 @@
    //updating 'Address' (varchar)
    global $address;
    $rec['ADDRESS']=$address;
-   global $name;
-   $rec['NAME']=$title;
   //updating 'Description' (varchar)
    global $description;
    $rec['DESCRIPTION']=$description;
@@ -143,8 +141,6 @@
     //updating 'Address' (varchar)
    global $address;
    $rec['ADDRESS']=$address;
-   global $name;
-   $rec['NAME']=$title;
   //updating 'Description' (varchar)
    global $description;
    $rec['DESCRIPTION']=$description;
