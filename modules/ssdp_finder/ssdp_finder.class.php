@@ -420,7 +420,6 @@ ssdp_devices -
   $data = <<<EOD
  ssdp_devices: ID int(10) unsigned NOT NULL auto_increment
  ssdp_devices: TITLE varchar(100) NOT NULL DEFAULT ''
- ssdp_devices: NAME varchar(100) NOT NULL DEFAULT ''
  ssdp_devices: SERVICES varchar(500) NOT NULL DEFAULT ''
  ssdp_devices: ADDRESS varchar(255) NOT NULL DEFAULT ''
  ssdp_devices: UUID varchar(255) NOT NULL DEFAULT ''
