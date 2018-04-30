@@ -48,9 +48,9 @@ function Scan()
         $control_url = str_ireplace("Location:", "", $device['location']);
 	$xml=simplexml_load_file($control_url);
         $uuid = $xml->device->UDN;
-        $existed = $rec=SQLSelectOne("SELECT * FROM $table_name WHERE UUID='$uuid'");
+        $existed = SQLSelectOne("SELECT * FROM $table_name WHERE UUID='$uuid'");
         // print array_search(, array_column( $result, 'ADDRESS'));
-        if (!array_search_result($result, 'CONTROLADDRESS', $control_url) && !is_null($uuid)) {
+        if (!array_search_result($result, 'CONTROLADDRESS', $control_url) && !is_null($uuid) && !($existed)) {
             $result[] = [
                 "ID" => $existed["ID"], //existed id Majordomo
                 "TITLE" => $xml->device->friendlyName,//friendly name
