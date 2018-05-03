@@ -1,14 +1,15 @@
+<!doctype html>
+<html>
 <!--- подгрузка ксс --->
 <link rel="stylesheet" href="<#ROOTHTML#>bootstrap/css/bootstrap[#if "<#SETTINGS_THEME#>"=="dark"#]_dark[#endif#].min.css" type="text/css">
-
+<body >
 <!--- название обьекта --->
  <p style="font-size: 150%; text-align:center; font-family: monospace; ">%.object_description%</p>
 
  <!--- поле ссылки для Типа файлов --->
 <div name="selectDataType" style="float:left;">
-<select size="1" name="selectType" onchange="selectServers()" style="float:left;">
-<option value="">Выберите тип файлов</option>
- <optgroup label="Выберите тип файла">
+<select size="1" name="selectType" onClick="selectServers();document.getElementById('selectedname').value=' '; return false;" style="float:left;">
+<optgroup label="Выберите тип файла">
 <option value="Видео">Видео</option>
 <option value="Аудио">Аудио</option>
 <option value="Изображения">Изображения</option>
@@ -19,16 +20,16 @@
 
  <!--- поле ссылки для Сервера --->
 <div name="selectDataServer" style="float:left;">
-<select size="1" name="selectServer" onchange="selectNames()" style="float:left;">
+<select size="1" name="selectServer" onClick="document.getElementById('selectedname').value=' '; return false;" onChange="selectNames(); selectUrl();" style="float:left;">
 <optgroup label="Выберите имя сервера">
-<option value="">Ошибка запроса</option>
+<option value="">Ошибка запроса</option>`
 </optgroup>
  </select>
 </div> 
 
  <!--- поле ссылки для Названия файла --->
 <div name="selectDataName" style="float:left;">
- <input name="selectName" type="text" list="names" onClick ='selectNames();' onInput='selectUrl();' />
+ <input id="selectedname" name="selectName" type="nameoffiles" list="names" onClick ='selectNames();' onInput='selectUrl();' />
   <datalist id="names" name="selected_url">
    <option>Ошибка запроса</option>
   </datalist>
@@ -60,7 +61,7 @@
 <!--- скрипт формирования выпадающего списка --->         
 <script type = "text/javascript">
  
-function selectServers(){
+ function selectServers(){
    var types = $('select[name="selectType"]').val();
     $.ajax({
             type: "POST",
@@ -92,4 +93,8 @@ function selectServers(){
             success: function(responce){ $('div[name="selectDataUrl"]').html(responce); }
             });
  };
+ 
 </script>
+
+ </body>
+</html>
