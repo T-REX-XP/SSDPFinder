@@ -4,20 +4,46 @@
 <!--- название обьекта --->
  <p style="font-size: 150%; text-align:center; font-family: monospace; ">%.object_description%</p>
 
-<!--- регулировка звука --->
- <input type="range" onChange='ajaxSetGlobal("%.object_title%.volume", value);' value=%.volume%  min="0" max="100" step="5" ></input> 
- <p style="font-size: 110%; text-align:center; font-family: monospace; ">Ссылка для воспроизведения текущим устройством</p>
- 
+ <!--- поле ссылки для Типа файлов --->
+<div name="selectDataType" style="float:left;">
+<select size="1" name="selectType" onchange="selectServers()" style="float:left;">
+<option value="">Выберите тип файлов</option>
+ <optgroup label="Выберите тип файла">
+<option value="Видео">Видео</option>
+<option value="Аудио">Аудио</option>
+<option value="Изображения">Изображения</option>
+</optgroup>
+</select>
+</div> 
+
+
+ <!--- поле ссылки для Сервера --->
+<div name="selectDataServer" style="float:left;">
+<select size="1" name="selectServer" onchange="selectNames()" style="float:left;">
+<optgroup label="Выберите имя сервера">
+<option value="">Ошибка запроса</option>
+</optgroup>
+ </select>
+</div> 
+
+ <!--- поле ссылки для Названия файла --->
+<div name="selectDataName" style="float:left;">
+ <input name="selectName" type="text" list="names" onClick ='selectNames();' onInput='selectUrl();' />
+  <datalist id="names" name="selected_url">
+   <option>Ошибка запроса</option>
+  </datalist>
+</div> 
+
  <!--- поле ссылки для воспроизведения --->
- <input type="text" id="play_url" value="" />
+<div name="selectDataUrl" style="float:left;">
+<input name="selectUrl" type="text" id="play_url" value="" />
+</div>
 
- <!--- формирование списка из бд--->
- <div name="selectDataRegion" style="float:left;" ></div>
 
- <!--- кнопка воспроизведения урла --->
+<div name="buttons" style="float:left;">
+<!--- кнопка воспроизведения урла --->
  <button onClick='ajaxSetGlobal("%.object_title%.playUrl", document.getElementById ("play_url").value);' class="btn btn-custom"><span value="" title="Play" id="play" class="glyphicon glyphicon-play aligned"></span></button> 
- 
- <!--- остальные кнопки--->
+  <!--- остальные кнопки--->
  <button onClick='ajaxSetGlobal("%.object_title%.pause_unpause", 1);' class="btn btn-custom"><span title="Pause" id="pause" class="glyphicon glyphicon-pause aligned"></span></button> 
  <button onclick='ajaxSetGlobal("%.object_title%.stop", 1);' class="btn btn-custom"><span title="Stop" id="stop" class="glyphicon glyphicon-stop aligned"></span></button> 
  <button onclick='ajaxSetGlobal("%.object_title%.mute_unmute", 1);' class="btn btn-custom"><span title="Mute" id="Mute" class="glyphicon glyphicon-volume-off aligned"></span></button> 
@@ -26,18 +52,44 @@
  <button onclick="Forward5('music.mp3','audio');" class="btn btn-custom"><span title="+5 seconds" id="+5second" class="glyphicon glyphicon-fast-forward aligned"></span></button> 
  <button onclick='ajaxSetGlobal("%.object_title%.previous", 1)' class="btn btn-custom"><span title="previous" id="previous" class="glyphicon glyphicon-chevron-left aligned"></span></button> 
  <button onclick='ajaxSetGlobal("%.object_title%.next", 1)' class="btn btn-custom"><span title="next" id="next" class="glyphicon glyphicon-chevron-right aligned"></span></button> 
+ <!--- регулировка звука --->
+ <input type="range" onChange='ajaxSetGlobal("%.object_title%.volume", value);' value=%.volume%  min="0" max="100" step="5" ></input> 
+ <p style="font-size: 110%; text-align:center; font-family: monospace; ">Ссылка для воспроизведения текущим устройством</p>
+</div>
 
-
- <!--- скрипт формирования выпадающего списка --->         
+<!--- скрипт формирования выпадающего списка --->         
 <script type = "text/javascript">
- window.onload = function selectRegion(){
-   $.ajax({
+ 
+function selectServers(){
+   var types = $('select[name="selectType"]').val();
+    $.ajax({
             type: "POST",
             url: "/modules/ssdpdevices/medaiserver.urllist.php",
-            data: { },
+            data: {action: 'SERVERS', types: types },
             cache: false,
-            success: function(responce){ $('div[name="selectDataRegion"]').html(responce); }
+            success: function(responce){ $('div[name="selectDataServer"]').html(responce); }
             });
  };
-
+ function selectNames(){
+   var servers = $('select[name="selectServer"]').val();
+   var types = $('select[name="selectType"]').val();
+    $.ajax({
+            type: "POST",
+            url: "/modules/ssdpdevices/medaiserver.urllist.php",
+            data: {action: 'NAMES', servers: servers, types: types},
+            cache: false,
+            success: function(responce){ $('input[name="selectName"]').html(responce); }
+            });
+ };
+ 
+  function selectUrl(){
+    var name = $('input[name="selectName"]').val();
+    $.ajax({
+            type: "POST",
+            url: "/modules/ssdpdevices/medaiserver.urllist.php",
+            data: {action: 'URL', name: name},
+            cache: false,
+            success: function(responce){ $('div[name="selectDataUrl"]').html(responce); }
+            });
+ };
 </script>
