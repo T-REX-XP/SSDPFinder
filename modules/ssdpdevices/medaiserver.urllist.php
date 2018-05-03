@@ -47,7 +47,7 @@ switch ($_POST['action']){
                       return;
 		   };
                 };
-                echo '<input type="text" id="play_url" value="НЕТУ ТАКОГО ФАЙЛА" />';
+                echo '<input type="text" id="play_url" value="файл не найден" />';
  		return;
 };
 
