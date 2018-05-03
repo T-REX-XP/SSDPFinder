@@ -14,7 +14,7 @@ switch ($_POST['action']){
 		$rows = $DB->query('SELECT * FROM mediaservers_playlist WHERE GENRE LIKE"'.$_POST['types'].'"');
                 $chekedserver = [];
                 echo '<select size="1" name="selectServer" onClick="document.getElementById('."'".'selectedname'."'".').value='."'".' '."'".'; return false;" onchange="selectNames()" style="float:left;">';
-                echo '<optgroup label="Выберите имя сервера">';
+                echo '<option value="" disabled selected> - Выберите сервер - </option>';
                 foreach ($rows as $numRow => $row) {
                    if (!in_array($row['LINKED_OBJECT'], $chekedserver)){
                        echo '<option value="'.$row['LINKED_OBJECT'].'">'.$row['LINKED_OBJECT'].'</option>';
@@ -43,7 +43,8 @@ switch ($_POST['action']){
 		$rows = $DB->query('SELECT * FROM mediaservers_playlist WHERE TITLE="'.$_POST['name'].'" LIMIT 1');   
                 foreach ($rows as $numRow => $row) {
                       if ($row['URL_LINK']){
-		      echo '<input type="text" id="play_url" value="'.$row['URL_LINK'].'" />';
+		        echo '<input type="text" id="play_url" value="'.$row['URL_LINK'].'" />';
+
                       return;
 		   };
                 };
