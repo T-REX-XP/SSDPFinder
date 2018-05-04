@@ -24,7 +24,6 @@ print ($tracktime);
 if ( $playUrl ) {
     $result = $remote->stop();
     $result = $remote->play($playUrl);
-    $result = $remote->setNext($trackurl);
     $this->setProperty("playUrl","");
 } else {
     $this->setProperty("playUrl","");
