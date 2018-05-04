@@ -9,7 +9,7 @@
  <p style="font-size: 150%; text-align:center; font-family: monospace; ">%.object_description%</p>
 
 <div name="selectDataType" style="float:left;">
-<select size="1" name="selectType" onClick="selectServers();" style="float:left;">
+<select size="1" name="selectType" onChange="selectServers();selectNames(); selectUrl();" style="float:left;">
 <option disabled selected value=""> - Выберите тип файла - </option>
 <option value="Видео">Видео</option>
 <option value="Аудио">Аудио</option>
