@@ -1,40 +1,40 @@
-<html>
-<head>
-+<!--- подгрузка css темы --->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<!--- подгрузка css темы --->
  <link rel="stylesheet" href="<#ROOTHTML#>bootstrap/css/bootstrap[#if "<#SETTINGS_THEME#>"=="dark"#]_dark[#endif#].min.css" type="text/css">
-+	<style>
-+		.string
-+		{
-+			float:left;
-+			width:400px;
-+		}
-+	   .container
-+	   {
-+			float:left;
-+			width:200px;
-+	   }
-+	   
-+	   .clear
-+	   {
-+			clear:both;
-+			margin-top:15px;
-+	   }
-+
-+	   input[type="text"]
-+	   {
-+			width:180px;
-+	   }
-+	   
-+	   input[type="nameoffiles"]
-+	   {
-+			width:177px;
-+	   }
-+	   
-+	   select
-+	   {
-+			width:184px;
-+	   }
-+	</style>
+	<style>
+		.string
+		{
+			float:left;
+			width:400px;
+	}
+	   .container
+	   {
+			float:left;
+			width:200px;
+	   }
+	   
+	   .clear
+	   {
+			clear:both;
+			margin-top:15px;
+	   }
+
+	   input[type="text"]
+	   {
+			width:180px;
+	   }
+	   
+	   input[type="nameoffiles"]
+	   {
+			width:177px;
+	   }
+	   
+	   select
+	   {
+			width:184px;
+	   }
+	</style>
 </head>
 <body>
 <!--- название обьекта --->
