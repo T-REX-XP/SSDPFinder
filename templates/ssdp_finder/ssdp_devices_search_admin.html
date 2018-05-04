@@ -42,6 +42,9 @@
                             <#LANG_TITLE#>
                         </th>
                         <th>
+                            Logo
+                        </th>
+                        <th>
                             <#LANG_LINKED_OBJECT#>
                         </th>
                         <th>
@@ -61,6 +64,10 @@
                                 <b>[#TITLE#]</a>
                                 </b>
                             </td>
+                            <td style="vertical-align:middle">
+                                [#if LOGO!=""#]
+                                <img src=" [#LOGO#]" alt="Device Logo" width="48" height="48"> [#else#] &nbsp; [#endif#]
+                            </td> 
                             <td style="vertical-align:middle">
                                 [#if LINKED_OBJECT!=""#] [#LINKED_OBJECT#] [#else#] &nbsp; [#endif#]
                             </td>
