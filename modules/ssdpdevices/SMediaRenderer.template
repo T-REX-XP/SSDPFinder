@@ -1,44 +1,44 @@
 <!doctype html>
 <html>
+<head>
 <!--- подгрузка ксс --->
 <link rel="stylesheet" href="<#ROOTHTML#>bootstrap/css/bootstrap[#if "<#SETTINGS_THEME#>"=="dark"#]_dark[#endif#].min.css" type="text/css">
-<body >
+</head>
+<body>
 <!--- название обьекта --->
  <p style="font-size: 150%; text-align:center; font-family: monospace; ">%.object_description%</p>
 
- <!--- поле ссылки для Типа файлов --->
 <div name="selectDataType" style="float:left;">
-<select size="1" name="selectType" onClick="selectServers();document.getElementById('selectedname').value=' '; return false;" style="float:left;">
-<option value="Выберите тип файла" selected="selected"> - Выберите тип файла - </option>
+<select size="1" name="selectType" onClick="selectServers();" style="float:left;">
+<option disabled selected value=""> - Выберите тип файла - </option>
 <option value="Видео">Видео</option>
 <option value="Аудио">Аудио</option>
 <option value="Изображения">Изображения</option>
 </select>
 </div> 
 
-
  <!--- поле ссылки для Сервера --->
 <div name="selectDataServer" style="float:left;">
-<select size="1" name="selectServer" onClick="document.getElementById('selectedname').value=' '; return false;" onChange="selectNames(); selectUrl();" style="float:left;">
-<option value=" - Имя сервера - " selected="selected"> - Имя сервера - </option>
- </select>
+<select disabled="disabled" size="1" name="selectServer" onChange="selectNames(); selectUrl();" style="float:left;">
+<option disabled selected value=""> - Имя сервера - </option>
+</select>
 </div> 
-<br/>
- <!--- поле ссылки для Названия файла --->
+
+ <!--- поле ссылки для Названия файла -->
 <div name="selectDataName" style="float:left;">
- <input id="selectedname" name="selectName" type="nameoffiles" list="names" onClick ='selectNames();' onInput='selectUrl();' />
+ <input size="14"  id="selectedname" name="selectName" type="nameoffiles" list="names" onClick ='selectNames();' onInput='selectUrl();' placeholder=" - Выберите файл - " />
 </div> 
 
  <!--- поле ссылки для воспроизведения --->
 <div name="selectDataUrl" style="float:left;">
-<input name="selectUrl" type="text" id="play_url" value="" />
+<input size="10" name="selectUrl" type="text" id="play_url" value="" />
 </div>
 
 <br/><br/>
 
 <div name="buttons" style="float:left;">
 <!--- кнопка воспроизведения урла --->
- <button onClick='ajaxSetGlobal("%.object_title%.playUrl", document.getElementById ("play_url").value);' class="btn btn-custom"><span value="" title="Play" id="play" class="glyphicon glyphicon-play aligned"></span></button> 
+ <button onClick='ajaxSetGlobal("%.object_title%.playUrl", document.getElementById("play_url").value);' class="btn btn-custom"><span value="" title="Play" id="play" class="glyphicon glyphicon-play aligned"></span></button> 
   <!--- остальные кнопки--->
  <button onClick='ajaxSetGlobal("%.object_title%.pause_unpause", 1);' class="btn btn-custom"><span title="Pause" id="pause" class="glyphicon glyphicon-pause aligned"></span></button> 
  <button onclick='ajaxSetGlobal("%.object_title%.stop", 1);' class="btn btn-custom"><span title="Stop" id="stop" class="glyphicon glyphicon-stop aligned"></span></button> 
