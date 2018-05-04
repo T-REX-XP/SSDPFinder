@@ -9,7 +9,7 @@
  <p style="width:300px; text-align:center; font-family: monospace; ">%.object_description%</p>
 
 <div name="selectDataType" style="float:left;">
-<select size="1" name="selectType" onChange="selectServers();selectNames(); selectUrl();" style="width:175px; text-align:center; font-family: monospace; ">
+<select size="1" name="selectType" onClick='document.getElementById("selectedname").value=" "' onChange="selectServers();selectNames(); selectUrl();" style="width:175px; text-align:center; font-family: monospace; ">
 <option disabled selected value=""> - Выберите тип файла - </option>
 <option value="Видео">Видео</option>
 <option value="Аудио">Аудио</option>
@@ -39,7 +39,7 @@
 <!--- регулировка звука --->
  <input type="range" onChange='ajaxSetGlobal("%.object_title%.volume", value);' value=%.volume%  min="0" max="100" step="5" style="width:350px; align:center; font-family: monospace; height: 15px; display: inline-block;" ></input>  
 <!--- кнопка воспроизведения урла --->
- <button style='float:left;width:80px;height: 34px;' onClick='ajaxSetGlobal("%object_title%.playUrl", document.getElementById("play_url").value);' class="btn btn-custom"><span value="" title="Play" id="play" class="glyphicon glyphicon-play aligned">PlayUrl </span></button> 
+ <button style='float:left;width:80px;height: 34px;' onClick='ajaxSetGlobal("%object_title%.playUrl", document.getElementById("play_url").value);' class="btn btn-custom"><span value="" title="Play" id="play" class="glyphicon glyphicon-play aligned"></span></button> 
   <!--- остальные кнопки--->
  <button style='display:%.pause_unpause|"block;none"%; float:left; width:46px;height: 34px;' onClick='ajaxSetGlobal("%.object_title%.pause_unpause", 1);' class="btn btn-custom"><span title="Pause" id="pause" class="glyphicon glyphicon-pause aligned"></span></button>
  <button style='display:%.pause_unpause|"none;block"%; float:left;width:46px;height: 34px;' onClick='ajaxSetGlobal("%.object_title%.pause_unpause", 0);' class="btn btn-custom"><span title="UnPause" id="Unpause" class="glyphicon glyphicon-play aligned"></span></button>
