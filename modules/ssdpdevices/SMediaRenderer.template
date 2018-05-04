@@ -1,7 +1,40 @@
 <html>
 <head>
-<!--- подгрузка ксс --->
-<link rel="stylesheet" href="<#ROOTHTML#>bootstrap/css/bootstrap[#if "<#SETTINGS_THEME#>"=="dark"#]_dark[#endif#].min.css" type="text/css">
++<!--- подгрузка css темы --->
+ <link rel="stylesheet" href="<#ROOTHTML#>bootstrap/css/bootstrap[#if "<#SETTINGS_THEME#>"=="dark"#]_dark[#endif#].min.css" type="text/css">
++	<style>
++		.string
++		{
++			float:left;
++			width:400px;
++		}
++	   .container
++	   {
++			float:left;
++			width:200px;
++	   }
++	   
++	   .clear
++	   {
++			clear:both;
++			margin-top:15px;
++	   }
++
++	   input[type="text"]
++	   {
++			width:180px;
++	   }
++	   
++	   input[type="nameoffiles"]
++	   {
++			width:177px;
++	   }
++	   
++	   select
++	   {
++			width:184px;
++	   }
++	</style>
 </head>
 <body>
 <!--- название обьекта --->
