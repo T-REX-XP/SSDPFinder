@@ -6,54 +6,57 @@
 </head>
 <body>
 <!--- название обьекта --->
- <p style="font-size: 150%; text-align:center; font-family: monospace; ">%.object_description%</p>
+ <p style="width:300px; text-align:center; font-family: monospace; ">%.object_description%</p>
 
 <div name="selectDataType" style="float:left;">
-<select size="1" name="selectType" onClick="selectServers();" style="float:left;">
+<select size="1" name="selectType" onChange="selectServers();selectNames(); selectUrl();" style="width:175px; text-align:center; font-family: monospace; ">
 <option disabled selected value=""> - Выберите тип файла - </option>
 <option value="Видео">Видео</option>
 <option value="Аудио">Аудио</option>
 <option value="Изображения">Изображения</option>
 </select>
 </div> 
-
- <!--- поле ссылки для Сервера --->
+ 
 <div name="selectDataServer" style="float:left;">
-<select disabled="disabled" size="1" name="selectServer" onChange="selectNames(); selectUrl();" style="float:left;">
+ <select disabled="disabled" size="1" name="selectServer" onChange="selectNames(); selectUrl();" style="width:175px; text-align:center; font-family: monospace; ">
 <option disabled selected value=""> - Имя сервера - </option>
 </select>
 </div> 
+ 
+ <div style=" width:100%; height:1px; clear:both;"></div> <!---чтобы ничего не влезало снизу-->
 
  <!--- поле ссылки для Названия файла -->
 <div name="selectDataName" style="float:left;">
- <input size="14"  id="selectedname" name="selectName" type="nameoffiles" list="names" onClick ='selectNames();' onInput='selectUrl();' placeholder=" - Выберите файл - " />
+ <input size="14"  id="selectedname" name="selectName" type="nameoffiles" list="names" onClick ='selectNames();' onInput='selectUrl();' placeholder=" - Выберите файл - " style="width:175px; text-align:center; font-family: monospace; " />
 </div> 
 
  <!--- поле ссылки для воспроизведения --->
 <div name="selectDataUrl" style="float:left;">
-<input size="10" name="selectUrl" type="text" id="play_url" value="" />
+<input size="14" name="selectUrl" type="text" id="play_url" value="" style="width:175px; text-align:center; font-family: monospace; "/>
 </div>
 
-<br/><br/>
-
-<div name="buttons" style="float:left;">
+ <div style=" width:100%; height:1px; clear:both;"></div>
+ 
+<!--- регулировка звука --->
+ <input type="range" onChange='ajaxSetGlobal("%.object_title%.volume", value);' value=%.volume%  min="0" max="100" step="5" style="width:350px; text-align:center; font-family: monospace; "></input> 
+ 
+<div name="buttons" style="width:350px; text-align:center; ">
 <!--- кнопка воспроизведения урла --->
- <button onClick='ajaxSetGlobal("%.object_title%.playUrl", document.getElementById("play_url").value);' class="btn btn-custom"><span value="" title="Play" id="play" class="glyphicon glyphicon-play aligned"></span></button> 
+ <button onClick='ajaxSetGlobal("%.object_title%.playUrl", document.getElementById("play_url").value);' class="btn btn-custom"><span value="" title="Play" id="play" class="glyphicon glyphicon-play aligned">PlayUrl</span></button> 
   <!--- остальные кнопки--->
  <button onClick='ajaxSetGlobal("%.object_title%.pause_unpause", 1);' class="btn btn-custom"><span title="Pause" id="pause" class="glyphicon glyphicon-pause aligned"></span></button> 
  <button onclick='ajaxSetGlobal("%.object_title%.stop", 1);' class="btn btn-custom"><span title="Stop" id="stop" class="glyphicon glyphicon-stop aligned"></span></button> 
  <button onclick='ajaxSetGlobal("%.object_title%.mute_unmute", 1);' class="btn btn-custom"><span title="Mute" id="Mute" class="glyphicon glyphicon-volume-off aligned"></span></button> 
  <button onclick='ajaxSetGlobal("%.object_title%.mute_unmute", 0);' class="btn btn-custom"><span title="UnMute" id="UnMute" class="glyphicon glyphicon-volume-up aligned"></span></button>
- <!-- пока нереализовано
  <button onclick="Backward5('music.mp3','audio');" class="btn btn-custom"><span title="-5 seconds" id="-5second" class="glyphicon glyphicon-fast-backward aligned"></span></button> 
  <button onclick="Forward5('music.mp3','audio');" class="btn btn-custom"><span title="+5 seconds" id="+5second" class="glyphicon glyphicon-fast-forward aligned"></span></button> 
+ <!-- пока нереализовано
  <button onclick='ajaxSetGlobal("%.object_title%.previous", 1)' class="btn btn-custom"><span title="previous" id="previous" class="glyphicon glyphicon-chevron-left aligned"></span></button> 
  <button onclick='ajaxSetGlobal("%.object_title%.next", 1)' class="btn btn-custom"><span title="next" id="next" class="glyphicon glyphicon-chevron-right aligned"></span></button> 
  --> 
+ </div>
  
- <!--- регулировка звука --->
- <input type="range" onChange='ajaxSetGlobal("%.object_title%.volume", value);' value=%.volume%  min="0" max="100" step="5" ></input> 
-</div>
+
 
 <!--- скрипт формирования выпадающего списка --->         
 <script type = "text/javascript">
