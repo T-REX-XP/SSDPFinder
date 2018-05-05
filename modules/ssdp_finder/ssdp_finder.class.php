@@ -274,7 +274,7 @@ function add_to_terminal($id) {
   $terminal['TITLE'] = $ssdpdevice['DESCRIPTION'];
   $terminal['HOST'] = $ssdpdevice['ADDRESS'];
   $terminal['CANPLAY'] = '1';
-  $terminal['PLAYER_TYPE'] = 'xbmc';
+  $terminal['PLAYER_TYPE'] = 'dlna';
   $terminal['PLAYER_PORT'] = $this->getPort($ssdpdevice['ADDRESS']);
   $terminal['IS_ONLINE'] = '1';
   $terminal['LINKED_OBJECT'] = $ssdpdevice['LINKED_OBJECT'];
