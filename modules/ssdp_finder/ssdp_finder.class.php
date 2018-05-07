@@ -402,11 +402,11 @@ function add_to_terminal($id) {
 * @access public
 */
  function uninstall() {
-  //include_once (DIR_MODULES.'ssdpdevices/ssdpdevices.class.php');
-  //$dev=new ssdpdevices();
-  //$dev->uninstall();
   SQLExec('DROP TABLE IF EXISTS ssdp_devices');
   unsubscribeFromEvent($this->name, 'SAY');
+  $this->name="ssdpdevices";
+  parent::uninstall();
+  $this->name="ssdp_finder";
   parent::uninstall();
  }
 /**
