@@ -402,7 +402,9 @@ function add_to_terminal($id) {
 * @access public
 */
  function uninstall() {
+  SQLExec('DROP TABLE IF EXISTS playlist_render');
   SQLExec('DROP TABLE IF EXISTS ssdp_devices');
+  SQLExec('DROP TABLE IF EXISTS mediaservers_playlist');
   unsubscribeFromEvent($this->name, 'SAY');
   $this->name="ssdpdevices";
   parent::uninstall();
