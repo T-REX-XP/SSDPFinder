@@ -279,7 +279,7 @@ function add_to_terminal($id) {
   $terminal['IS_ONLINE'] = '1';
   $terminal['LINKED_OBJECT'] = $ssdpdevice['LINKED_OBJECT'];
   $terminal['LATEST_ACTIVITY'] = date("Y-m-d H:i:s");  
-  $chek=SQLSelectOne("SELECT * FROM terminals WHERE HOST='".$terminal['HOST']."'");
+  $chek=SQLSelectOne("SELECT * FROM terminals WHERE LINKED_OBJECT='".$ssdpdevice['LINKED_OBJECT']."'");
   if ($chek['ID']) {
           $chek['ID'] = SQLUpdate('terminals', $terminal);
       } else {	
@@ -307,7 +307,7 @@ function add_to_terminal($id) {
   $pinghosts['LINKED_OBJECT'] = $ssdpdevice['LINKED_OBJECT'];
   $pinghosts['LINKED_PROPERTY'] = "alive";
   $pinghosts['CHECK_NEXT'] = date("Y-m-d H:i:s");  
-  $chek=SQLSelectOne("SELECT * FROM pinghosts WHERE HOSTNAME='".$pinghosts['HOSTNAME']."'");
+  $chek=SQLSelectOne("SELECT * FROM pinghosts WHERE LINKED_OBJECT='".$ssdpdevice['LINKED_OBJECT']."'");
   if ($chek['ID']) {
           $chek['ID'] = SQLUpdate('pinghosts', $pinghosts);
       } else {	
