@@ -71,7 +71,7 @@ function Scan()
                 "MODELNUMBER" => $xml->device->modelNumber,//modelNumber
                 "MANUFACTURER" => $xml->device->manufacturer,//Manufacturer
                 "SERVICES"=> getServices($xml),//list services of device
-		"CONTROLADDRESS"=> $control_url,//list services of device
+		"CONTROLADDRESS"=> editLocalIp($control_url),//list services of device
             ];
         }
     }
@@ -114,8 +114,18 @@ function getIp($baseUrl,$withPort) {
 }
 
 //получаем айпи адрес локального компьютера
-function getLocalIp()
-{ return gethostbyname(trim(`hostname`)); }
+function getLocalIp() { 
+return gethostbyname(trim(`hostname`)); 
+}
+
+// функция заменяет 127.0.0.1 на реальный айпи адрес
+function editLocalIp($baseUrl){ 
+if(stristr($baseUrl, '127.0.0.1') === TRUE) {
+    $localIp=getLocalIp();
+    $baseUrl = str_ireplace('127.0.0.1', $localIp, $baseUrl);
+  }
+return $baseUrl; 
+}
 
 
 function startsWith($haystack, $needle)
@@ -173,4 +183,3 @@ function getDefImg($control_url,$xml)
 
     
 }
-
