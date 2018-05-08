@@ -51,10 +51,15 @@ function Scan()
         $existed = SQLSelectOne("SELECT * FROM $table_name WHERE UUID='$uuid'");
         // print array_search(, array_column( $result, 'ADDRESS'));
         if (!array_search_result($result, 'CONTROLADDRESS', $control_url) && !is_null($uuid) && !($existed)) {
+            if (!getIp($xml->device->presentationURL,true)){
+                $presenturl='http://'.getIp($control_url,false);
+                } else {
+                $presenturl=getIp($xml->device->presentationURL,true);
+                }
             $result[] = [
                 "ID" => $existed["ID"], //existed id Majordomo
                 "TITLE" => $xml->device->friendlyName,//friendly name
-                "ADDRESS" => getIp($control_url,false) ,//presentation url (web UI of device),//presentation url (web UI of device)
+                "ADDRESS" => $presenturl ,//presentation url (web UI of device),//presentation url (web UI of device)
                 "UUID" => $xml->device->UDN,
                 "DESCRIPTION" => $xml->device->modelDescription.$device['server'],//description get from xml or field "server"
                 "TYPE" => explode(":", $xml->device->deviceType)[3],//DeviceType
@@ -90,19 +95,28 @@ function array_search_result($array, $key, $value)
 }
 
 
-function getIp($baseUrl,$withPort)
-{
+function getIp($baseUrl,$withPort) {
 	if( !empty($baseUrl) ){
         $parsed_url = parse_url($baseUrl);
         if($withPort ==true){
-            $baseUrl = $parsed_url['scheme'].'://'.$parsed_url['host'].':'.$parsed_url['port'];
-        }else{
+             if ($parsed_url['host'] == '127.0.0.1'){
+                 $parsed_url['host'] = getLocalIp();
+                }
+        $baseUrl = $parsed_url['scheme'].'://'.$parsed_url['host'].':'.$parsed_url['port']; 
+       }else{
+             if ($parsed_url['host'] == '127.0.0.1'){
+                 $parsed_url['host'] = getLocalIp();
+                }
             $baseUrl = $parsed_url['host'];
         }
     }
-    
     return  $baseUrl;
 }
+
+//получаем айпи адрес локального компьютера
+function getLocalIp()
+{ return gethostbyname(trim(`hostname`)); }
+
 
 function startsWith($haystack, $needle)
 {
@@ -159,3 +173,4 @@ function getDefImg($control_url,$xml)
 
     
 }
+
