@@ -134,13 +134,13 @@
                 <input type="checkbox" name="create_od" checked>
             </div>
             <div class="controls">
-                <input type="checkbox" name="create_term" checked>
+                <input type="checkbox" name="create_term" [#if TYPE="MediaRenderer"#] checked [#else#] disabled [#endif#]>
             </div>
             <div class="controls">
                 <input type="checkbox" name="create_templ" checked>
             </div>
             <div class="controls">
-                <input type="checkbox" name="use_to_say" checked>
+                <input type="checkbox" name="use_to_say" [#if TYPE="MediaRenderer"#] checked [#else#] disabled [#endif#]>
             </div>
         </div>
         [#module name="linkedobject" object_field="linked_object" property_field="linked_property" method_field="linked_method"#]
