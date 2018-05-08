@@ -238,14 +238,29 @@ function usual(&$out) {
 *
 * @access public
 */
- function getIp($address){
-  $baseUrl="";
-	if( !empty($address) ){
-        $parsed_url = parse_url($address);
-        $baseUrl = $parsed_url['host'];
+function getIp($baseUrl,$withPort) {
+	if( !empty($baseUrl) ){
+        $parsed_url = parse_url($baseUrl);
+        if($withPort ==true){
+             if ($parsed_url['host'] == '127.0.0.1'){
+                 $parsed_url['host'] = getLocalIp();
+                }
+        $baseUrl = $parsed_url['scheme'].'://'.$parsed_url['host'].':'.$parsed_url['port']; 
+       }else{
+             if ($parsed_url['host'] == '127.0.0.1'){
+                 $parsed_url['host'] = getLocalIp();
+                }
+            $baseUrl = $parsed_url['host'];
         }
+    }
     return  $baseUrl;
 }
+
+//получаем айпи адрес локального компьютера
+function getLocalIp() { 
+return gethostbyname(trim(`hostname`)); 
+}
+
 /**
 * get port from url
 *
@@ -272,7 +287,7 @@ function add_to_terminal($id) {
   $terminal=array(); // опции добавления
   $terminal['NAME'] = $ssdpdevice['TITLE'];
   $terminal['TITLE'] = $ssdpdevice['DESCRIPTION'];
-  $terminal['HOST'] = $ssdpdevice['ADDRESS'];
+  $terminal['HOST'] = $this->getIp($ssdpdevice['ADDRESS'],false);
   $terminal['CANPLAY'] = '1';
   $terminal['PLAYER_TYPE'] = 'dlna';
   $terminal['PLAYER_PORT'] = $this->getPort($ssdpdevice['ADDRESS']);
@@ -301,7 +316,7 @@ function add_to_terminal($id) {
   $pinghosts['TYPE'] = '0';
   $pinghosts['OFFLINE_INTERVAL'] = '600';
   $pinghosts['ONLINE_INTERVAL'] = '600';
-  $pinghosts['HOSTNAME'] = $ssdpdevice['ADDRESS'];
+  $pinghosts['HOSTNAME'] = $this->getIp($ssdpdevice['ADDRESS'],false);
   $pinghosts['CODE_ONLINE'] = 'say("Устройство ".$host[\'TITLE\']." пропало из сети, возможно его отключили" ,2);';
   $pinghosts['CODE_OFFLINE'] = 'say("Устройство ".$host[\'TITLE\']." появилось в сети." ,2);';
   $pinghosts['LINKED_OBJECT'] = $ssdpdevice['LINKED_OBJECT'];
@@ -366,6 +381,7 @@ function add_to_terminal($id) {
     }
    }
  }
+
  function processSubscription($event, $details='') {
  $this->getConfig();
   if ($event=='SAY') {
