@@ -257,7 +257,7 @@ function renderStructure() {
 * @access public
 */
  function uninstall() {
-  parent::uninstall();
+  //parent::uninstall();
  }
 /**
 * dbInstall
