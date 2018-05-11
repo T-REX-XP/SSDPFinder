@@ -418,13 +418,28 @@ function add_to_terminal($id) {
 * @access public
 */
  function uninstall() {
+ // delete devices from ssdpdevices
+  $allrec=SQLSelect("SELECT * FROM ssdp_devices"); 
+  foreach ($allrec as $rec )   {
+     $this->delete_ssdp_devices($rec['ID']);
+  }
+  // delete module ssdpdevices
+  SQLExec("DELETE FROM plugins WHERE MODULE_NAME LIKE 'ssdpdevices'");
+  SQLExec("DELETE FROM project_modules WHERE NAME LIKE 'ssdpdevices'");
+  include_once (DIR_MODULES.'market/market.class.php');
+  $market=new market();
+  $market->removeTree(ROOT.'modules/ssdpdevices');
+  $market->removeTree(ROOT.'templates/ssdpdevices');
+  if (file_exists(ROOT.'scripts/cycle_ssdpdevices.php')) {
+   @unlink(ROOT.'scripts/cycle_ssdpdevices.php');
+  }
+  // delete all tables 
   SQLExec('DROP TABLE IF EXISTS playlist_render');
   SQLExec('DROP TABLE IF EXISTS ssdp_devices');
   SQLExec('DROP TABLE IF EXISTS mediaservers_playlist');
+  // unsubscribeFromEvent SAY
   unsubscribeFromEvent($this->name, 'SAY');
-  $this->name="ssdpdevices";
-  parent::uninstall();
-  $this->name="ssdp_finder";
+  //delete ssdp_finder module
   parent::uninstall();
  }
 /**
