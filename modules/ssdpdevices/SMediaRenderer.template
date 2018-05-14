@@ -1,7 +1,9 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></meta>
 <!--- подгрузка css темы --->
- <link rel="stylesheet" href="<#ROOTHTML#>bootstrap/css/bootstrap[#if "<#SETTINGS_THEME#>"=="dark"#]_dark[#endif#].min.css" type="text/css">
+ <link rel="stylesheet" href="<#ROOTHTML#>bootstrap/css/bootstrap[#if '<#SETTINGS_THEME#>'=='dark'#]_dark[#endif#].min.css" type="text/css"></link>
 	<style>
 		.string
 		{
@@ -41,8 +43,8 @@
  <p style="width:300px; text-align:center; font-family: monospace; ">%.object_description%</p>
 
 <div name="selectDataType" style="float:left;">
-<select size="1" name="selectType" onClick='document.getElementById("selectedname").value=" "' onChange="selectServers();selectNames(); selectUrl();" style="width:175px; text-align:center; font-family: monospace; ">
-<option disabled selected value=""> - Выберите тип файла - </option>
+<select size="1" name="selectType" onClick='document.getElementById("selectedname").value=" "' onChange="selectServers();selectNames(); selectUrl();" style="width:160px; text-align:center; font-family: monospace; ">
+<option disabled selected value="">Выберите тип файла</option>
 <option value="Видео">Видео</option>
 <option value="Аудио">Аудио</option>
 <option value="Изображения">Изображения</option>
@@ -50,8 +52,8 @@
 </div> 
  
 <div name="selectDataServer" style="float:left;">
- <select disabled="disabled" size="1" name="selectServer" onChange="selectNames(); selectUrl();" style="width:175px; text-align:center; font-family: monospace; ">
-<option disabled selected value=""> - Имя сервера - </option>
+ <select disabled="disabled" size="1" name="selectServer" onChange="selectNames(); selectUrl();" style="width:160px; text-align:center; font-family: monospace; ">
+<option disabled selected value="">Имя сервера</option>
 </select>
 </div> 
  
@@ -59,25 +61,25 @@
 
  <!--- поле ссылки для Названия файла -->
 <div name="selectDataName" style="float:left;">
- <input size="14"  id="selectedname" name="selectName" type="nameoffiles" list="names" onClick ='selectNames();' onInput='selectUrl();' placeholder=" - Выберите файл - " style="width:175px; text-align:center; font-family: monospace; " />
+ <input size="14"  id="selectedname" name="selectName" type="nameoffiles" list="names" onClick ='selectNames();' onInput='selectUrl();' placeholder=" - Выберите файл - " style="width:160px; text-align:center; font-family: monospace; " />
 </div> 
 
  <!--- поле ссылки для воспроизведения --->
 <div name="selectDataUrl" style="float:left;">
-<input size="14" name="selectUrl" type="text" id="play_url" value="" style="width:175px; text-align:center; font-family: monospace; "/>
+<input size="14" name="selectUrl" type="text" id="play_url" value="" style="width:160px; text-align:center; font-family: monospace; "/>
 </div>
  
- <div name="buttons" style="width:360px; text-align:center;  height: 45px;">
+ <div name="buttons" style="width:310px; text-align:center;  height: 45px; ">
 <!--- регулировка звука --->
- <input type="range" onChange='ajaxSetGlobal("%.object_title%.volume", value);' value=%.volume%  min="0" max="100" step="5" style="width:350px; align:center; font-family: monospace; height: 15px; display: inline-block;" ></input>  
+ <input type="range" onChange='ajaxSetGlobal("%.object_title%.volume", value);' value=%.volume%  min="0" max="100" step="5" style="width:310px; align:center; font-family: monospace; height: 15px; display: inline-block;" ></input>  
 <!--- кнопка воспроизведения урла --->
  <button style='float:left;width:80px;height: 34px;' onClick='ajaxSetGlobal("%.object_title%.playUrl", document.getElementById("play_url").value);' class="btn btn-custom"><span value="" title="Play" id="play" class="glyphicon glyphicon-play aligned">PlayUrl</span></button> 
   <!--- остальные кнопки--->
  <button style='display:%.pause_unpause|"block;none"%; float:left; width:46px;height: 34px;' onClick='ajaxSetGlobal("%.object_title%.pause_unpause", 1);' class="btn btn-custom"><span title="Pause" id="pause" class="glyphicon glyphicon-pause aligned"></span></button>
  <button style='display:%.pause_unpause|"none;block"%; float:left;width:46px;height: 34px;' onClick='ajaxSetGlobal("%.object_title%.pause_unpause", 0);' class="btn btn-custom"><span title="UnPause" id="Unpause" class="glyphicon glyphicon-play aligned"></span></button>
  <button style='float:left;width:46px;height: 34px;' onclick='ajaxSetGlobal("%.object_title%.stop", 1);' class="btn btn-custom"><span title="Stop" id="stop" class="glyphicon glyphicon-stop aligned"></span></button> 
- <button style='float:left;width:46px;height: 34px;' onclick='ajaxSetGlobal("%.object_title%.mute_unmute", 1);' class="btn btn-custom"><span title="Mute" id="Mute" class="glyphicon glyphicon-volume-off aligned"></span></button> 
- <button style='float:left;width:46px;height: 34px;' onclick='ajaxSetGlobal("%.object_title%.mute_unmute", 0);' class="btn btn-custom"><span title="UnMute" id="UnMute" class="glyphicon glyphicon-volume-up aligned"></span></button>
+ <button style='display:%.mute_unmute|"block;none"%; float:left;width:46px;height: 34px;' onclick='ajaxSetGlobal("%.object_title%.mute_unmute", 1);' class="btn btn-custom"><span title="Mute" id="Mute" class="glyphicon glyphicon-volume-off aligned"></span></button> 
+ <button style='display:%.mute_unmute|"none;block"%; float:left;width:46px;height: 34px;' onclick='ajaxSetGlobal("%.object_title%.mute_unmute", 0);' class="btn btn-custom"><span title="UnMute" id="UnMute" class="glyphicon glyphicon-volume-up aligned"></span></button>
  <button style='float:left;width:46px;height: 34px;' onclick="Backward5('music.mp3','audio');" class="btn btn-custom"><span title="-5 seconds" id="-5second" class="glyphicon glyphicon-fast-backward aligned"></span></button> 
  <button style='float:left;width:46px;height: 34px;' onclick="Forward5('music.mp3','audio');" class="btn btn-custom"><span title="+5 seconds" id="+5second" class="glyphicon glyphicon-fast-forward aligned"></span></button> 
  <!-- пока нереализовано
