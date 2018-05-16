@@ -20,7 +20,6 @@
    global $create_sd;
    global $create_od;
    global $create_term;
-   global $create_templ;
 
    //updating 'use_to_say' (varchar)
    global $use_to_say;
@@ -92,9 +91,6 @@
      if($create_term==true AND $type=='MediaRenderer'){
       $this->add_to_terminal($rec['ID']);
      }
-     if($create_templ==true){
-      $this->add_to_template($rec['ID']);
-     }
     }
     $out['OK']=1;
    } else {
@@ -115,7 +111,6 @@
    global $create_sd;
    global $create_od;
    global $create_term;
-   global $create_templ;
    //updating 'use_to_say' (varchar)
    global $use_to_say;
    global $controladdress;
@@ -184,9 +179,6 @@
       if($create_term==true AND $type=='MediaRenderer'){
        $this->add_to_terminal($rec['ID']);
       }
-      if($create_templ==true){
-       $this->add_to_template($rec['ID']);
-     }
      }
      $out['OK']=1;
     } else {

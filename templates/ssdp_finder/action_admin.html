@@ -87,18 +87,10 @@
         <fieldset>
             <div class="form-group">
                 <label class="control-label" [#if ERR_API_USERNAME#] style="color:red;font-weight:bold" [#endif#]>
-                    API Username:
+                    Порт для подписки на ответы от событий в устройствах:
                 </label>
                 <div class="controls">
                     <input type="text" name="api_username" value="[#API_USERNAME#]" class="input">
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="control-label" [#if ERR_API_PASSWORD#] style="color:red;font-weight:bold" [#endif#]>
-                    API Password:
-                </label>
-                <div class="controls">
-                    <input type="password" name="api_password" value="[#API_PASSWORD#]" class="input">
                 </div>
             </div>
             <div class="form-actions">
