@@ -40,7 +40,7 @@ switch ($_POST['action']){
                       return;
 		   };
                 };
-                echo '<input type="text" id="play_url" value="файл не найден" />';
+                echo '<input type="text" id="play_url" value="файл не найден" style="width:160px; text-align:center; font-family: monospace; " />';
  		return;
 };
 ?>
