@@ -1,7 +1,19 @@
-<link rel="stylesheet" href="<#ROOTHTML#>bootstrap/css/bootstrap[#if "<#SETTINGS_THEME#>"=="dark"#]_dark[#endif#].min.css" type="text/css">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></meta>
+<!--- подгрузка css темы --->
+ <link rel="stylesheet" href="<#ROOTHTML#>bootstrap/css/bootstrap[#if '<#SETTINGS_THEME#>'=='dark'#]_dark[#endif#].min.css" type="text/css"></link>
 
-<div class="device-details" style="font-size: 150%; text-align:center; font-family: monospace; ">%.object_description%</div>
+</head>
+<body>
+<div name="Mainframe" style="width:320px; text-align:center; align:center; font-family: monospace;">
 
-<div class="group"> 
- <button onClick='callMethod("%.object_title%.getFileList");' class="btn btn-custom"><span title="Get filelist" id="Get filelist" class="glyphicon glyphicon-list-alt aligned"></span></button> 
+ <div class="device-details" style="font-size: 150%; text-align:center; font-family: monospace; "><img src="%.Logo%" alt="Логотип устройства" style="width:36px; "></img>%.object_description%</div>
+
+   <div class="group"> 
+    <button onClick='callMethod("%.object_title%.getFileList");' class="btn btn-custom"><span title="Get filelist" id="Get filelist" class="glyphicon glyphicon-list-alt aligned"> Get filelist</span></button> 
+   </div>
 </div>
+ </body>
+</html>
