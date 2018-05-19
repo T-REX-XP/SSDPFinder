@@ -46,8 +46,7 @@ function Scan()
 
     foreach ($everything as $device) {
         $control_url = str_ireplace("Location:", "", $device['location']);
-	$control_url = str_ireplace(" ", "", $control_url);
-	$xml=simplexml_load_file($control_url);
+	$xml=simplexml_load_file(rawurlencode($control_url));
         $uuid = $xml->device->UDN;
         $existed = SQLSelectOne("SELECT * FROM $table_name WHERE UUID='$uuid'");
         // print array_search(, array_column( $result, 'ADDRESS'));
