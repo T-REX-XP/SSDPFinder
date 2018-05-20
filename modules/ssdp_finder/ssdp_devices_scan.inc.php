@@ -45,7 +45,7 @@ function Scan()
     $table_name='ssdp_devices';
 
     foreach ($everything as $device) {
-        // проверка для виндовс сервера если ссылка содержит слово Location
+        // проверка для виндовс сервера если ссылка содержит слово Location то удаляем его
 	$chek = stripos($device['location'],'Location:');
         if ($chek === true) {
             $control_url = str_ireplace("Location:", "", $device['location']);
