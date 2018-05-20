@@ -38,7 +38,7 @@ if ($res[0]['UUID']) {
 
 function Scan()
 {
-	$upnp = new Upnp();
+    $upnp = new Upnp();
     #print('searching...' . PHP_EOL);
     $everything = $upnp->discover();
     $result = [];
@@ -46,7 +46,11 @@ function Scan()
 
     foreach ($everything as $device) {
         $control_url = str_ireplace("Location:", "", $device['location']);
-	$xml=simplexml_load_file(rawurlencode($control_url));
+	$fml = file_get_contents($control_url);
+        // replace '&' followed by a bunch of letters, numbers
+        // and underscores and an equal sign with &amp;
+        $fml = preg_replace('#&(?=[a-z_0-9]+=)#', '&amp;', $fml);
+        $xml = simplexml_load_string($fml);
         $uuid = $xml->device->UDN;
         $existed = SQLSelectOne("SELECT * FROM $table_name WHERE UUID='$uuid'");
         // print array_search(, array_column( $result, 'ADDRESS'));
