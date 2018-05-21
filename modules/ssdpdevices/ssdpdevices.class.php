@@ -271,15 +271,6 @@ function renderStructure() {
 devices - 
 */
   $data = <<<EOD
- playlist_render: ID int(10000) unsigned NOT NULL auto_increment
- playlist_render: TITLE varchar(100) NOT NULL DEFAULT ''
- playlist_render: DESCRIPTION varchar(300) NOT NULL DEFAULT ''
- playlist_render: GENRE varchar(50) NOT NULL DEFAULT ''
- playlist_render: URL_LINK varchar(250) NOT NULL DEFAULT ''
- playlist_render: LINKED_OBJECT varchar(100) NOT NULL DEFAULT ''
- playlist_render: FAVORITE int(3) unsigned NOT NULL DEFAULT 0 
-
-
 EOD;
   parent::dbInstall($data);
  }
