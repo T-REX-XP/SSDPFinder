@@ -38,7 +38,7 @@ if ($res[0]['UUID']) {
 
 function Scan()
 {
-	$upnp = new Upnp();
+    $upnp = new Upnp();
     #print('searching...' . PHP_EOL);
     $everything = $upnp->discover();
     $result = [];
@@ -46,7 +46,13 @@ function Scan()
 
     foreach ($everything as $device) {
         $control_url = str_ireplace("Location:", "", $device['location']);
-	$xml=simplexml_load_file($control_url);
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $control_url);
+        curl_setopt($ch, CURLOPT_HEADER, 0);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        $content = curl_exec($ch);
+        libxml_use_internal_errors(true); 
+        $xml = simplexml_load_string($content);
         $uuid = $xml->device->UDN;
         $existed = SQLSelectOne("SELECT * FROM $table_name WHERE UUID='$uuid'");
         // print array_search(, array_column( $result, 'ADDRESS'));
