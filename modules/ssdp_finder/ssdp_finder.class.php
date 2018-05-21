@@ -413,8 +413,8 @@ function add_to_terminal($id) {
   $market=new market();
   $market->removeTree(ROOT.'modules/ssdpdevices');
   $market->removeTree(ROOT.'templates/ssdpdevices');
-  if (file_exists(ROOT.'scripts/cycle_ssdpdevices.php')) {
-   @unlink(ROOT.'scripts/cycle_ssdpdevices.php');
+  if (file_exists(ROOT.'scripts/cycle_ssdp_finder.php')) {
+   @unlink(ROOT.'scripts/cycle_ssdp_finder.php');
   }
   // delete all tables 
   SQLExec('DROP TABLE IF EXISTS playlist_render');
@@ -463,9 +463,9 @@ ssdp_devices -
  mediaservers_playlist: LINKED_OBJECT varchar(100) NOT NULL DEFAULT ''
  mediaservers_playlist: FAVORITE int(3) unsigned NOT NULL DEFAULT 0 
  
- playlist_render: ID int(10000) unsigned NOT NULL auto_increment
+ playlist_render: ID int(255) unsigned NOT NULL auto_increment
  playlist_render: TITLE varchar(100) NOT NULL DEFAULT ''
- playlist_render: DESCRIPTION varchar(300) NOT NULL DEFAULT ''
+ playlist_render: DESCRIPTION varchar(255) NOT NULL DEFAULT ''
  playlist_render: GENRE varchar(50) NOT NULL DEFAULT ''
  playlist_render: URL_LINK varchar(250) NOT NULL DEFAULT ''
  playlist_render: LINKED_OBJECT varchar(100) NOT NULL DEFAULT ''
