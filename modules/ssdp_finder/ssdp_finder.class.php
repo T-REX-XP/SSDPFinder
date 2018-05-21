@@ -413,8 +413,8 @@ function add_to_terminal($id) {
   $market=new market();
   $market->removeTree(ROOT.'modules/ssdpdevices');
   $market->removeTree(ROOT.'templates/ssdpdevices');
-  if (file_exists(ROOT.'scripts/cycle_ssdpdevices.php')) {
-   @unlink(ROOT.'scripts/cycle_ssdpdevices.php');
+  if (file_exists(ROOT.'scripts/cycle_ssdp_finder.php')) {
+   @unlink(ROOT.'scripts/cycle_ssdp_finder.php');
   }
   // delete all tables 
   SQLExec('DROP TABLE IF EXISTS playlist_render');
