@@ -45,15 +45,15 @@ function Scan()
     $table_name='ssdp_devices';
 
     foreach ($everything as $device) {
-        // проверка для виндовс сервера если ссылка содержит слово Location то удаляем его
-	$chek = stripos($device['location'],'Location:');
-        if ($chek === true) {
-            $control_url = str_ireplace("Location:", "", $device['location']);
-            $xml = simplexml_load_string($control_url);
-        }  else {  // иначе грузим стандартным вариантом
-	    $control_url = $device['location'];
-            $xml = simplexml_load_string($device['location']);
-	};
+        $control_url = str_ireplace("Location:", "", $device['location']);
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $control_url);
+        curl_setopt($ch, CURLOPT_HEADER, 0);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        $content = curl_exec($ch);
+        libxml_use_internal_errors(true); 
+        $xml = simplexml_load_string($content);
+
         $uuid = $xml->device->UDN;
         $existed = SQLSelectOne("SELECT * FROM $table_name WHERE UUID='$uuid'");
         // print array_search(, array_column( $result, 'ADDRESS'));
