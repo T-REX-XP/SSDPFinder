@@ -53,7 +53,6 @@ function Scan()
         $content = curl_exec($ch);
         libxml_use_internal_errors(true); 
         $xml = simplexml_load_string($content);
-
         $uuid = $xml->device->UDN;
         $existed = SQLSelectOne("SELECT * FROM $table_name WHERE UUID='$uuid'");
         // print array_search(, array_column( $result, 'ADDRESS'));
