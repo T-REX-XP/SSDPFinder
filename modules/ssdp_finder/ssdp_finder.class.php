@@ -391,6 +391,18 @@ function add_to_terminal($id) {
 */
  function install($data='') {
   subscribeToEvent($this->name, 'SAY');
+
+
+  if (file_exists(DIR_MODULES.'devices/devices_structure.inc.php')) {
+      $current = file_get_contents(DIR_MODULES.'devices/devices_structure.inc.php');
+      $add = file_get_contents(DIR_MODULES.'ssdp_finder/ssdpdevices_structure.template.php');
+      $chek = stripos($current, 'SDevices');
+      if ($chek === false) {
+          $data = str_replace(");", $add, $current);
+          file_put_contents(DIR_MODULES.'devices/devices_structure.inc.php', $data);
+          };
+      };
+
   parent::install();
  }
 /**
