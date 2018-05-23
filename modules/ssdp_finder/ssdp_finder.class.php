@@ -216,6 +216,9 @@ function usual(&$out) {
   if (!$id) {
       $id = ($_GET["id"]);
   }
+  // edit the structure
+  $this->edit_device_structure();
+
   // podkluchaem prostie ustroystva i sozdaem ego
   include_once (DIR_MODULES.'devices/devices.class.php');
   $ssdpdevice=SQLSelectOne("SELECT * FROM ssdp_devices WHERE ID='".$id."'");
@@ -233,9 +236,7 @@ function usual(&$out) {
   //$result=$dev->addDevice($device_type, $options); // добавляем устройство -- возвращает 1 в случае успешного добавления
   
 	 
-	 
-	 
-	$dev->setDictionary();
+     $dev->setDictionary();
      $type_details=$dev->getTypeDetails($device_type);
      if (!is_array($options)) {
          $options=array();
@@ -470,6 +471,26 @@ function add_to_terminal($id) {
    //...
   }
  }
+	
+/**
+* Edit device structure
+*
+*
+* @access private
+*/
+// edit device module
+function edit_device_structure() {
+  if (file_exists(DIR_MODULES.'devices/devices_structure.inc.php')) {
+      $current = file_get_contents(DIR_MODULES.'devices/devices_structure.inc.php');
+      file_put_contents(DIR_MODULES.'ssdp_finder/devices_structure.inc.original',  $current);
+      $add = file_get_contents(DIR_MODULES.'ssdp_finder/ssdpdevices_structure.template.php');
+      $chek = stripos($current, 'UPNPdevices');
+      if ($chek === false) {
+          $data = str_replace(");", $add, $current);
+          file_put_contents(DIR_MODULES.'devices/devices_structure.inc.php', $data);
+          }
+      }
+}
 /**
 * Install
 *
@@ -479,7 +500,7 @@ function add_to_terminal($id) {
 */
  function install($data='') {
   subscribeToEvent($this->name, 'SAY');
-
+  $this->edit_device_structure();
   // delete module ssdpdevices
   SQLExec("DELETE FROM plugins WHERE MODULE_NAME LIKE 'ssdpdevices'");
   SQLExec("DELETE FROM project_modules WHERE NAME LIKE 'ssdpdevices'");
@@ -491,18 +512,7 @@ function add_to_terminal($id) {
    @unlink(ROOT.'scripts/cycle_ssdp_finder.php');
   }
 
-   // edit device module
-  if (file_exists(DIR_MODULES.'devices/devices_structure.inc.php')) {
-      $current = file_get_contents(DIR_MODULES.'devices/devices_structure.inc.php');
-      file_put_contents(DIR_MODULES.'ssdp_finder/devices_structure.inc.original',  $current);
-      $add = file_get_contents(DIR_MODULES.'ssdp_finder/ssdpdevices_structure.template.php');
-      $chek = stripos($current, 'UPNPdevices');
-      if ($chek === false) {
-          $data = str_replace(");", $add, $current);
-          file_put_contents(DIR_MODULES.'devices/devices_structure.inc.php', $data);
-          };
-      };
-
+  
   parent::install();
  }
 /**
