@@ -486,10 +486,10 @@ function add_to_terminal($id) {
 function edit_device_structure() {
   if (file_exists(DIR_MODULES.'devices/devices_structure.inc.php')) {
       $current = file_get_contents(DIR_MODULES.'devices/devices_structure.inc.php');
-      file_put_contents(DIR_MODULES.'ssdp_finder/devices_structure.inc.original',  $current);
       $add = file_get_contents(DIR_MODULES.'ssdp_finder/ssdpdevices_structure.template.php');
       $chek = stripos($current, 'UPNPdevices');
       if ($chek === false) {
+          file_put_contents(DIR_MODULES.'ssdp_finder/devices_structure.inc.original',  $current);
           $data = str_replace(");", $add, $current);
           file_put_contents(DIR_MODULES.'devices/devices_structure.inc.php', $data);
           }
@@ -529,7 +529,7 @@ function edit_device_structure() {
  function uninstall() {
  // restore  devices_structure.inc.php
  $current = file_get_contents(DIR_MODULES.'ssdp_finder/devices_structure.inc.original');
- file_put_contents(DIR_MODULES.'devices/devices_structure.inc.php',  $current);
+ file_put_contents(DIR_MODULES.'devices/devices_structure.inc.php',  $current, LOCK_EX);
 	 
  // delete devices from ssdpdevices
   $allrec=SQLSelect("SELECT * FROM ssdp_devices"); 
