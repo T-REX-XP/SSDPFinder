@@ -57,10 +57,10 @@ function Scan()
         $existed = SQLSelectOne("SELECT * FROM $table_name WHERE UUID='$uuid'");
         // print array_search(, array_column( $result, 'ADDRESS'));
         if (!array_search_result($result, 'CONTROLADDRESS', $control_url) && !is_null($uuid) && !($existed)) {
-            if (!getIp($xml->device->presentationURL,true)){
+            if (!$xml->device->presentationURL){
                 $presenturl='http://'.getIp($control_url,false);
                 } else {
-                $presenturl=getIp($xml->device->presentationURL,true);
+                $presenturl=$xml->device->presentationURL;
                 }
             $result[] = [
                 "ID" => $existed["ID"], //existed id Majordomo
