@@ -125,16 +125,10 @@ function getLocalIp() {
 return gethostbyname(trim(`hostname`)); 
 }
 
-//получаем айпи адрес локального компьютера
-function getLocalHostname() { 
-return (trim(`hostname`)); 
-}
-
 // функция заменяет 127.0.0.1 на реальный IP адрес для локального компа
 function editLocalIp($baseUrl){ 
 $localIp=getLocalIp();
 $baseUrl = str_ireplace('127.0.0.1', $localIp, $baseUrl);
-
 return $baseUrl; 
 }
 
