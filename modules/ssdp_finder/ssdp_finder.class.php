@@ -480,7 +480,18 @@ function add_to_terminal($id) {
  function install($data='') {
   subscribeToEvent($this->name, 'SAY');
 
+  // delete module ssdpdevices
+  SQLExec("DELETE FROM plugins WHERE MODULE_NAME LIKE 'ssdpdevices'");
+  SQLExec("DELETE FROM project_modules WHERE NAME LIKE 'ssdpdevices'");
+  include_once (DIR_MODULES.'market/market.class.php');
+  $market=new market();
+  $market->removeTree(ROOT.'modules/ssdpdevices');
+  $market->removeTree(ROOT.'templates/ssdpdevices');
+  if (file_exists(ROOT.'scripts/cycle_ssdp_finder.php')) {
+   @unlink(ROOT.'scripts/cycle_ssdp_finder.php');
+  }
 
+   // edit device module
   if (file_exists(DIR_MODULES.'devices/devices_structure.inc.php')) {
       $current = file_get_contents(DIR_MODULES.'devices/devices_structure.inc.php');
       file_put_contents(DIR_MODULES.'ssdp_finder/devices_structure.inc.original',  $current);
