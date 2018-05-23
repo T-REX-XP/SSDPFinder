@@ -124,6 +124,11 @@ function getLocalIp() {
 return gethostbyname(trim(`hostname`)); 
 }
 
+//получаем айпи адрес локального компьютера
+function getLocalHostname() { 
+return (trim(`hostname`)); 
+}
+
 // функция заменяет 127.0.0.1 на реальный айпи адрес
 function editLocalIp($baseUrl){ 
 if(stristr($baseUrl, '127.0.0.1') === TRUE) {
@@ -171,9 +176,9 @@ function SearchArray($array, $searchIndex, $searchValue)
 function getDefImg($control_url,$xml)
 {
     $baseUrl = getIp($control_url,True);
-    $local_ip = getLocalIp();
+    $local_host = getLocalHostname();
     if (!$xml->device->iconList->icon){
-        return "http://".$local_ip."/templates/ssdp_finder/img/".explode(":", $xml->device->deviceType)[3]. ".png";//"Icons not found..."
+        return "http://".$local_host."/templates/ssdp_finder/img/".explode(":", $xml->device->deviceType)[3]. ".png";//"Icons not found..."
     } else {
         foreach ($xml->device->iconList->icon as $icon) {
 	    if ($icon->with = 48){
