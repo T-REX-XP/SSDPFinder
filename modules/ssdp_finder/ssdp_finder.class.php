@@ -217,7 +217,11 @@ function usual(&$out) {
       $id = ($_GET["id"]);
   }
   // edit the structure
-  $this->edit_device_structure();
+  $current = file_get_contents(DIR_MODULES.'devices/devices_structure.inc.php');
+  $chek = stripos($current, 'UPNPdevices');
+  if ($chek === false) {
+            $this->edit_device_structure();
+          }
 
   // podkluchaem prostie ustroystva i sozdaem ego
   include_once (DIR_MODULES.'devices/devices.class.php');
