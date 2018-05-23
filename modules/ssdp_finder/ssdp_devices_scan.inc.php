@@ -62,6 +62,7 @@ function Scan()
                 } else {
                 $presenturl=$xml->device->presentationURL;
                 }
+            $presenturl = editLocalIp($presenturl);
             $result[] = [
                 "ID" => $existed["ID"], //existed id Majordomo
                 "TITLE" => $xml->device->friendlyName,//friendly name
@@ -69,7 +70,7 @@ function Scan()
                 "UUID" => $xml->device->UDN,
                 "DESCRIPTION" => $xml->device->modelDescription.$device['server'],//description get from xml or field "server"
                 "TYPE" => explode(":", $xml->device->deviceType)[3],//DeviceType
-                "LOGO" => getDefImg($control_url,$xml),//Logo 
+                "LOGO" => editLocalIp(getDefImg($control_url,$xml)),//Logo 
                 "SERIAL" => $xml->device->serialNumber,//serialnumber
                 "MANUFACTURERURL" => $xml->device->manufacturerURL,//manufacturer url
                 "UPDATED" => '',
@@ -119,7 +120,7 @@ function getIp($baseUrl,$withPort) {
     return  $baseUrl;
 }
 
-//получаем айпи адрес локального компьютера
+//получаем hostname адрес локального компьютера
 function getLocalIp() { 
 return gethostbyname(trim(`hostname`)); 
 }
@@ -129,12 +130,11 @@ function getLocalHostname() {
 return (trim(`hostname`)); 
 }
 
-// функция заменяет 127.0.0.1 на реальный айпи адрес
+// функция заменяет 127.0.0.1 на реальный IP адрес для локального компа
 function editLocalIp($baseUrl){ 
-if(stristr($baseUrl, '127.0.0.1') === TRUE) {
-    $localIp=getLocalIp();
-    $baseUrl = str_ireplace('127.0.0.1', $localIp, $baseUrl);
-  }
+$localIp=getLocalIp();
+$baseUrl = str_ireplace('127.0.0.1', $localIp, $baseUrl);
+
 return $baseUrl; 
 }
 
