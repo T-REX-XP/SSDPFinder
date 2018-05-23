@@ -272,11 +272,11 @@ function usual(&$out) {
      }
      $rec['ID']=SQLInsert('devices',$rec);
      if ($rec['LOCATION_ID']) {
-         $location_title=$dev->getRoomObjectByLocation($rec['LOCATION_ID'],1);
+         $location_title=getRoomObjectByLocation($rec['LOCATION_ID'],1);
      }
      if (!$rec['LINKED_OBJECT']) {
          $new_object_title=ucfirst($rec['TYPE']).$dev->getNewObjectIndex($type_details['CLASS']);
-         $object_id=$dev->addClassObject($type_details['CLASS'],$new_object_title,'sdevice'.$rec['ID']);
+         $object_id=addClassObject($type_details['CLASS'],$new_object_title,'sdevice'.$rec['ID']);
          $rec['LINKED_OBJECT']=$new_object_title;
          if (preg_match('/New device .+/',$rec['TITLE'])) {
              $rec['TITLE']=$rec['LINKED_OBJECT'];
