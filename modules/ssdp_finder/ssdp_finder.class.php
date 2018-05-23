@@ -349,6 +349,11 @@ function getIp($baseUrl,$withPort) {
     return  $baseUrl;
 }
 
+/**
+* get local IP 
+*
+* @access public
+*/
 //получаем айпи адрес локального компьютера
 function getLocalIp() { 
 return gethostbyname(trim(`hostname`)); 
