@@ -8,7 +8,6 @@ $video = [".3g2",".3gp",".3gp2",".3gpp",".3gpp2",".asf",".asx",".avi",".bin",".d
 $audio = [".aac",".ac3",".aif",".aiff",".amr",".aob",".ape",".asf",".aud",".aud",".aud",".aud",".awb",".bin",".bwg",".cdr",".flac",".gpx",".ics",".iff",".m",".m3u",".m3u8",".m4a",".m4b",".m4p",".m4r",".mid",".midi",".mod",".mp3",".mp3",".mp3",".mpa",".mpp",".msc",".msv",".mts",".nkc",".ogg",".ps",".ra",".ram",".sdf",".sib",".sln",".spl",".srt",".srt",".temp",".vb",".wav",".wav",".wave",".wm",".wma",".wpd",".xsb",".xwb"];
 
 $adress = $this->getProperty("CONTROLADDRESS");
-$localIp = gethostbyname(trim(`hostname`));
 $mediaserver = new Mediaserver();
 $browse = new Mediaserver\Browse($adress);
 $directories = $browse->browse();
@@ -16,12 +15,11 @@ foreach($directories as $list){
     $files = $browse->browsexmlfiles($list['id']);
     foreach($files as $file){
         $link = $file ['link'];
-        $link = str_ireplace('127.0.0.1', $localIp, $link);
         //print_r ($file ['link']);
         //print_r ($file ['title']);
         //print_r ($file ['genre']);
         //print_r ($file ['creator']);
-        $Record = SQLSelectOne("SELECT * FROM mediaservers_playlist WHERE URL_LINK='".$link."'");
+        $Record = SQLSelectOne("SELECT * FROM mediaservers_playlist WHERE TITLE='".$file ['title']."'");
         $Record['URL_LINK'] = $link;
         $Record['TITLE'] = $file ['title'];
         $Record['DESCRIPTION'] = $file ['creator'];
