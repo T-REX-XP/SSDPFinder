@@ -70,7 +70,7 @@ function Scan()
                 "UUID" => $xml->device->UDN,
                 "DESCRIPTION" => $xml->device->modelDescription.$device['server'],//description get from xml or field "server"
                 "TYPE" => explode(":", $xml->device->deviceType)[3],//DeviceType
-                "LOGO" => editLocalIp(getDefImg($control_url,$xml)),//Logo 
+                "LOGO" => getDefImg($control_url,$xml),//Logo 
                 "SERIAL" => $xml->device->serialNumber,//serialnumber
                 "MANUFACTURERURL" => $xml->device->manufacturerURL,//manufacturer url
                 "UPDATED" => '',
@@ -176,9 +176,9 @@ function SearchArray($array, $searchIndex, $searchValue)
 function getDefImg($control_url,$xml)
 {
     $baseUrl = getIp($control_url,True);
-    $local_host = getLocalHostname();
+    $local_IP = getLocalIp();
     if (!$xml->device->iconList->icon){
-        return "http://".$local_host."/templates/ssdp_finder/img/".explode(":", $xml->device->deviceType)[3]. ".png";//"Icons not found..."
+        return "http://".$local_IP."/templates/ssdp_finder/img/".explode(":", $xml->device->deviceType)[3]. ".png";//"Icons not found..."
     } else {
         foreach ($xml->device->iconList->icon as $icon) {
 	    if ($icon->with = 48){
