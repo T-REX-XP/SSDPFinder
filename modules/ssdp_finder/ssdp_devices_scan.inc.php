@@ -170,6 +170,7 @@ function SearchArray($array, $searchIndex, $searchValue)
 function getDefImg($control_url,$xml)
 {
     $baseUrl = getIp($control_url,True);
+    $uuid = str_ireplace("uuid:", "",$xml->device->UDN);
     $local_IP = getLocalIp();
     if (!$xml->device->iconList->icon){
         return "http://".$local_IP."/templates/ssdp_finder/img/".explode(":", $xml->device->deviceType)[3]. ".png";//"Icons not found..."
@@ -184,7 +185,12 @@ function getDefImg($control_url,$xml)
 	    } else {
 	        $url = $icon->url;}
 	    }    
-	        return $baseUrl.$url;
+                $current = file_get_contents($baseUrl.$url);
+str_replace(");", $add, $current);
+                $link = 'ssdp_finder/img/'.$uuid.'.png';
+                $logourl = ('http://'.$local_IP.'/templates/ssdp_finder/img/'.$uuid.'.png');
+                file_put_contents(DIR_TEMPLATES.$link,  $current);
+	        return $logourl;
     }
 
     
