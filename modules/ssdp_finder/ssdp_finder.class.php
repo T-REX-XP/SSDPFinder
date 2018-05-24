@@ -462,6 +462,34 @@ function add_to_terminal($id) {
           setGlobal($saydev['LINKED_OBJECT'].'.playUrl', $cached_filename);
         }
    }
+/* if ($event=='ASK') {
+   $tartget = $this->targetToIp($details['target']);
+   if(!$target) return 0;
+   $message=$details['prompt'];
+   $this->send_mpt('ask', $message, $target);
+   if($this->debug == 1) debmes('mpt ask ' . $message . '; target = ' . $target);
+  }
+
+  if ($event=='SAYTO') {
+   if($this->debug == 1) debmes('mpt sayto start');
+   $level=$details['level'];
+   $message=$details['message'];
+   $target = $this->targetToIp($details['destination']);
+   if($this->debug == 1) debmes('mpt sayto after ttIp : ' . $target);
+   if(!$target) return 0;
+   $this->send_mpt('tts', $message, $target);
+   if($this->debug == 1) debmes('mpt sayto ' . $message . '; level = ' . $level . '; to = ' . $target);
+  }
+
+  if ($event=='SAYREPLY') {
+   $level=$details['level'];
+   $message=$details['message'];
+   $source=$details['source'];
+   $tartget = $this->targetToIp($details['replyto']);
+   if(!$target) return 0;
+   $this->send_mpt('tts', $message, $target);
+   if($this->debug == 1) debmes('mpt sayto ' . $message . '; level = ' . $level . '; to = ' . $destination);
+  } */
    //playSound($cached_filename,1);
    //...
   }
