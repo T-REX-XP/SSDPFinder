@@ -494,6 +494,9 @@ function edit_device_structure() {
 * @access private
 */
  function install($data='') {
+
+  subscribeToEvent($this->name, 'SAYTO','',20);
+  subscribeToEvent($this->name, 'ASK','',20);
   subscribeToEvent($this->name, 'SAY');
   $this->edit_device_structure();
   // delete module ssdpdevices
@@ -532,6 +535,9 @@ function edit_device_structure() {
   SQLExec('DROP TABLE IF EXISTS mediaservers_playlist');
   // unsubscribeFromEvent SAY
   unsubscribeFromEvent($this->name, 'SAY');
+  unsubscribeFromEvent($this->name, 'SAYTO');
+  unsubscribeFromEvent($this->name, 'ASK');
+
   //delete ssdp_finder module
   parent::uninstall();
  }
