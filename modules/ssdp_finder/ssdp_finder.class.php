@@ -210,7 +210,7 @@ function usual(&$out) {
   if (!$id) {
       $id = ($_GET["id"]);
   }
-  // edit the structure
+  // редактируем структур файла (на всякий случай проверяем) уже должно быть сделано это
   $current = file_get_contents(DIR_MODULES.'devices/devices_structure.inc.php');
   $chek = stripos($current, 'UPNPdevices');
   if ($chek === false) {
@@ -231,7 +231,7 @@ function usual(&$out) {
   //$options['ADD_SCENE']=1; // добавлять интерфейс работы с устройством на сцену (не обязательно)
   //$result=$dev->addDevice($device_type, $options); // добавляем устройство -- возвращает 1 в случае успешного добавления
   
-	 
+  // поскольку пока функция добавления устройств работает не правильно то продублируем ее здесь	 
      $dev->setDictionary();
      $type_details=$dev->getTypeDetails($device_type);
      if (!is_array($options)) {
@@ -284,7 +284,8 @@ function usual(&$out) {
      if ($options['ADD_SCENE']) {
          $dev->addDeviceToScene($rec['ID']);
      }
-	 
+	
+	 //конец функции простых устройств
 	 
 	 
    // zapolnyaem dannie ob ustroystve 
