@@ -1,6 +1,4 @@
-<?php
-$this->ssdpdevices_types=array(
-        'ssdpdevices'=>array(
+     'ssdpdevices'=>array(
         'CLASS'=>'UPNPdevices',
         'PARENT_CLASS'=>'SDevices',
         'DESCRIPTION'=>'Auto finded devices',

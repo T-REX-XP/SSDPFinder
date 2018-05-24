@@ -57,11 +57,12 @@ function Scan()
         $existed = SQLSelectOne("SELECT * FROM $table_name WHERE UUID='$uuid'");
         // print array_search(, array_column( $result, 'ADDRESS'));
         if (!array_search_result($result, 'CONTROLADDRESS', $control_url) && !is_null($uuid) && !($existed)) {
-            if (!getIp($xml->device->presentationURL,true)){
+            if (!$xml->device->presentationURL){
                 $presenturl='http://'.getIp($control_url,false);
                 } else {
-                $presenturl=getIp($xml->device->presentationURL,true);
+                $presenturl=$xml->device->presentationURL;
                 }
+            $presenturl = editLocalIp($presenturl);
             $result[] = [
                 "ID" => $existed["ID"], //existed id Majordomo
                 "TITLE" => $xml->device->friendlyName,//friendly name
@@ -119,17 +120,15 @@ function getIp($baseUrl,$withPort) {
     return  $baseUrl;
 }
 
-//получаем айпи адрес локального компьютера
+//получаем hostname адрес локального компьютера
 function getLocalIp() { 
 return gethostbyname(trim(`hostname`)); 
 }
 
-// функция заменяет 127.0.0.1 на реальный айпи адрес
+// функция заменяет 127.0.0.1 на реальный IP адрес для локального компа
 function editLocalIp($baseUrl){ 
-if(stristr($baseUrl, '127.0.0.1') === TRUE) {
-    $localIp=getLocalIp();
-    $baseUrl = str_ireplace('127.0.0.1', $localIp, $baseUrl);
-  }
+$localIp=getLocalIp();
+$baseUrl = str_ireplace('127.0.0.1', $localIp, $baseUrl);
 return $baseUrl; 
 }
 
@@ -171,8 +170,10 @@ function SearchArray($array, $searchIndex, $searchValue)
 function getDefImg($control_url,$xml)
 {
     $baseUrl = getIp($control_url,True);
+    $uuid = str_ireplace("uuid:", "",$xml->device->UDN);
+    $local_IP = getLocalIp();
     if (!$xml->device->iconList->icon){
-        return "/templates/ssdp_finder/img/".explode(":", $xml->device->deviceType)[3]. ".png";//"Icons not found..."
+        return "http://".$local_IP."/templates/ssdp_finder/img/".explode(":", $xml->device->deviceType)[3]. ".png";//"Icons not found..."
     } else {
         foreach ($xml->device->iconList->icon as $icon) {
 	    if ($icon->with = 48){
@@ -184,7 +185,12 @@ function getDefImg($control_url,$xml)
 	    } else {
 	        $url = $icon->url;}
 	    }    
-	        return $baseUrl.$url;
+                $current = file_get_contents($baseUrl.$url);
+str_replace(");", $add, $current);
+                $link = 'ssdp_finder/img/'.$uuid.'.png';
+                $logourl = ('http://'.$local_IP.'/templates/ssdp_finder/img/'.$uuid.'.png');
+                file_put_contents(DIR_TEMPLATES.$link,  $current);
+	        return $logourl;
     }
 
     

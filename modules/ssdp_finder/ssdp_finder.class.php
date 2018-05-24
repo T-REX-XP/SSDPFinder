@@ -1,10 +1,6 @@
 <?php
-
 require('upnp/vendor/autoload.php');
-
 use jalder\Upnp\Upnp;
-
-
 /**
 * SSDP Finder 
 * @package project
@@ -194,7 +190,6 @@ function usual(&$out) {
  function search_ssdp_devices(&$out) {
   require(DIR_MODULES.$this->name.'/ssdp_devices_search.inc.php');
  }
-
     function scan_ssdp_devices(&$out) {
         require(DIR_MODULES.$this->name.'/ssdp_devices_scan.inc.php');
     }
@@ -206,7 +201,6 @@ function usual(&$out) {
  function edit_ssdp_devices(&$out, $id) {
   require(DIR_MODULES.$this->name.'/ssdp_devices_edit.inc.php');
  }
-
 /**
 * ssdp_devices add record to SSDPdevice
 *
@@ -216,12 +210,18 @@ function usual(&$out) {
   if (!$id) {
       $id = ($_GET["id"]);
   }
-  include_once (DIR_MODULES.'ssdpdevices/ssdpdevices.class.php');
+  // редактируем структур файла (на всякий случай проверяем) уже должно быть сделано это
+  $current = file_get_contents(DIR_MODULES.'devices/devices_structure.inc.php');
+  $chek = stripos($current, 'UPNPdevices');
+  if ($chek === false) {
+            $this->edit_device_structure();
+          }
+  // podkluchaem prostie ustroystva i sozdaem ego
+  include_once (DIR_MODULES.'devices/devices.class.php');
   $ssdpdevice=SQLSelectOne("SELECT * FROM ssdp_devices WHERE ID='".$id."'");
-  $dev=new ssdpdevices();
+  $dev=new devices();
   $dev->renderStructure();
   $device_type=$ssdpdevice['TYPE']; // тип устройства (см выше допустимые типы) 
-
   $options=array(); // опции добавления
   $options['TABLE'] = 'ssdp_devices'; // таблица, куда потом запишется LINKED_OBJECT и LINKED_PROPERTY
   $options['TABLE_ID'] = $id; // ID записи в вышеназванной таблице (запись уже должна быть создана такая)
@@ -229,10 +229,94 @@ function usual(&$out) {
   $options['LOCATION_ID']=$ssdpdevice['LOCATION']; // ID расположения (не обязательно)
   //$options['ADD_MENU']=1; // добавлять интерфейс работы с устройством в  меню (не обязательно)
   //$options['ADD_SCENE']=1; // добавлять интерфейс работы с устройством на сцену (не обязательно)
-  $result=$dev->addSSDPDevice($device_type, $options); // добавляем устройство -- возвращает 1 в случае успешного добавления
+  //$result=$dev->addDevice($device_type, $options); // добавляем устройство -- возвращает 1 в случае успешного добавления
+  
+  // поскольку пока функция добавления устройств работает не правильно то продублируем ее здесь	 
+     $dev->setDictionary();
+     $type_details=$dev->getTypeDetails($device_type);
+     if (!is_array($options)) {
+         $options=array();
+     }
+     if (!is_array($dev->device_types[$device_type])) {
+         return 0;
+     }
+     if ($options['TABLE'] && $options['TABLE_ID']) {
+         $table_rec=SQLSelectOne("SELECT * FROM ".$options['TABLE']." WHERE ID=".$options['TABLE_ID']);
+         if (!$table_rec['ID']) {
+             return 0;
+         }
+     }
+     if ($options['LINKED_OBJECT']!='') {
+         $old_device=SQLSelectOne("SELECT ID FROM devices WHERE LINKED_OBJECT LIKE '".DBSafe($options['LINKED_OBJECT'])."'");
+         if ($old_device['ID']) return $old_device['ID'];
+         $rec['LINKED_OBJECT']=$options['LINKED_OBJECT'];
+     }
+     
+     $rec=array();
+     $rec['TYPE']=$device_type;
+     if ($options['TITLE']) {
+       $rec['TITLE']=$options['TITLE'];
+     } else {
+       $rec['TITLE']='New device '.date('H:i');
+     }
+     if ($options['LOCATION_ID']) {
+         $rec['LOCATION_ID']=$options['LOCATION_ID'];
+     }
+     $rec['ID']=SQLInsert('devices',$rec);
+     if ($rec['LOCATION_ID']) {
+         $location_title=getRoomObjectByLocation($rec['LOCATION_ID'],1);
+     }
+     if (!$rec['LINKED_OBJECT']) {
+         $new_object_title=ucfirst($rec['TYPE']).$dev->getNewObjectIndex($type_details['CLASS']);
+         $object_id=addClassObject($type_details['CLASS'],$new_object_title,'sdevice'.$rec['ID']);
+         $rec['LINKED_OBJECT']=$new_object_title;
+         if (preg_match('/New device .+/',$rec['TITLE'])) {
+             $rec['TITLE']=$rec['LINKED_OBJECT'];
+         }
+         SQLUpdate('devices',$rec);
+     }
+     if ($table_rec['ID']) {
+         $dev->addDeviceToSourceTable($options['TABLE'],$table_rec['ID'],$rec['ID']);
+     }
+     if ($options['ADD_MENU']) {
+         $dev->addDeviceToMenu($rec['ID']);
+     }
+     if ($options['ADD_SCENE']) {
+         $dev->addDeviceToScene($rec['ID']);
+     }
+	
+	 //конец функции простых устройств
+	 
+	 
+   // zapolnyaem dannie ob ustroystve 
+  $ssdpdevice=SQLSelectOne("SELECT * FROM ssdp_devices WHERE ID='".$id."'");
+  $new_object_title = $ssdpdevice['LINKED_OBJECT'];
+  $obj = SQLSelectOne("SELECT * FROM objects WHERE TITLE='".$new_object_title."'");
+  $obj['DESCRIPTION'] = $options['TITLE'];
+  $obj['LOCATION_ID'] = $options['LOCATION_ID'];
+  If (IsSet($obj['ID'])) {
+     SQLUpdate('objects', $obj);
+  }
+  $obj = SQLSelectOne("SELECT * FROM objects WHERE TITLE='".$new_object_title."'");
+  $obj_id = $obj['ID'];
+  $obj_title = $obj['TITLE'];
+  $clas = SQLSelectOne("SELECT * FROM classes WHERE TITLE='".'S'.$device_type."'");
+  $props = SQLSelect("SELECT * FROM properties WHERE CLASS_ID='".$clas['ID']."' OR CLASS_ID='".$clas['PARENT_ID']."'");
+  $ssdp = SQLSelect("SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE table_name = 'ssdp_devices'");
+  foreach($props as $v) {
+      foreach($ssdp as $t_name) {
+          if ( mb_strtolower($v['TITLE']) == mb_strtolower($t_name ['COLUMN_NAME'])){
+	            $ssdpinf=SQLSelectOne("SELECT ".DBSafe($v['TITLE'])." FROM ssdp_devices WHERE LINKED_OBJECT LIKE '".DBSafe($new_object_title)."'");
+		    $pval = Array();
+		    $pval['PROPERTY_ID'] = $v['ID'];
+		    $pval['OBJECT_ID'] = $obj_id;
+		    $pval['VALUE'] = $ssdpinf[DBSafe($v['TITLE'])];
+		    $pval['PROPERTY_NAME'] = $obj_title.".".$v['TITLE'];
+		    $pval=SQLInsert('pvalues', $pval);
+            }
+        }
+     }
  }
-
-
 /**
 * get ip from url
 *
@@ -255,12 +339,15 @@ function getIp($baseUrl,$withPort) {
     }
     return  $baseUrl;
 }
-
+/**
+* get local IP 
+*
+* @access public
+*/
 //получаем айпи адрес локального компьютера
 function getLocalIp() { 
 return gethostbyname(trim(`hostname`)); 
 }
-
 /**
 * get port from url
 *
@@ -285,7 +372,7 @@ function add_to_terminal($id) {
   }
   $ssdpdevice=SQLSelectOne("SELECT * FROM ssdp_devices WHERE ID='".$id."'");
   $terminal=array(); // опции добавления
-  $terminal['NAME'] = $ssdpdevice['TITLE'];
+  $terminal['NAME'] = $ssdpdevice['LINKED_OBJECT'];
   $terminal['TITLE'] = $ssdpdevice['DESCRIPTION'];
   $terminal['HOST'] = $this->getIp($ssdpdevice['ADDRESS'],false);
   $terminal['CANPLAY'] = '1';
@@ -329,7 +416,6 @@ function add_to_terminal($id) {
           SQLInsert('pinghosts', $pinghosts);
      }
  }
-
 /**
 * ssdp_devices delete record
 *
@@ -337,12 +423,11 @@ function add_to_terminal($id) {
 */
  function delete_ssdp_devices($id) {
   $rec=SQLSelectOne("SELECT * FROM ssdp_devices WHERE ID='$id'");
-
   /// delete from simple device
   $sdev_del=SQLSelectOne("SELECT * FROM devices WHERE LINKED_OBJECT='".$rec['LINKED_OBJECT']."'");
   $sdevice = $sdev_del['ID'];
-  include_once (DIR_MODULES.'ssdpdevices/ssdpdevices.class.php');
-  $dev=new ssdpdevices();
+  include_once (DIR_MODULES.'devices/devices.class.php');
+  $dev=new devices();
   $dev->delete_devices($sdevice);
   // delete from pinghost
   SQLExec("DELETE FROM pinghosts WHERE LINKED_OBJECT='".$rec['LINKED_OBJECT']."'"); 
@@ -364,7 +449,6 @@ function add_to_terminal($id) {
     }
    }
  }
-
  function processSubscription($event, $details='') {
  $this->getConfig();
   if ($event=='SAY') {
@@ -378,10 +462,58 @@ function add_to_terminal($id) {
           setGlobal($saydev['LINKED_OBJECT'].'.playUrl', $cached_filename);
         }
    }
+/* if ($event=='ASK') {
+   $tartget = $this->targetToIp($details['target']);
+   if(!$target) return 0;
+   $message=$details['prompt'];
+   $this->send_mpt('ask', $message, $target);
+   if($this->debug == 1) debmes('mpt ask ' . $message . '; target = ' . $target);
+  }
+
+  if ($event=='SAYTO') {
+   if($this->debug == 1) debmes('mpt sayto start');
+   $level=$details['level'];
+   $message=$details['message'];
+   $target = $this->targetToIp($details['destination']);
+   if($this->debug == 1) debmes('mpt sayto after ttIp : ' . $target);
+   if(!$target) return 0;
+   $this->send_mpt('tts', $message, $target);
+   if($this->debug == 1) debmes('mpt sayto ' . $message . '; level = ' . $level . '; to = ' . $target);
+  }
+
+  if ($event=='SAYREPLY') {
+   $level=$details['level'];
+   $message=$details['message'];
+   $source=$details['source'];
+   $tartget = $this->targetToIp($details['replyto']);
+   if(!$target) return 0;
+   $this->send_mpt('tts', $message, $target);
+   if($this->debug == 1) debmes('mpt sayto ' . $message . '; level = ' . $level . '; to = ' . $destination);
+  } */
    //playSound($cached_filename,1);
    //...
   }
  }
+	
+/**
+* Edit device structure
+*
+*
+* @access private
+*/
+// edit device module
+function edit_device_structure() {
+  if (file_exists(DIR_MODULES.'devices/devices_structure.inc.php')) {
+      $current = file_get_contents(DIR_MODULES.'devices/devices_structure.inc.php');
+      $add = file_get_contents(DIR_MODULES.'ssdp_finder/ssdpdevices_structure.template.php');
+      $chek = stripos($current, 'UPNPdevices');
+      if ($chek === false) {
+          file_put_contents(DIR_MODULES.'ssdp_finder/devices_structure.inc.original',  $current);
+          $data = str_replace(");", $add, $current);
+          file_put_contents(DIR_MODULES.'devices/devices_structure.inc.php', $data);
+          }
+      }
+}
 /**
 * Install
 *
@@ -390,22 +522,11 @@ function add_to_terminal($id) {
 * @access private
 */
  function install($data='') {
+
+  subscribeToEvent($this->name, 'SAYTO','',20);
+  subscribeToEvent($this->name, 'ASK','',20);
   subscribeToEvent($this->name, 'SAY');
-  parent::install();
- }
-/**
-* Uninstall
-*
-* Module uninstall routine
-*
-* @access public
-*/
- function uninstall() {
- // delete devices from ssdpdevices
-  $allrec=SQLSelect("SELECT * FROM ssdp_devices"); 
-  foreach ($allrec as $rec )   {
-     $this->delete_ssdp_devices($rec['ID']);
-  }
+  $this->edit_device_structure();
   // delete module ssdpdevices
   SQLExec("DELETE FROM plugins WHERE MODULE_NAME LIKE 'ssdpdevices'");
   SQLExec("DELETE FROM project_modules WHERE NAME LIKE 'ssdpdevices'");
@@ -416,12 +537,35 @@ function add_to_terminal($id) {
   if (file_exists(ROOT.'scripts/cycle_ssdp_finder.php')) {
    @unlink(ROOT.'scripts/cycle_ssdp_finder.php');
   }
+  
+  parent::install();
+ }
+/**
+* Uninstall
+*
+* Module uninstall routine
+*
+* @access public
+*/
+ function uninstall() {
+ // restore  devices_structure.inc.php
+ $current = file_get_contents(DIR_MODULES.'ssdp_finder/devices_structure.inc.original');
+ file_put_contents(DIR_MODULES.'devices/devices_structure.inc.php',  $current, LOCK_EX);
+	 
+ // delete devices from ssdpdevices
+  $allrec=SQLSelect("SELECT * FROM ssdp_devices"); 
+  foreach ($allrec as $rec )   {
+     $this->delete_ssdp_devices($rec['ID']);
+  }
   // delete all tables 
   SQLExec('DROP TABLE IF EXISTS playlist_render');
   SQLExec('DROP TABLE IF EXISTS ssdp_devices');
   SQLExec('DROP TABLE IF EXISTS mediaservers_playlist');
   // unsubscribeFromEvent SAY
   unsubscribeFromEvent($this->name, 'SAY');
+  unsubscribeFromEvent($this->name, 'SAYTO');
+  unsubscribeFromEvent($this->name, 'ASK');
+
   //delete ssdp_finder module
   parent::uninstall();
  }
@@ -454,7 +598,6 @@ ssdp_devices -
  ssdp_devices: USE_TO_SAY int(1) unsigned NOT NULL DEFAULT 0
  ssdp_devices: UPDATED datetime
  ssdp_devices: CONTROLADDRESS varchar(255) NOT NULL DEFAULT ''
-
  mediaservers_playlist: ID int(255) unsigned NOT NULL auto_increment
  mediaservers_playlist: TITLE varchar(100) NOT NULL DEFAULT ''
  mediaservers_playlist: DESCRIPTION varchar(300) NOT NULL DEFAULT ''
@@ -470,14 +613,10 @@ ssdp_devices -
  playlist_render: URL_LINK varchar(250) NOT NULL DEFAULT ''
  playlist_render: LINKED_OBJECT varchar(100) NOT NULL DEFAULT ''
  playlist_render: FAVORITE int(3) unsigned NOT NULL DEFAULT 0 
-
 EOD;
   parent::dbInstall($data);
  }
 // --------------------------------------------------------------------
-
-
-
 }
 /*
 *
