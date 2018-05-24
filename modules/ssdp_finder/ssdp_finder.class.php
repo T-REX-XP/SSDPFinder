@@ -550,7 +550,7 @@ function edit_device_structure() {
  function uninstall() {
  // restore  devices_structure.inc.php
  $current = file_get_contents(DIR_MODULES.'ssdp_finder/devices_structure.inc.original');
- file_put_contents(DIR_MODULES.'devices/devices_structure.inc.php',  $current, LOCK_EX);
+ file_put_contents(DIR_MODULES.'devices/devices_structure.inc.php',  $current, LOCK_EX;
 	 
  // delete devices from ssdpdevices
   $allrec=SQLSelect("SELECT * FROM ssdp_devices"); 
