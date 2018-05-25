@@ -549,8 +549,8 @@ function edit_device_structure() {
 */
  function uninstall() {
  // restore  devices_structure.inc.php
-rename (DIR_MODULES.'ssdp_finder/devices_structure.inc.original',DIR_MODULES.'devices/devices_structure.inc.php');
-	 
+ rename (DIR_MODULES.'ssdp_finder/devices_structure.inc.original',DIR_MODULES.'devices/devices_structure.inc.php');
+	
 			   
 		
 			   
