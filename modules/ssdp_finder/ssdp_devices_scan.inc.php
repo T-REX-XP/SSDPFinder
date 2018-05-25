@@ -186,7 +186,6 @@ function getDefImg($control_url,$xml)
 	        $url = $icon->url;}
 	    }    
                 $current = file_get_contents($baseUrl.$url);
-str_replace(");", $add, $current);
                 $link = 'ssdp_finder/img/'.$uuid.'.png';
                 $logourl = ('http://'.$local_IP.'/templates/ssdp_finder/img/'.$uuid.'.png');
                 file_put_contents(DIR_TEMPLATES.$link,  $current);
