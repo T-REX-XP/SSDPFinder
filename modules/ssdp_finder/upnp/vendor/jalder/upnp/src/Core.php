@@ -58,6 +58,8 @@ class Core {
                 $parsedResponse['ext'] = str_ireplace( 'ext: ', '', $row );
             if( stripos( $row, 'loca') === 0 )
                 $parsedResponse['location'] = str_ireplace( 'location: ', '', $row );
+            if( stripos( $row, 'loca') === 0 )
+                $parsedResponse['location'] = str_ireplace( 'location:', '', $row );
             if( stripos( $row, 'serv') === 0 )
                 $parsedResponse['server'] = str_ireplace( 'server: ', '', $row );
             if( stripos( $row, 'st:') === 0 )
