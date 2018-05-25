@@ -185,11 +185,12 @@ function getDefImg($control_url,$xml)
 	    } else {
 	        $url = $icon->url;}
 	    }    
-                $current = file_get_contents($baseUrl.$url);
-                $link = 'ssdp_finder/img/'.$uuid.'.png';
-                $logourl = ('http://'.$local_IP.'/templates/ssdp_finder/img/'.$uuid.'.png');
-                file_put_contents(DIR_TEMPLATES.$link,  $current);
-	        return $logourl;
+                //$current = file_get_contents($baseUrl.$url);
+                //$link = 'ssdp_finder/img/'.$uuid.'.png';
+               // $logourl = ('http://'.$local_IP.'/templates/ssdp_finder/img/'.$uuid.'.png');
+               // file_put_contents(DIR_TEMPLATES.$link,  $current);
+	        //return $logourl;
+	    return $baseUrl.$url;
     }
 
     
