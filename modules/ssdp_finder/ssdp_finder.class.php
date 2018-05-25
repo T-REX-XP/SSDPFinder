@@ -508,7 +508,7 @@ function edit_device_structure() {
       $add = file_get_contents(DIR_MODULES.'ssdp_finder/ssdpdevices_structure.template.php');
       $chek = stripos($current, 'UPNPdevices');
       if ($chek === false) {
-          file_put_contents(DIR_MODULES.'ssdp_finder/devices_structure.inc.original',  $current);
+          file_put_contents(DIR_MODULES.'devices/devices_structure.inc.original',  $current);
           $data = str_replace(");", $add, $current);
           file_put_contents(DIR_MODULES.'devices/devices_structure.inc.php', $data);
           }
@@ -549,7 +549,7 @@ function edit_device_structure() {
 */
  function uninstall() {
  // restore  devices_structure.inc.php
- rename (DIR_MODULES.'ssdp_finder/devices_structure.inc.original',DIR_MODULES.'devices/devices_structure.inc.php');
+ rename (DIR_MODULES.'devices/devices_structure.inc.original',DIR_MODULES.'devices/devices_structure.inc.php');
 	
 			   
 		
