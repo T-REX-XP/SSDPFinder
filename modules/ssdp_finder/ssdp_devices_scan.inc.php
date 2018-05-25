@@ -45,7 +45,7 @@ function Scan()
     $table_name='ssdp_devices';
 
     foreach ($everything as $device) {
-        $control_url = str_ireplace("Location:", "", $device['location']);
+        //$control_url = str_ireplace("Location:", "", $device['location']);
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $control_url);
         curl_setopt($ch, CURLOPT_HEADER, 0);
