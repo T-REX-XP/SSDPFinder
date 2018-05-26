@@ -173,7 +173,8 @@ function getDefImg($control_url,$xml)
     $uuid = str_ireplace("uuid:", "",$xml->device->UDN);
     $local_IP = getLocalIp();
     if (!$xml->device->iconList->icon){
-        return "http://".$local_IP."/templates/ssdp_finder/img/".explode(":", $xml->device->deviceType)[3]. ".png";//"Icons not found..."
+        //return "http://".$local_IP."/templates/ssdp_finder/img/".explode(":", $xml->device->deviceType)[3]. ".png";//"Icons not found..."
+	    return "/templates/ssdp_finder/img/".explode(":", $xml->device->deviceType)[3]. ".png";//"Icons not
     } else {
         foreach ($xml->device->iconList->icon as $icon) {
 	    if ($icon->with = 48){
@@ -185,11 +186,12 @@ function getDefImg($control_url,$xml)
 	    } else {
 	        $url = $icon->url;}
 	    }    
-                $current = file_get_contents($baseUrl.$url);
-                $link = 'ssdp_finder/img/'.$uuid.'.png';
-                $logourl = ('http://'.$local_IP.'/templates/ssdp_finder/img/'.$uuid.'.png');
-                file_put_contents(DIR_TEMPLATES.$link,  $current);
-	        return $logourl;
+                //$current = file_get_contents($baseUrl.$url);
+                //$link = 'ssdp_finder/img/'.$uuid.'.png';
+                //$logourl = ('http://'.$m.'/templates/ssdp_finder/img/'.$uuid.'.png');
+               // file_put_contents(DIR_TEMPLATES.$link,  $current);
+	       // return $logourl;
+	    return $baseUrl.$url;
     }
 
     
