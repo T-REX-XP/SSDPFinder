@@ -173,7 +173,8 @@ function getDefImg($control_url,$xml)
     $uuid = str_ireplace("uuid:", "",$xml->device->UDN);
     $local_IP = getLocalIp();
     if (!$xml->device->iconList->icon){
-        return "http://".$local_IP."/templates/ssdp_finder/img/".explode(":", $xml->device->deviceType)[3]. ".png";//"Icons not found..."
+        //return "http://".$local_IP."/templates/ssdp_finder/img/".explode(":", $xml->device->deviceType)[3]. ".png";//"Icons not found..."
+	    return "http://localhost/templates/ssdp_finder/img/".explode(":", $xml->device->deviceType)[3]. ".png";//"Icons not
     } else {
         foreach ($xml->device->iconList->icon as $icon) {
 	    if ($icon->with = 48){
