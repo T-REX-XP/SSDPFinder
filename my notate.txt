@@ -1,28 +1,13 @@
-кнопки  
-<button style='display:%.pause_unpause|"none;block"%' onClick='ajaxSetGlobal("%.object_title%.pause_unpause", 0);' class="btn btn-custom"><span title="Play" id="play" class="glyphicon glyphicon-play aligned"></span></button> 
- <button style='display:%.pause_unpause|"block;none"%' onClick='ajaxSetGlobal("%.object_title%.pause_unpause", 1);' class="btn btn-custom"><span title="Play" id="play" class="glyphicon glyphicon-pause aligned"></span></button> 
- 
-
-
 Запись для себя
 выключатель - состояние on off
 
 <?xml version="1.0" encoding="utf-8"?>
-
 <root xmlns="urn:schemas-upnp-org:device-1-0">
-
 <specVersion>
-
 <major>1</major>
-
 <minor>0</minor>
-
 </specVersion>
-
-
-
 <device>
-
 <deviceType>urn:schemas-upnp-org:device:BinaryLight:1</deviceType>
 <friendlyName>Kitchen Lights</friendlyName>
 <manufacturer>OpenedHand</manufacturer>
@@ -39,30 +24,4 @@
 </serviceList>
 </device>
 </root>
-
-скрипт оперделения папок переделка и не забыть в рендерер исправить $control_url = str_ireplace("Location:", "", $server['location']); удалить ['location'] 
-<?php
-
-require(dirname(__FILE__).'/../../../autoload.php');
-
-use jalder\Upnp\Mediaserver;
-
-$mediaserver = new Mediaserver();
-
-$browse = new Mediaserver\Browse('http://192.168.1.20:2869/upnphost/udhisapi.dll?content=uuid:cc3558a5-ce9c-4a9e-a898-38cd8e4ade29');
-$directories = $browse->browse();
-foreach($directories as $list){
-      print_r($list['dc:title'].'<br> ');
-      //print_r($list['dc:title']); // выводит имена папок
-     //Array ( [parentID] => 0 [dc:title] => Списки воспроизведения [upnp:class] => object.container )
-     $s = new SplObjectStorage($list['upnp:class']);
-     var_dump($s->count());
-     //var_dump($s->serialize());
-     //var_dump($s->getinfo());
-     $base = get_class_methods($s);
-     print_r($base);
-     print_r($base['getInfo']);
-      
-   }
-
 
