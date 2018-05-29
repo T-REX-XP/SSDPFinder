@@ -98,10 +98,22 @@
 
         ),
     ),
-	'BinaryLight'=>array(
-        'TITLE'=>'UPNP включатель',
+    'BinaryLight'=>array(
+        'TITLE'=>'UPNP выключатель',
         'PARENT_CLASS'=>'UPNPdevices',
         'CLASS'=>'SBinaryLight',
+        'PROPERTIES'=>array(
+            'onoff'=>array('DESCRIPTION'=>'Включение\Выключение', 'KEEP_HISTORY'=>1, 'ONCHANGE'=>'onoff', 'DATA_KEY'=>1),
+       ),
+        'METHODS'=>array(
+            'onoff'=>array('DESCRIPTION'=>'Включение\Выключение'),
+            'switch'=>array('DESCRIPTION'=>'Переключение'),
+        ),
+    ),
+    'controllee'=>array(
+        'TITLE'=>'Wemos выключатель',
+        'PARENT_CLASS'=>'UPNPdevices',
+        'CLASS'=>'Scontrollee',
         'PROPERTIES'=>array(
             'onoff'=>array('DESCRIPTION'=>'Включение\Выключение', 'KEEP_HISTORY'=>1, 'ONCHANGE'=>'onoff', 'DATA_KEY'=>1),
        ),
