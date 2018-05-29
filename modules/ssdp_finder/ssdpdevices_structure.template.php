@@ -110,10 +110,10 @@
             'switch'=>array('DESCRIPTION'=>'Переключение'),
         ),
     ),
-    'Controllee'=>array(
+    'controllee'=>array(
         'TITLE'=>'Wemos выключатель',
         'PARENT_CLASS'=>'UPNPdevices',
-        'CLASS'=>'SControllee',
+        'CLASS'=>'Scontrollee',
         'PROPERTIES'=>array(
             'onoff'=>array('DESCRIPTION'=>'Включение\Выключение', 'KEEP_HISTORY'=>1, 'ONCHANGE'=>'onoff', 'DATA_KEY'=>1),
        ),
