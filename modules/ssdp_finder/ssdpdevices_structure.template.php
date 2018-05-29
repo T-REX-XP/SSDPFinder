@@ -113,7 +113,7 @@
     'Controllee'=>array(
         'TITLE'=>'Wemos выключатель',
         'PARENT_CLASS'=>'UPNPdevices',
-        'CLASS'=>'SBelkinDevice',
+        'CLASS'=>'SControllee',
         'PROPERTIES'=>array(
             'onoff'=>array('DESCRIPTION'=>'Включение\Выключение', 'KEEP_HISTORY'=>1, 'ONCHANGE'=>'onoff', 'DATA_KEY'=>1),
        ),
