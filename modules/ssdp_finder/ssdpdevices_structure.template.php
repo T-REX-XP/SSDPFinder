@@ -11,7 +11,7 @@
             'MANUFACTURER'=>array('DESCRIPTION'=>'Разработчик устройства','ONCHANGE'=>'updatePreview','_CONFIG_TYPE'=>'text'),
             'Model'=>array('DESCRIPTION'=>' Имя устройства','ONCHANGE'=>'updatePreview','_CONFIG_TYPE'=>'text'),
             'DESCRIPTION'=>array('DESCRIPTION'=>'Описание устройства','ONCHANGE'=>'updatePreview','_CONFIG_TYPE'=>'text'),
-	    'CONTROLADDRESS'=>array('DESCRIPTION'=>'Адрес управления устройством ','_CONFIG_TYPE'=>'text'),
+	        'CONTROLADDRESS'=>array('DESCRIPTION'=>'Адрес управления устройством ','_CONFIG_TYPE'=>'text'),
             'groupEco'=>array('DESCRIPTION'=>LANG_DEVICES_GROUP_ECO,'_CONFIG_TYPE'=>'yesno'),
             'groupEcoOn'=>array('DESCRIPTION'=>LANG_DEVICES_GROUP_ECO_ON,'_CONFIG_TYPE'=>'yesno'),            
             'groupSunrise'=>array('DESCRIPTION'=>LANG_DEVICES_GROUP_SUNRISE,'_CONFIG_TYPE'=>'yesno'),
@@ -96,6 +96,17 @@
             'playUrl'=>array('DESCRIPTION'=>'Воспроизвести ссылку'),
             'playNextUrl'=>array('DESCRIPTION'=>'Воспроизвести следующую ссылку без прерывания предыдущей'),
 
+        ),
+    ),
+	'BinaryLight'=>array(
+        'TITLE'=>'UPNP включатель',
+        'PARENT_CLASS'=>'UPNPdevices',
+        'CLASS'=>'SBinaryLight',
+        'PROPERTIES'=>array(
+            'onoff'=>array('DESCRIPTION'=>'Включение\Выключение', 'KEEP_HISTORY'=>1, 'ONCHANGE'=>'onoff', 'DATA_KEY'=>1),
+       ),
+        'METHODS'=>array(
+            'onoff'=>array('DESCRIPTION'=>'Включение\Выключение'),
         ),
     ),
 );
