@@ -20,7 +20,7 @@ class Switch
     $control_url = str_ireplace("Location:", "", $server);
     $xml=simplexml_load_file($control_url);
     foreach($xml->device->serviceList->service as $service){
-          if($service->serviceId == 'urn:Belkin:serviceId:basicevent1'){
+          if($service->serviceId == 'urn:Belkin:serviceId:basicevent1' and $xml->device->deviceType == 'urn:Belkin:device:controllee:1'){
                 $chek_url = (substr($service->controlURL,0,1));
                 if ($chek_url == '/') {
                    $this->ctrlurl = ($this->upnp->baseUrl($control_url,True).$service->controlURL);
