@@ -107,6 +107,7 @@
        ),
         'METHODS'=>array(
             'onoff'=>array('DESCRIPTION'=>'Включение\Выключение'),
+            'switch'=>array('DESCRIPTION'=>'Переключение'),
         ),
     ),
 );
