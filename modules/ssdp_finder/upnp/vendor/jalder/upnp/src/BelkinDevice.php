@@ -19,7 +19,25 @@ class BelkinDevice extends Core
                 }
                 if($device['st'] !== 'urn:Belkin:device:**'){
                     unset($results[$usn]);
-                }                
+                } 
+                if($device['st'] !== 'urn:Belkin:device:bridge:1'){
+                      unset($results[$usn]);
+                }
+               if($device['st'] !== 'urn:Belkin:device:controllee:1'){
+                      unset($results[$usn]);
+                 }
+                if($device['st'] !== 'urn:Belkin:device:sensor:1'){
+                     unset($results[$usn]);
+                 }
+                if($device['st'] !== 'urn:Belkin:device:Maker:1'){
+                     unset($results[$usn]);
+                 }
+                if($device['st'] !== 'urn:Belkin:device:insight:1'){
+                     unset($results[$usn]);
+                 }
+                if($device['st'] !== 'urn:Belkin:device:lightswitch:1'){
+                     unset($results[$usn]);
+                 }
             }
         }
         return $results;
