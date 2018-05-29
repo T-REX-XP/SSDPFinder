@@ -110,7 +110,7 @@
             'switch'=>array('DESCRIPTION'=>'Переключение'),
         ),
     ),
-    'BelkinControlee'=>array(
+    'controllee'=>array(
         'TITLE'=>'Wemos выключатель',
         'PARENT_CLASS'=>'UPNPdevices',
         'CLASS'=>'SBelkinControlee',
