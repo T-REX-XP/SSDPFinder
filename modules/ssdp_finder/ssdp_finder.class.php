@@ -523,7 +523,11 @@ function edit_device_structure() {
 */
  function install($data='') {
   // при инсталяции модуля необходимо забекапить оригинал файла
-  copy (DIR_MODULES.'devices/devices_structure.inc.original',DIR_MODULES.'devices/devices_structure.inc.php');
+  $current = file_get_contents(DIR_MODULES.'devices/devices_structure.inc.php');
+  $chek = stripos($current, 'UPNPdevices');
+  if ($chek === false) {
+      copy (DIR_MODULES.'devices/devices_structure.inc.php', DIR_MODULES.'devices/devices_structure.inc.original');
+      }
   // подписки на события 
   subscribeToEvent($this->name, 'SAYTO','',20);
   subscribeToEvent($this->name, 'ASK','',20);
