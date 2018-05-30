@@ -522,12 +522,15 @@ function edit_device_structure() {
 * @access private
 */
  function install($data='') {
-
+  // при инсталяции модуля необходимо забекапить оригинал файла
+  copy (DIR_MODULES.'devices/devices_structure.inc.original',DIR_MODULES.'devices/devices_structure.inc.php');
+  // подписки на события 
   subscribeToEvent($this->name, 'SAYTO','',20);
   subscribeToEvent($this->name, 'ASK','',20);
   subscribeToEvent($this->name, 'SAY');
   $this->edit_device_structure();
-  // delete module ssdpdevices
+
+  // delete module ssdpdevices если он там есть
   SQLExec("DELETE FROM plugins WHERE MODULE_NAME LIKE 'ssdpdevices'");
   SQLExec("DELETE FROM project_modules WHERE NAME LIKE 'ssdpdevices'");
   include_once (DIR_MODULES.'market/market.class.php');
@@ -549,18 +552,13 @@ function edit_device_structure() {
 */
  function uninstall() {
  // restore  devices_structure.inc.php
- rename (DIR_MODULES.'devices/devices_structure.inc.original',DIR_MODULES.'devices/devices_structure.inc.php');
-	
-			   
-		
-			   
-			
+ rename (DIR_MODULES.'devices/devices_structure.inc.original', DIR_MODULES.'devices/devices_structure.inc.php');
 			 
  // delete devices from ssdpdevices
   $allrec=SQLSelect("SELECT * FROM ssdp_devices"); 
   foreach ($allrec as $rec )   {
      $this->delete_ssdp_devices($rec['ID']);
-  }
+     }
   // delete all tables 
   SQLExec('DROP TABLE IF EXISTS playlist_render');
   SQLExec('DROP TABLE IF EXISTS ssdp_devices');
