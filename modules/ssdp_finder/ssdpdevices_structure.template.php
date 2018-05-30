@@ -110,7 +110,7 @@
 		    'turnOn'=>array('DESCRIPTION'=>'turnOn'),
             'turnOff'=>array('DESCRIPTION'=>'turnOff'),
             'switch'=>array('DESCRIPTION'=>'Switch'),
-        ),
+        )
     ),
     'controllee'=>array(
         'TITLE'=>'Wemos выключатель',
@@ -124,6 +124,6 @@
 		    'turnOn'=>array('DESCRIPTION'=>'turnOn'),
             'turnOff'=>array('DESCRIPTION'=>'turnOff'),
             'switch'=>array('DESCRIPTION'=>'Switch'),
-        ),
+        )
     ),
 );
