@@ -167,32 +167,30 @@ function SearchArray($array, $searchIndex, $searchValue)
     return false;
 }
 
-function getDefImg($control_url,$xml)
-{
+function getDefImg($control_url,$xml) {
     $baseUrl = getIp($control_url,True);
     $uuid = str_ireplace("uuid:", "",$xml->device->UDN);
-    $local_IP = getLocalIp();
     if (!$xml->device->iconList->icon){
-        //return "http://".$local_IP."/templates/ssdp_finder/img/".explode(":", $xml->device->deviceType)[3]. ".png";//"Icons not found..."
-	    return "/templates/ssdp_finder/img/".explode(":", $xml->device->deviceType)[3]. ".png";//"Icons not
+	    return "/templates/ssdp_finder/img/".explode(":", $xml->device->deviceType)[3]. ".png";//"Icons not found
     } else {
         foreach ($xml->device->iconList->icon as $icon) {
-	    if ($icon->with = 48){
-	        $url = $icon->url;
-	        break;
-	    } else if ($with < $icon->with) {
-	        $url = $icon->url;
-	        $with = $icon->with;
-	    } else {
-	        $url = $icon->url;}
-	    }    
-                //$current = file_get_contents($baseUrl.$url);
-                //$link = 'ssdp_finder/img/'.$uuid.'.png';
-                //$logourl = ('http://'.$m.'/templates/ssdp_finder/img/'.$uuid.'.png');
-               // file_put_contents(DIR_TEMPLATES.$link,  $current);
-	       // return $logourl;
-	    return $baseUrl.$url;
+			if ($icon->with = 48){
+				$url = $icon->url;
+				break;
+			} else if ($with < $icon->with) {
+				$url = $icon->url;
+				$with = $icon->with;
+			} else {
+				$url = $icon->url;
+			}
+		}  
+        if ((stristr($url, 'http') === True)) { //"Icons found in internet;
+            $current = file_get_contents($url);
+		} else {		
+		    $current = file_get_contents($baseUrl.$url);
+		    };
+		$link = '/templates/ssdp_finder/img/'.$uuid.'.png'; 
+		file_put_contents(ROOT.$link,  $current); // Save the image in local host
+		return $link;//"Icons found;
     }
-
-    
 }
