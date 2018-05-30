@@ -5,7 +5,7 @@ use jalder\Upnp\BelkinDevice;
 $BelkinDevice= new BelkinDevice();
 $adress = $this->getProperty("CONTROLADDRESS");
 $status = $this->getProperty("onoff");
-$remote = new BelkinDevice\Switch($adress);
+$remote = new BelkinDevice\Devswitch($adress);
 if ($status){
   $result = $remote->on();
   print_r($result);

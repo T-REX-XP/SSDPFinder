@@ -9,7 +9,7 @@ namespace jalder\Upnp\BelkinDevice;
 
 use jalder\Upnp;
 
-class Switch
+class Devswitch
 {
 
 
