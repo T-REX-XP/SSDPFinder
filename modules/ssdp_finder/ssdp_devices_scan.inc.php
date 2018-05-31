@@ -184,7 +184,7 @@ function getDefImg($control_url,$xml) {
 				$url = $icon->url;
 			}
 		}  
-        if ((stristr($url, 'http') === True)) { //"Icons found in internet;
+        if ((stristr($url, 'http') == True)) { //"Icons found in internet;
             $current = file_get_contents($url);
 		} else {		
 		    $current = file_get_contents($baseUrl.$url);
