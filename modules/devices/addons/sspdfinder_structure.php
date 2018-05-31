@@ -76,7 +76,7 @@ $this->device_types['InternetGatewayDevice'] = array(
 );
 
 $this->device_types['MediaRenderer'] = array(
-        'TITLE'=>'Устройство воспроизведения',
+        'TITLE'=>'UPNP Устройство воспроизведения',
         'PARENT_CLASS'=>'UPNPdevices',
         'CLASS'=>'SMediaRenderer',
         'PROPERTIES'=>array(
