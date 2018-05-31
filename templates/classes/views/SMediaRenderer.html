@@ -126,7 +126,8 @@
             success: function(responce){ $('div[name="selectDataUrl"]').html(responce); }
             });
  };
- 
+
+<!--- функция запрета обновления страницы --->
 $("#MAinDiv").on('load', function(e) {
     e.preventDefault();
 });
