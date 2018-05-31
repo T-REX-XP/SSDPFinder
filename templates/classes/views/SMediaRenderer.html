@@ -39,7 +39,7 @@
 	</style>
 </head>
 <body>
-<div name="Mainframe" style="width:320px; text-align:center; align:center; font-family: monospace;">
+<div id="MAinDiv" name="Mainframe" style="width:320px; text-align:center; align:center; font-family: monospace;">
 <!--- название обьекта --->
  <p><img src="%.Logo%" alt="Логотип устройства" style="width:36px; "></img>%.object_description%</p>
 
@@ -127,6 +127,10 @@
             });
  };
  
+$("#MAinDiv").on('load', function(e) {
+    e.preventDefault();
+});
+
 </script>
 
  </body>
