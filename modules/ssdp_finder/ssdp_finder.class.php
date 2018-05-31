@@ -210,12 +210,6 @@ function usual(&$out) {
   if (!$id) {
       $id = ($_GET["id"]);
   }
-  // редактируем структур файла (на всякий случай проверяем) уже должно быть сделано это
-  $current = file_get_contents(DIR_MODULES.'devices/devices_structure.inc.php');
-  $chek = stripos($current, 'UPNPdevices');
-  if ($chek === false) {
-            $this->edit_device_structure();
-          }
   // podkluchaem prostie ustroystva i sozdaem ego
   include_once (DIR_MODULES.'devices/devices.class.php');
   $ssdpdevice=SQLSelectOne("SELECT * FROM ssdp_devices WHERE ID='".$id."'");
@@ -495,25 +489,7 @@ function add_to_terminal($id) {
   }
  }
 	
-/**
-* Edit device structure
-*
-*
-* @access private
-*/
-// edit device module
-function edit_device_structure() {
-  if (file_exists(DIR_MODULES.'devices/devices_structure.inc.php')) {
-      $current = file_get_contents(DIR_MODULES.'devices/devices_structure.inc.php');
-      $add = file_get_contents(DIR_MODULES.'ssdp_finder/ssdpdevices_structure.template.php');
-      $chek = stripos($current, 'UPNPdevices');
-      if ($chek === false) {
-          file_put_contents(DIR_MODULES.'devices/devices_structure.inc.original',  $current);
-          $data = str_replace(");", $add, $current);
-          file_put_contents(DIR_MODULES.'devices/devices_structure.inc.php', $data);
-          }
-      }
-}
+
 /**
 * Install
 *
@@ -522,29 +498,11 @@ function edit_device_structure() {
 * @access private
 */
  function install($data='') {
-  // при инсталяции модуля необходимо забекапить оригинал файла
-  $current = file_get_contents(DIR_MODULES.'devices/devices_structure.inc.php');
-  $chek = stripos($current, 'UPNPdevices');
-  if ($chek === false) {
-      copy (DIR_MODULES.'devices/devices_structure.inc.php', DIR_MODULES.'devices/devices_structure.inc.original');
-      }
   // подписки на события 
   subscribeToEvent($this->name, 'SAYTO','',20);
   subscribeToEvent($this->name, 'ASK','',20);
   subscribeToEvent($this->name, 'SAY');
-  $this->edit_device_structure();
 
-  // delete module ssdpdevices если он там есть
-  SQLExec("DELETE FROM plugins WHERE MODULE_NAME LIKE 'ssdpdevices'");
-  SQLExec("DELETE FROM project_modules WHERE NAME LIKE 'ssdpdevices'");
-  include_once (DIR_MODULES.'market/market.class.php');
-  $market=new market();
-  $market->removeTree(ROOT.'modules/ssdpdevices');
-  $market->removeTree(ROOT.'templates/ssdpdevices');
-  if (file_exists(ROOT.'scripts/cycle_ssdp_finder.php')) {
-   @unlink(ROOT.'scripts/cycle_ssdp_finder.php');
-  }
-  
   parent::install();
  }
 /**
@@ -552,11 +510,10 @@ function edit_device_structure() {
 *
 * Module uninstall routine
 *
-* @access public
+* @access publ
 */
  function uninstall() {
- // restore  devices_structure.inc.php
- rename (DIR_MODULES.'devices/devices_structure.inc.original', DIR_MODULES.'devices/devices_structure.inc.php');
+
 			 
  // delete devices from ssdpdevices
   $allrec=SQLSelect("SELECT * FROM ssdp_devices"); 
