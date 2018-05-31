@@ -54,7 +54,7 @@ function Scan()
         libxml_use_internal_errors(true); 
         $xml = simplexml_load_string($content);
         $uuid = $xml->device->UDN;
-        $existed = SQLSelectOne("SELECT * FROM $table_name WHERE UUID='$uuid'");
+        $existed = SQLSelectOne("SELECT * FROM $table_name WHERE UUID='".$uuid."'");
         // print array_search(, array_column( $result, 'ADDRESS'));
         if (!array_search_result($result, 'CONTROLADDRESS', $control_url) && !is_null($uuid) && !($existed)) {
             if (!$xml->device->presentationURL){
