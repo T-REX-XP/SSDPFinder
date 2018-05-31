@@ -1,3 +1,5 @@
+https://github.com/jloutsenhizer/CR-Cast/wiki/Chromecast-Implementation-Documentation-WIP
+
 Запись для себя
 выключатель - состояние on off
 

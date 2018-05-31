@@ -1,4 +1,6 @@
-     'ssdpdevices'=>array(
+<?php
+ 
+$this->device_types['ssdpdevices'] = array(
         'CLASS'=>'UPNPdevices',
         'PARENT_CLASS'=>'SDevices',
         'DESCRIPTION'=>'Auto finded devices',
@@ -11,15 +13,15 @@
             'MANUFACTURER'=>array('DESCRIPTION'=>'Разработчик устройства','ONCHANGE'=>'updatePreview','_CONFIG_TYPE'=>'text'),
             'Model'=>array('DESCRIPTION'=>' Имя устройства','ONCHANGE'=>'updatePreview','_CONFIG_TYPE'=>'text'),
             'DESCRIPTION'=>array('DESCRIPTION'=>'Описание устройства','ONCHANGE'=>'updatePreview','_CONFIG_TYPE'=>'text'),
-	        'CONTROLADDRESS'=>array('DESCRIPTION'=>'Адрес управления устройством ','_CONFIG_TYPE'=>'text'),
+	    'CONTROLADDRESS'=>array('DESCRIPTION'=>'Адрес управления устройством ','_CONFIG_TYPE'=>'text'),
             'groupEco'=>array('DESCRIPTION'=>LANG_DEVICES_GROUP_ECO,'_CONFIG_TYPE'=>'yesno'),
             'groupEcoOn'=>array('DESCRIPTION'=>LANG_DEVICES_GROUP_ECO_ON,'_CONFIG_TYPE'=>'yesno'),            
             'groupSunrise'=>array('DESCRIPTION'=>LANG_DEVICES_GROUP_SUNRISE,'_CONFIG_TYPE'=>'yesno'),
             'isActivity'=>array('DESCRIPTION'=>LANG_DEVICES_IS_ACTIVITY,'_CONFIG_TYPE'=>'yesno'),
-
         ),
-    ),
-    'MediaServer'=>array(
+);
+
+$this->device_types['MediaServer'] = array(
         'TITLE'=>'UPNP Медиасервер',
         'PARENT_CLASS'=>'UPNPdevices',
         'CLASS'=>'SMediaServer',
@@ -29,9 +31,10 @@
         'METHODS'=>array(
             'getFileList'=>array('DESCRIPTION'=>'Получает список файлов на устройстве'),
 
-        ),
-    ),
-    'dial'=>array(
+        )
+);
+
+$this->device_types['dial'] = array(
         'TITLE'=>'UPNP DIAL устройство',
         'PARENT_CLASS'=>'UPNPdevices',
         'CLASS'=>'Sdial',
@@ -39,8 +42,9 @@
             'PlayURL'=>array('DESCRIPTION'=>' Play Url','ONCHANGE'=>'updatePreview','_CONFIG_TYPE'=>'text'),
             'Applications'=>array('DESCRIPTION'=>' Приложения','_CONFIG_TYPE'=>'text'),
         ),
-     ),
-    'Basic'=>array(
+);
+
+$this->device_types['Basic'] = array(
         'TITLE'=>'UPNP Простое устройство',
         'PARENT_CLASS'=>'UPNPdevices',
         'CLASS'=>'SBasic',
@@ -48,8 +52,9 @@
             'Username'=>array('DESCRIPTION'=>'Username','_CONFIG_TYPE'=>'text'),
             'Password'=>array('DESCRIPTION'=>'Password','ONCHANGE'=>'updatePreview','_CONFIG_TYPE'=>'text'),
         ),
-     ),
-    'DigitalSecurityCamera'=>array(
+);
+
+$this->device_types['DigitalSecurityCamera'] = array(
         'TITLE'=>'UPNP Камера видеонаблюдения',
         'PARENT_CLASS'=>'UPNPdevices',
         'CLASS'=>'SDigitalSecurityCamera',
@@ -58,8 +63,9 @@
             'Username'=>array('DESCRIPTION'=>'Username','_CONFIG_TYPE'=>'text'),
             'Password'=>array('DESCRIPTION'=>'Password','ONCHANGE'=>'updatePreview','_CONFIG_TYPE'=>'text'),
        ),
-     ),
-    'InternetGatewayDevice'=>array(
+);
+
+$this->device_types['InternetGatewayDevice'] = array(
         'TITLE'=>'UPNP Роутер',
         'PARENT_CLASS'=>'UPNPdevices',
         'CLASS'=>'SInternetGatewayDevice',
@@ -67,9 +73,10 @@
             'Username'=>array('DESCRIPTION'=>'Username','_CONFIG_TYPE'=>'text'),
             'Password'=>array('DESCRIPTION'=>'Password','ONCHANGE'=>'updatePreview','_CONFIG_TYPE'=>'text'),
         ),
-    ),
-    'MediaRenderer'=>array(
-        'TITLE'=>'Устройство воспроизведения',
+);
+
+$this->device_types['MediaRenderer'] = array(
+        'TITLE'=>'UPNP Устройство воспроизведения',
         'PARENT_CLASS'=>'UPNPdevices',
         'CLASS'=>'SMediaRenderer',
         'PROPERTIES'=>array(
@@ -96,9 +103,10 @@
             'playUrl'=>array('DESCRIPTION'=>'Воспроизвести ссылку'),
             'playNextUrl'=>array('DESCRIPTION'=>'Воспроизвести следующую ссылку без прерывания предыдущей'),
 
-        ),
-    ),
-    'BinaryLight'=>array(
+        )
+);
+
+$this->device_types['BinaryLight'] = array(
         'TITLE'=>'UPNP выключатель',
         'PARENT_CLASS'=>'UPNPdevices',
         'CLASS'=>'SBinaryLight',
@@ -107,12 +115,13 @@
             'turnOff'=>array('DESCRIPTION'=>'Выключение', 'KEEP_HISTORY'=>1, 'ONCHANGE'=>'switch', 'DATA_KEY'=>1),
        ),
         'METHODS'=>array(
-		    'turnOn'=>array('DESCRIPTION'=>'turnOn'),
+            'turnOn'=>array('DESCRIPTION'=>'turnOn'),
             'turnOff'=>array('DESCRIPTION'=>'turnOff'),
             'switch'=>array('DESCRIPTION'=>'Switch'),
-        ),
-    ),
-    'controllee'=>array(
+        )
+);
+
+$this->device_types['controllee'] = array(
         'TITLE'=>'Wemos выключатель',
         'PARENT_CLASS'=>'UPNPdevices',
         'CLASS'=>'Scontrollee',
@@ -121,9 +130,8 @@
             'turnOff'=>array('DESCRIPTION'=>'Выключение', 'KEEP_HISTORY'=>1, 'ONCHANGE'=>'switch', 'DATA_KEY'=>1),
        ),
         'METHODS'=>array(
-		    'turnOn'=>array('DESCRIPTION'=>'turnOn'),
+            'turnOn'=>array('DESCRIPTION'=>'turnOn'),
             'turnOff'=>array('DESCRIPTION'=>'turnOff'),
             'switch'=>array('DESCRIPTION'=>'Switch'),
-        ),
-    ),
+        )
 );
