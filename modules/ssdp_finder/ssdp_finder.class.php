@@ -317,16 +317,18 @@ function usual(&$out) {
 
    //add the roomlocation in properties object
    //select properties id of linkedroom
-   $props = SQLSelectOne("SELECT * FROM properties WHERE TITLE LIKE 'linkedRoom' ");
-   $pval = Array();
-   $pval['PROPERTY_ID'] = $props['ID'];
-   $pval['OBJECT_ID'] = $obj_id;
-   $pval['VALUE'] = getRoomObjectByLocation($options['LOCATION_ID']);
-   $pval['PROPERTY_NAME'] = $obj_title.".linkedRoom";
-   $pval['UPDATED'] = date('Y-m-d H:i:s');
-   $pval=SQLInsert('pvalues', $pval);
-
+	if ($options['LOCATION_ID']) {
+            $props = SQLSelectOne("SELECT * FROM properties WHERE TITLE LIKE 'linkedRoom' ");
+            $pval = Array();
+            $pval['PROPERTY_ID'] = $props['ID'];
+            $pval['OBJECT_ID'] = $obj_id;
+            $pval['VALUE'] = getRoomObjectByLocation($options['LOCATION_ID']);
+            $pval['PROPERTY_NAME'] = $obj_title.".linkedRoom";
+            $pval['UPDATED'] = date('Y-m-d H:i:s');
+            $pval=SQLInsert('pvalues', $pval);
+}
    //add the groupEco in properties object
+	
    $props = SQLSelectOne("SELECT * FROM properties WHERE TITLE LIKE 'groupEco' AND CLASS_ID='".$clasofdevice['ID']."'");
    $pval = Array();
    $pval['PROPERTY_ID'] = $props['ID'];
