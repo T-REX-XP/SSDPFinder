@@ -54,7 +54,7 @@ function Scan()
         libxml_use_internal_errors(true); 
         $xml = simplexml_load_string($content);
         $uuid = $xml->device->UDN;
-        $existed = SQLSelectOne("SELECT * FROM $table_name WHERE UUID='$uuid'");
+        $existed = SQLSelectOne("SELECT * FROM $table_name WHERE UUID='".$uuid."'");
         // print array_search(, array_column( $result, 'ADDRESS'));
         if (!array_search_result($result, 'CONTROLADDRESS', $control_url) && !is_null($uuid) && !($existed)) {
             if (!$xml->device->presentationURL){
@@ -184,11 +184,11 @@ function getDefImg($control_url,$xml) {
 				$url = $icon->url;
 			}
 		}  
-        if ((stristr($url, 'http') === True)) { //"Icons found in internet;
-            $current = file_get_contents($url);
-		} else {		
-		    $current = file_get_contents($baseUrl.$url);
-		    };
+        //if ((stristr($url, 'http') == True)) { //"Icons found in internet;
+            //$current = file_get_contents($url);
+	//} else {		
+            $current = file_get_contents($baseUrl.$url);
+	//};
 		$link = '/templates/ssdp_finder/img/'.$uuid.'.png'; 
 		file_put_contents(ROOT.$link,  $current); // Save the image in local host
 		return $link;//"Icons found;
