@@ -184,11 +184,11 @@ function getDefImg($control_url,$xml) {
 				$url = $icon->url;
 			}
 		}  
-        if ((stristr($url, 'http') == True)) { //"Icons found in internet;
-            $current = file_get_contents($url);
-		} else {		
-		    $current = file_get_contents($baseUrl.$url);
-		    };
+        //if ((stristr($url, 'http') == True)) { //"Icons found in internet;
+            //$current = file_get_contents($url);
+	//} else {		
+            $current = file_get_contents($baseUrl.$url);
+	//};
 		$link = '/templates/ssdp_finder/img/'.$uuid.'.png'; 
 		file_put_contents(ROOT.$link,  $current); // Save the image in local host
 		return $link;//"Icons found;
