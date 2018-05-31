@@ -306,10 +306,66 @@ function usual(&$out) {
 		    $pval['OBJECT_ID'] = $obj_id;
 		    $pval['VALUE'] = $ssdpinf[DBSafe($v['TITLE'])];
 		    $pval['PROPERTY_NAME'] = $obj_title.".".$v['TITLE'];
+                    $pval['UPDATED'] = date('Y-m-d H:i:s');
 		    $pval=SQLInsert('pvalues', $pval);
             }
         }
      }
+
+   //set the class of UPNP devices
+    $clasofdevice = SQLSelectOne("SELECT * FROM classes WHERE TITLE LIKE 'UPNPdevices'");
+
+   //add the roomlocation in properties object
+   //select properties id of linkedroom
+   $props = SQLSelectOne("SELECT * FROM properties WHERE TITLE LIKE 'linkedRoom' ");
+   $pval = Array();
+   $pval['PROPERTY_ID'] = $props['ID'];
+   $pval['OBJECT_ID'] = $obj_id;
+   $pval['VALUE'] = getRoomObjectByLocation($options['LOCATION_ID']);
+   $pval['PROPERTY_NAME'] = $obj_title.".linkedRoom";
+   $pval['UPDATED'] = date('Y-m-d H:i:s');
+   $pval=SQLInsert('pvalues', $pval);
+
+   //add the groupEco in properties object
+   $props = SQLSelectOne("SELECT * FROM properties WHERE TITLE LIKE 'groupEco' AND CLASS_ID='".$clasofdevice['ID']."'");
+   $pval = Array();
+   $pval['PROPERTY_ID'] = $props['ID'];
+   $pval['OBJECT_ID'] = $obj_id;
+   $pval['VALUE'] = '1';
+   $pval['PROPERTY_NAME'] = $obj_title.".groupEco";
+   $pval['UPDATED'] = date('Y-m-d H:i:s');
+   $pval=SQLInsert('pvalues', $pval);
+
+   //add the groupEcoOn in properties object
+   $props = SQLSelectOne("SELECT * FROM properties WHERE TITLE LIKE 'groupEcoOn' AND CLASS_ID='".$clasofdevice['ID']."'");
+   $pval = Array();
+   $pval['PROPERTY_ID'] = $props['ID'];
+   $pval['OBJECT_ID'] = $obj_id;
+   $pval['VALUE'] = '0';
+   $pval['PROPERTY_NAME'] = $obj_title.".groupEcoOn";
+   $pval['UPDATED'] = date('Y-m-d H:i:s');
+   $pval=SQLInsert('pvalues', $pval);
+
+   //add the groupSunrise in properties object
+   $props = SQLSelectOne("SELECT * FROM properties WHERE TITLE LIKE 'groupSunrise' AND CLASS_ID='".$clasofdevice['ID']."'");
+   $pval = Array();
+   $pval['PROPERTY_ID'] = $props['ID'];
+   $pval['OBJECT_ID'] = $obj_id;
+   $pval['VALUE'] = '0';
+   $pval['PROPERTY_NAME'] = $obj_title.".groupSunrise";
+   $pval['UPDATED'] = date('Y-m-d H:i:s');
+   $pval=SQLInsert('pvalues', $pval);
+
+   //add the isActivity in properties object
+   $props = SQLSelectOne("SELECT * FROM properties WHERE TITLE LIKE 'isActivity' AND CLASS_ID='".$clasofdevice['ID']."'");
+   $pval = Array();
+   $pval['PROPERTY_ID'] = $props['ID'];
+   $pval['OBJECT_ID'] = $obj_id;
+   $pval['VALUE'] = '0';
+   $pval['PROPERTY_NAME'] = $obj_title.".isActivity";
+   $pval['UPDATED'] = date('Y-m-d H:i:s');
+   $pval=SQLInsert('pvalues', $pval);
+
  }
 /**
 * get ip from url
