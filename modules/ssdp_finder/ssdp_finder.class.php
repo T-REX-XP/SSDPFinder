@@ -561,6 +561,7 @@ ssdp_devices -
  ssdp_devices: USE_TO_SAY int(1) unsigned NOT NULL DEFAULT 0
  ssdp_devices: UPDATED datetime
  ssdp_devices: CONTROLADDRESS varchar(255) NOT NULL DEFAULT ''
+ 
  mediaservers_playlist: ID int(255) unsigned NOT NULL auto_increment
  mediaservers_playlist: TITLE varchar(100) NOT NULL DEFAULT ''
  mediaservers_playlist: DESCRIPTION varchar(300) NOT NULL DEFAULT ''
