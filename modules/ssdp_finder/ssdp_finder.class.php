@@ -190,16 +190,25 @@ function usual(&$out) {
  function search_ssdp_devices(&$out) {
   require(DIR_MODULES.$this->name.'/ssdp_devices_search.inc.php');
  }
-    function scan_ssdp_devices(&$out) {
-        require(DIR_MODULES.$this->name.'/ssdp_devices_scan.inc.php');
-    }
+ function scan_ssdp_devices(&$out) {
+  require(DIR_MODULES.$this->name.'/ssdp_devices_scan.inc.php');
+ }
+/**
+* get local IP 
+*
+* @access public
+*/
+function getLocalIp() { 
+  return gethostbyname(trim(`hostname`)); 
+}
+
 /**
 * ssdp_devices edit/add
 *
 * @access public
 */
  function edit_ssdp_devices(&$out, $id) {
-  require(DIR_MODULES.$this->name.'/ssdp_devices_edit.inc.php');
+   require(DIR_MODULES.$this->name.'/ssdp_devices_edit.inc.php');
  }
 /**
 * ssdp_devices add record to SSDPdevice
@@ -378,27 +387,12 @@ function getIp($baseUrl,$withPort) {
 	if( !empty($baseUrl) ){
         $parsed_url = parse_url($baseUrl);
         if($withPort ==true){
-             if ($parsed_url['host'] == '127.0.0.1'){
-                 $parsed_url['host'] = getLocalIp();
-                }
-        $baseUrl = $parsed_url['scheme'].'://'.$parsed_url['host'].':'.$parsed_url['port']; 
-       }else{
-             if ($parsed_url['host'] == '127.0.0.1'){
-                 $parsed_url['host'] = getLocalIp();
-                }
+            $baseUrl = $parsed_url['scheme'].'://'.$parsed_url['host'].':'.$parsed_url['port']; 
+        }else{
             $baseUrl = $parsed_url['host'];
         }
     }
     return  $baseUrl;
-}
-/**
-* get local IP 
-*
-* @access public
-*/
-//получаем айпи адрес локального компьютера
-function getLocalIp() { 
-return gethostbyname(trim(`hostname`)); 
 }
 /**
 * get port from url
@@ -475,6 +469,7 @@ function add_to_terminal($id) {
 */
  function delete_ssdp_devices($id) {
   $rec=SQLSelectOne("SELECT * FROM ssdp_devices WHERE ID='$id'");
+	 if($rec['LINKED_OBJECT']) {
   /// delete from simple device
   $sdev_del=SQLSelectOne("SELECT * FROM devices WHERE LINKED_OBJECT='".$rec['LINKED_OBJECT']."'");
   $sdevice = $sdev_del['ID'];
@@ -488,6 +483,7 @@ function add_to_terminal($id) {
   // standart code
   // delete fromp tables ssdp_devices
   SQLExec("DELETE FROM ssdp_devices WHERE ID='".$rec['ID']."'"); 
+		 }
  }
 ////////////////////////////////// конец моей вставки	
  function propertySetHandle($object, $property, $value) {
