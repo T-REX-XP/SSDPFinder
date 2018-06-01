@@ -98,7 +98,7 @@
    var types = $('select[name="selectType"]').val();
     $.ajax({
             type: "POST",
-            url: "/modules/devices/Medaiserver_urllist.php",
+            url: "/modules/devices/SMedaiserver_urllist.php",
             data: {action: 'SERVERS', types: types },
             cache: false,
             success: function(responce){ $('div[name="selectDataServer"]').html(responce); }
@@ -109,7 +109,7 @@
    var types = $('select[name="selectType"]').val();
     $.ajax({
             type: "POST",
-            url: "/modules/devices/Medaiserver_urllist.php",
+            url: "/modules/devices/SMedaiserver_urllist.php",
             data: {action: 'NAMES', servers: servers, types: types},
             cache: false,
             success: function(responce){ $('input[name="selectName"]').html(responce); }
@@ -120,14 +120,13 @@
     var name = $('input[name="selectName"]').val();
     $.ajax({
             type: "POST",
-            url: "/modules/devices/Medaiserver_urllist.php",
+            url: "/modules/devices/SMedaiserver_urllist.php",
             data: {action: 'URL', name: name},
             cache: false,
             success: function(responce){ $('div[name="selectDataUrl"]').html(responce); }
             });
  };
-
-<!--- функция запрета обновления страницы --->
+ 
 $("#MAinDiv").on('load', function(e) {
     e.preventDefault();
 });
