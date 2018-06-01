@@ -4,7 +4,11 @@
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></meta>
 <!--- подгрузка css темы --->
  <link rel="stylesheet" href="<#ROOTHTML#>bootstrap/css/bootstrap[#if '<#SETTINGS_THEME#>'=='dark'#]_dark[#endif#].min.css" type="text/css"></link>
-
+<style>
+#div1{
+  display: none;
+};
+</style>
 </head>
 <body>
 <div name="Mainframe" style="width:320px; text-align:center; align:center; font-family: monospace;">
@@ -12,8 +16,20 @@
  <div class="device-details" style="font-size: 150%; text-align:center; font-family: monospace; "><img src="%.Logo%" alt="Логотип устройства" style="width:36px; "></img>%.object_description%</div>
 
    <div class="group"> 
-    <button onClick='callMethod("%.object_title%.getFileList");' class="btn btn-custom"><span title="Get filelist" id="Get filelist" class="glyphicon glyphicon-list-alt aligned"> Get filelist</span></button> 
+    <button onClick='callMethod("%.object_title%.getFileList"); return viewDiv();' class="btn btn-custom"><span title="Get filelist" id="Get filelist" class="glyphicon glyphicon-list-alt aligned"> Get filelist</span></button> 
+
    </div>
+   <div id="div1" >%.havedfiles% - файлов обработано.</div>
 </div>
+<!--- скрипт формирования отчета --->         
+<script type = "text/javascript">
+
+function viewDiv(){
+  document.getElementById("div1").style.display = "block";
+  setTimeout(function(){$('#div1').fadeOut()}, 3000);
+};
+
+</script>
+
  </body>
 </html>
