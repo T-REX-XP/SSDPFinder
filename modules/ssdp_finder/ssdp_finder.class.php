@@ -469,6 +469,7 @@ function add_to_terminal($id) {
 */
  function delete_ssdp_devices($id) {
   $rec=SQLSelectOne("SELECT * FROM ssdp_devices WHERE ID='$id'");
+	 if($rec['LINKED_OBJECT']) {
   /// delete from simple device
   $sdev_del=SQLSelectOne("SELECT * FROM devices WHERE LINKED_OBJECT='".$rec['LINKED_OBJECT']."'");
   $sdevice = $sdev_del['ID'];
@@ -482,6 +483,7 @@ function add_to_terminal($id) {
   // standart code
   // delete fromp tables ssdp_devices
   SQLExec("DELETE FROM ssdp_devices WHERE ID='".$rec['ID']."'"); 
+		 }
  }
 ////////////////////////////////// конец моей вставки	
  function propertySetHandle($object, $property, $value) {
