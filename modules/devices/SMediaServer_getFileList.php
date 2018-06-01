@@ -19,7 +19,7 @@ foreach($directories as $list){
         //print_r ($file ['title']);
         //print_r ($file ['genre']);
         //print_r ($file ['creator']);
-        $Record = SQLSelectOne("SELECT * FROM mediaservers_playlist WHERE TITLE='".$file ['title']."'");
+        $Record = SQLSelectOne("SELECT * FROM mediaservers_playlist WHERE URL_LINK='".$file ['link']."'");
         $Record['URL_LINK'] = $link;
         $Record['TITLE'] = $file ['title'];
         $Record['DESCRIPTION'] = $file ['creator'];
