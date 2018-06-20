@@ -419,7 +419,7 @@ function add_to_terminal($id) {
   $ssdpdevice=SQLSelectOne("SELECT * FROM ssdp_devices WHERE ID='".$id."'");
   $terminal=array(); // опции добавления
   $terminal['NAME'] = $ssdpdevice['LINKED_OBJECT'];
-  $terminal['TITLE'] = $ssdpdevice['DESCRIPTION'];
+  $terminal['TITLE'] = $ssdpdevice['LINKED_OBJECT'];
   $terminal['HOST'] = $this->getIp($ssdpdevice['ADDRESS'],false);
   $terminal['CANPLAY'] = '1';
   $terminal['PLAYER_TYPE'] = 'dlna';
