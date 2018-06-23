@@ -232,66 +232,11 @@ function getLocalIp() {
   $options['LOCATION_ID']=$ssdpdevice['LOCATION']; // ID расположения (не обязательно)
   //$options['ADD_MENU']=1; // добавлять интерфейс работы с устройством в  меню (не обязательно)
   //$options['ADD_SCENE']=1; // добавлять интерфейс работы с устройством на сцену (не обязательно)
-  //$result=$dev->addDevice($device_type, $options); // добавляем устройство -- возвращает 1 в случае успешного добавления
-  
-  // поскольку пока функция добавления устройств работает не правильно то продублируем ее здесь	 
-     $dev->setDictionary();
-     $type_details=$dev->getTypeDetails($device_type);
-     if (!is_array($options)) {
-         $options=array();
-     }
-     if (!is_array($dev->device_types[$device_type])) {
-         return 0;
-     }
-     if ($options['TABLE'] && $options['TABLE_ID']) {
-         $table_rec=SQLSelectOne("SELECT * FROM ".$options['TABLE']." WHERE ID=".$options['TABLE_ID']);
-         if (!$table_rec['ID']) {
-             return 0;
-         }
-     }
-     if ($options['LINKED_OBJECT']!='') {
-         $old_device=SQLSelectOne("SELECT ID FROM devices WHERE LINKED_OBJECT LIKE '".DBSafe($options['LINKED_OBJECT'])."'");
-         if ($old_device['ID']) return $old_device['ID'];
-         $rec['LINKED_OBJECT']=$options['LINKED_OBJECT'];
-     }
-     
-     $rec=array();
-     $rec['TYPE']=$device_type;
-     if ($options['TITLE']) {
-       $rec['TITLE']=$options['TITLE'];
-     } else {
-       $rec['TITLE']='New device '.date('H:i');
-     }
-     if ($options['LOCATION_ID']) {
-         $rec['LOCATION_ID']=$options['LOCATION_ID'];
-     }
-     $rec['ID']=SQLInsert('devices',$rec);
-     if ($rec['LOCATION_ID']) {
-         $location_title=getRoomObjectByLocation($rec['LOCATION_ID'],1);
-     }
-     if (!$rec['LINKED_OBJECT']) {
-         $new_object_title=ucfirst($rec['TYPE']).$dev->getNewObjectIndex($type_details['CLASS']);
-         $object_id=addClassObject($type_details['CLASS'],$new_object_title,'sdevice'.$rec['ID']);
-         $rec['LINKED_OBJECT']=$new_object_title;
-         if (preg_match('/New device .+/',$rec['TITLE'])) {
-             $rec['TITLE']=$rec['LINKED_OBJECT'];
-         }
-         SQLUpdate('devices',$rec);
-     }
-     if ($table_rec['ID']) {
-         $dev->addDeviceToSourceTable($options['TABLE'],$table_rec['ID'],$rec['ID']);
-     }
-     if ($options['ADD_MENU']) {
-         $dev->addDeviceToMenu($rec['ID']);
-     }
-     if ($options['ADD_SCENE']) {
-         $dev->addDeviceToScene($rec['ID']);
-     }
-	
-	 //конец функции простых устройств
-	 
-	 
-   // zapolnyaem dannie ob ustroystve 
+  $result=$dev->addDevice($device_type, $options); // добавляем устройство -- возвращает 1 в случае успешного добавления
+
+ // если устройство создано то заполняем данные о нем в остальных таблицах - чтобы вручную не вводить
+ if ($result){ 
+   // zapolnyaem dannie ob ustroystve в обьектах
   $ssdpdevice=SQLSelectOne("SELECT * FROM ssdp_devices WHERE ID='".$id."'");
   $new_object_title = $ssdpdevice['LINKED_OBJECT'];
   $obj = SQLSelectOne("SELECT * FROM objects WHERE TITLE='".$new_object_title."'");
@@ -335,9 +280,8 @@ function getLocalIp() {
             $pval['PROPERTY_NAME'] = $obj_title.".linkedRoom";
             $pval['UPDATED'] = date('Y-m-d H:i:s');
             $pval=SQLInsert('pvalues', $pval);
-}
+    }
    //add the groupEco in properties object
-	
    $props = SQLSelectOne("SELECT * FROM properties WHERE TITLE LIKE 'groupEco' AND CLASS_ID='".$clasofdevice['ID']."'");
    $pval = Array();
    $pval['PROPERTY_ID'] = $props['ID'];
@@ -376,7 +320,7 @@ function getLocalIp() {
    $pval['PROPERTY_NAME'] = $obj_title.".isActivity";
    $pval['UPDATED'] = date('Y-m-d H:i:s');
    $pval=SQLInsert('pvalues', $pval);
-
+  }
  }
 /**
 * get ip from url
