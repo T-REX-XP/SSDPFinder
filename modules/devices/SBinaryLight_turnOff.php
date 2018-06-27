@@ -6,5 +6,5 @@ $adress = $this->getProperty("CONTROLADDRESS");
 $status = $this->getProperty("turnOff");
 $remote = new BinaryLight\Remote($adress);
 $result = $remote->off();
-print_r($result);
+//print_r($result);
 $this->setProperty('status', 0);
