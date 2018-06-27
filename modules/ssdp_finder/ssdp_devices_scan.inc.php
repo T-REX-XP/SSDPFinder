@@ -174,23 +174,23 @@ function getDefImg($control_url,$xml) {
 	    return "/templates/ssdp_finder/img/".explode(":", $xml->device->deviceType)[3]. ".png";//"Icons not found
     } else {
         foreach ($xml->device->iconList->icon as $icon) {
-			if ($icon->with = 48){
-				$url = $icon->url;
-				break;
-			} else if ($with < $icon->with) {
-				$url = $icon->url;
-				$with = $icon->with;
-			} else {
-				$url = $icon->url;
-			}
-		}  
-        //if ((stristr($url, 'http') == True)) { //"Icons found in internet;
-            //$current = file_get_contents($url);
-	//} else {		
-            $current = file_get_contents($baseUrl.$url);
-	//};
-		$link = '/templates/ssdp_finder/img/'.$uuid.'.png'; 
-		file_put_contents(ROOT.$link,  $current); // Save the image in local host
-		return $link;//"Icons found;
+	    if ($icon->with = 48){
+		$url = $icon->url;
+		break;
+	    } else if ($with < $icon->with) {
+		$url = $icon->url;
+		$with = $icon->with;
+	    } else {
+		$url = $icon->url;
+	    }
+	}  
     }
+    if ((stristr($url, 'http') == True)) { //"Icons found in internet;
+        $current = file_get_contents($url);
+    } else {		
+        $current = file_get_contents($baseUrl.$url);
+    };
+    $link = '/templates/ssdp_finder/img/'.$uuid.'.png'; 
+    file_put_contents(ROOT.$link,  $current); // Save the image in local host
+    return $link;//"Icons found;
 }
