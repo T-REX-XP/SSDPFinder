@@ -6,6 +6,6 @@ $adress = $this->getProperty("CONTROLADDRESS");
 $status = $this->getProperty("turnOn");
 $remote = new BelkinDevice\Devswitch($adress);
 $result = $remote->on();
-print_r($result);
+//print_r($result);
 $this->setProperty('status', 1);
 

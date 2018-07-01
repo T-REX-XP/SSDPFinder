@@ -1,11 +1,7 @@
 <?php
-
 require(dirname(__FILE__).'/../ssdp_finder/upnp/vendor/autoload.php');
-
 use jalder\Upnp\Renderer;
-
 $renderer = new Renderer();
-
 $adress = $this->getProperty("CONTROLADDRESS");
 $remote = new Renderer\Remote($adress);
 $playUrl = $this->getProperty("playUrl");
@@ -21,10 +17,12 @@ print ($trackurl);
 $result = $doc->getElementsByTagName('RelTime');
 $tracktime = $result->item(0)->nodeValue;
 print ($tracktime); 
-if ( $playUrl ) {
-    $result = $remote->stop();
-    $result = $remote->play($playUrl);
-    $this->setProperty("playUrl","");
-} else {
-    $this->setProperty("playUrl","");
-}
+if (strpos($playUrl,'youtube')>1) {
+    $res1=parse_url($playUrl, PHP_URL_QUERY);
+    $res2=parse_str($res1,$res); 
+    $res=$res['v'];
+    $newurl='https://hms.lostcut.net/youtube/g.php?v='.$res.'&link_only=1&max_height=720'; 
+    $playUrl=file_get_contents($newurl);
+};
+$result = $remote->stop();
+$result = $remote->play($playUrl);
