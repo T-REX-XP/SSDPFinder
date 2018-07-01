@@ -9,7 +9,7 @@ if (strpos($playUrl,'youtube')>1) {
     $res1=parse_url($playUrl, PHP_URL_QUERY);
     $res2=parse_str($res1,$res); 
     $res=$res['v'];
-    $newurl='https://hms.lostcut.net/youtube/g.php?v='.$res.'&link_only=1'; 
+    $newurl='https://hms.lostcut.net/youtube/g.php?v='.$res.'&link_only=1&max_height=720'; 
     $playUrl=file_get_contents($newurl);
 };
 $result = $remote->setNext($playNextUrl);
