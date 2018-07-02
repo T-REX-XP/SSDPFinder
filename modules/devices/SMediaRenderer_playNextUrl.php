@@ -5,7 +5,7 @@ $renderer = new Renderer();
 $adress = $this->getProperty("CONTROLADDRESS");
 $remote = new Renderer\Remote($adress);
 $playNextUrl = $this->getProperty("playNextUrl");
-if (strpos($playUrl,'youtube')>1) {
+if (strpos($playUrl,'youtube')>1 AND strpos($playUrl,'youtube')<20) {
     $res1=parse_url($playUrl, PHP_URL_QUERY);
     $res2=parse_str($res1,$res); 
     $res=$res['v'];
