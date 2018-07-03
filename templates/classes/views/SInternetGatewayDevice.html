@@ -1,12 +1,20 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></meta>
 <!--- подгрузка css темы --->
  <link rel="stylesheet" href="<#ROOTHTML#>3rdparty/bootstrap/css/bootstrap[#if '<#SETTINGS_THEME#>'=='dark'#]_dark[#endif#].min.css" type="text/css"></link>
-<div name="Mainframe" style="width:300px; text-align:center; align:center; font-family: monospace;">
+</head>
+<body>
+<div name="Mainframe" style="width:330px; text-align:center; align:center; font-family: monospace; border: 3px solid #4682B4; border-radius: 10px;">
 <!--- название обьекта --->
  <p style="width:300px; text-align:center; font-family: monospace; "><img src="%.Logo%" alt="Логотип устройства" style="width:36px; align:center; font-family: monospace; "></img> - %.object_description%</p>
 <!--- локальный АЙПИ адрес--->
  <p style="width:300px; text-align:center; font-family: monospace; ">
-  <button style='display:%.alive|"none;block;none;"%;float:left;'  class="btn btn-custom"><span class="glyphicon glyphicon-ok"></span></button>
-  <button style='display:%.alive|"none;none;block;none"%;float:left;'  class="btn btn-custom"><span class="glyphicon glyphicon-remove"></span></button>
+    <button style='display:%.alive|"none;block;none;"%;float:right;font-size: 50%; font-family: monospace;'><span class="glyphicon glyphicon-ok"></span></span></button>
+    <button style='display:%.alive|"none;none;block;"%;float:right;font-size: 50%; font-family: monospace;'><span class="glyphicon glyphicon-remove"></span></button>
   <a href="%.ADDRESS%" target="_blank">Локальный адрес устройства-%.ADDRESS%</a>
  </p>
 </div> 
+</body>
+</html>
