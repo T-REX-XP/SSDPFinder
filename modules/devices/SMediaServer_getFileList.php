@@ -38,4 +38,8 @@ foreach($directories as $list){
         $count = $count+1;
     }
    }
+if (!$browse){ 
+$this->setProperty("havedfiles","нету связи с устройством");
+} else {
 $this->setProperty("havedfiles",$count);
+}
