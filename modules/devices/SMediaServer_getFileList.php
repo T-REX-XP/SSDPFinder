@@ -23,7 +23,8 @@ foreach($directories as $list){
         //print_r ($file ['creator']);
         $Record = SQLSelectOne("SELECT * FROM mediaservers_playlist WHERE URL_LINK='".$file ['link']."'");
         $Record['URL_LINK'] = $link;
-        $Record['TITLE'] = $file ['title'];
+        $tcode = mb_detect_encoding($file ['title']);
+        $Record['TITLE'] = iconv($tcode, "UTF-8", $file ['title']);
         $Record['DESCRIPTION'] = $file ['creator'];
         $ext_file = substr(strrchr($file ['link'], "."),0);
         if (in_array($ext_file, $video)) {
