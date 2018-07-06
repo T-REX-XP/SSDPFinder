@@ -6,13 +6,13 @@
  <link rel="stylesheet" href="<#ROOTHTML#>3rdparty/bootstrap/css/bootstrap[#if '<#SETTINGS_THEME#>'=='dark'#]_dark[#endif#].min.css" type="text/css"></link>
 </head>
 <body>
-<div name="Mainframe" style="width:330px; text-align:center; align:center; font-family: monospace; border: 3px solid #4682B4; border-radius: 10px;">
+<div name="%.object_title%" style="width:344px; text-align:center; align:center; font-family: monospace; border: 3px solid #4682B4; border-radius: 10px;">
 <!--- название обьекта --->
  <p style="width:300px; text-align:center; font-family: monospace; "><img src="%.Logo%" alt="Логотип устройства" style="width:36px; align:center; font-family: monospace; "></img> - %.object_description%</p>
 <!--- локальный АЙПИ адрес--->
  <p style="width:300px; text-align:center; font-family: monospace; ">
     <button style='display:%.alive|"none;block;none;"%;float:right;font-size: 50%; font-family: monospace;'><span class="glyphicon glyphicon-ok"></span></span></button>
-    <button style='display:%.alive|"none;none;block;"%;float:right;font-size: 50%; font-family: monospace;'><span class="glyphicon glyphicon-remove"></span></button>
+    <button style='display:%.alive|"block;none;block;"%;float:right;font-size: 50%; font-family: monospace;'><span class="glyphicon glyphicon-remove"></span></button>
   <a href="%.ADDRESS%" target="_blank">Локальный адрес устройства-%.ADDRESS%</a>
  </p>
 </div> 
