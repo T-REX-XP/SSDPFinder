@@ -6,6 +6,10 @@ $adress = $this->getProperty("CONTROLADDRESS");
 $status = $this->getProperty("turnOn");
 $remote = new BelkinDevice\Devswitch($adress);
 $result = $remote->on();
-//print_r($result);
-$this->setProperty('status', 1);
-
+if ($result) {
+    $this->setProperty('status', 1);
+    } else {
+    $this->setProperty('status', 0);
+    $this->setProperty('alive', 0);
+    say ("Выключатель ".$this->title." размещенный в команте ".$this->getProperty("linkedRoom")." не сработал!", 2);
+};
