@@ -7,4 +7,10 @@ $status = $this->getProperty("turnOff");
 $remote = new BinaryLight\Remote($adress);
 $result = $remote->off();
 //print_r($result);
-$this->setProperty('status', 0);
+if ($result) {
+    $this->setProperty('status', 0);
+    } else {
+    $this->setProperty('status', 1);
+    $this->setProperty('alive', 0);
+    say ("Выключатель ".$this->title." размещенный в команте ".$this->getProperty("linkedRoom")." не сработал!", 2);
+};
