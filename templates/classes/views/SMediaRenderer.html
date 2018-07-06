@@ -39,9 +39,13 @@
 	</style>
 </head>
 <body>
-<div id="MAinDiv" name="Mainframe" style="width:330px; text-align:center; align:center; font-family: monospace; border: 3px solid #4682B4; border-radius: 10px;">
+<div name="%.object_title%" style="width:344px; text-align:center; align:center; font-family: monospace; border: 3px solid #4682B4; border-radius: 10px;">
 <!--- название обьекта --->
- <p><img src="%.Logo%" alt="Логотип устройства" style="width:36px; "></img>%.object_description%</p>
+ <p><img src="%.Logo%" alt="Логотип устройства" style="width:36px; "></img>
+    <button style='display:%.alive|"none;block;none;"%;float:right;font-size: 50%; font-family: monospace;'><span class="glyphicon glyphicon-ok"></span></span></button>
+    <button style='display:%.alive|"none;none;block;"%;float:right;font-size: 50%; font-family: monospace;'><span class="glyphicon glyphicon-remove"></span></button>
+    %.object_description%
+ </p>
 
 <div name="selectDataType" style="float:left;">
 <select size="1" name="selectType" onClick='document.getElementById("selectedname").value=" "' onChange="selectServers();selectNames(); selectUrl();" style="width:160px;">

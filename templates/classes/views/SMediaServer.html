@@ -6,11 +6,12 @@
   <link rel="stylesheet" href="<#ROOTHTML#>3rdparty/bootstrap/css/bootstrap[#if '<#SETTINGS_THEME#>'=='dark'#]_dark[#endif#].min.css" type="text/css"></link>
  </head>
 <body>
- <div name="%.object_title%main" style="width:330px; text-align:center; align:center; font-family: monospace; border: 3px solid #4682B4; border-radius: 10px;">
+ <div name="%.object_title%main" style="width:344px; text-align:center; align:center; font-family: monospace; border: 3px solid #4682B4; border-radius: 10px;">
   <div class="device-details" style="font-size: 150%; text-align:center; font-family: monospace; ">
-    <button style='display:%.alive|"none;block;none;"%;float:right;font-size: 50%; font-family: monospace;'><span class="glyphicon glyphicon-ok"></span></button>
+    <img src="%.Logo%" alt="Логотип устройства" style="float:center; width:36px; ">
+    <button style='display:%.alive|"none;block;none;"%;float:right;font-size: 50%; font-family: monospace;'><span class="glyphicon glyphicon-ok"></span></span></button>
     <button style='display:%.alive|"none;none;block;"%;float:right;font-size: 50%; font-family: monospace;'><span class="glyphicon glyphicon-remove"></span></button>
-	<img src="%.Logo%" alt="Логотип устройства" style="float:center; width:36px; "></img>
+    </img>
   </div>
   <div class="group"> 
    <button onClick='callMethod("%.object_title%.getFileList"); return %.object_title%();' class="btn btn-custom">
