@@ -30,6 +30,25 @@
  - Рефакторинг
  - Шаблоны поведения для управления устройствами
 
+Для установки правильного адреса в виндовс :
+1. в файле C:\Windows\System32\drivers\etc\hosts
+Исправляем строку на нужный айпи адрес
+
+_# localhost name resolution is handled within DNS itself.
+
+_#	192.168.1.30    localhost
+
+2. в файле C:\_majordomo\pms_config.ini
+в строке  33 изменяем на тот же адрес...
+
+_[http]
+
+_;--- Defines the hostname that should be shown in the browser url and that is used for the apache server
+
+_;--- At the moment only IP addresses or the placeholder {local_ip} is allowed. 
+
+_HostName=192.168.1.30
+
 
 ----------
 

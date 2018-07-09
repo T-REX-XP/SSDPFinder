@@ -454,7 +454,9 @@ function add_to_terminal($id) {
        $cached_filename = 'http://'. $ipadressserver . '/cms/cached/voice/' . md5($message) . '_google.mp3';
    } else if (file_exists(ROOT.'/cms/cached/voice/' . md5($message) . '_yandex.mp3')) {
        $cached_filename = 'http://'. $ipadressserver . '/cms/cached/voice/' . md5($message) . '_yandex.mp3';
-   };
+   } else if (file_exists(ROOT.'/cms/cached/voice/rh_' . md5($message) . '.mp3')) {
+       $cached_filename = 'http://'. $ipadressserver . '/cms/cached/voice/rh_' . md5($message) . '.mp3';
+   }
    $usedsay=SQLSelect("SELECT * FROM ssdp_devices WHERE USE_TO_SAY='".'1'."'");
    foreach ($usedsay as $saydev) {
         if ($saydev['TYPE']=='MediaRenderer' AND $saydev['USE_TO_SAY']=='1' AND $levelmes>=$level) {
