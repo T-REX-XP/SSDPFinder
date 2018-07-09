@@ -104,10 +104,12 @@
     $rec['TITLE']=$title;
     if ($rec['TITLE']=='') {
      $out['ERR_TITLE']=1;
+   
+     //$out["LOGO"] = 
      $ok=0;
     }
   
-
+    session_start();
    global $create_sd;
    global $create_od;
    global $create_term;
@@ -144,7 +146,7 @@
    $rec['LOCATION']=$location;
  //updating 'Logo' (varchar)
    global $logo;
-   $rec['LOGO']=$logo;
+   $rec['LOGO']=  $_SESSION[$uuid];//$logo;
   //updating '<%LANG_LINKED_OBJECT%>' (varchar)
    global $linked_object;
    $rec['LINKED_OBJECT']=$linked_object;
