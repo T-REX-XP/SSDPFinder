@@ -12,5 +12,5 @@ if ($result) {
     } else {
     $this->setProperty('status', 1);
     $this->setProperty('alive', 0);
-    say ("Выключатель ".$this->object_title." размещенный в команте ".$this->getProperty("linkedRoom")." не сработал!", 2);
+    say ("Выключатель ".$this->object_title." размещенный в комнате ".$this->getProperty("linkedRoom")." не сработал!", 2);
 };
