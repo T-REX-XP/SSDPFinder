@@ -11,6 +11,8 @@
 
 $dictionary = array (
    'SSDP_TITLE' => 'Поиск и добавление в систему UPNP устройств.',
+   'SSDP_PORT' => 'Порт для подписки на ответы от событий в устройствах',
+
 );
 
 foreach ($dictionary as $k => $v) {
