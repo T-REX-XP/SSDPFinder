@@ -645,7 +645,7 @@ ssdp_devices -
  ssdp_devices: DESCRIPTION varchar(255) NOT NULL DEFAULT ''
  ssdp_devices: LOCATION varchar(255) NOT NULL DEFAULT ''
  ssdp_devices: TYPE varchar(255) NOT NULL DEFAULT ''
- ssdp_devices: LOGO varchar(255) NOT NULL DEFAULT ''
+ ssdp_devices: LOGO varchar(65535) NOT NULL DEFAULT ''
  ssdp_devices: LINKED_OBJECT varchar(100) NOT NULL DEFAULT ''
  ssdp_devices: LINKED_PROPERTY varchar(100) NOT NULL DEFAULT ''
  ssdp_devices: LINKED_METHOD varchar(100) NOT NULL DEFAULT ''
