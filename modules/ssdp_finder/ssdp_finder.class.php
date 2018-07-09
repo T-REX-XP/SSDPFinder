@@ -442,44 +442,127 @@ function add_to_terminal($id) {
     }
    }
  }
- function processSubscription($event, $details='') {
- $this->getConfig();
-  if ($event=='SAY') {
-   $levelmes = getGlobal('ThisComputer.minMsgLevel');
-   $level=$details['level'];
-   $message=$details['message'];
-   $ipadressserver = $this->getLocalIp();
-   
-   if (file_exists(ROOT.'/cms/cached/voice/' . md5($message) . '_google.mp3')) {
-       $cached_filename = 'http://'. $ipadressserver . '/cms/cached/voice/' . md5($message) . '_google.mp3';
-   } else if (file_exists(ROOT.'/cms/cached/voice/' . md5($message) . '_yandex.mp3')) {
-       $cached_filename = 'http://'. $ipadressserver . '/cms/cached/voice/' . md5($message) . '_yandex.mp3';
-   } else if (file_exists(ROOT.'/cms/cached/voice/rh_' . md5($message) . '.mp3')) {
-       $cached_filename = 'http://'. $ipadressserver . '/cms/cached/voice/rh_' . md5($message) . '.mp3';
-   }
-   $usedsay=SQLSelect("SELECT * FROM ssdp_devices WHERE USE_TO_SAY='".'1'."'");
-   foreach ($usedsay as $saydev) {
+function processSubscription($event, $details='') {
+$this->getConfig();
+if ($event=='SAY') {
+    $levelmes = getGlobal('ThisComputer.minMsgLevel');
+    $level=$details['level'];
+    $message=$details['message'];
+    $ipadressserver = $this->getLocalIp();
+    if (file_exists(ROOT.'/cms/cached/voice/' . md5($message) . '_google.mp3')) {
+        $cached_filename = 'http://'. $ipadressserver . '/cms/cached/voice/' . md5($message) . '_google.mp3';
+    } else if (file_exists(ROOT.'/cms/cached/voice/' . md5($message) . '_yandex.mp3')) {
+        $cached_filename = 'http://'. $ipadressserver . '/cms/cached/voice/' . md5($message) . '_yandex.mp3';
+    } else if (file_exists(ROOT.'/cms/cached/voice/rh_' . md5($message) . '.mp3')) {
+        $cached_filename = 'http://'. $ipadressserver . '/cms/cached/voice/rh_' . md5($message) . '.mp3';
+    } else {
+        //DebMes($details);
+        $level = $details['level'];
+        $message = $details['message'];
+    //  $accessKey = $this->config['ACCESS_KEY'];
+    //  $speaker = $this->config['SPEAKER'];
+        $filename = md5($message) . '_google.mp3';
+        $cachedVoiceDir = ROOT . 'cms/cached/voice';
+        $cachedFileName = $cachedVoiceDir . '/' . $filename;
+        $base_url = 'https://translate.google.com/translate_tts?';
+        $lang = SETTINGS_SITE_LANGUAGE;
+        if ($lang == 'ua') {
+            $lang = 'uk';
+        }else if ($lang == 'ru') {
+	        $lang = 'ru';
+        }else {
+	        $lang = 'en';
+        }
+        $qs = http_build_query([
+            'ie' => 'UTF-8',
+            'client' => 'tw-ob',
+            'q' => $message,
+            'tl' => $lang,
+            //'ttsspeed' => 1 // 0-4
+            //'speaker' => $speaker,
+            //'key' => $accessKey,
+            ]);
+        //DebMes($base_url . $qs);
+        try {
+            $contents = file_get_contents($base_url . $qs);
+        } catch (Exception $e) {
+            registerError('ssdp_finder', get_class($e) . ', ' . $e->getMessage());
+        }
+        if (isset($contents)) {
+            CreateDir($cachedVoiceDir);
+            SaveFile($cachedFileName, $contents);
+        }
+        $cached_filename = 'http://'. $ipadressserver . '/cms/cached/voice/' . md5($message) . '_google.mp3';
+	}
+    $usedsay=SQLSelect("SELECT * FROM ssdp_devices WHERE USE_TO_SAY='".'1'."'");
+    foreach ($usedsay as $saydev) {
         if ($saydev['TYPE']=='MediaRenderer' AND $saydev['USE_TO_SAY']=='1' AND $levelmes>=$level) {
           setGlobal($saydev['LINKED_OBJECT'].'.playUrl', $cached_filename);
         }
-   }
+    }
+}
+if ($event=='SAYTO') {
+    if($this->debug == 1) debmes('mpt sayto start');
+    $level=$details['level'];
+    $message=$details['message'];
+    $target = $details['destination'];
+    $levelmes = getGlobal('ThisComputer.minMsgLevel');
+    $ipadressserver = $this->getLocalIp();
+    if (file_exists(ROOT.'/cms/cached/voice/' . md5($message) . '_google.mp3')) {
+        $cached_filename = 'http://'. $ipadressserver . '/cms/cached/voice/' . md5($message) . '_google.mp3';
+    } else if (file_exists(ROOT.'/cms/cached/voice/' . md5($message) . '_yandex.mp3')) {
+        $cached_filename = 'http://'. $ipadressserver . '/cms/cached/voice/' . md5($message) . '_yandex.mp3';
+    } else if (file_exists(ROOT.'/cms/cached/voice/rh_' . md5($message) . '.mp3')) {
+        $cached_filename = 'http://'. $ipadressserver . '/cms/cached/voice/rh_' . md5($message) . '.mp3';
+    } else {
+        //DebMes($details);
+        $level = $details['level'];
+        $message = $details['message'];
+    //  $accessKey = $this->config['ACCESS_KEY'];
+    //  $speaker = $this->config['SPEAKER'];
+        $filename = md5($message) . '_google.mp3';
+        $cachedVoiceDir = ROOT . 'cms/cached/voice';
+        $cachedFileName = $cachedVoiceDir . '/' . $filename;
+        $base_url = 'https://translate.google.com/translate_tts?';
+        $lang = SETTINGS_SITE_LANGUAGE;
+        if ($lang == 'ua') {
+            $lang = 'uk';
+        }else if ($lang == 'ru') {
+	        $lang = 'ru';
+        }else {
+	        $lang = 'en';
+        }
+        $qs = http_build_query([
+            'ie' => 'UTF-8',
+            'client' => 'tw-ob',
+            'q' => $message,
+            'tl' => $lang,
+            //'ttsspeed' => 1 // 0-4
+            //'speaker' => $speaker,
+            //'key' => $accessKey,
+            ]);
+        //DebMes($base_url . $qs);
+        try {
+            $contents = file_get_contents($base_url . $qs);
+        } catch (Exception $e) {
+            registerError('ssdp_finder', get_class($e) . ', ' . $e->getMessage());
+        }
+        if (isset($contents)) {
+            CreateDir($cachedVoiceDir);
+            SaveFile($cachedFileName, $contents);
+        }
+        $cached_filename = 'http://'. $ipadressserver . '/cms/cached/voice/' . md5($message) . '_google.mp3';
+	    }
+    setGlobal($target.'.playUrl', $cached_filename);
+    }
+	
+	
 /* if ($event=='ASK') {
    $tartget = $this->targetToIp($details['target']);
    if(!$target) return 0;
    $message=$details['prompt'];
    $this->send_mpt('ask', $message, $target);
    if($this->debug == 1) debmes('mpt ask ' . $message . '; target = ' . $target);
-  }
-
-  if ($event=='SAYTO') {
-   if($this->debug == 1) debmes('mpt sayto start');
-   $level=$details['level'];
-   $message=$details['message'];
-   $target = $this->targetToIp($details['destination']);
-   if($this->debug == 1) debmes('mpt sayto after ttIp : ' . $target);
-   if(!$target) return 0;
-   $this->send_mpt('tts', $message, $target);
-   if($this->debug == 1) debmes('mpt sayto ' . $message . '; level = ' . $level . '; to = ' . $target);
   }
 
   if ($event=='SAYREPLY') {
@@ -493,7 +576,6 @@ function add_to_terminal($id) {
   } */
    //playSound($cached_filename,1);
    //...
-  }
  }
 	
 

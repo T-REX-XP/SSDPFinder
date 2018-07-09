@@ -70,8 +70,8 @@
    global $updated_minutes;
    global $updated_hours;
    if($use_to_say==true){
--      $rec['USE_TO_SAY']=1;
--     }
+      $rec['USE_TO_SAY']=1;
+   }
    $rec['UPDATED']=toDBDate($updated_date)." $updated_hours:$updated_minutes:00";
   //UPDATING RECORD
    if ($ok) {
