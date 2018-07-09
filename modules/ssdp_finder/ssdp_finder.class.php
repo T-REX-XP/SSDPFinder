@@ -504,6 +504,7 @@ function add_to_terminal($id) {
 */
  function install($data='') {
   // подписки на события 
+  subscribeToEvent($this->name, 'SAYREPLY','',20);
   subscribeToEvent($this->name, 'SAYTO','',20);
   subscribeToEvent($this->name, 'ASK','',20);
   subscribeToEvent($this->name, 'SAY','',20);
@@ -533,6 +534,7 @@ function add_to_terminal($id) {
   unsubscribeFromEvent($this->name, 'SAY');
   unsubscribeFromEvent($this->name, 'SAYTO');
   unsubscribeFromEvent($this->name, 'ASK');
+  unsubscribeFromEvent($this->name, 'SAYREPLY');
 
   //delete ssdp_finder module
   parent::uninstall();
