@@ -16,7 +16,7 @@
         [#endif ID#]
         <div class="form-group">
             <label class="col-lg-3 control-label" [#if ERR_TITLE#] style="color:red;font-weight:bold" [#endif#]>
-                Название:
+                <#LANG_SSDP_NAME#>
             </label>
             <div class="col-lg-4">
                 <input type="text" class="form-control" name="title" value="[#TITLE#]" id="title">
@@ -25,7 +25,7 @@
         <!-- TYPE (varchar) -->
         <div class="form-group">
             <label class="col-lg-3 control-label" [#if ERR_TYPE#] style="color:red;font-weight:bold" [#endif#]>
-                Тип:
+                <#LANG_SSDP_TYPE#>
             </label>
             <div class="col-lg-4">
                 <input type="text" class="form-control" name="type" value="[#TYPE#]" id="type">
@@ -43,7 +43,7 @@
         <!-- services (varchar) -->
         <div class="form-group">
             <label class="col-lg-3 control-label" [#if ERR_SERVICES#] style="color:red;font-weight:bold" [#endif#]>
-                Типы Сервисов:
+                 <#LANG_SSDP_SERVICETYPE#>
             </label>
             <div class="col-lg-4">
                 <input type="text" class="form-control" name="services" value="[#SERVICES#]" id="services">
@@ -51,7 +51,7 @@
         </div>
         <div class="form-group">
             <label class="col-lg-3 control-label" [#if ERR_ADDRESS#] style="color:red;font-weight:bold" [#endif#]>
-                IP адрес:
+                <#LANG_SSDP_IPADRESS#>
             </label>
             <div class="col-lg-4">
                 <input type="text" class="form-control" name="address" value="[#ADDRESS#]" id="address">
@@ -59,7 +59,7 @@
         </div>
         <div class="form-group">
             <label class="col-lg-3 control-label" [#if ERR_DESCRIPTION#] style="color:red;font-weight:bold" [#endif#]>
-                Описание:
+                <#LANG_SSDP_DESCRIPTION#>
             </label>
             <div class="col-lg-4">
                 <input type="text" class="form-control" name="description" value="[#DESCRIPTION#]" id="description">
@@ -75,7 +75,7 @@
         </div>
         <div class="form-group">
             <label class="col-lg-3 control-label" [#if ERR_MODEL#] style="color:red;font-weight:bold" [#endif#]>
-                Модель:
+                <#LANG_SSDP_MODEL#>
             </label>
             <div class="col-lg-4">
                 <input type="text" class="form-control" name="model" value="[#MODEL#]" id="model">
@@ -83,7 +83,7 @@
         </div>
         <div class="form-group">
             <label class="col-lg-3 control-label" [#if ERR_MANUFACTURER#] style="color:red;font-weight:bold" [#endif#]>
-                Производитель:
+                <#LANG_SSDP_MANUFACTURER#>
             </label>
             <div class="col-lg-4">
                 <input type="text" class="form-control" name="manufacturer" value="[#MANUFACTURER#]" id="manufacturer">
@@ -117,13 +117,13 @@
         </div>
         <div class="form-group">
             <label class="control-label">
-                Создать простое устройство
+                <#LANG_SSDP_CREATESD#>
    
-                Создать устройство онлайн
+                <#LANG_SSDP_HOSTONLINE#>
 
-                Создать терминал устройства
+                <#LANG_SSDP_TERMINAL#>
 
-                Использовать для воспроизведения системных сообщений
+                <#LANG_SSDP_USETOSYSTEMMESAGE#>
             </label>
             <div class="controls">
                 <input type="checkbox" name="create_sd" checked>
