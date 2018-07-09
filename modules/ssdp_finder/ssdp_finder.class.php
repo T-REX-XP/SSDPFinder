@@ -554,7 +554,6 @@ if ($event=='SAYTO') {
         $cached_filename = 'http://'. $ipadressserver . '/cms/cached/voice/' . md5($message) . '_google.mp3';
 	    }
     setGlobal($target.'.playUrl', $cached_filename);
-	DebMes($target.'.playUrl');
     }
 	
 	
