@@ -25,7 +25,9 @@
                 <h4 class="modal-title">Модуль - SSDP Finder v.0.9</h4>
             </div>
             <div class="modal-body">
-                <p>Поиск и добавление в систему UPNP устройств.</p>
+                <p>
+                    <#LANG_SSDP_TITLE#>
+                </p>
                 <div class="btn-group btn-group-primary">
                     <button class="btn btn-default" data-toggle="collapse" data-target="#ssdp">SSDP</button>
                     <button class="btn btn-default" data-toggle="collapse" data-target="#upnp">UPNP</button>
@@ -87,7 +89,7 @@
         <fieldset>
             <div class="form-group">
                 <label class="control-label" [#if ERR_API_USERNAME#] style="color:red;font-weight:bold" [#endif#]>
-                    Порт для подписки на ответы от событий в устройствах:
+                    <#LANG_SSDP_PORT#>
                 </label>
                 <div class="controls">
                     <input type="text" name="api_username" value="[#API_USERNAME#]" class="input">
