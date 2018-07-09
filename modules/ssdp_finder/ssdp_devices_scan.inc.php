@@ -53,12 +53,13 @@ function Scan(){
         $presenturl = $device["presentationURL"];
         if (!array_search_result($result, 'UUID', $uuid) && !is_null($uuid) && !($existed)) {
       // print($device["iconList"]);
+      $logo= getDefImg($deviceInfo["location"],$device);
         $result[] = [
             "ID" => $existed["ID"], //existed id Majordomo
             "TITLE" => $device["friendlyName"],//friendly name
             "ADDRESS" => $presenturl ,//presentation url (web UI of device),//presentation url (web UI of device)
             "UUID" => $uuid,
-            "LOGO" => getDefImg($deviceInfo["location"],$device),//Logo 
+            "LOGO" => $logo,//Logo 
             "DESCRIPTION" => $device["modelDescription"] ,//. $deviceInfo['server'],//description get from xml or field "server"
             "TYPE" => explode(":", $device["deviceType"])[3],//DeviceType
             "SERIAL" => $device["serialNumber"],//serialnumber
@@ -70,9 +71,12 @@ function Scan(){
             "SERVICES"=> getServices($device),//list services of device
             "CONTROLADDRESS"=> editLocalIp($control_url),//list services of device
         ];
+        $_SESSION[$uuid] = $logo;
+        session_write_close();
+       
     }
     }
-
+   
     return $result;
 }
 
