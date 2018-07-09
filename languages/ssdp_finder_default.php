@@ -11,6 +11,8 @@
 
 $dictionary = array (
    'SSDP_TITLE' => 'Search and add deices to system devices on the UPNP protocol.',
+   'SSDP_PORT' => 'Port for answer from UPNP devices',
+
 );
 
 foreach ($dictionary as $k => $v) {
