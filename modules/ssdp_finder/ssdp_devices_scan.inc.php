@@ -50,15 +50,11 @@ function Scan(){
        // print_r($device);
         $uuid = $device["UDN"];
         $existed = SQLSelectOne("SELECT * FROM $table_name WHERE UUID='".$uuid."'");
-        //$presenturl = $device["presentationURL"];
-//todo: fix impl
+        $presenturl = $device["presentationURL"];
         $control_url = str_ireplace("Location:", "", $deviceInfo['location']);
         if (!$device["presentationURL"]){
             $presenturl='http://'.getIp($control_url,false);
-            } else {
-            $presenturl=$xml->device->presentationURL;
-            }
-//end todo
+            } 
         if (!array_search_result($result, 'UUID', $uuid) && !is_null($uuid) && !($existed)) {
       // print($device["iconList"]);
       $logo= getDefImg($deviceInfo["location"],$device);
@@ -98,17 +94,11 @@ function array_search_result($array, $key, $value){
 
 
 function getIp($baseUrl,$withPort) {
-	if( !empty($baseUrl) ){
+    if( !empty($baseUrl) ){
         $parsed_url = parse_url($baseUrl);
         if($withPort ==true){
-             if ($parsed_url['host'] == '127.0.0.1'){
-                 $parsed_url['host'] = getLocalIp();
-                }
-        $baseUrl = $parsed_url['scheme'].'://'.$parsed_url['host'].':'.$parsed_url['port']; 
-       }else{
-             if ($parsed_url['host'] == '127.0.0.1'){
-                 $parsed_url['host'] = getLocalIp();
-                }
+            $baseUrl = $parsed_url['scheme'].'://'.$parsed_url['host'].':'.$parsed_url['port']; 
+        }else{
             $baseUrl = $parsed_url['host'];
         }
     }
