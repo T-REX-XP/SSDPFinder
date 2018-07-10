@@ -58,7 +58,6 @@ function Scan(){
             } else {
             $presenturl=$xml->device->presentationURL;
             }
-        $presenturl = editLocalIp($presenturl);
 //end todo
         if (!array_search_result($result, 'UUID', $uuid) && !is_null($uuid) && !($existed)) {
       // print($device["iconList"]);
