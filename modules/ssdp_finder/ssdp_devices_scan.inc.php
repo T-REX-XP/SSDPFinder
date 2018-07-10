@@ -56,7 +56,7 @@ function Scan(){
         if (!$device["presentationURL"]){
             $presenturl='http://'.getIp($control_url,false);
             } else {
-            $presenturl=$xml->device->presentationURL;
+            $presenturl=$device["presentationURL"];
             }
 //end todo
         if (!array_search_result($result, 'UUID', $uuid) && !is_null($uuid) && !($existed)) {
