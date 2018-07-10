@@ -78,7 +78,7 @@ function Scan(){
             "MODELNUMBER" => $device["modelNumber"],//modelNumber
             "MANUFACTURER" => $device["manufacturer"],//Manufacturer
             "SERVICES"=> getServices($device),//list services of device
-            "CONTROLADDRESS"=> editLocalIp($control_url),//list services of device
+            "CONTROLADDRESS"=> $control_url,//list services of device
         ];
         $_SESSION[$uuid] = $logo;
         session_write_close();
@@ -119,13 +119,6 @@ function getIp($baseUrl,$withPort) {
 //получаем hostname адрес локального компьютера
 function getLocalIp() { 
     return gethostbyname(trim(`hostname`)); 
-}
-
-// функция заменяет 127.0.0.1 на реальный IP адрес для локального компа
-function editLocalIp($baseUrl){ 
-    $localIp=getLocalIp();
-    $baseUrl = str_ireplace('127.0.0.1', $localIp, $baseUrl);
-    return $baseUrl; 
 }
 
 
