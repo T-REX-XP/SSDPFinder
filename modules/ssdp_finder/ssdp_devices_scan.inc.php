@@ -50,13 +50,11 @@ function Scan(){
        // print_r($device);
         $uuid = $device["UDN"];
         $existed = SQLSelectOne("SELECT * FROM $table_name WHERE UUID='".$uuid."'");
-        //$presenturl = $device["presentationURL"];
+        $presenturl = $device["presentationURL"];
 //todo: fix impl
         $control_url = str_ireplace("Location:", "", $deviceInfo['location']);
         if (!$device["presentationURL"]){
             $presenturl='http://'.getIp($control_url,false);
-            } else {
-            $presenturl=$xml->device->presentationURL;
             }
 //end todo
         if (!array_search_result($result, 'UUID', $uuid) && !is_null($uuid) && !($existed)) {
