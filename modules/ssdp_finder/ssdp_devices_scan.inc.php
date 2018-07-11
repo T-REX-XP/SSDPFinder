@@ -6,7 +6,6 @@
 require('upnp/vendor/autoload.php');
 use jalder\Upnp\Upnp;
 
-
 global $session;
 if ($this->owner->name == 'panel') {
     $out['CONTROLPANEL'] = 1;
@@ -38,7 +37,7 @@ if ($res[0]['UUID']) {
 
 function Scan(){
     $upnp = new Upnp();
-    #print('searching...' . PHP_EOL);
+
     $everything = $upnp->discover();
     $result = [];
     $table_name='ssdp_devices';
@@ -46,20 +45,31 @@ function Scan(){
     foreach ($everything as $deviceInfo) {
 
         $device= $deviceInfo['description']['device'];
-
-       // print_r($device);
         $uuid = $device["UDN"];
         $existed = SQLSelectOne("SELECT * FROM $table_name WHERE UUID='".$uuid."'");
+
+        $control_url = $deviceInfo['location'];
+	// for microsoft devices - не доведено
+        if (substr($deviceInfo['location'], 0, 9) == "Location:") {
+            $control_url = str_ireplace("Location:", "", $deviceInfo['location']);
+            $deviceout = file_get_contents($control_url); 
+            Debmes ($deviceout); 
+        }
+	// .. to do end
+	    
+        // иногда вместо serialNumber есть modelNumber
+	$serialnumber = $device["serialNumber"];
+        if (!$serialnumber){
+            $serialnumber = $device["modelNumber"];
+            }
+        // иногда presentationURL отсутствует
         $presenturl = $device["presentationURL"];
-//todo: fix impl
-        $control_url = str_ireplace("Location:", "", $deviceInfo['location']);
         if (!$device["presentationURL"]){
             $presenturl='http://'.getIp($control_url,false);
             }
-//end todo
         if (!array_search_result($result, 'UUID', $uuid) && !is_null($uuid) && !($existed)) {
-      // print($device["iconList"]);
-      $logo= getDefImg($deviceInfo["location"],$device);
+        // print($device["iconList"]);
+        $logo= getDefImg($deviceInfo["location"],$device);
         $result[] = [
             "ID" => $existed["ID"], //existed id Majordomo
             "TITLE" => $device["friendlyName"],//friendly name
@@ -68,7 +78,7 @@ function Scan(){
             "LOGO" => $logo,//Logo 
             "DESCRIPTION" => $device["modelDescription"] ,//. $deviceInfo['server'],//description get from xml or field "server"
             "TYPE" => explode(":", $device["deviceType"])[3],//DeviceType
-            "SERIAL" => $device["serialNumber"],//serialnumber
+            "SERIAL" => $serialnumber,  //serialnumber
             "MANUFACTURERURL" => $device["manufacturerURL"],//manufacturer url
             "UPDATED" => '',
             "MODEL" => $device["modelName"],//model
