@@ -48,6 +48,7 @@ function Scan(){
         $uuid = $device["UDN"];
         $existed = SQLSelectOne("SELECT * FROM $table_name WHERE UUID='".$uuid."'");
 
+        $control_url = $deviceInfo['location'];
 	// for microsoft devices - не доведено
         if (substr($deviceInfo['location'], 0, 9) == "Location:") {
             $control_url = str_ireplace("Location:", "", $deviceInfo['location']);
