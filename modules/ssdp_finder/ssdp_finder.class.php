@@ -234,7 +234,7 @@ function getLocalIp() {
   //$options['ADD_SCENE']=1; // добавлять интерфейс работы с устройством на сцену (не обязательно)
   //$result=$dev->addDevice($device_type, $options); // добавляем устройство -- возвращает 1 в случае успешного добавления
   
-	 
+   // novaya vstavka	 
    $dev->setDictionary();
      $type_details=$dev->getTypeDetails($device_type);
      if (!is_array($options)) {
@@ -283,7 +283,8 @@ function getLocalIp() {
      }
      
      $result = 1;
-
+// novaya vstavka konec
+	 
  // если устройство создано то заполняем данные о нем в остальных таблицах - чтобы вручную не вводить
  if ($result){ 
    // zapolnyaem dannie ob ustroystve в обьектах
