@@ -279,7 +279,7 @@ function getLocalIp() {
          SQLUpdate('devices',$rec);
      }
      if ($table_rec['ID']) {
-         $this->addDeviceToSourceTable($options['TABLE'],$table_rec['ID'],$rec['ID']);
+         $dev->addDeviceToSourceTable($options['TABLE'],$table_rec['ID'],$rec['ID']);
      }
      
      $result = 1;
