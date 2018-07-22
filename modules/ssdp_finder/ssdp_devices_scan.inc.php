@@ -234,9 +234,8 @@ function getDefImg($control_url,$device) {
     $type = pathinfo($path, PATHINFO_EXTENSION);
     // иногда в ссылке на лого отсутствует расширение файла поэтому пробуем взять его из типа в XML файле
 	if (strlen($type)>3) {
-    	return 'data:' . $mimetype . ';base64,' . base64_encode($current['content']);
+    	    return 'data:' . $mimetype . ';base64,' . base64_encode($current['content']);
 	} else {
-		$type = 'image/png';
-        return 'data:image/' . $type . ';base64,' . base64_encode($current['content']);
+            return 'data:image/' . $type . ';base64,' . base64_encode($current['content']);
 	}
 }
