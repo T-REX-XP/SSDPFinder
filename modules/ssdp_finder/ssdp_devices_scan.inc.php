@@ -180,7 +180,7 @@ function SearchArray($array, $searchIndex, $searchValue){
 
 
 function img64($icon){
-    return !is_null($icon) && $icon["width"] && $icon["url"] && $icon["width"] == 48;
+    return !is_null($icon) && $icon["width"] && $icon["url"] && $icon["width"] == 48 && $icon["mimetype"];
 };
 
 function get_web_page( $url ) {
@@ -226,10 +226,16 @@ function getDefImg($control_url,$device) {
         else if(is_array($icons)){
             $arrImg= array_filter($icons, "img64");
             $url= isset($arrImg[0]["url"]) ? $arrImg[0]["url"]: $icons[0]["url"];
-        }
+			$mimetype = isset($arrImg[0]["mimetype"]) ? $arrImg[0]["mimetype"]: $icons[0]["mimetype"];
+        } 
     }
     $path = $baseUrl . $url;
     $current =get_web_page($path);
     $type = pathinfo($path, PATHINFO_EXTENSION);
-    return 'data:image/' . $type . ';base64,' . base64_encode($current['content']);
+    // иногда в ссылке на лого отсутствует расширение файла поэтому пробуем взять его из типа в XML файле
+	if (strlen($type)>3) {
+    	    return 'data:' . $mimetype . ';base64,' . base64_encode($current['content']);
+	} else {
+            return 'data:image/' . $type . ';base64,' . base64_encode($current['content']);
+	}
 }
