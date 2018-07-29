@@ -20,6 +20,12 @@ class Upnp extends Core{
     {   
         return parent::search();
     }
+	
+	public function discoveryeelight()
+    {   
+        return parent::searchyeelight();
+    }
+	
     public function discover_ip($host)
     {   if (!$host) {
          $host = '239.255.255.250';

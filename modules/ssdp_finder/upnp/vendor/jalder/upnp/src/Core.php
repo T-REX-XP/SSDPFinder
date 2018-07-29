@@ -25,7 +25,7 @@ class Core {
 
         $socket = socket_create(AF_INET, SOCK_DGRAM, 0);
         socket_set_option($socket, SOL_SOCKET, SO_BROADCAST, true);
-        socket_sendto($socket, $request, strlen($request), 0, '255.255.255.255', 1900);
+        socket_sendto($socket, $request, strlen($request), 0, '239.255.255.250', 1900);
         socket_set_option($socket, SOL_SOCKET, SO_RCVTIMEO, array('sec'=>$sockTimout, 'usec'=>'50'));
         $response = array();
         do {
@@ -39,6 +39,40 @@ class Core {
             }
         } while(!is_null($buf));
         socket_close($socket);
+
+        return $response;
+    }
+
+        //делаем запрос на yeelight 	
+	    public function searchyeelight($st = 'wifi_bulb', $mx = 2, $man = 'ssdp:discover', $from = null, $port = null, $sockTimout = '2')
+    {
+       
+		$request = 'M-SEARCH * HTTP/1.1'."\r\n";
+        $request .= 'HOST: 239.255.255.250:1982'."\r\n";
+        $request .= 'MAN: "'.$man.'"'."\r\n";
+		$request .= 'MX: '.$mx.''."\r\n";
+		$request .= 'ST: '.$st.''."\r\n";
+        $request .= "\r\n";
+
+        $socket = socket_create(AF_INET, SOCK_DGRAM, 0);
+        socket_set_option($socket, SOL_SOCKET, SO_BROADCAST, true);
+        socket_sendto($socket, $request, strlen($request), 0, '239.255.255.250', 1982);		
+		
+
+        socket_set_option($socket, SOL_SOCKET, SO_RCVTIMEO, array('sec'=>$sockTimout, 'usec'=>'50'));
+        $response = array();
+        do {
+            $buf = null;
+            if (($len = @socket_recvfrom($socket, $buf, 1024, 0, $ip, $port)) == -1) {
+                echo "socket_read() failed: " . socket_strerror(socket_last_error()) . "\n";
+            }
+            if(!is_null($buf)){
+                $data = $this->parseSearchResponse($buf);
+                $response[$data['usn']] = $data;
+            }
+        } while(!is_null($buf));
+        socket_close($socket);
+
         return $response;
     }
    
@@ -131,7 +165,7 @@ class Core {
         return $parsed;
     }
 
-    public function sendRequestToDevice($method, $arguments, $url, $type, $hostIp = '127.0.0.1', $hostPort = '80')
+    public function sendRequestToDevice($method, $arguments, $url, $type, $hostIp = '192.168.6.101', $hostPort = '80')
     {
         $body  ='<?xml version="1.0" encoding="utf-8"?>' . "\r\n";
         $body .='<s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/" s:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/">';
