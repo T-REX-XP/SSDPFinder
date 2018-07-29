@@ -139,7 +139,7 @@ $this->device_types['controllee'] = array(
 $this->device_types['YeelightSmartBulb'] = array(
         'TITLE'=>'Yeelight лампа',
         'PARENT_CLASS'=>'UPNPdevices',
-        'CLASS'=>'SYelight',
+        'CLASS'=>'SYeelight',
         'PROPERTIES'=>array(
             'turnOn'=>array('DESCRIPTION'=>'Включение', 'KEEP_HISTORY'=>1, 'ONCHANGE'=>'switch', 'DATA_KEY'=>1),
             'turnOff'=>array('DESCRIPTION'=>'Выключение', 'KEEP_HISTORY'=>1, 'ONCHANGE'=>'switch', 'DATA_KEY'=>1),
