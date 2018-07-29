@@ -13,7 +13,7 @@ $this->device_types['ssdpdevices'] = array(
             'MANUFACTURER'=>array('DESCRIPTION'=>'Разработчик устройства','ONCHANGE'=>'updatePreview','_CONFIG_TYPE'=>'text'),
             'Model'=>array('DESCRIPTION'=>' Имя устройства','ONCHANGE'=>'updatePreview','_CONFIG_TYPE'=>'text'),
             'DESCRIPTION'=>array('DESCRIPTION'=>'Описание устройства','ONCHANGE'=>'updatePreview','_CONFIG_TYPE'=>'text'),
-	    'CONTROLADDRESS'=>array('DESCRIPTION'=>'Адрес управления устройством ','_CONFIG_TYPE'=>'text'),
+	        'CONTROLADDRESS'=>array('DESCRIPTION'=>'Адрес управления устройством ','_CONFIG_TYPE'=>'text'),
             'groupEco'=>array('DESCRIPTION'=>LANG_DEVICES_GROUP_ECO,'_CONFIG_TYPE'=>'yesno'),
             'groupEcoOn'=>array('DESCRIPTION'=>LANG_DEVICES_GROUP_ECO_ON,'_CONFIG_TYPE'=>'yesno'),            
             'groupSunrise'=>array('DESCRIPTION'=>LANG_DEVICES_GROUP_SUNRISE,'_CONFIG_TYPE'=>'yesno'),
@@ -123,6 +123,21 @@ $this->device_types['BinaryLight'] = array(
 
 $this->device_types['controllee'] = array(
         'TITLE'=>'Wemos выключатель',
+        'PARENT_CLASS'=>'UPNPdevices',
+        'CLASS'=>'Scontrollee',
+        'PROPERTIES'=>array(
+            'turnOn'=>array('DESCRIPTION'=>'Включение', 'KEEP_HISTORY'=>1, 'ONCHANGE'=>'switch', 'DATA_KEY'=>1),
+            'turnOff'=>array('DESCRIPTION'=>'Выключение', 'KEEP_HISTORY'=>1, 'ONCHANGE'=>'switch', 'DATA_KEY'=>1),
+       ),
+        'METHODS'=>array(
+            'turnOn'=>array('DESCRIPTION'=>'turnOn'),
+            'turnOff'=>array('DESCRIPTION'=>'turnOff'),
+            'switch'=>array('DESCRIPTION'=>'Switch'),
+        )
+);
+
+$this->device_types['RGBWSmartLight'] = array(
+        'TITLE'=>'Yelight лампа',
         'PARENT_CLASS'=>'UPNPdevices',
         'CLASS'=>'Scontrollee',
         'PROPERTIES'=>array(
