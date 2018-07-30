@@ -42,114 +42,110 @@ function Scan(){
     $table_name='ssdp_devices';
 
     foreach ($everything as $deviceInfo) {
- 
-        // то что надо обработать в первую очередь
-        $device= $deviceInfo['description']['device'];
-        $control_url = $deviceInfo['location'];
-        $logo= getDefImg($deviceInfo["location"],$device);
-        
 
+        // если устройство yeelight
+        if (substr($deviceInfo['location'], 0, 9) == "yeelight:") {
 
-        // для начала проверяем не майкрософтовое ли это устройство
-        // и если да то подгружаем внутренний файл потому что он находится в ссылке на файл
-	// for microsoft devices 
-        if (substr($deviceInfo['location'], 0, 9) == "Location:") {
-            $control_url = str_ireplace("Location:", "", $deviceInfo['location']);
-            libxml_use_internal_errors(true); 
-            $xml = simplexml_load_file($control_url);
-            $json = json_encode($xml);
-            $dev = (array)json_decode($json, true);
-            $device= $dev['device'];
-            $logo= getDefImg($control_url,$device);
-        }
+	        $control_url = str_ireplace("yeelight:", "http:", $deviceInfo['location']);
+	        $logo= getDefImg($control_url,$device);
+			
+	        // проверяем на наличие в базе для запрета вывода
+	        $uuid = $deviceInfo['location'];
+	        $existed = SQLSelectOne("SELECT * FROM $table_name WHERE UUID='".$uuid."'");
+		    
+	        if (!array_search_result($result, 'UUID', $uuid) && !is_null($uuid) && !($existed)) {
+	
+	        $result[] = [
+	            "ID" => $existed["ID"], //existed id Majordomo
+	            "TITLE" => 'Yeelight bulb',//friendly name
+	            "ADDRESS" => 'https://www.yeelight.com' ,//presentation url (web UI of device),//presentation url (web UI of device)
+	            "UUID" => $deviceInfo['location'],
+	            "LOGO" => $logo,//Logo 
+	            "DESCRIPTION" => 'Yeelight WiFi Light', //description get from xml or field "server"
+	            "TYPE" => 'YeelightWifiBulb',//DeviceType
+	            "SERIAL" => 'not existed',  //serialnumber
+	            "MANUFACTURERURL" => 'https://www.yeelight.com',//manufacturer url
+	            "UPDATED" => '',
+	            "MODEL" => 'not existed',//model
+	            "MODELNUMBER" => 'not existed',//modelNumber
+	            "MANUFACTURER" => 'Yeelight',//Manufacturer
+	            "SERVICES"=> 'RGBWSmartLight',//list services of device
+	            "CONTROLADDRESS"=> $control_url,//list services of device
+	        ];
+	        $_SESSION[$uuid] = $logo;
+	        session_write_close();
+	        }
+        // иначе проверяем остальные устройства
+        } else {
 
-        // проверяем на наличие в базе для запрета вывода
-        $uuid = $device["UDN"];
-        $existed = SQLSelectOne("SELECT * FROM $table_name WHERE UUID='".$uuid."'");
-	    
-        // иногда вместо serialNumber есть modelNumber
-	$serialnumber = $device["serialNumber"];
-        if (!$serialnumber){
-            $serialnumber = $device["modelNumber"];
-            }
-        // иногда presentationURL отсутствует
-        $presenturl = $device["presentationURL"];
-        if (!$device["presentationURL"]){
-            $presenturl='http://'.getIp($control_url,false);
-            }
-        
-        // иногда modelDescription отсутствует тогда берем server
-        $descript = $device["modelDescription"];
-        if (!$device["modelDescription"]){
-            $descript = $deviceInfo["server"];
-            }
-
-
-        if (!array_search_result($result, 'UUID', $uuid) && !is_null($uuid) && !($existed)) {
-
-        $result[] = [
-            "ID" => $existed["ID"], //existed id Majordomo
-            "TITLE" => $device["friendlyName"],//friendly name
-            "ADDRESS" => $presenturl ,//presentation url (web UI of device),//presentation url (web UI of device)
-            "UUID" => $uuid,
-            "LOGO" => $logo,//Logo 
-            "DESCRIPTION" => $descript, //description get from xml or field "server"
-            "TYPE" => explode(":", $device["deviceType"])[3],//DeviceType
-            "SERIAL" => $serialnumber,  //serialnumber
-            "MANUFACTURERURL" => $device["manufacturerURL"],//manufacturer url
-            "UPDATED" => '',
-            "MODEL" => $device["modelName"],//model
-            "MODELNUMBER" => $device["modelNumber"],//modelNumber
-            "MANUFACTURER" => $device["manufacturer"],//Manufacturer
-            "SERVICES"=> getServices($device),//list services of device
-            "CONTROLADDRESS"=> $control_url,//list services of device
-        ];
-        $_SESSION[$uuid] = $logo;
-        session_write_close();
-       
+	        // то что надо обработать в первую очередь
+	        $device= $deviceInfo['description']['device'];
+	        $control_url = $deviceInfo['location'];
+	        $logo= getDefImg($deviceInfo["location"],$device);
+	        
+	        // для начала проверяем не майкрософтовое ли это устройство
+	        // и если да то подгружаем внутренний файл потому что он находится в ссылке на файл
+		// for microsoft devices 
+	        if (substr($deviceInfo['location'], 0, 9) == "Location:") {
+	            $control_url = str_ireplace("Location:", "", $deviceInfo['location']);
+	            libxml_use_internal_errors(true); 
+	            $xml = simplexml_load_file($control_url);
+	            $json = json_encode($xml);
+	            $dev = (array)json_decode($json, true);
+	            $device= $dev['device'];
+	            $logo= getDefImg($control_url,$device);
+	        }
+	
+	        // проверяем на наличие в базе для запрета вывода
+	        $uuid = $device["UDN"];
+	        $existed = SQLSelectOne("SELECT * FROM $table_name WHERE UUID='".$uuid."'");
+		    
+	        // иногда вместо serialNumber есть modelNumber
+		$serialnumber = $device["serialNumber"];
+	        if (!$serialnumber){
+	            $serialnumber = $device["modelNumber"];
+	            }
+	        // иногда presentationURL отсутствует
+	        $presenturl = $device["presentationURL"];
+	        if (!$device["presentationURL"]){
+	            $presenturl='http://'.getIp($control_url,false);
+	            }
+	        
+	        // иногда modelDescription отсутствует тогда берем server
+	        $descript = $device["modelDescription"];
+	        if (!$device["modelDescription"]){
+	            $descript = $deviceInfo["server"];
+	            }
+	
+	
+	        if (!array_search_result($result, 'UUID', $uuid) && !is_null($uuid) && !($existed)) {
+	
+	        $result[] = [
+	            "ID" => $existed["ID"], //existed id Majordomo
+	            "TITLE" => $device["friendlyName"],//friendly name
+	            "ADDRESS" => $presenturl ,//presentation url (web UI of device),//presentation url (web UI of device)
+	            "UUID" => $uuid,
+	            "LOGO" => $logo,//Logo 
+	            "DESCRIPTION" => $descript, //description get from xml or field "server"
+	            "TYPE" => explode(":", $device["deviceType"])[3],//DeviceType
+	            "SERIAL" => $serialnumber,  //serialnumber
+	            "MANUFACTURERURL" => $device["manufacturerURL"],//manufacturer url
+	            "UPDATED" => '',
+	            "MODEL" => $device["modelName"],//model
+	            "MODELNUMBER" => $device["modelNumber"],//modelNumber
+	            "MANUFACTURER" => $device["manufacturer"],//Manufacturer
+	            "SERVICES"=> getServices($device),//list services of device
+	            "CONTROLADDRESS"=> $control_url,//list services of device
+	        ];
+	        $_SESSION[$uuid] = $logo;
+	        session_write_close();
+	       
+	        }
+	 }
     }
-    }
-    // scaned for yeelight devices
-    $everything = $upnp->discoveryeelight();
-	foreach ($everything as $deviceInfo) {
- 
-        $logo= getDefImg($deviceInfo["location"],$device);
-        $control_url = str_ireplace("yeelight:", "http:", $deviceInfo['location']);
-        $logo= getDefImg($deviceInfo["location"],$device);
-		
-        // проверяем на наличие в базе для запрета вывода
-        $uuid = $deviceInfo['location'];
-        $existed = SQLSelectOne("SELECT * FROM $table_name WHERE UUID='".$uuid."'");
-	    
-        if (!array_search_result($result, 'UUID', $uuid) && !is_null($uuid) && !($existed)) {
-
-        $result[] = [
-            "ID" => $existed["ID"], //existed id Majordomo
-            "TITLE" => 'Yeelight bulb',//friendly name
-            "ADDRESS" => 'https://www.yeelight.com' ,//presentation url (web UI of device),//presentation url (web UI of device)
-            "UUID" => $deviceInfo['location'],
-            "LOGO" => $logo,//Logo 
-            "DESCRIPTION" => 'Yeelight WiFi Light', //description get from xml or field "server"
-            "TYPE" => 'YeelightWifiBulb',//DeviceType
-            "SERIAL" => 'not existed',  //serialnumber
-            "MANUFACTURERURL" => 'https://www.yeelight.com',//manufacturer url
-            "UPDATED" => '',
-            "MODEL" => 'not existed',//model
-            "MODELNUMBER" => 'not existed',//modelNumber
-            "MANUFACTURER" => 'Yeelight',//Manufacturer
-            "SERVICES"=> 'RGBWSmartLight',//list services of device
-            "CONTROLADDRESS"=> $control_url,//list services of device
-        ];
-        $_SESSION[$uuid] = $logo;
-        session_write_close();
-        }
-    }
-	
-	
-	
-	
     return $result;
 }
+
 
 function array_search_result($array, $key, $value){
     foreach ($array as $k => $v) {
