@@ -37,7 +37,6 @@ if ($res[0]['UUID']) {
 
 function Scan(){
     $upnp = new Upnp();
-
     $everything = $upnp->discover();
     $result = [];
     $table_name='ssdp_devices';
@@ -110,7 +109,45 @@ function Scan(){
        
     }
     }
-   
+    // scaned for yeelight devices
+    $everything = $upnp->discoveryeelight();
+	foreach ($everything as $deviceInfo) {
+ 
+        $logo= getDefImg($deviceInfo["location"],$device);
+        $control_url = str_ireplace("yeelight:", "http:", $deviceInfo['location']);
+        $logo= getDefImg($deviceInfo["location"],$device);
+		
+        // проверяем на наличие в базе для запрета вывода
+        $uuid = $deviceInfo['location'];
+        $existed = SQLSelectOne("SELECT * FROM $table_name WHERE UUID='".$uuid."'");
+	    
+        if (!array_search_result($result, 'UUID', $uuid) && !is_null($uuid) && !($existed)) {
+
+        $result[] = [
+            "ID" => $existed["ID"], //existed id Majordomo
+            "TITLE" => 'Yeelight bulb',//friendly name
+            "ADDRESS" => 'https://www.yeelight.com' ,//presentation url (web UI of device),//presentation url (web UI of device)
+            "UUID" => $deviceInfo['location'],
+            "LOGO" => $logo,//Logo 
+            "DESCRIPTION" => 'Yeelight WiFi Light', //description get from xml or field "server"
+            "TYPE" => 'YeelightWifiBulb',//DeviceType
+            "SERIAL" => 'not existed',  //serialnumber
+            "MANUFACTURERURL" => 'https://www.yeelight.com',//manufacturer url
+            "UPDATED" => '',
+            "MODEL" => 'not existed',//model
+            "MODELNUMBER" => 'not existed',//modelNumber
+            "MANUFACTURER" => 'Yeelight',//Manufacturer
+            "SERVICES"=> 'RGBWSmartLight',//list services of device
+            "CONTROLADDRESS"=> $control_url,//list services of device
+        ];
+        $_SESSION[$uuid] = $logo;
+        session_write_close();
+        }
+    }
+	
+	
+	
+	
     return $result;
 }
 
