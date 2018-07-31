@@ -138,7 +138,6 @@ function Scan(){
 	            "CONTROLADDRESS"=> $control_url,//list services of device
 	        ];
 	        $_SESSION[$uuid] = $logo;
-	        session_write_close();
 	       
 	        }
 	 }
