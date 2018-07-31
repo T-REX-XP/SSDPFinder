@@ -47,7 +47,7 @@ function Scan(){
         if (substr($deviceInfo['location'], 0, 9) == "yeelight:") {
 
 	        $control_url = str_ireplace("yeelight:", "http:", $deviceInfo['location']);
-	        $logo= getDefImg($control_url,$device);
+	        $logo= "/templates/ssdp_finder/img/YeelightSmartBulb.png";
 			
 	        // проверяем на наличие в базе для запрета вывода
 	        $uuid = $deviceInfo['location'];
