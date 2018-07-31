@@ -445,7 +445,7 @@ function add_to_terminal($id) {
   $pinghosts['SEARCH_WORD'] = $ssdpdevice['UUID'];
   $pinghosts['OFFLINE_INTERVAL'] = '600';
   $pinghosts['ONLINE_INTERVAL'] = '600';
-  $pinghosts['HOSTNAME'] = $ssdpdevice['CONTROLADDRESS'];;
+  $pinghosts['HOSTNAME'] = $ssdpdevice['ADDRESS'];;
   $pinghosts['CODE_OFFLINE'] = 'say("Устройство ".$host[\'TITLE\']." пропало из сети, возможно его отключили" ,2);';
   $pinghosts['CODE_ONLINE'] = 'say("Устройство ".$host[\'TITLE\']." появилось в сети." ,2);';
   $pinghosts['LINKED_OBJECT'] = $ssdpdevice['LINKED_OBJECT'];

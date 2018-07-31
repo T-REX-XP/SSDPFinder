@@ -73,15 +73,16 @@ function Scan(){
 	            "CONTROLADDRESS"=> $control_url,//list services of device
 	        ];
 	        $_SESSION[$uuid] = $logo;
-	        session_write_close();
+	       // session_write_close();
 	        }
         // иначе проверяем остальные устройства
         } else {
-
+            
 	        // то что надо обработать в первую очередь
 	        $device= $deviceInfo['description']['device'];
-	        $control_url = $deviceInfo['location'];
-	        $logo= getDefImg($deviceInfo["location"],$device);
+            $control_url = $deviceInfo['location'];
+            $parsedUrl = parseUrl($control_url);
+	        
 	        
 	        // для начала проверяем не майкрософтовое ли это устройство
 	        // и если да то подгружаем внутренний файл потому что он находится в ссылке на файл
@@ -93,8 +94,8 @@ function Scan(){
 	            $json = json_encode($xml);
 	            $dev = (array)json_decode($json, true);
 	            $device= $dev['device'];
-	            $logo= getDefImg($control_url,$device);
-	        }
+            }
+            $logo= getDefImg($control_url,$device);
 	
 	        // проверяем на наличие в базе для запрета вывода
 	        $uuid = $device["UDN"];
@@ -123,7 +124,7 @@ function Scan(){
 	        $result[] = [
 	            "ID" => $existed["ID"], //existed id Majordomo
 	            "TITLE" => $device["friendlyName"],//friendly name
-	            "ADDRESS" => $presenturl ,//presentation url (web UI of device),//presentation url (web UI of device)
+	            "ADDRESS" =>$parsedUrl['host'] ,//presentation url (web UI of device),//presentation url (web UI of device)
 	            "UUID" => $uuid,
 	            "LOGO" => $logo,//Logo 
 	            "DESCRIPTION" => $descript, //description get from xml or field "server"
@@ -138,6 +139,7 @@ function Scan(){
 	            "CONTROLADDRESS"=> $control_url,//list services of device
 	        ];
 	        $_SESSION[$uuid] = $logo;
+	        session_write_close();
 	       
 	        }
 	 }
@@ -145,6 +147,9 @@ function Scan(){
     return $result;
 }
 
+function parseUrl($url){
+    return parse_url($url);
+}
 
 function array_search_result($array, $key, $value){
     foreach ($array as $k => $v) {
