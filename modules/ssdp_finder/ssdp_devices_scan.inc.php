@@ -62,7 +62,7 @@ function Scan(){
 	            "UUID" => $deviceInfo['location'],
 	            "LOGO" => $logo,//Logo 
 	            "DESCRIPTION" => 'Yeelight WiFi Light', //description get from xml or field "server"
-	            "TYPE" => 'YeelightWifiBulb',//DeviceType
+	            "TYPE" => 'YeelightSmartBulb',//DeviceType
 	            "SERIAL" => 'not existed',  //serialnumber
 	            "MANUFACTURERURL" => 'https://www.yeelight.com',//manufacturer url
 	            "UPDATED" => '',
