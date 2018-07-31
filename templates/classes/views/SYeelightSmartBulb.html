@@ -1,7 +1,19 @@
+<script src='/js/spectrum/spectrum.min.js'></script>
+<link rel='stylesheet' href='/js/spectrum/spectrum.min.css' />
+
 <div name="%.object_title%" style="width:344px; text-align:center; align:center; font-family: monospace; border: 3px solid #4682B4; border-radius: 10px;" class="device-widget controller loadtype_%.loadType%" onClick='$("#icon%.object_id%_light").addClass("pressed");setTimeout("$(\"#icon%.object_id%_light\").removeClass(\"pressed\");",300);callMethod("%.object_title%.switch");'>
 <div class="device-icon %.status|"off;on"%" id="icon%.object_id%_light" style='%.icon|"background-image:url(%.icon%)"%'></div>
 <div class="device-header">%.object_description%
     <button style='display:%.alive|"none;block;none;"%;float:right;font-size: 50%; font-family: monospace;'><span class="glyphicon glyphicon-ok"></span></span></button>
     <button style='display:%.alive|"block;none;block;"%;float:right;font-size: 50%; font-family: monospace;'><span class="glyphicon glyphicon-remove"></span></button>
 </div>
+    <input type="text" id="color%.object_id%" class="colorpicker" value="%.colorSaved%" onChange='callMethod("%.object_title%.changecolor","color="+encodeURIComponent(this.value));'/>
+<script>
+    $("#color%.object_id%").spectrum({
+        preferredFormat: "hex",
+        showInput: true,
+        chooseText: "OK",
+        cancelText: "<#LANG_CANCEL#>"
+    });
+</script>
 </div>
