@@ -46,8 +46,11 @@ function Scan(){
         // если устройство yeelight
         if (substr($deviceInfo['location'], 0, 9) == "yeelight:") {
 
+            $device = $deviceInfo['description']['device'];
+            $device["deviceType"] = '1:1:1:YeelightSmartBulb';
+            
 	        $control_url = str_ireplace("yeelight:", "http:", $deviceInfo['location']);
-	        $logo= "/templates/ssdp_finder/img/YeelightSmartBulb.png";
+	        $logo= getDefImg($control_url,$device);
 			
 	        // проверяем на наличие в базе для запрета вывода
 	        $uuid = $deviceInfo['location'];
@@ -62,7 +65,7 @@ function Scan(){
 	            "UUID" => $deviceInfo['location'],
 	            "LOGO" => $logo,//Logo 
 	            "DESCRIPTION" => 'Yeelight WiFi Light', //description get from xml or field "server"
-	            "TYPE" => 'YeelightWifiBulb',//DeviceType
+	            "TYPE" => 'YeelightSmartBulb',//DeviceType
 	            "SERIAL" => 'not existed',  //serialnumber
 	            "MANUFACTURERURL" => 'https://www.yeelight.com',//manufacturer url
 	            "UPDATED" => '',
@@ -101,11 +104,7 @@ function Scan(){
 	        $uuid = $device["UDN"];
 	        $existed = SQLSelectOne("SELECT * FROM $table_name WHERE UUID='".$uuid."'");
 		    
-	        // иногда вместо serialNumber есть modelNumber
-		$serialnumber = $device["serialNumber"];
-	        if (!$serialnumber){
-	            $serialnumber = $device["modelNumber"];
-	            }
+		    $serialnumber = $device["serialNumber"];
 	        // иногда presentationURL отсутствует
 	        $presenturl = $device["presentationURL"];
 	        if (!$device["presentationURL"]){
@@ -139,7 +138,7 @@ function Scan(){
 	            "CONTROLADDRESS"=> $control_url,//list services of device
 	        ];
 	        $_SESSION[$uuid] = $logo;
-	        session_write_close();
+	       // session_write_close();
 	       
 	        }
 	 }
