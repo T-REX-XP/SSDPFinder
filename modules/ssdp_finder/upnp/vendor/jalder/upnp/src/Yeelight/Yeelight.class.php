@@ -3,8 +3,8 @@ class Yeelight {
 	private $jobs = array();
 
 	public function __construct($controladress) {
-		$this->ip = getIp($controladress);
-		$this->port = getPort($controladress);
+		$this->ip = $this->getIp($controladress, false);
+                $this->port = $this->getPort($controladress);
 		if (!$this->verifyConnection()) throw new Exception("Failed connecting to Yeelight device.");
 	}
 
@@ -52,7 +52,7 @@ class Yeelight {
 		fclose($this->fp);
 	}
 
-        function getIp($baseUrl,$withPort) {
+        public function getIp($baseUrl,$withPort) {
         	if( !empty($baseUrl) ){
                 $parsed_url = parse_url($baseUrl);
                 if($withPort ==true){
@@ -64,7 +64,7 @@ class Yeelight {
             return  $baseUrl;
         }
         
-         function getPort($address){
+        public function getPort($address){
           $baseUrl="";
         	if( !empty($address) ){
                 $parsed_url = parse_url($address);
