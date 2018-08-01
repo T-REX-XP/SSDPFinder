@@ -77,16 +77,19 @@
                                 [#if SERVICES!=""#] [#SERVICES#] [#else#] &nbsp; [#endif#]
                             </td>
                             <td style="vertical-align:middle" width="1%" nowrap>
-                                <div style="width:200px">
-                                    <div class="btn-group">
-                                            [#if DEVICE_ONLINE_ID==""#]
+				<div style="width:200px" class="btn-group" role="group">
+				    <button id="btnGroupDrop1" type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+				      <#LANG_ACTION#>
+				    </button>
+				    <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+				       [#if DEVICE_ONLINE_ID==""#]
                                         <a href="?view_mode=add_to_pinghost&id=[#ID#]" onClick="return confirm('Are you sure? Please confirm.')" class="btn btn-success"
                                             title="Добавить к устройствам ОнЛайн">
                                             <i class="glyphicon glyphicon-plus"></i>[#DEVICE_ONLINE_ID#]
                                         </a>
                                         [#endif#]
 
-                                         [#if LINKED_OBJECT==""#]
+                                        [#if LINKED_OBJECT==""#]
                                         <a href="?view_mode=add_to_SSDPdevices&id=[#ID#]" onClick="return confirm('Are you sure? Please confirm.')" class="btn btn-success"
                                             title="Добавить к простым устройствам">
                                             <i class="glyphicon glyphicon-plus"></i>
@@ -99,7 +102,7 @@
                                             title="Delete">
                                             <i class="glyphicon glyphicon-remove"></i>
                                         </a>
-                                    </div>
+				    </div>
                                 </div>
                             </td>
                         </tr>
