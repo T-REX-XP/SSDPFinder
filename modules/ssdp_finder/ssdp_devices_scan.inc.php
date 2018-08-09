@@ -46,11 +46,8 @@ function Scan(){
         // если устройство yeelight
         if (substr($deviceInfo['location'], 0, 9) == "yeelight:") {
 
-            $device = $deviceInfo['description']['device'];
-            $device["deviceType"] = '1:1:1:YeelightSmartBulb';
-            
 	        $control_url = str_ireplace("yeelight:", "http:", $deviceInfo['location']);
-	        $logo= getDefImg($control_url,$device);
+	        $logo= "/templates/ssdp_finder/img/YeelightSmartBulb.png";
 			
 	        // проверяем на наличие в базе для запрета вывода
 	        $uuid = $deviceInfo['location'];
@@ -76,16 +73,14 @@ function Scan(){
 	            "CONTROLADDRESS"=> $control_url,//list services of device
 	        ];
 	        $_SESSION[$uuid] = $logo;
-	       // session_write_close();
+	        //session_write_close();
 	        }
         // иначе проверяем остальные устройства
         } else {
-            
+
 	        // то что надо обработать в первую очередь
 	        $device= $deviceInfo['description']['device'];
-            $control_url = $deviceInfo['location'];
-            $parsedUrl = parseUrl($control_url);
-	        
+	        $control_url = $deviceInfo['location'];
 	        
 	        // для начала проверяем не майкрософтовое ли это устройство
 	        // и если да то подгружаем внутренний файл потому что он находится в ссылке на файл
@@ -97,14 +92,18 @@ function Scan(){
 	            $json = json_encode($xml);
 	            $dev = (array)json_decode($json, true);
 	            $device= $dev['device'];
-            }
-            $logo= getDefImg($control_url,$device);
-	
+	        }
+	        // получаем логотип на устройство
+		$logo= getDefImg($control_url,$device);
 	        // проверяем на наличие в базе для запрета вывода
 	        $uuid = $device["UDN"];
 	        $existed = SQLSelectOne("SELECT * FROM $table_name WHERE UUID='".$uuid."'");
 		    
-		    $serialnumber = $device["serialNumber"];
+	        // иногда вместо serialNumber есть modelNumber
+		$serialnumber = $device["serialNumber"];
+	        if (!$serialnumber){
+	            $serialnumber = $device["modelNumber"];
+	            }
 	        // иногда presentationURL отсутствует
 	        $presenturl = $device["presentationURL"];
 	        if (!$device["presentationURL"]){
@@ -123,7 +122,7 @@ function Scan(){
 	        $result[] = [
 	            "ID" => $existed["ID"], //existed id Majordomo
 	            "TITLE" => $device["friendlyName"],//friendly name
-	            "ADDRESS" =>$parsedUrl['host'] ,//presentation url (web UI of device),//presentation url (web UI of device)
+	            "ADDRESS" => $presenturl ,//presentation url (web UI of device),//presentation url (web UI of device)
 	            "UUID" => $uuid,
 	            "LOGO" => $logo,//Logo 
 	            "DESCRIPTION" => $descript, //description get from xml or field "server"
@@ -138,7 +137,7 @@ function Scan(){
 	            "CONTROLADDRESS"=> $control_url,//list services of device
 	        ];
 	        $_SESSION[$uuid] = $logo;
-	       // session_write_close();
+	        //session_write_close();
 	       
 	        }
 	 }
@@ -146,9 +145,6 @@ function Scan(){
     return $result;
 }
 
-function parseUrl($url){
-    return parse_url($url);
-}
 
 function array_search_result($array, $key, $value){
     foreach ($array as $k => $v) {

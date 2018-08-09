@@ -1,11 +1,19 @@
 <!-- table ssdp_devices search -->
-<br><p>
-        
+<br>
+<p>
+
     <a href="?view_mode=edit_ssdp_devices" class="btn btn-default">
-        <i class="glyphicon glyphicon-plus"></i> <#LANG_ADD#>
+        <i class="glyphicon glyphicon-plus"></i>
+        <#LANG_ADD#>
     </a>
     <a class="btn btn-default" href="?view_mode=scan_ssdp_devices">
-        <i class="glyphicon glyphicon-search"></i> <#LANG_RESCAN_DEVICES#></a>
+        <i class="glyphicon glyphicon-search"></i>
+        <#LANG_RESCAN_DEVICES#>
+    </a>
+    <a href="?view_mode=ClearTrash" onClick="return confirm('Are you sure? Please confirm.')" class="btn btn-default">
+        <i class="glyphicon glyphicon-trash"></i>
+        Очистка ВСЕХ данных и мусора модуля
+    </a>
 </p>
 <table width=100% border=0>
     <tr>
@@ -60,9 +68,9 @@
                         [#begin RESULT#]
                         <tr style="height:52px" class="hover_btn2">
                             <td style="vertical-align:middle">
-                                        [#if LOGO!=""#]
-                                 <img src="[#LOGO#]" alt="Device Logo" width="48" height="48"> [#else#] &nbsp; [#endif#]
-                             </td> 
+                                [#if LOGO!=""#]
+                                <img src="[#LOGO#]" alt="Device Logo" width="48" height="48"> [#else#] &nbsp; [#endif#]
+                            </td>
                             <td style="vertical-align:middle">
                                 <b>[#TITLE#]</a>
                                 </b>
@@ -77,32 +85,35 @@
                                 [#if SERVICES!=""#] [#SERVICES#] [#else#] &nbsp; [#endif#]
                             </td>
                             <td style="vertical-align:middle" width="1%" nowrap>
-				<div style="width:200px" class="btn-group" role="group">
-				    <button id="btnGroupDrop1" type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-				      <#LANG_ACTION#>
-				    </button>
-				    <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-				       [#if DEVICE_ONLINE_ID==""#]
-                                        <a href="?view_mode=add_to_pinghost&id=[#ID#]" onClick="return confirm('Are you sure? Please confirm.')" class="btn btn-success"
+                                <div class="btn-group" style="width:200px" role="group" aria-label="Button group with nested dropdown">
+                                    <a href="?view_mode=edit_ssdp_devices&id=[#ID#]" class="btn btn-info" title="Edit">
+                                        <i class="glyphicon glyphicon-pencil"></i>
+                                    </a>
+                                    <a href="?view_mode=delete_ssdp_devices&id=[#ID#]" onClick="return confirm('Are you sure? Please confirm.')" class="btn btn-danger"
+                                        title="Delete">
+                                        <i class="glyphicon glyphicon-remove"></i>
+                                    </a>
+                                    [#if  DEVICE_ONLINE_ID != "" && LINKED_OBJECT !="" #] [#else#]
+                                    <a id="btnGroupDrop1" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <i class="glyphicon glyphicon-plus"></i>
+                                        [#DEVICE_ONLINE_ID#] [#LINKED_OBJECT#]
+                                    </a>
+                                    <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                                        [#if DEVICE_ONLINE_ID==""#]
+                                        <a href="?view_mode=add_to_pinghost&id=[#ID#]" onClick="return confirm('Are you sure? Please confirm.')" class="dropdown-item"
                                             title="Добавить к устройствам ОнЛайн">
-                                            <i class="glyphicon glyphicon-plus"></i>[#DEVICE_ONLINE_ID#]
+                                            <i class="glyphicon glyphicon-plus"></i>
+                                            Добавить к устройствам ОнЛайн
                                         </a>
-                                        [#endif#]
-
-                                        [#if LINKED_OBJECT==""#]
-                                        <a href="?view_mode=add_to_SSDPdevices&id=[#ID#]" onClick="return confirm('Are you sure? Please confirm.')" class="btn btn-success"
+                                        [#endif#] [#if LINKED_OBJECT==""#]
+                                        <a href="?view_mode=add_to_SSDPdevices&id=[#ID#]" onClick="return confirm('Are you sure? Please confirm.')" class="dropdown-item"
                                             title="Добавить к простым устройствам">
                                             <i class="glyphicon glyphicon-plus"></i>
+                                            Добавить к простым устройства
                                         </a>
                                         [#endif#]
-                                        <a href="?view_mode=edit_ssdp_devices&id=[#ID#]" class="btn btn-info" title="Edit">
-                                            <i class="glyphicon glyphicon-pencil"></i>
-                                        </a>
-                                        <a href="?view_mode=delete_ssdp_devices&id=[#ID#]" onClick="return confirm('Are you sure? Please confirm.')" class="btn btn-danger"
-                                            title="Delete">
-                                            <i class="glyphicon glyphicon-remove"></i>
-                                        </a>
-				    </div>
+                                    </div>
+                                    [#endif#]
                                 </div>
                             </td>
                         </tr>
