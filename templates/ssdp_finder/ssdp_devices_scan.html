@@ -102,8 +102,12 @@
                                     <div class="btn-group">[#if ID=""#]
 
                                         <a href="?data_source=<#DATA_SOURCE#>&mode=add&view_mode=edit_ssdp_devices&title=[#TITLE#]&type=[#TYPE#]&uuid=[#UUID#]&services=[#SERVICES#]&address=[#ADDRESS#]&description=[#DESCRIPTION#]&model=[#MODEL#]&manufacturer=[#MANUFACTURER#]&controladdress=[#CONTROLADDRESS#]"
-                                            class="btn btn-success" title="Add">
-                                            <i class="glyphicon glyphicon-plus"></i>
+                                            class="btn btn-success" title="Добавить Модуль для этого устройства">
+                                            <i class="glyphicon glyphicon-compressed"></i>
+                                        </a>
+                                        <a href="?data_source=<#DATA_SOURCE#>&mode=add&view_mode=edit_ssdp_devices&title=[#TITLE#]&type=[#TYPE#]&uuid=[#UUID#]&services=[#SERVICES#]&address=[#ADDRESS#]&description=[#DESCRIPTION#]&model=[#MODEL#]&manufacturer=[#MANUFACTURER#]&controladdress=[#CONTROLADDRESS#]"
+                                            class="btn btn-success" title="Добавить как простое устройство">
+                                            <i class="glyphicon glyphicon-sd-video"></i>
                                         </a>
                                         [#else#]
                                         <a href="?data_source=<#DATA_SOURCE#>&view_mode=edit_ssdp_devices&id=[#ID#]" class="btn btn-info" title="Edit">
