@@ -44,16 +44,28 @@ SQLExec("DELETE FROM devices WHERE TYPE='BinaryLight'");
 SQLExec("DELETE FROM devices WHERE TYPE='controllee'");
 SQLExec("DELETE FROM devices WHERE TYPE='YeelightSmartBulb'");
 
+// delete all objects from database
+SQLExec("DELETE FROM objects WHERE TITLE  LIKE 'MediaServer%'");
+SQLExec("DELETE FROM objects WHERE TITLE  LIKE 'dial%'");
+SQLExec("DELETE FROM objects WHERE TITLE  LIKE 'Basic%'");
+SQLExec("DELETE FROM objects WHERE TITLE  LIKE 'DigitalSecurityCamera%'");
+SQLExec("DELETE FROM objects WHERE TITLE  LIKE 'InternetGatewayDevice%'");
+SQLExec("DELETE FROM objects WHERE TITLE  LIKE 'MediaRenderer%'");
+SQLExec("DELETE FROM objects WHERE TITLE  LIKE 'BinaryLight%'");
+SQLExec("DELETE FROM objects WHERE TITLE  LIKE 'controllee%'");
+SQLExec("DELETE FROM objects WHERE TITLE  LIKE 'YeelightSmartBulb%'");
+
 // delete all values from database
-SQLExec("DELETE FROM pvalues WHERE PROPERTY_NAME  LIKE 'MediaServer'");
-SQLExec("DELETE FROM pvalues WHERE PROPERTY_NAME  LIKE 'dial'");
-SQLExec("DELETE FROM pvalues WHERE PROPERTY_NAME  LIKE 'Basic'");
-SQLExec("DELETE FROM pvalues WHERE PROPERTY_NAME  LIKE 'DigitalSecurityCamera'");
-SQLExec("DELETE FROM pvalues WHERE PROPERTY_NAME  LIKE 'InternetGatewayDevice'");
-SQLExec("DELETE FROM pvalues WHERE PROPERTY_NAME  LIKE 'MediaRenderer'");
-SQLExec("DELETE FROM pvalues WHERE PROPERTY_NAME  LIKE 'BinaryLight'");
-SQLExec("DELETE FROM pvalues WHERE PROPERTY_NAME  LIKE 'controllee'");
-SQLExec("DELETE FROM pvalues WHERE PROPERTY_NAME  LIKE 'YeelightSmartBulb'");
+SQLExec("DELETE FROM pvalues WHERE PROPERTY_NAME  LIKE 'MediaServer%'");
+SQLExec("DELETE FROM pvalues WHERE PROPERTY_NAME  LIKE 'dial%'");
+SQLExec("DELETE FROM pvalues WHERE PROPERTY_NAME  LIKE 'Basic%'");
+SQLExec("DELETE FROM pvalues WHERE PROPERTY_NAME  LIKE 'DigitalSecurityCamera%'");
+SQLExec("DELETE FROM pvalues WHERE PROPERTY_NAME  LIKE 'InternetGatewayDevice%'");
+SQLExec("DELETE FROM pvalues WHERE PROPERTY_NAME  LIKE 'MediaRenderer%'");
+SQLExec("DELETE FROM pvalues WHERE PROPERTY_NAME  LIKE 'BinaryLight%'");
+SQLExec("DELETE FROM pvalues WHERE PROPERTY_NAME  LIKE 'controllee%'");
+SQLExec("DELETE FROM pvalues WHERE PROPERTY_NAME  LIKE 'YeelightSmartBulb%'");
+SQLExec("DELETE FROM pvalues WHERE PROPERTY_NAME=''");
 
 SQLExec("DELETE FROM cached_values WHERE KEYWORD  LIKE 'MJD:MediaServer%'");
 SQLExec("DELETE FROM cached_values WHERE KEYWORD  LIKE 'MJD:dial%'");
