@@ -96,41 +96,29 @@ unlink(DIR_TEMPLATES.'/classes\views\SYeelightSmartBulb.html');
 deleteDirectory(DIR_MODULES.'/ssdp_finder/ssdp');
 
 unlink(DIR_MODULES.'/ssdp_finder\upnp\vendor\jalder\upnp\src\BelkinDevice.php');
+unlink(DIR_MODULES.'/ssdp_finder\upnp\vendor\jalder\upnp\src\Renderer.php');
 unlink(DIR_MODULES.'/ssdp_finder\upnp\vendor\jalder\upnp\src\BelkinDevice\Devswitch.php');
 unlink(DIR_MODULES.'/ssdp_finder\upnp\vendor\jalder\upnp\src\BinaryLight.php');
 unlink(DIR_MODULES.'/ssdp_finder\upnp\vendor\jalder\upnp\src\BinaryLight\Remote.php');
 unlink(DIR_MODULES.'/ssdp_finder\upnp\vendor\jalder\upnp\src\CastCommander.php');
 unlink(DIR_MODULES.'/ssdp_finder\upnp\vendor\jalder\upnp\src\Chromecast.php');
-unlink(DIR_MODULES.'/ssdp_finder\upnp\vendor\jalder\upnp\src\Chromecast\Applications\DefaultMediaReceiver.php');
-unlink(DIR_MODULES.'/ssdp_finder\upnp\vendor\jalder\upnp\src\Chromecast\Applications\YouTube.php');
-unlink(DIR_MODULES.'/ssdp_finder\upnp\vendor\jalder\upnp\src\Chromecast\Channels\CastCommander.php');
-unlink(DIR_MODULES.'/ssdp_finder\upnp\vendor\jalder\upnp\src\Chromecast\Channels\Channel.php');
-unlink(DIR_MODULES.'/ssdp_finder\upnp\vendor\jalder\upnp\src\Chromecast\Channels\Mysql.php');
-unlink(DIR_MODULES.'/ssdp_finder\upnp\vendor\jalder\upnp\src\Chromecast\Channels\Socket.php');
-unlink(DIR_MODULES.'/ssdp_finder\upnp\vendor\jalder\upnp\src\Chromecast\Channels\Sqlite.php');
-unlink(DIR_MODULES.'/ssdp_finder\upnp\vendor\jalder\upnp\src\Chromecast\Console.php');
-unlink(DIR_MODULES.'/ssdp_finder\upnp\vendor\jalder\upnp\src\Chromecast\message.proto');
-unlink(DIR_MODULES.'/ssdp_finder\upnp\vendor\jalder\upnp\src\Chromecast\pb_proto_message.php');
-unlink(DIR_MODULES.'/ssdp_finder\upnp\vendor\jalder\upnp\src\Chromecast\Remote.php');
 unlink(DIR_MODULES.'/ssdp_finder\upnp\vendor\jalder\upnp\src\Dial.php');
-unlink(DIR_MODULES.'/ssdp_finder\upnp\vendor\jalder\upnp\src\Dial\Remote.php');
 unlink(DIR_MODULES.'/ssdp_finder\upnp\vendor\jalder\upnp\src\InternetGatewayDevice.php');
-unlink(DIR_MODULES.'/ssdp_finder\upnp\vendor\jalder\upnp\src\InternetGatewayDevice\Remote.php');
 unlink(DIR_MODULES.'/ssdp_finder\upnp\vendor\jalder\upnp\src\MediaRenderer.php');
-unlink(DIR_MODULES.'/ssdp_finder\upnp\vendor\jalder\upnp\src\MediaRenderer\Remote.php');
 unlink(DIR_MODULES.'/ssdp_finder\upnp\vendor\jalder\upnp\src\MediaServer.php');
-unlink(DIR_MODULES.'/ssdp_finder\upnp\vendor\jalder\upnp\src\MediaServer\Remote.php');
 unlink(DIR_MODULES.'/ssdp_finder\upnp\vendor\jalder\upnp\src\Roku.php');
-unlink(DIR_MODULES.'/ssdp_finder\upnp\vendor\jalder\upnp\src\Roku\Applications\Firefox.php');
-unlink(DIR_MODULES.'/ssdp_finder\upnp\vendor\jalder\upnp\src\Roku\Applications\Simplevideoplayer.php');
-unlink(DIR_MODULES.'/ssdp_finder\upnp\vendor\jalder\upnp\src\Roku\Applications\YouTube.php');
-unlink(DIR_MODULES.'/ssdp_finder\upnp\vendor\jalder\upnp\src\Roku\Channels\Curl.php');
-unlink(DIR_MODULES.'/ssdp_finder\upnp\vendor\jalder\upnp\src\Roku\Channels\Firefox.php');
-unlink(DIR_MODULES.'/ssdp_finder\upnp\vendor\jalder\upnp\src\Roku\Developer.php');
-unlink(DIR_MODULES.'/ssdp_finder\upnp\vendor\jalder\upnp\src\Roku\Player.php');
-unlink(DIR_MODULES.'/ssdp_finder\upnp\vendor\jalder\upnp\src\Roku\Remote.php');
-unlink(DIR_MODULES.'/ssdp_finder\upnp\vendor\jalder\upnp\src\Yeelight\readme.txt');
-unlink(DIR_MODULES.'/ssdp_finder\upnp\vendor\jalder\upnp\src\Yeelight\Yeelight.class.php');
+// delete all jalders library not nedded
+deleteDirectory(DIR_MODULES.'/ssdp_finder/upnp/vendor/jalder/upnp/src/BelkinDevice');
+deleteDirectory(DIR_MODULES.'/ssdp_finder/upnp/vendor/jalder/upnp/src/BinaryLight');
+deleteDirectory(DIR_MODULES.'/ssdp_finder/upnp/vendor/jalder/upnp/src/Chromecast');
+deleteDirectory(DIR_MODULES.'/ssdp_finder/upnp/vendor/jalder/upnp/src/Dial');
+deleteDirectory(DIR_MODULES.'/ssdp_finder/upnp/vendor/jalder/upnp/src/Mediaserver');
+deleteDirectory(DIR_MODULES.'/ssdp_finder/upnp/vendor/jalder/upnp/src/Renderer');
+deleteDirectory(DIR_MODULES.'/ssdp_finder/upnp/vendor/jalder/upnp/src/Roku');
+deleteDirectory(DIR_MODULES.'/ssdp_finder/upnp/vendor/jalder/upnp/bin');
+deleteDirectory(DIR_MODULES.'/ssdp_finder/upnp/vendor/jalder/upnp/examples');
+deleteDirectory(DIR_MODULES.'/ssdp_finder/upnp/vendor/jalder/upnp/tests');
+
 
 
 // function of delete directory
