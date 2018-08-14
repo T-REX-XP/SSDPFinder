@@ -101,13 +101,15 @@
                                 <div style="width:120px">
                                     <div class="btn-group">[#if ID=""#]
                                         [#if EXTENDED_MODULES!=""#]
-                                        <a href="?data_source=<#DATA_SOURCE#>&mode=add&view_mode=edit_ssdp_devices&title=[#TITLE#]&type=[#TYPE#]&uuid=[#UUID#]&services=[#SERVICES#]&address=[#ADDRESS#]&description=[#DESCRIPTION#]&model=[#MODEL#]&manufacturer=[#MANUFACTURER#]&controladdress=[#CONTROLADDRESS#]"
-                                            class="btn btn-success" title="Добавить Модуль для этого устройства">
+                                        <a onClick="return confirm('Are you sure? Please confirm.')" 
+                                           href="?md=market&inst=adm&mode=iframe&mode2=install&name=[#EXTENDED_MODULES#]"
+                                           class="btn btn-success" title="Добавить Модуль для этого устройства">
                                             <i class="glyphicon glyphicon-compressed"></i>
                                         </a>
                                         [#endif#]
-                                        <a href="?data_source=<#DATA_SOURCE#>&mode=add&view_mode=edit_ssdp_devices&title=[#TITLE#]&type=[#TYPE#]&uuid=[#UUID#]&services=[#SERVICES#]&address=[#ADDRESS#]&description=[#DESCRIPTION#]&model=[#MODEL#]&manufacturer=[#MANUFACTURER#]&controladdress=[#CONTROLADDRESS#]"
-                                            class="btn btn-success" title="Добавить как простое устройство">
+                                        <a onClick="return confirm('Are you sure? Please confirm.')" 
+                                           href="?data_source=<#DATA_SOURCE#>&mode=add&view_mode=edit_ssdp_devices&title=[#TITLE#]&type=[#TYPE#]&uuid=[#UUID#]&services=[#SERVICES#]&address=[#ADDRESS#]&description=[#DESCRIPTION#]&model=[#MODEL#]&manufacturer=[#MANUFACTURER#]&controladdress=[#CONTROLADDRESS#]"
+                                           class="btn btn-success" title="Добавить как простое устройство">
                                             <i class="glyphicon glyphicon-sd-video"></i>
                                         </a>
                                         [#else#]
