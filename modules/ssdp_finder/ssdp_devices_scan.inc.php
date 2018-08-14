@@ -41,6 +41,7 @@ function Scan(){
     $result = [];
     $table_name='ssdp_devices';
 
+    include_once(DIR_MODULES.'ssdp_finder/extended_modules.php'); 
     foreach ($everything as $deviceInfo) {
 
         // если устройство yeelight
@@ -71,6 +72,7 @@ function Scan(){
 	            "MANUFACTURER" => 'Yeelight',//Manufacturer
 	            "SERVICES"=> 'RGBWSmartLight',//list services of device
 	            "CONTROLADDRESS"=> $control_url,//list services of device
+                    "EXTENDED_MODULES"=>$modules['YeelightSmartBulb'],
 	        ];
 	        $_SESSION[$uuid] = $logo;
 	        //session_write_close();
@@ -115,8 +117,11 @@ function Scan(){
 	        if (!$device["modelDescription"]){
 	            $descript = $deviceInfo["server"];
 	            }
-	
-	
+
+	        // ned for chek device type
+	        $device_type = explode(":", $device["deviceType"])[3];//DeviceType
+
+ 
 	        if (!array_search_result($result, 'UUID', $uuid) && !is_null($uuid) && !($existed)) {
 	
 	        $result[] = [
@@ -126,7 +131,7 @@ function Scan(){
 	            "UUID" => $uuid,
 	            "LOGO" => $logo,//Logo 
 	            "DESCRIPTION" => $descript, //description get from xml or field "server"
-	            "TYPE" => explode(":", $device["deviceType"])[3],//DeviceType
+	            "TYPE" => $device_type,//DeviceType
 	            "SERIAL" => $serialnumber,  //serialnumber
 	            "MANUFACTURERURL" => $device["manufacturerURL"],//manufacturer url
 	            "UPDATED" => '',
@@ -135,6 +140,7 @@ function Scan(){
 	            "MANUFACTURER" => $device["manufacturer"],//Manufacturer
 	            "SERVICES"=> getServices($device),//list services of device
 	            "CONTROLADDRESS"=> $control_url,//list services of device
+                    "EXTENDED_MODULES"=>$modules[$device_type],
 	        ];
 	        $_SESSION[$uuid] = $logo;
 	        //session_write_close();
