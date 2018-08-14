@@ -55,6 +55,16 @@ SQLExec("DELETE FROM pvalues WHERE PROPERTY_NAME  LIKE 'BinaryLight'");
 SQLExec("DELETE FROM pvalues WHERE PROPERTY_NAME  LIKE 'controllee'");
 SQLExec("DELETE FROM pvalues WHERE PROPERTY_NAME  LIKE 'YeelightSmartBulb'");
 
+SQLExec("DELETE FROM cached_values WHERE KEYWORD  LIKE 'MJD:MediaServer%'");
+SQLExec("DELETE FROM cached_values WHERE KEYWORD  LIKE 'MJD:dial%'");
+SQLExec("DELETE FROM cached_values WHERE KEYWORD  LIKE 'MJD:Basic%'");
+SQLExec("DELETE FROM cached_values WHERE KEYWORD  LIKE 'MJD:DigitalSecurityCamera%'");
+SQLExec("DELETE FROM cached_values WHERE KEYWORD  LIKE 'MJD:InternetGatewayDevice%'");
+SQLExec("DELETE FROM cached_values WHERE KEYWORD  LIKE 'MJD:MediaRenderer'%");
+SQLExec("DELETE FROM cached_values WHERE KEYWORD  LIKE 'MJD:BinaryLight%'");
+SQLExec("DELETE FROM cached_values WHERE KEYWORD  LIKE 'MJD:controllee%'");
+SQLExec("DELETE FROM cached_values WHERE KEYWORD  LIKE 'MJD:YeelightSmartBulb%'");
+
 // delete all filles from module
 
 unlink(DIR_MODULES.'/devices/SYeelightSmartBulb_turnOn.php');
