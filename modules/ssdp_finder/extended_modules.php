@@ -1,4 +1,4 @@
 <?php
  $modules= array(
-        'YeelightSmartBulb'=>'link_to_module', 
+        'YeelightSmartBulb'=>'https://github.com/Gelezako/MajorDomo-Yeelight/archive/master.tar.gz', 
 );
