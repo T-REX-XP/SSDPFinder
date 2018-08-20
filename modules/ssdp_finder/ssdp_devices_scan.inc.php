@@ -35,13 +35,15 @@ if ($res[0]['UUID']) {
     $out['RESULT'] = $res;
 }
 
+// функция сканирования устройств
 function Scan(){
     $upnp = new Upnp();
     $everything = $upnp->discover();
     $result = [];
     $table_name='ssdp_devices';
-
+    // подключение массива существующих модулей для найденных устройств
     include_once(DIR_MODULES.'ssdp_finder/extended_modules.php'); 
+    // перебираем по очереди все найденные устройства
     foreach ($everything as $deviceInfo) {
 
         // если устройство yeelight
