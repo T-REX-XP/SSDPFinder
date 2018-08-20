@@ -79,7 +79,7 @@ function Scan(){
 	            "SERVICES"=> 'RGBWSmartLight',//list services of device
 	            "CONTROLADDRESS"=> $control_url,//list services of device
                     "EXTENDED_MODULES"=>$modules['YeelightSmartBulb'],// проверка на наличие модуля
-		    "MODUL_INSTALLED"=>$mod_cheked, //chek the installed module
+		    "MODULE_INSTALLED"=>$mod_cheked, //chek the installed module
 	        ];
 	        $_SESSION[$uuid] = $logo;
 	        //session_write_close();
@@ -150,7 +150,7 @@ function Scan(){
 	            "SERVICES"=> getServices($device),//list services of device
 	            "CONTROLADDRESS"=> $control_url,//list services of device
                     "EXTENDED_MODULES"=>$modules[$device_type],
-		    "MODUL_INSTALLED"=>$mod_cheked, //chek the installed module
+		    "MODULE_INSTALLED"=>$mod_cheked, //chek the installed module
 	        ];
 	        $_SESSION[$uuid] = $logo;
 	        //session_write_close();
