@@ -35,13 +35,16 @@ if ($res[0]['UUID']) {
     $out['RESULT'] = $res;
 }
 
+// функция сканирования устройств
 function Scan(){
     $upnp = new Upnp();
     $everything = $upnp->discover();
     $result = [];
     $table_name='ssdp_devices';
 
+    // подключение массива существующих модулей для найденных устройств
     include_once(DIR_MODULES.'ssdp_finder/extended_modules.php'); 
+    // перебираем по очереди все найденные устройства
     foreach ($everything as $deviceInfo) {
 
         // если устройство yeelight
@@ -53,7 +56,10 @@ function Scan(){
 	        // проверяем на наличие в базе для запрета вывода
 	        $uuid = $deviceInfo['location'];
 	        $existed = SQLSelectOne("SELECT * FROM $table_name WHERE UUID='".$uuid."'");
-		    
+		
+            // проверяем на наличие модуля в системе
+            $mod_cheked = SQLSelectOne("SELECT * FROM plugins WHERE MODULE_NAME='".$modules['YeelightSmartBulb']."'");
+		
 	        if (!array_search_result($result, 'UUID', $uuid) && !is_null($uuid) && !($existed)) {
 	
 	        $result[] = [
@@ -72,7 +78,8 @@ function Scan(){
 	            "MANUFACTURER" => 'Yeelight',//Manufacturer
 	            "SERVICES"=> 'RGBWSmartLight',//list services of device
 	            "CONTROLADDRESS"=> $control_url,//list services of device
-                    "EXTENDED_MODULES"=>$modules['YeelightSmartBulb'],
+                "EXTENDED_MODULES"=>$modules['YeelightSmartBulb'],// проверка на наличие модуля
+		        "MODULE_INSTALLED"=>$mod_cheked, //chek the installed module
 	        ];
 	        $_SESSION[$uuid] = $logo;
 	        //session_write_close();
@@ -86,7 +93,7 @@ function Scan(){
 	        
 	        // для начала проверяем не майкрософтовое ли это устройство
 	        // и если да то подгружаем внутренний файл потому что он находится в ссылке на файл
-		// for microsoft devices 
+		    // for microsoft devices 
 	        if (substr($deviceInfo['location'], 0, 9) == "Location:") {
 	            $control_url = str_ireplace("Location:", "", $deviceInfo['location']);
 	            libxml_use_internal_errors(true); 
@@ -96,13 +103,13 @@ function Scan(){
 	            $device= $dev['device'];
 	        }
 	        // получаем логотип на устройство
-		$logo= getDefImg($control_url,$device);
+		    $logo= getDefImg($control_url,$device);
 	        // проверяем на наличие в базе для запрета вывода
 	        $uuid = $device["UDN"];
 	        $existed = SQLSelectOne("SELECT * FROM $table_name WHERE UUID='".$uuid."'");
 		    
 	        // иногда вместо serialNumber есть modelNumber
-		$serialnumber = $device["serialNumber"];
+		    $serialnumber = $device["serialNumber"];
 	        if (!$serialnumber){
 	            $serialnumber = $device["modelNumber"];
 	            }
@@ -118,9 +125,11 @@ function Scan(){
 	            $descript = $deviceInfo["server"];
 	            }
 
-	        // ned for chek device type
+	        // need for chek device type
 	        $device_type = explode(":", $device["deviceType"])[3];//DeviceType
 
+            // проверяем на наличие модуля в системе
+            $mod_cheked = SQLSelectOne("SELECT * FROM plugins WHERE MODULE_NAME='".$modules[$device_type]."'");
  
 	        if (!array_search_result($result, 'UUID', $uuid) && !is_null($uuid) && !($existed)) {
 	
@@ -140,7 +149,8 @@ function Scan(){
 	            "MANUFACTURER" => $device["manufacturer"],//Manufacturer
 	            "SERVICES"=> getServices($device),//list services of device
 	            "CONTROLADDRESS"=> $control_url,//list services of device
-                    "EXTENDED_MODULES"=>$modules[$device_type],
+                "EXTENDED_MODULES"=>$modules[$device_type],
+		        "MODULE_INSTALLED"=>$mod_cheked, //chek the installed module
 	        ];
 	        $_SESSION[$uuid] = $logo;
 	        //session_write_close();
