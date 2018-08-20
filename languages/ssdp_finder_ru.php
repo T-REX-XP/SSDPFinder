@@ -23,6 +23,7 @@ $dictionary = array (
    'SSDP_HOSTONLINE' => 'Создать устройство онлайн',
    'SSDP_TERMINAL' => 'Создать терминал устройства',
    'SSDP_USETOSYSTEMMESAGE' => 'Использовать для воспроизведения системных сообщений',
+   'SSDP_CLEARMODULE' => 'Удалить все устройства и мусор модуля',
 );
 
 foreach ($dictionary as $k => $v) {
