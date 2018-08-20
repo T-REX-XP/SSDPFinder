@@ -23,6 +23,7 @@ $dictionary = array (
    'SSDP_HOSTONLINE' => 'Create hosts online',
    'SSDP_TERMINAL' => 'Create terminal',
    'SSDP_USETOSYSTEMMESAGE' => 'Use to play system mesage',
+   'SSDP_CLEARMODULE' => 'Clear all devices and trash from module',
 );
 
 foreach ($dictionary as $k => $v) {

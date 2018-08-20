@@ -22,6 +22,7 @@ $dictionary=array(
  'SSDP_HOSTONLINE' => 'Створити пристрій онлайн',
  'SSDP_TERMINAL' => 'Створити термінал пристрою',
  'SSDP_USETOSYSTEMMESAGE' => 'Використовувати для відтворення системних сповіщень',
+ 'SSDP_CLEARMODULE' => 'Видалити всі пристрої та сміття модулю',
 
 );
 
