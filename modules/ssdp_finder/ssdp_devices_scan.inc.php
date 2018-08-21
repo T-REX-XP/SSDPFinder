@@ -58,7 +58,7 @@ function Scan(){
 	        $existed = SQLSelectOne("SELECT * FROM $table_name WHERE UUID='".$uuid."'");
 		
             // проверяем на наличие модуля в системе
-            $mod_cheked = SQLSelectOne("SELECT * FROM plugins WHERE MODULE_NAME='".$modules['YeelightSmartBulb']."'");
+            $mod_cheked = SQLSelectOne("SELECT * FROM plugins WHERE MODULE_NAME LIKE '".$modules['YeelightSmartBulb']."'");
 		
 	        if (!array_search_result($result, 'UUID', $uuid) && !is_null($uuid) && !($existed)) {
 	
@@ -78,8 +78,8 @@ function Scan(){
 	            "MANUFACTURER" => 'Yeelight',//Manufacturer
 	            "SERVICES"=> 'RGBWSmartLight',//list services of device
 	            "CONTROLADDRESS"=> $control_url,//list services of device
-                "EXTENDED_MODULES"=>$modules['YeelightSmartBulb'],// проверка на наличие модуля
-		        "MODULE_INSTALLED"=>$mod_cheked, //chek the installed module
+                    "EXTENDED_MODULES"=>$modules['YeelightSmartBulb'],// проверка на наличие модуля
+                    "MODULE_INSTALLED"=>$mod_cheked, //chek the installed module
 	        ];
 	        $_SESSION[$uuid] = $logo;
 	        //session_write_close();
@@ -128,8 +128,8 @@ function Scan(){
 	        // need for chek device type
 	        $device_type = explode(":", $device["deviceType"])[3];//DeviceType
 
-            // проверяем на наличие модуля в системе
-            $mod_cheked = SQLSelectOne("SELECT * FROM plugins WHERE MODULE_NAME='".$modules[$device_type]."'");
+                // проверяем на наличие модуля в системе
+                $mod_cheked = SQLSelectOne("SELECT * FROM plugins WHERE MODULE_NAME LIKE '".$modules[$device_type]."'");
  
 	        if (!array_search_result($result, 'UUID', $uuid) && !is_null($uuid) && !($existed)) {
 	
@@ -149,8 +149,8 @@ function Scan(){
 	            "MANUFACTURER" => $device["manufacturer"],//Manufacturer
 	            "SERVICES"=> getServices($device),//list services of device
 	            "CONTROLADDRESS"=> $control_url,//list services of device
-                "EXTENDED_MODULES"=>$modules[$device_type],
-		        "MODULE_INSTALLED"=>$mod_cheked, //chek the installed module
+                    "EXTENDED_MODULES"=>$modules[$device_type],
+                    "MODULE_INSTALLED"=>$mod_cheked, //chek the installed module
 	        ];
 	        $_SESSION[$uuid] = $logo;
 	        //session_write_close();
