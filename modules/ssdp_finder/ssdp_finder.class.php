@@ -174,6 +174,10 @@ function admin(&$out) {
    $this->clear_trash($this->id);
    $this->redirect("?");
   }
+  if ($this->view_mode=='update_methods') {
+   $this->update_methods($this->id);
+   $this->redirect("?");
+  }
  }
 }
 
@@ -188,6 +192,8 @@ function admin(&$out) {
 function usual(&$out) {
  $this->admin($out);
 }
+
+
 /**
 * ssdp_devices search
 *
@@ -196,9 +202,28 @@ function usual(&$out) {
  function search_ssdp_devices(&$out) {
   require(DIR_MODULES.$this->name.'/ssdp_devices_search.inc.php');
  }
+
+
+/**
+* ssdp_devices scan
+*
+* @access public
+*/
  function scan_ssdp_devices(&$out) {
   require(DIR_MODULES.$this->name.'/ssdp_devices_scan.inc.php');
  }
+
+
+/**
+* ssdp_devices scan
+*
+* @access public
+*/
+ function update_methods(&$out) {
+  require(DIR_MODULES.$this->name.'/update_methods.inc.php');
+ }
+
+
 /**
 * get local IP 
 *
