@@ -141,6 +141,9 @@ deleteDirectory(DIR_MODULES.'/ssdp_finder/upnp/vendor/jalder/upnp/bin');
 deleteDirectory(DIR_MODULES.'/ssdp_finder/upnp/vendor/jalder/upnp/examples');
 deleteDirectory(DIR_MODULES.'/ssdp_finder/upnp/vendor/jalder/upnp/tests');
 
+// исправлено для измениения типа поля Логотипа
+SQLExec("ALTER TABLE `ssdp_devices` CHANGE `LOGO` `LOGO` LONGTEXT CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT ''");
+
 
 
 // function of delete directory
