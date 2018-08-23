@@ -89,26 +89,6 @@
                                         title="Delete">
                                         <i class="glyphicon glyphicon-remove"></i>
                                     </a>
-                                    [#if  DEVICE_ONLINE_ID != "" && LINKED_OBJECT !="" #] [#else#]
-                                    <a id="btnGroupDrop1" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        <i class="glyphicon glyphicon-plus"></i>
-                                    </a>
-                                    <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-                                        [#if DEVICE_ONLINE_ID==""#]
-                                        <a href="?view_mode=add_to_pinghost&id=[#ID#]" onClick="return confirm('Are you sure? Please confirm.')" class="dropdown-item"
-                                            title="Добавить к устройствам ОнЛайн">
-                                            <i class="glyphicon glyphicon-plus"></i>
-                                            Добавить к устройствам ОнЛайн
-                                        </a>
-                                        [#endif#] [#if LINKED_OBJECT==""#]
-                                        <a href="?view_mode=add_to_SSDPdevices&id=[#ID#]" onClick="return confirm('Are you sure? Please confirm.')" class="dropdown-item"
-                                            title="Добавить к простым устройствам">
-                                            <i class="glyphicon glyphicon-plus"></i>
-                                            Добавить к простым устройства
-                                        </a>
-                                        [#endif#]
-                                    </div>
-                                    [#endif#]
                                 </div>
                             </td>
                         </tr>
