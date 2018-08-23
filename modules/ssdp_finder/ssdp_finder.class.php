@@ -178,6 +178,11 @@ function admin(&$out) {
    $this->update_methods($this->id);
    $this->redirect("?");
   }
+  if ($this->view_mode=='install_module') {
+   $this->install_module($this->id, $this->namemodule, $this->installed_module);
+   $this->redirect("?");
+  }
+
  }
 }
 
@@ -192,6 +197,16 @@ function admin(&$out) {
 function usual(&$out) {
  $this->admin($out);
 }
+
+
+/**
+* ssdp_devices install modules
+* функция добавления устройства в список ssdp_devices и установки модуля для устройства
+* @access public
+*/
+ function install_module(&$out) {
+  require(DIR_MODULES.$this->name.'/ssdp_install_module.inc.php');
+ }
 
 
 /**
@@ -233,6 +248,7 @@ function getLocalIp() {
   return gethostbyname(trim(`hostname`)); 
 }
 
+
 /**
 * ssdp_devices edit/add
 *
@@ -241,6 +257,8 @@ function getLocalIp() {
  function edit_ssdp_devices(&$out, $id) {
    require(DIR_MODULES.$this->name.'/ssdp_devices_edit.inc.php');
  }
+
+
 /**
 * ssdp_devices add record to SSDPdevice
 *
