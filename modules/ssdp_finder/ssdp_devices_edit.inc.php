@@ -7,6 +7,8 @@
   }
   $table_name='ssdp_devices';
   $rec=SQLSelectOne("SELECT * FROM $table_name WHERE ID='$id'");
+
+// режим сохранения устройств
   if ($this->mode=='update') {
    $ok=1;
   //updating '<%LANG_TITLE%>' (varchar, required)
@@ -96,7 +98,11 @@
    } else {
     $out['ERR']=1;
    }
+  // после сохранения устройства переходим на основную страницу 
+   $this->redirect("?");
   }
+
+// режим добваления устройств
   if ($this->mode=='add') {
     $ok=0;
    //updating '<%LANG_TITLE%>' (varchar, required)
@@ -108,8 +114,7 @@
      //$out["LOGO"] = 
      $ok=0;
     }
-  
-    session_start();
+   session_start();
    global $create_sd;
    global $create_od;
    global $create_term;
@@ -186,6 +191,7 @@
     } else {
      $out['ERR']=1;
     }
+
    }
  
 
