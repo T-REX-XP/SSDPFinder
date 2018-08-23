@@ -24,6 +24,7 @@ $dictionary = array (
    'SSDP_TERMINAL' => 'Создать терминал устройства',
    'SSDP_USETOSYSTEMMESAGE' => 'Использовать для воспроизведения системных сообщений',
    'SSDP_CLEARMODULE' => 'Удалить все устройства и мусор модуля',
+   'SSDP_UPDATE_METHODS_SHABLON' => 'Обновить методы и шаблоны установленных устройств',
 );
 
 foreach ($dictionary as $k => $v) {

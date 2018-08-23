@@ -24,6 +24,7 @@ $dictionary = array (
    'SSDP_TERMINAL' => 'Create terminal',
    'SSDP_USETOSYSTEMMESAGE' => 'Use to play system mesage',
    'SSDP_CLEARMODULE' => 'Clear all devices and trash from module',
+   'SSDP_UPDATE_METHODS_SHABLON' => 'Update methods & shablons',
 );
 
 foreach ($dictionary as $k => $v) {
