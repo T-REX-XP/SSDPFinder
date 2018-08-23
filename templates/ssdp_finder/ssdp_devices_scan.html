@@ -102,10 +102,15 @@
                                     <div class="btn-group">[#if ID=""#]
                                         [#if EXTENDED_MODULES!=""#]
                                         <a onClick="return confirm('Are you sure? Please confirm.')" 
-										   [#if MODULE_INSTALLED!=""#] disabled="disabled" style="color:LightGrey" [#endif#]
-                                           href="?md=market&inst=adm&mode=iframe&mode2=install&name=[#EXTENDED_MODULES#]"
-                                           class="btn btn-success" title="Добавить Модуль для этого устройства">
-                                            <i class="glyphicon glyphicon-compressed"></i>
+					  [#if MODULE_INSTALLED!=""#] 
+                                             class="btn btn-default" 
+                                             title="Добавить в список это устройство Модуль уже установлен"
+                                          [#else#] 
+                                             class="btn btn-success" 
+                                             title="Добавить Модуль и в список это устройство"
+                                          [#endif#]
+                                          href="?data_source=<#DATA_SOURCE#>&view_mode=install_module&id=[#ID#]&name=[#EXTENDED_MODULES#]installed_module=[#MODULE_INSTALLED#]">
+                                          <i class="glyphicon glyphicon-compressed"></i>
                                         </a>
                                         [#endif#]
                                         <a onClick="return confirm('Are you sure? Please confirm.')" 
