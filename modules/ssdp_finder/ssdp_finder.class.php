@@ -474,6 +474,15 @@ function loadDrivers($device_type){
         file_put_contents(ROOT.'/modules/ssdp_finder/upnp/vendor/jalder/upnp/src/'.$device_type.'/Remote.php', $current);
         };
 
+    for ($i = 1; $i <= 10; $i++) {
+        if (!file_exists(ROOT.'/modules/ssdp_finder/upnp/vendor/jalder/upnp/src/'.$device_type.'/Remote'.$i.'.php')) {
+            $current = file_get_contents('https://raw.githubusercontent.com/tarasfrompir/SSDPDrivers/master/modules/ssdp_finder/upnp/vendor/jalder/upnp/src/'.$device_type.'/Remote'.$i.'.php');
+            if (!$current) {
+                break;
+                };
+            file_put_contents(ROOT.'/modules/ssdp_finder/upnp/vendor/jalder/upnp/src/'.$device_type.'/Remote'.$i.'.php', $current);
+            };
+        };
     return  true;
 }
 
@@ -640,8 +649,15 @@ function deleteDrivers($device_type){
             };
         if (file_exists(ROOT.'/modules/ssdp_finder/upnp/vendor/jalder/upnp/src/'.$device_type.'/Remote.php')) {
             unlink(ROOT.'/modules/ssdp_finder/upnp/vendor/jalder/upnp/src/'.$device_type.'/Remote.php');
-            rmdir(ROOT.'/modules/ssdp_finder/upnp/vendor/jalder/upnp/src/'.$device_type);
             };
+        for ($i = 1; $i <= 10; $i++) {
+            if (!file_exists(ROOT.'/modules/ssdp_finder/upnp/vendor/jalder/upnp/src/'.$device_type.'/Remote'.$i.'.php')) {
+                break;
+                };
+            unlink(ROOT.'/modules/ssdp_finder/upnp/vendor/jalder/upnp/src/'.$device_type.'/Remote'.$i.'.php');
+            };
+        // удаляем директорию для текущего устройства
+        rmdir(ROOT.'/modules/ssdp_finder/upnp/vendor/jalder/upnp/src/'.$device_type);
         // удаляем structure in addons для устройства
         if (file_exists(ROOT.'/modules/devices/addons/SSDPFinder_'.$device_type.'_structure.php')) {
              unlink(ROOT.'/modules/devices/addons/SSDPFinder_'.$device_type.'_structure.php');
@@ -845,6 +861,8 @@ if ($event=='SAYTO') {
   //delete ssdp_finder module
   parent::uninstall();
  }
+
+
 /**
 * dbInstall
 *
