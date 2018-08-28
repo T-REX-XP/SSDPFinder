@@ -13,8 +13,38 @@
     // если нету то устанавливаем модуль по названию которое находится в переменной $namemodule
     include_once (DIR_MODULES.'market/market.class.php');
     $mkt=new market();
-    }   
-  
+    $result = $mkt->marketRequest();
+    $data=json_decode($result, TRUE);
+    foreach ( $data['PLUGINS'] as $plug_number ) {
+      if ( $plug_number['TITLE'] == $namemodule ){
+        $url= $plug_number['REPOSITORY_URL'];
+        $name = $plug_number['MODULE_NAME'];
+        break;
+      };
+    };
+    //загружаем модуль в папку сайвресторе
+    if (!is_dir(ROOT.'cms/saverestore')) {
+        @umask(0);
+        @mkdir(ROOT.'cms/saverestore', 0777);
+       }
+    
+    $filename=ROOT.'cms/saverestore/'.$name.'.tgz';
+    @unlink(ROOT.'cms/saverestore/'.$name.'.tgz');
+    @unlink(ROOT.'cms/saverestore/'.$name.'.tar');
+    $f = fopen($filename, 'wb');
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_URL, $url);
+    curl_setopt($ch, CURLOPT_TIMEOUT, 600);
+    curl_setopt($ch, CURLOPT_FOLLOWLOCATION, TRUE);
+    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);     
+    curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2); 
+    curl_setopt($ch, CURLOPT_FILE, $f); 
+    $incoming = curl_exec($ch);
+    curl_close($ch);
+    @fclose($f);
+    
+////////////////////////////////////////////////////////////
+}  
 
 // добавление устройства в таблицу ssdp_devices
   $table_name='ssdp_devices';
@@ -76,4 +106,3 @@
     $out['OK']=1;
     // после сохранения устройства переходим на основную страницу 
     $this->redirect("?");
-
