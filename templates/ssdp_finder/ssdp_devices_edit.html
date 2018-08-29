@@ -99,7 +99,7 @@
             </select></div>
            </div>
         <!-- LINKED_OBJECT (varchar)-->
-        <div class="form-group">
+		[#if MODE!="add"#] <div class="form-group">
             <label class="col-lg-3 control-label" [#if ERR_LINKED_OBJECT#] style="color:red;font-weight:bold" [#endif#]>
                 <#LANG_LINKED_OBJECT#>:
             </label>
@@ -107,6 +107,7 @@
                 <input type="text" class="form-control" name="linked_object" value="[#LINKED_OBJECT#]" id="linked_object">
             </div>
         </div>  
+		[#endif#]
         <!-- CONTROL ADDRESS (varchar) -->
         <div class="form-group">
             <label class="col-lg-3 control-label" [#if ERR_CONTROLADDRESS#] style="color:red;font-weight:bold" [#endif#]>

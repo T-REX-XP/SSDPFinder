@@ -12,17 +12,17 @@
         &nbsp;&nbsp;&nbsp;
     <a href="#" class="btn btn-default" onClick="$('#api_settings').toggle();return false;" title="<#LANG_SETUP#>">
         <i class="glyphicon glyphicon-cog"></i> 
-	</a>
+    </a>
     <a class="btn btn-default" href="?view_mode=clear_trash" 
 	onClick="return confirm('Are you sure? Please confirm.')" 
-    title="<#LANG_SSDP_CLEARMODULE#>">
+        title="<#LANG_SSDP_CLEARMODULE#>">
         <i class="glyphicon glyphicon-trash"></i>
     </a>
-	    <a class="btn btn-default" href="?view_mode=update_methods" 
-		onClick="return confirm('Are you sure? Please confirm.')" 
-		title="<#LANG_SSDP_UPDATE_METHODS_SHABLON#>">
+    [#if UPDATE_METHODS!=""#] <a class="btn btn-success" href="?view_mode=update_methods" 
+	onClick="return confirm('Are you sure? Please confirm.')" 
+	title="<#LANG_SSDP_UPDATE_METHODS_SHABLON#>">
         <i class="glyphicon glyphicon-retweet"></i>
-    </a>
+    </a>[#endif UPDATE_METHODS#]
 </div>
 
 <!-- Modal -->

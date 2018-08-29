@@ -110,6 +110,9 @@ function run() {
   $out['ACTION']=$this->action;
   $out['DATA_SOURCE']=$this->data_source;
   $out['TAB']=$this->tab;
+  // вывод на необходимость обновления методов
+  $out['UPDATE_METHODS']=$this->chek_update_drivers();
+  // конец вставки
   $this->data=$out;
   $p=new parser(DIR_TEMPLATES.$this->name."/".$this->name.".html", $this->data, $this);
   $this->result=$p->result;
@@ -123,22 +126,11 @@ function run() {
 */
 function admin(&$out) {
  $this->getConfig();
- $out['API_URL']=$this->config['API_URL'];
- if (!$out['API_URL']) {
-  $out['API_URL']='http://';
- }
- $out['API_KEY']=$this->config['API_KEY'];
  $out['API_USERNAME']=$this->config['API_USERNAME'];
- $out['API_PASSWORD']=$this->config['API_PASSWORD'];
  if ($this->view_mode=='update_settings') {
-   global $api_url;
-   $this->config['API_URL']=$api_url;
-   global $api_key;
-   $this->config['API_KEY']=$api_key;
+  
    global $api_username;
    $this->config['API_USERNAME']=$api_username;
-   global $api_password;
-   $this->config['API_PASSWORD']=$api_password;
    $this->saveConfig();
    $this->redirect("?");
  }
@@ -678,6 +670,39 @@ function propertySetHandle($object, $property, $value) {
     }
    }
  }
+
+function chek_update_drivers($curl='') {
+  
+  $url = 'https://api.github.com/repos/tarasfrompir/SSDPDrivers/commits';
+  $ch = curl_init();
+  curl_setopt($ch, CURLOPT_URL, $url);
+  curl_setopt($ch,CURLOPT_USERAGENT,'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.13) Gecko/20080311 Firefox/2.0.0.13');
+  curl_setopt($ch, CURLOPT_HEADER, 0);
+  curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+  curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+  $content = curl_exec($ch);
+  if ($content === false) {
+    // netu interneta
+	return; 
+  };
+  $pos = strripos($content, '[ { "sha": "');
+  $answer = substr($content, $pos+18, 40);
+  // это файл в котором содержится последнее обновление
+  $file = (ROOT.'/modules/ssdp_finder/timestamp.date');
+  // проверяем на соответсвие даты создания файла гита  и файла проверки в модуле
+  if (file_exists($file)) {
+    // Открываем файл для получения существующего содержимого
+    $current = file_get_contents($file);
+    if ($current==$answer) {
+        return;
+        } else {
+        return 1;
+        };
+
+    } else {
+       return 1;
+    };
+}
 
 
 function processSubscription($event, $details='') {
