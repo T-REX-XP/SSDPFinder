@@ -682,18 +682,18 @@ function chek_update_drivers($curl='') {
   curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
   $content = curl_exec($ch);
   if ($content === false) {
-      die (curl_error($ch)); 
+    // netu interneta
+	return; 
   };
   $pos = strripos($content, '[ { "sha": "');
   $answer = substr($content, $pos+18, 40);
-
   // это файл в котором содержится последнее обновление
   $file = (ROOT.'/modules/ssdp_finder/timestamp.date');
   // проверяем на соответсвие даты создания файла гита  и файла проверки в модуле
   if (file_exists($file)) {
     // Открываем файл для получения существующего содержимого
     $current = file_get_contents($file);
-    if ($current=$answer) {
+    if ($current==$answer) {
         return;
         } else {
         return 1;
