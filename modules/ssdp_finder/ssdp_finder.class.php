@@ -673,16 +673,19 @@ function propertySetHandle($object, $property, $value) {
 
 function chek_update_drivers($curl='') {
   
-  $curl = curl_init('http://github.com/tarasfrompir/SSDPDrivers.git');
-  // получаем время создания файла гитхаба ссылка выше
-  curl_setopt($curl, CURLOPT_NOBODY, true);
-  curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-  curl_setopt($curl, CURLOPT_FILETIME, true);
-  $result = curl_exec($curl);
-  if ($result === false) {
-      die (curl_error($curl)); 
+  $url = 'https://api.github.com/repos/tarasfrompir/SSDPDrivers/commits';
+  $ch = curl_init();
+  curl_setopt($ch, CURLOPT_URL, $url);
+  curl_setopt($ch,CURLOPT_USERAGENT,'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.13) Gecko/20080311 Firefox/2.0.0.13');
+  curl_setopt($ch, CURLOPT_HEADER, 0);
+  curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+  curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+  $content = curl_exec($ch);
+  if ($content === false) {
+      die (curl_error($ch)); 
   };
-  $timestamp = curl_getinfo($curl, CURLINFO_FILETIME);
+  $pos = strripos($content, '[ { "sha": "');
+  $answer = substr($content, $pos+18, 40);
 
   // это файл в котором содержится последнее обновление
   $file = (ROOT.'/modules/ssdp_finder/timestamp.date');
@@ -690,7 +693,7 @@ function chek_update_drivers($curl='') {
   if (file_exists($file)) {
     // Открываем файл для получения существующего содержимого
     $current = file_get_contents($file);
-    if ($current=$timestamp) {
+    if ($current=$answer) {
         return;
         } else {
         return 1;
