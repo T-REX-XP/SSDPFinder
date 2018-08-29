@@ -110,6 +110,9 @@ function run() {
   $out['ACTION']=$this->action;
   $out['DATA_SOURCE']=$this->data_source;
   $out['TAB']=$this->tab;
+  // вывод на необходимость обновления методов
+  $out['UPDATE_METHODS']=$this->chek_update_drivers();
+  // конец вставки
   $this->data=$out;
   $p=new parser(DIR_TEMPLATES.$this->name."/".$this->name.".html", $this->data, $this);
   $this->result=$p->result;
@@ -123,22 +126,11 @@ function run() {
 */
 function admin(&$out) {
  $this->getConfig();
- $out['API_URL']=$this->config['API_URL'];
- if (!$out['API_URL']) {
-  $out['API_URL']='http://';
- }
- $out['API_KEY']=$this->config['API_KEY'];
  $out['API_USERNAME']=$this->config['API_USERNAME'];
- $out['API_PASSWORD']=$this->config['API_PASSWORD'];
  if ($this->view_mode=='update_settings') {
-   global $api_url;
-   $this->config['API_URL']=$api_url;
-   global $api_key;
-   $this->config['API_KEY']=$api_key;
+  
    global $api_username;
    $this->config['API_USERNAME']=$api_username;
-   global $api_password;
-   $this->config['API_PASSWORD']=$api_password;
    $this->saveConfig();
    $this->redirect("?");
  }
@@ -678,6 +670,36 @@ function propertySetHandle($object, $property, $value) {
     }
    }
  }
+
+function chek_update_drivers($curl='') {
+  
+  $curl = curl_init('http://github.com/tarasfrompir/SSDPDrivers.git');
+  // получаем время создания файла гитхаба ссылка выше
+  curl_setopt($curl, CURLOPT_NOBODY, true);
+  curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+  curl_setopt($curl, CURLOPT_FILETIME, true);
+  $result = curl_exec($curl);
+  if ($result === false) {
+      die (curl_error($curl)); 
+  };
+  $timestamp = curl_getinfo($curl, CURLINFO_FILETIME);
+
+  // это файл в котором содержится последнее обновление
+  $file = (ROOT.'/modules/ssdp_finder/timestamp.php');
+  // проверяем на соответсвие даты создания файла гита  и файла проверки в модуле
+  if (file_exists($file)) {
+    // Открываем файл для получения существующего содержимого
+    $current = file_get_contents($file);
+    if ($current=$timestamp) {
+        return;
+        } else {
+        return 1;
+        };
+
+    } else {
+       return 1;
+    };
+}
 
 
 function processSubscription($event, $details='') {

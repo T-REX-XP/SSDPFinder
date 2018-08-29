@@ -3,9 +3,9 @@
 * @version 0.1 (wizard)
 */
 
-// delete all SSDP devices from majordomo
-$rec=SQLSelect("SELECT ID FROM ssdp_devices");
-foreach ($rec as $id) {
+  // delete all SSDP devices from majordomo
+  $rec=SQLSelect("SELECT ID FROM ssdp_devices");
+  foreach ($rec as $id) {
     $rec_type=SQLSelectOne("SELECT * FROM ssdp_devices WHERE ID='".$id['ID']."'");
     $device_type = $rec_type['TYPE'];
     // записываем шаблон для устройства
@@ -37,4 +37,20 @@ foreach ($rec as $id) {
             };
         file_put_contents(ROOT.'/modules/ssdp_finder/upnp/vendor/jalder/upnp/src/'.$device_type.'/Remote'.$i.'.php', $current);
         };
-}
+  };
+
+  $curl = curl_init('http://github.com/tarasfrompir/SSDPDrivers.git');
+  // получаем время создания файла гитхаба ссылка выше
+  curl_setopt($curl, CURLOPT_NOBODY, true);
+  curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+  curl_setopt($curl, CURLOPT_FILETIME, true);
+  $result = curl_exec($curl);
+  if ($result === false) {
+      die (curl_error($curl)); 
+  };
+  $timestamp = curl_getinfo($curl, CURLINFO_FILETIME);
+
+  // это файл в котором содержится последнее обновление
+  $file = (ROOT.'/modules/ssdp_finder/timestamp.php');
+  // Пишем содержимое обратно в файл
+  file_put_contents($file, $timestamp);
