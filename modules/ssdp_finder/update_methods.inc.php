@@ -51,6 +51,6 @@
   $timestamp = curl_getinfo($curl, CURLINFO_FILETIME);
 
   // это файл в котором содержится последнее обновление
-  $file = (ROOT.'/modules/ssdp_finder/timestamp.php');
+  $file = (ROOT.'/modules/ssdp_finder/timestamp.date');
   // Пишем содержимое обратно в файл
   file_put_contents($file, $timestamp);

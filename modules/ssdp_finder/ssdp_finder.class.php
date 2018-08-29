@@ -685,7 +685,7 @@ function chek_update_drivers($curl='') {
   $timestamp = curl_getinfo($curl, CURLINFO_FILETIME);
 
   // это файл в котором содержится последнее обновление
-  $file = (ROOT.'/modules/ssdp_finder/timestamp.php');
+  $file = (ROOT.'/modules/ssdp_finder/timestamp.date');
   // проверяем на соответсвие даты создания файла гита  и файла проверки в модуле
   if (file_exists($file)) {
     // Открываем файл для получения существующего содержимого
