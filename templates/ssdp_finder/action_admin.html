@@ -14,15 +14,14 @@
         <i class="glyphicon glyphicon-cog"></i> 
     </a>
     <a class="btn btn-default" href="?view_mode=clear_trash" 
-	onClick="return confirm('Are you sure? Please confirm.')" 
-        title="<#LANG_SSDP_CLEARMODULE#>">
+	onClick="return confirm('Are you sure? Please confirm.')" >
         <i class="glyphicon glyphicon-trash"></i>
+        <#LANG_SSDP_CLEARMODULE#>
     </a>
-    [#if UPDATE_METHODS!=""#] <a class="btn btn-success" href="?view_mode=update_methods" 
-	onClick="return confirm('Are you sure? Please confirm.')" 
-	title="<#LANG_SSDP_UPDATE_METHODS_SHABLON#>">
+    [#if UPDATE_METHODS!=""#] <a class="btn btn-success" href="?view_mode=update_methods">
         <i class="glyphicon glyphicon-retweet"></i>
-    </a>[#endif UPDATE_METHODS#]
+        <#LANG_SSDP_UPDATE_METHODS_SHABLON#>
+     </a>[#endif UPDATE_METHODS#]
 </div>
 
 <!-- Modal -->
