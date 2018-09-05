@@ -621,7 +621,7 @@ function deleteDrivers($device_type){
     if (count($devices)==1){
         // удаляем методы устройства
         $device = SQLSelectOne("SELECT * FROM classes WHERE TITLE LIKE 'S".$device_type."'");
-        $methods = SQLSelect("SELECT * FROM methods WHERE CLASS_ID='".$device['ID']."'");
+        //$methods = SQLSelect("SELECT * FROM methods WHERE CLASS_ID='".$device['ID']."'");
         foreach ($methods as $method) {
             //удаляем методы из мажордомо
             if (file_exists(ROOT.'/modules/devices/S'.$device_type.'_'.$method['TITLE'].'.php')) {
