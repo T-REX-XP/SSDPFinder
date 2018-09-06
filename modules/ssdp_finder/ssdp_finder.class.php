@@ -354,6 +354,7 @@ function add_to_SSDPdevices($id) {
   		   $pval['VALUE'] = $ssdpinf[DBSafe($v['TITLE'])];
   		   $pval['PROPERTY_NAME'] = $obj_title.".".$v['TITLE'];
                    $pval['UPDATED'] = date('Y-m-d H:i:s');
+                   $pval['LINKED_MODULES'] = 'SSDPFinder';
   		   $pval=SQLInsert('pvalues', $pval);
                    }
             }
@@ -372,6 +373,7 @@ function add_to_SSDPdevices($id) {
         $pval['VALUE'] = getRoomObjectByLocation($options['LOCATION_ID']);
         $pval['PROPERTY_NAME'] = $obj_title.".linkedRoom";
         $pval['UPDATED'] = date('Y-m-d H:i:s');
+        $pval['LINKED_MODULES'] = 'SSDPFinder';
         $pval=SQLInsert('pvalues', $pval);
         }
     //add the groupEco in properties object
@@ -382,6 +384,7 @@ function add_to_SSDPdevices($id) {
     $pval['VALUE'] = '1';
     $pval['PROPERTY_NAME'] = $obj_title.".groupEco";
     $pval['UPDATED'] = date('Y-m-d H:i:s');
+    $pval['LINKED_MODULES'] = 'SSDPFinder';
     $pval=SQLInsert('pvalues', $pval);
  
     //add the groupEcoOn in properties object
@@ -392,6 +395,7 @@ function add_to_SSDPdevices($id) {
     $pval['VALUE'] = '0';
     $pval['PROPERTY_NAME'] = $obj_title.".groupEcoOn";
     $pval['UPDATED'] = date('Y-m-d H:i:s');
+    $pval['LINKED_MODULES'] = 'SSDPFinder';
     $pval=SQLInsert('pvalues', $pval);
  
     //add the groupSunrise in properties object
@@ -402,6 +406,7 @@ function add_to_SSDPdevices($id) {
     $pval['VALUE'] = '0';
     $pval['PROPERTY_NAME'] = $obj_title.".groupSunrise";
     $pval['UPDATED'] = date('Y-m-d H:i:s');
+    $pval['LINKED_MODULES'] = 'SSDPFinder';
     $pval=SQLInsert('pvalues', $pval);
  
     //add the isActivity in properties object
@@ -412,6 +417,7 @@ function add_to_SSDPdevices($id) {
     $pval['VALUE'] = '0';
     $pval['PROPERTY_NAME'] = $obj_title.".isActivity";
     $pval['UPDATED'] = date('Y-m-d H:i:s');
+    $pval['LINKED_MODULES'] = 'SSDPFinder';
     $pval=SQLInsert('pvalues', $pval);
 }
 
@@ -621,16 +627,15 @@ function deleteDrivers($device_type){
     if (count($devices)==1){
         // удаляем методы устройства
         $device = SQLSelectOne("SELECT * FROM classes WHERE TITLE LIKE 'S".$device_type."'");
-	$methods = SQLSelect("SELECT * FROM methods WHERE CLASS_ID='".$device['ID']."'");
+        $methods = SQLSelect("SELECT * FROM methods WHERE CLASS_ID='".$device['ID']."'");
         foreach ($methods as $method) {
             //удаляем методы из мажордомо
             if (file_exists(ROOT.'/modules/devices/S'.$device_type.'_'.$method['TITLE'].'.php')) {
                 unlink(ROOT.'/modules/devices/S'.$device_type.'_'.$method['TITLE'].'.php');
                 };
             // удаляем из базы записи о методах
-            if ($methods['OBJECT_ID'] != 0{
-              SQLExec("DELETE FROM methods WHERE TITLE='".$method['TITLE']."'");
-	      };
+            SQLExec("DELETE FROM methods WHERE TITLE='".$method['TITLE']."'");
+
             };
         // удаляем шаблон для устройства
         if (file_exists(ROOT.'/templates/classes/views/S'.$device_type.'.html')) {
