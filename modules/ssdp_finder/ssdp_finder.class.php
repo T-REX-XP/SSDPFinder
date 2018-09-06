@@ -621,15 +621,16 @@ function deleteDrivers($device_type){
     if (count($devices)==1){
         // удаляем методы устройства
         $device = SQLSelectOne("SELECT * FROM classes WHERE TITLE LIKE 'S".$device_type."'");
-        //$methods = SQLSelect("SELECT * FROM methods WHERE CLASS_ID='".$device['ID']."'");
+	$methods = SQLSelect("SELECT * FROM methods WHERE CLASS_ID='".$device['ID']."'");
         foreach ($methods as $method) {
             //удаляем методы из мажордомо
             if (file_exists(ROOT.'/modules/devices/S'.$device_type.'_'.$method['TITLE'].'.php')) {
                 unlink(ROOT.'/modules/devices/S'.$device_type.'_'.$method['TITLE'].'.php');
                 };
             // удаляем из базы записи о методах
-            SQLExec("DELETE FROM methods WHERE TITLE='".$method['TITLE']."'");
-
+            if ($methods['OBJECT_ID'] != 0{
+              SQLExec("DELETE FROM methods WHERE TITLE='".$method['TITLE']."'");
+	      };
             };
         // удаляем шаблон для устройства
         if (file_exists(ROOT.'/templates/classes/views/S'.$device_type.'.html')) {
