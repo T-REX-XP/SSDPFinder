@@ -65,7 +65,7 @@ SQLExec("DELETE FROM pvalues WHERE PROPERTY_NAME  LIKE 'MediaRenderer%'");
 SQLExec("DELETE FROM pvalues WHERE PROPERTY_NAME  LIKE 'BinaryLight%'");
 SQLExec("DELETE FROM pvalues WHERE PROPERTY_NAME  LIKE 'controllee%'");
 SQLExec("DELETE FROM pvalues WHERE PROPERTY_NAME  LIKE 'YeelightSmartBulb%'");
-SQLExec("DELETE FROM pvalues WHERE PROPERTY_NAME=''");
+SQLExec("DELETE FROM pvalues WHERE LINKED_MODULES  LIKE 'SSDPFinder'");
 
 SQLExec("DELETE FROM cached_values WHERE KEYWORD  LIKE 'MJD:MediaServer%'");
 SQLExec("DELETE FROM cached_values WHERE KEYWORD  LIKE 'MJD:dial%'");
