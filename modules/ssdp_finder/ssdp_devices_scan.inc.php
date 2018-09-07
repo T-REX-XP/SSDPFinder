@@ -195,6 +195,10 @@ function getServices($device){
             array_push($result,$name);
         }
     }
+    if (!$result) {
+       // иногда отсутствуют SERVICES  для устройств MSMD Gate тогда берем friendlyName
+       	return $device["friendlyName"];
+      }
 	return implode(",",$result);
 }
 function endsWith($haystack, $needle){
