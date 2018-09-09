@@ -16,8 +16,7 @@ class Core {
     public function search($st = 'ssdp:all', $mx = 2, $man = 'ssdp:discover', $from = null, $port = null, $sockTimout = '2')
     {
         //milight, MagicHome
-	$request = 'HF-A11ASSISTHREAD'."\r\n";
-
+        $request = 'HF-A11ASSISTHREAD'."\r\n";
         $socket = socket_create(AF_INET, SOCK_DGRAM, 0);
         socket_set_option($socket, SOL_SOCKET, SO_BROADCAST, true);
         socket_sendto($socket, $request, strlen($request), 0, '239.255.255.250', 48899);		
@@ -30,7 +29,6 @@ class Core {
 	$request .= 'MX: '.$mx.''."\r\n";
 	$request .= 'ST: wifi_bulb'."\r\n";
         $request .= "\r\n";
-
         $socket = socket_create(AF_INET, SOCK_DGRAM, 0);
         socket_set_option($socket, SOL_SOCKET, SO_BROADCAST, true);
         socket_sendto($socket, $request, strlen($request), 0, '239.255.255.250', 1982);		
@@ -43,13 +41,12 @@ class Core {
         $request .= 'ST: '.$st.''."\r\n";
         $request .= 'USER-AGENT: '.$this->user_agent."\r\n";
         $request .= "\r\n";
-
         socket_sendto($socket, $request, strlen($request), 0, '255.255.255.255', 1900);
         socket_set_option($socket, SOL_SOCKET, SO_RCVTIMEO, array('sec'=>$sockTimout, 'usec'=>'50'));
         $response = array();
         do {
             $buf = null;
-            if (($len = @socket_recvfrom($socket, $buf, 1024, 0, $ip, $port)) == -1) {
+            if (($len = @socket_recvfrom($socket, $buf, 1024, 0, $this->getLocalIp(), $port)) == -1) {
                 echo "socket_read() failed: " . socket_strerror(socket_last_error()) . "\n";
             }
             if(!is_null($buf)){
@@ -204,5 +201,9 @@ class Core {
     public function setUserAgent($agent)
     {
         $this->user_agent = $agent;
+    }
+    //получаем hostname адрес локального компьютера
+    private function getLocalIp() { 
+      return gethostbyname(trim(`hostname`)); 
     }
 }
