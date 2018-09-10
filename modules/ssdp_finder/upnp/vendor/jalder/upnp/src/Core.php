@@ -97,24 +97,11 @@ class Core {
         curl_setopt($ch, CURLOPT_HEADER, 0);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         $content = curl_exec($ch);
-        //var_dump($content);
-        //$xml = new \DOMDocument();
-        //$xml->load($url);
-        //$xml->load($content);
-        //$xml->read();
-        //var_dump($xml);
-        //if($xml->validate()){
-            //var_dump($content); die();
-            libxml_use_internal_errors(true); 
-            $xml = simplexml_load_string($content);
-            $json = json_encode($xml);
-            $desc = (array)json_decode($json, true);
-            curl_close($ch);
-        //}
-        //else{
-            //die($url);
-        //    return false;
-        //}
+        libxml_use_internal_errors(true); 
+        $xml = simplexml_load_string($content);
+        $json = json_encode($xml);
+        $desc = (array)json_decode($json, true);
+        curl_close($ch);
         return $desc;
     }
 
@@ -150,7 +137,7 @@ class Core {
         return $parsed;
     }
 
-    public function sendRequestToDevice($method, $arguments, $url, $type, $hostIp = '192.168.6.101', $hostPort = '80')
+    public function sendRequestToDevice($method, $arguments, $url, $type, $hostIp = '127.0.0.1', $hostPort = '80')
     {
         $body  ='<?xml version="1.0" encoding="utf-8"?>' . "\r\n";
         $body .='<s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/" s:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/">';
@@ -164,7 +151,7 @@ class Core {
         $body .='</s:Envelope>';
  
         $header = array(
-			'Host: '.$hostIp.':'.$hostPort,
+			'Host: '.$this->getLocalIp().':'.$hostPort,
             'User-Agent: '.$this->user_agent, //fudge the user agent to get desired video format
             'Content-Length: ' . strlen($body),
 			'Connection: close',
@@ -175,14 +162,12 @@ class Core {
         $ch = curl_init();
         curl_setopt( $ch, CURLOPT_HTTPHEADER, $header );
         curl_setopt( $ch, CURLOPT_HEADER, 0);
-        curl_setopt( $ch, CURLOPT_RETURNTRANSFER, TRUE );
+        curl_setopt( $ch, CURLOPT_RETURNTRANSFER, 1 );
         curl_setopt( $ch, CURLOPT_URL, $url );
         curl_setopt( $ch, CURLOPT_POST, TRUE );
         curl_setopt( $ch, CURLOPT_POSTFIELDS, $body );
         $response = curl_exec( $ch );
         curl_close( $ch );
-
-        //var_dump($response);
         $doc = new \DOMDocument();
         $doc->loadXML($response);
         $result = $doc->getElementsByTagName('Result');
