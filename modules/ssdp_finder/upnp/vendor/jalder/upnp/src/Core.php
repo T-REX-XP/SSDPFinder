@@ -41,12 +41,14 @@ class Core {
         $request .= 'ST: '.$st.''."\r\n";
         $request .= 'USER-AGENT: '.$this->user_agent."\r\n";
         $request .= "\r\n";
+        $socket = socket_create(AF_INET, SOCK_DGRAM, 0);
+        socket_set_option($socket, SOL_SOCKET, SO_BROADCAST, true);
         socket_sendto($socket, $request, strlen($request), 0, '255.255.255.255', 1900);
         socket_set_option($socket, SOL_SOCKET, SO_RCVTIMEO, array('sec'=>$sockTimout, 'usec'=>'50'));
         $response = array();
         do {
             $buf = null;
-            if (($len = @socket_recvfrom($socket, $buf, 1024, 0, $this->getLocalIp(), $port)) == -1) {
+            if (($len = @socket_recvfrom($socket, $buf, 1024, 0, $ip, $port)) == -1) {
                 echo "socket_read() failed: " . socket_strerror(socket_last_error()) . "\n";
             }
             if(!is_null($buf)){
