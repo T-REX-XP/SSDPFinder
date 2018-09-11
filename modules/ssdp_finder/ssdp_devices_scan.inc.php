@@ -118,6 +118,12 @@ function Scan(){
 	    }
           // need for chek device type
           $device_type = explode(":", $device["deviceType"])[3];//DeviceType
+		
+	  // если устройство имеет modelName Eureka Dongl тогда это Chromecast устройство
+	  if (!$device["modelName"]=="Eureka Dongle"){
+	    $device_type='Chromecast';
+	    };
+		 
           // проверяем на наличие модуля в системе
           $mod_cheked = SQLSelectOne("SELECT * FROM plugins WHERE MODULE_NAME LIKE '".$modules[$device_type]."'");
           if (!array_search_result($result, 'UUID', $uuid) && !is_null($uuid) && !($existed)) {
