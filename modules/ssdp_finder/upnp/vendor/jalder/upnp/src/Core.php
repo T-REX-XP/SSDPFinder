@@ -46,7 +46,7 @@ class Core {
         $response = array();
         do {
             $buf = null;
-            if (($len = @socket_recvfrom($socket, $buf, 1024, 0, $this->getLocalIp(), $port)) == -1) {
+            if (($len = @socket_recvfrom($socket, $buf, 1024, 0, $ip, $port)) == -1) {
                 echo "socket_read() failed: " . socket_strerror(socket_last_error()) . "\n";
             }
             if(!is_null($buf)){
