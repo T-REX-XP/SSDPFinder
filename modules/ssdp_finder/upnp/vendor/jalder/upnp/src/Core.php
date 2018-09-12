@@ -15,14 +15,14 @@ class Core {
     
     public function search($st = 'ssdp:all', $mx = 2, $man = 'ssdp:discover', $from = null, $port = null, $sockTimout = '2')
     {
-        //milight, MagicHome
+        // поиск устройств milight, MagicHome
         $request = 'HF-A11ASSISTHREAD'."\r\n";
         $socket = socket_create(AF_INET, SOCK_DGRAM, 0);
         socket_set_option($socket, SOL_SOCKET, SO_BROADCAST, true);
         socket_sendto($socket, $request, strlen($request), 0, '239.255.255.250', 48899);		
 
 
-        //yeelight
+        //поиск устройств yeelight
 	$request = 'M-SEARCH * HTTP/1.1'."\r\n";
         $request .= 'HOST: 239.255.255.250:1982'."\r\n";
         $request .= 'MAN: "'.$man.'"'."\r\n";
@@ -43,8 +43,10 @@ class Core {
         $request .= "\r\n";
         $socket = socket_create(AF_INET, SOCK_DGRAM, 0);
         socket_set_option($socket, SOL_SOCKET, SO_BROADCAST, true);
+        // search device of other net
         socket_sendto($socket, $request, strlen($request), 0, '239.255.255.250', 1900);
         socket_set_option($socket, SOL_SOCKET, SO_RCVTIMEO, array('sec'=>$sockTimout, 'usec'=>'50'));
+        // search device of you PC
         socket_sendto($socket, $request, strlen($request), 0, '255.255.255.255', 1900);
         socket_set_option($socket, SOL_SOCKET, SO_RCVTIMEO, array('sec'=>$sockTimout, 'usec'=>'50'));
         $response = array();
