@@ -96,11 +96,13 @@ function Scan(){
 	     $dev = (array)json_decode($json, true);
 	     $device= $dev['device'];
 	     }
+          // need for chek device type
+          $device_type = explode(":", $device["deviceType"])[3];//DeviceType
 	  // получаем логотип на устройство
 	  $logo= getDefImg($control_url,$device);
 	  // проверяем на наличие в базе для запрета вывода
 	  $uuid = $device["UDN"];
-	  $existed = SQLSelectOne("SELECT * FROM $table_name WHERE UUID='".$uuid."'");
+	  $existed = SQLSelectOne("SELECT * FROM $table_name WHERE UUID='".$uuid."' AND TYPE='".$device_type."'");
 	  // иногда вместо serialNumber есть modelNumber
 	  $serialnumber = $device["serialNumber"];
 	  if (!$serialnumber){
@@ -116,14 +118,7 @@ function Scan(){
 	  if (!$device["modelDescription"]){
 	    $descript = $deviceInfo["server"];
 	    }
-          // need for chek device type
-          $device_type = explode(":", $device["deviceType"])[3];//DeviceType
-		
-	  // если устройство имеет modelName Eureka Dongl тогда это Chromecast устройство
-	  if (!$device["modelName"]=="Eureka Dongle"){
-	    $device_type='Chromecast';
-	    };
-		 
+          
           // проверяем на наличие модуля в системе
           $mod_cheked = SQLSelectOne("SELECT * FROM plugins WHERE MODULE_NAME LIKE '".$modules[$device_type]."'");
           if (!array_search_result($result, 'UUID', $uuid) && !is_null($uuid) && !($existed)) {
