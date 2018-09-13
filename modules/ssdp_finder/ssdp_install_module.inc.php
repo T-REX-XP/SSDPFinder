@@ -27,12 +27,16 @@
         @umask(0);
         @mkdir(ROOT.'cms/saverestore', 0777);
        }
-    
+  
+	  // change the type file 
+	  //$url = 'https://github.com/Gelezako/MajorDomo-Yeelight/archive/master.tar.gz';
+	  $url = str_replace(".tar.gz", ".zip", $url);
     $filename=ROOT.'cms/saverestore/'.$name.'.tgz';
     @unlink(ROOT.'cms/saverestore/'.$name.'.tgz');
     @unlink(ROOT.'cms/saverestore/'.$name.'.tar');
     $f = fopen($filename, 'wb');
     $ch = curl_init();
+
     curl_setopt($ch, CURLOPT_URL, $url);
     curl_setopt($ch, CURLOPT_TIMEOUT, 600);
     curl_setopt($ch, CURLOPT_FOLLOWLOCATION, TRUE);
