@@ -270,7 +270,12 @@ function getDefImg($control_url,$device) {
 			$mimetype = isset($arrImg[0]["mimetype"]) ? $arrImg[0]["mimetype"]: $icons[0]["mimetype"];
         } 
     }
-    $path = $baseUrl . $url;
+    //иногда ссылка дается полностью с всем адресом
+    if (substr($url, 0, 4) == "http") {
+        $path = $url;
+    } else {
+        $path = $baseUrl . $url;
+    };
     $current =get_web_page($path);
     $type = pathinfo($path, PATHINFO_EXTENSION);
     // иногда в ссылке на лого отсутствует расширение файла поэтому пробуем взять его из типа в XML файле
