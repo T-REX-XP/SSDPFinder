@@ -186,13 +186,13 @@ function startsWith($haystack, $needle){
 function getServices($device){
     $result = array();
     if(isset($device["serviceList"]["service"]["serviceType"])){
-        $name = explode(":", $device["serviceList"]["service"]["serviceType"])[3];
+        $name = explode(":", $device["serviceList"]["service"]["serviceType"])[3].':'.explode(":", $device["serviceList"]["service"]["serviceType"])[4];
         array_push($result,$name);
     }
     else{
         foreach($device["serviceList"]["service"] as $type)
         {
-            $name = explode(":", $type["serviceType"])[3];
+            $name = explode(":", $type["serviceType"])[3].':'.explode(":", $type["serviceType"])[4];
             array_push($result,$name);
         }
     }
@@ -270,7 +270,12 @@ function getDefImg($control_url,$device) {
 			$mimetype = isset($arrImg[0]["mimetype"]) ? $arrImg[0]["mimetype"]: $icons[0]["mimetype"];
         } 
     }
-    $path = $baseUrl . $url;
+    //иногда ссылка дается полностью с всем адресом
+    if (substr($url, 0, 4) == "http") {
+        $path = $url;
+    } else {
+        $path = $baseUrl . $url;
+    };
     $current =get_web_page($path);
     $type = pathinfo($path, PATHINFO_EXTENSION);
     // иногда в ссылке на лого отсутствует расширение файла поэтому пробуем взять его из типа в XML файле
