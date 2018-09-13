@@ -148,7 +148,7 @@ class Core {
         $body  ='<?xml version="1.0" encoding="utf-8"?>' . "\r\n";
         $body .='<s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/" s:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/">';
         $body .='<s:Body>';
-        $body .='<u:'.$method.' xmlns:u="urn:schemas-upnp-org:service:'.$type.'">';
+        $body .='<u:'.$method.' xmlns:u="urn:schemas-upnp-org:service:'.$type.':1">';
         foreach( $arguments as $arg=>$value ) {
             $body .='<'.$arg.'>'.$value.'</'.$arg.'>';
         }
@@ -162,7 +162,7 @@ class Core {
             'Content-Length: ' . strlen($body),
 			'Connection: close',
             'Content-Type: text/xml; charset="utf-8"',
-			'SOAPAction: "urn:schemas-upnp-org:service:'.$type.'#'.$method.'"',
+			'SOAPAction: "urn:schemas-upnp-org:service:'.$type.':1#'.$method.'"',
         );
 
         $ch = curl_init();
