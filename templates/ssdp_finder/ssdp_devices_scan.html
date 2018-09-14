@@ -102,7 +102,7 @@
                                     <div class="btn-group">[#if ID=""#]
                                         [#if EXTENDED_MODULES!=""#]
                                         <a onClick="return confirm('Are you sure? Please confirm.')" 
-					  [#if MODULE_INSTALLED!=""#] 
+					                   [#if MODULE_INSTALLED!=""#] 
                                              class="btn btn-default" 
                                              title="Добавить в список это устройство Модуль уже установлен"
                                           [#else#] 
@@ -113,11 +113,13 @@
                                           <i class="glyphicon glyphicon-compressed"></i>
                                         </a>
                                         [#endif#]
+										[#if EXTENDED_SIMPLEDEVICE!=""#]
                                         <a onClick="return confirm('Are you sure? Please confirm.')" 
                                            href="?data_source=<#DATA_SOURCE#>&mode=add&view_mode=edit_ssdp_devices&title=[#TITLE#]&type=[#TYPE#]&uuid=[#UUID#]&services=[#SERVICES#]&address=[#ADDRESS#]&description=[#DESCRIPTION#]&model=[#MODEL#]&manufacturer=[#MANUFACTURER#]&controladdress=[#CONTROLADDRESS#]"
                                            class="btn btn-success" title="Добавить как простое устройство">
                                             <i class="glyphicon glyphicon-sd-video"></i>
                                         </a>
+										[#endif#]
                                         [#else#]
                                         <a href="?data_source=<#DATA_SOURCE#>&view_mode=edit_ssdp_devices&id=[#ID#]" class="btn btn-info" title="Edit">
                                             <i class="glyphicon glyphicon-pencil"></i>
