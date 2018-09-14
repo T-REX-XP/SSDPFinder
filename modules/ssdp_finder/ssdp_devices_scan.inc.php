@@ -51,7 +51,7 @@ function Scan(){
         // если устройство yeelight
         if (substr($deviceInfo['location'], 0, 9) == "yeelight:") {
           $control_url = str_ireplace("yeelight:", "http:", $deviceInfo['location']);
-	  $logo= "/templates/ssdp_finder/img/YeelightSmartBulb.png";
+      $logo= "/templates/ssdp_finder/img/YeelightSmartBulb.png";
           // проверяем на наличие в базе для запрета вывода
           $uuid = $deviceInfo['location'];
           $existed = SQLSelectOne("SELECT * FROM $table_name WHERE UUID='".$uuid."'");
@@ -59,91 +59,93 @@ function Scan(){
          $mod_cheked = SQLSelectOne("SELECT * FROM plugins WHERE MODULE_NAME LIKE '".$modules['YeelightSmartBulb']."'");
          if (!array_search_result($result, 'UUID', $uuid) && !is_null($uuid) && !($existed)) {
            $result[] = [
-           "ID" => $existed["ID"], //existed id Majordomo
-           "TITLE" => 'Yeelight bulb',//friendly name
-           "ADDRESS" => 'https://www.yeelight.com' ,//presentation url (web UI of device),//presentation url (web UI of device)
-           "UUID" => $deviceInfo['location'],
-           "LOGO" => $logo,//Logo 
-           "DESCRIPTION" => 'Yeelight WiFi Light', //description get from xml or field "server"
-           "TYPE" => 'YeelightSmartBulb',//DeviceType
-           "SERIAL" => 'not existed',  //serialnumber
-           "MANUFACTURERURL" => 'https://www.yeelight.com',//manufacturer url
-           "UPDATED" => '',
-           "MODEL" => 'not existed',//model
-           "MODELNUMBER" => 'not existed',//modelNumber
-           "MANUFACTURER" => 'Yeelight',//Manufacturer
-           "SERVICES"=> 'RGBWSmartLight',//list services of device
-           "CONTROLADDRESS"=> $control_url,//list services of device
-           "EXTENDED_MODULES"=>$modules['YeelightSmartBulb'],// проверка на наличие модуля
-           "MODULE_INSTALLED"=>$mod_cheked, //chek the installed module
+               "ID" => $existed["ID"], //existed id Majordomo
+               "TITLE" => 'Yeelight bulb',//friendly name
+               "ADDRESS" => 'https://www.yeelight.com' ,//presentation url (web UI of device),//presentation url (web UI of device)
+               "UUID" => $deviceInfo['location'],
+               "LOGO" => $logo,//Logo 
+               "DESCRIPTION" => 'Yeelight WiFi Light', //description get from xml or field "server"
+               "TYPE" => 'YeelightSmartBulb',//DeviceType
+               "SERIAL" => 'not existed',  //serialnumber
+               "MANUFACTURERURL" => 'https://www.yeelight.com',//manufacturer url
+               "UPDATED" => '',
+               "MODEL" => 'not existed',//model
+               "MODELNUMBER" => 'not existed',//modelNumber
+               "MANUFACTURER" => 'Yeelight',//Manufacturer
+               "SERVICES"=> 'RGBWSmartLight',//list services of device
+               "CONTROLADDRESS"=> $control_url,//list services of device
+               "EXTENDED_MODULES"=>$modules['YeelightSmartBulb'],// проверка на наличие модуля
+               "MODULE_INSTALLED"=>$mod_cheked, //chek the installed module
+               "EXTENDED_SIMPLEDEVICE"=>$this->check_seample_device($device_type), //chek the simple device extended
             ];
-	  $_SESSION[$uuid] = $logo;
-	 //session_write_close();
-	 }
+      $_SESSION[$uuid] = $logo;
+     //session_write_close();
+     }
          // иначе проверяем остальные устройства
          } else {
            // то что надо обработать в первую очередь
-	   $device= $deviceInfo['description']['device'];
-	   $control_url = $deviceInfo['location'];
-	   // для начала проверяем не майкрософтовое ли это устройство
-	   // и если да то подгружаем внутренний файл потому что он находится в ссылке на файл
-	   // for microsoft devices 
-	   if (substr($deviceInfo['location'], 0, 9) == "Location:") {
-	     $control_url = str_ireplace("Location:", "", $deviceInfo['location']);
-	     libxml_use_internal_errors(true); 
-	     $xml = simplexml_load_file($control_url);
-	     $json = json_encode($xml);
-	     $dev = (array)json_decode($json, true);
-	     $device= $dev['device'];
-	     }
+       $device= $deviceInfo['description']['device'];
+       $control_url = $deviceInfo['location'];
+       // для начала проверяем не майкрософтовое ли это устройство
+       // и если да то подгружаем внутренний файл потому что он находится в ссылке на файл
+       // for microsoft devices 
+       if (substr($deviceInfo['location'], 0, 9) == "Location:") {
+         $control_url = str_ireplace("Location:", "", $deviceInfo['location']);
+         libxml_use_internal_errors(true); 
+         $xml = simplexml_load_file($control_url);
+         $json = json_encode($xml);
+         $dev = (array)json_decode($json, true);
+         $device= $dev['device'];
+         }
           // need for chek device type
           $device_type = explode(":", $device["deviceType"])[3];//DeviceType
-	  // получаем логотип на устройство
-	  $logo= getDefImg($control_url,$device);
-	  // проверяем на наличие в базе для запрета вывода
-	  $uuid = $device["UDN"];
-	  $existed = SQLSelectOne("SELECT * FROM $table_name WHERE UUID='".$uuid."' AND TYPE='".$device_type."'");
-	  // иногда вместо serialNumber есть modelNumber
-	  $serialnumber = $device["serialNumber"];
-	  if (!$serialnumber){
-	    $serialnumber = $device["modelNumber"];
-	    }
-	  // иногда presentationURL отсутствует
-	  $presenturl = $device["presentationURL"];
-	  if (!$device["presentationURL"]){
-	    $presenturl='http://'.getIp($control_url,false);
-	    }
-	  // иногда modelDescription отсутствует тогда берем server
-	  $descript = $device["modelDescription"];
-	  if (!$device["modelDescription"]){
-	    $descript = $deviceInfo["server"];
-	    }
+      // получаем логотип на устройство
+      $logo= getDefImg($control_url,$device);
+      // проверяем на наличие в базе для запрета вывода
+      $uuid = $device["UDN"];
+      $existed = SQLSelectOne("SELECT * FROM $table_name WHERE UUID='".$uuid."' AND TYPE='".$device_type."'");
+      // иногда вместо serialNumber есть modelNumber
+      $serialnumber = $device["serialNumber"];
+      if (!$serialnumber){
+        $serialnumber = $device["modelNumber"];
+        }
+      // иногда presentationURL отсутствует
+      $presenturl = $device["presentationURL"];
+      if (!$device["presentationURL"]){
+        $presenturl='http://'.getIp($control_url,false);
+        }
+      // иногда modelDescription отсутствует тогда берем server
+      $descript = $device["modelDescription"];
+      if (!$device["modelDescription"]){
+        $descript = $deviceInfo["server"];
+        }
           
           // проверяем на наличие модуля в системе
           $mod_cheked = SQLSelectOne("SELECT * FROM plugins WHERE MODULE_NAME LIKE '".$modules[$device_type]."'");
           if (!array_search_result($result, 'UUID', $uuid) && !is_null($uuid) && !($existed)) {
             $result[] = [
-	    "ID" => $existed["ID"], //existed id Majordomo
-	    "TITLE" => $device["friendlyName"],//friendly name
-	    "ADDRESS" => $presenturl ,//presentation url (web UI of device),//presentation url (web UI of device)
-	    "UUID" => $uuid,
-	    "LOGO" => $logo,//Logo 
-	    "DESCRIPTION" => $descript, //description get from xml or field "server"
-	    "TYPE" => $device_type,//DeviceType
-	    "SERIAL" => $serialnumber,  //serialnumber
-	    "MANUFACTURERURL" => $device["manufacturerURL"],//manufacturer url
-	    "UPDATED" => '',
-	    "MODEL" => $device["modelName"],//model
-	    "MODELNUMBER" => $device["modelNumber"],//modelNumber
-	    "MANUFACTURER" => $device["manufacturer"],//Manufacturer
-	    "SERVICES"=> getServices($device),//list services of device
-	    "CONTROLADDRESS"=> $control_url,//list services of device
-            "EXTENDED_MODULES"=>$modules[$device_type],
-            "MODULE_INSTALLED"=>$mod_cheked, //chek the installed module
-	    ];
-	  $_SESSION[$uuid] = $logo;
-	  //session_write_close();
-	  }
+                "ID" => $existed["ID"], //existed id Majordomo
+                "TITLE" => $device["friendlyName"],//friendly name
+                "ADDRESS" => $presenturl ,//presentation url (web UI of device),//presentation url (web UI of device)
+                "UUID" => $uuid,
+                "LOGO" => $logo,//Logo 
+                "DESCRIPTION" => $descript, //description get from xml or field "server"
+                "TYPE" => $device_type,//DeviceType
+                "SERIAL" => $serialnumber,  //serialnumber
+                "MANUFACTURERURL" => $device["manufacturerURL"],//manufacturer url
+                "UPDATED" => '',
+                "MODEL" => $device["modelName"],//model
+                "MODELNUMBER" => $device["modelNumber"],//modelNumber
+                "MANUFACTURER" => $device["manufacturer"],//Manufacturer
+                "SERVICES"=> getServices($device),//list services of device
+                "CONTROLADDRESS"=> $control_url,//list services of device
+                "EXTENDED_MODULES"=>$modules[$device_type],
+                "MODULE_INSTALLED"=>$mod_cheked, //chek the installed module
+                "EXTENDED_SIMPLEDEVICE"=>check_seample_device($device_type), //chek the simple device extended
+        ];
+      $_SESSION[$uuid] = $logo;
+      //session_write_close();
+      }
        }
     }
   }
@@ -161,7 +163,7 @@ function array_search_result($array, $key, $value){
 
 
 function getIp($baseUrl,$withPort) {
-	if( !empty($baseUrl) ){
+    if( !empty($baseUrl) ){
         $parsed_url = parse_url($baseUrl);
         if($withPort ==true){
             $baseUrl = $parsed_url['scheme'].'://'.$parsed_url['host'].':'.$parsed_url['port']; 
@@ -177,6 +179,14 @@ function getLocalIp() {
     return gethostbyname(trim(`hostname`)); 
 }
 
+// проверка на присутствие простого устройства для просканированого устройства
+function check_seample_device($device_type){
+	$answer = @file_get_contents('https://raw.githubusercontent.com/tarasfrompir/SSDPDrivers/master/modules/devices/addons/SSDPFinder_'.$device_type.'_structure.php');
+	if ($answer) {
+        return $device_type;
+        };
+		return;
+	}
 
 function startsWith($haystack, $needle){
      $length = strlen($needle);
@@ -196,8 +206,8 @@ function getServices($device){
             array_push($result,$name);
         }
     }
-	// иногда сервис уходит в глубь файла описания еще на одно поле ["deviceList"]["device"]
-	if(isset($device["deviceList"]["device"]["serviceList"]["service"]["serviceType"])){
+    // иногда сервис уходит в глубь файла описания еще на одно поле ["deviceList"]["device"]
+    if(isset($device["deviceList"]["device"]["serviceList"]["service"]["serviceType"])){
         $name = $device["deviceList"]["device"]["serviceList"]["service"]["serviceType"];
         array_push($result,$name);
     }
@@ -209,7 +219,7 @@ function getServices($device){
         }
     }
     // А еще иногда сервис уходит в глубь файла описания еще на два поле ["deviceList"]["device"]
-	if(isset($device["deviceList"]["device"]["deviceList"]["device"]["serviceList"]["service"]["serviceType"])){
+    if(isset($device["deviceList"]["device"]["deviceList"]["device"]["serviceList"]["service"]["serviceType"])){
         $name = $device["deviceList"]["device"]["deviceList"]["device"]["serviceList"]["service"]["serviceType"];
         array_push($result,$name);
     }
@@ -222,12 +232,12 @@ function getServices($device){
     }
     if (!$result) {
        // иногда отсутствуют SERVICES  для устройств MSMD Gate тогда берем friendlyName
-       	return $device["friendlyName"];
+           return $device["friendlyName"];
       }
-	return implode(",",$result);
+    return implode(",",$result);
 }
 function endsWith($haystack, $needle){
-	return $needle === '' || substr_compare($haystack, $needle, -strlen($needle)) === 0;
+    return $needle === '' || substr_compare($haystack, $needle, -strlen($needle)) === 0;
 }
 
 function SearchArray($array, $searchIndex, $searchValue){
@@ -283,7 +293,7 @@ function getDefImg($control_url,$device) {
     $baseUrl = getIp($control_url,True);
     $icons =$device["iconList"]["icon"];
     if (!$icons){
-	    return "/templates/ssdp_finder/img/".explode(":", $device["deviceType"])[3] . ".png";//"Icons not found
+        return "/templates/ssdp_finder/img/".explode(":", $device["deviceType"])[3] . ".png";//"Icons not found
     } else {
         if(isset($icons["url"])){
             $url = $icons["url"];
@@ -291,7 +301,7 @@ function getDefImg($control_url,$device) {
         else if(is_array($icons)){
             $arrImg= array_filter($icons, "img64");
             $url= isset($arrImg[0]["url"]) ? $arrImg[0]["url"]: $icons[0]["url"];
-			$mimetype = isset($arrImg[0]["mimetype"]) ? $arrImg[0]["mimetype"]: $icons[0]["mimetype"];
+            $mimetype = isset($arrImg[0]["mimetype"]) ? $arrImg[0]["mimetype"]: $icons[0]["mimetype"];
         } 
     }
     //иногда ссылка дается полностью с всем адресом
@@ -303,9 +313,9 @@ function getDefImg($control_url,$device) {
     $current =get_web_page($path);
     $type = pathinfo($path, PATHINFO_EXTENSION);
     // иногда в ссылке на лого отсутствует расширение файла поэтому пробуем взять его из типа в XML файле
-	if (strlen($type)>3) {
-    	    return 'data:' . $mimetype . ';base64,' . base64_encode($current['content']);
-	} else {
+    if (strlen($type)>3) {
+            return 'data:' . $mimetype . ';base64,' . base64_encode($current['content']);
+    } else {
             return 'data:image/' . $type . ';base64,' . base64_encode($current['content']);
-	}
+    }
 }
