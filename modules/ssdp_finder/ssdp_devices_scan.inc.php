@@ -196,6 +196,30 @@ function getServices($device){
             array_push($result,$name);
         }
     }
+	// иногда сервис уходит в глубь файла описания еще на одно поле ["deviceList"]["device"]
+	if(isset($device["deviceList"]["device"]["serviceList"]["service"]["serviceType"])){
+        $name = $device["deviceList"]["device"]["serviceList"]["service"]["serviceType"];
+        array_push($result,$name);
+    }
+    else{
+        foreach($device["deviceList"]["device"]["serviceList"]["service"] as $type)
+        {
+            $name = $type["serviceType"];
+            array_push($result,$name);
+        }
+    }
+    // А еще иногда сервис уходит в глубь файла описания еще на два поле ["deviceList"]["device"]
+	if(isset($device["deviceList"]["device"]["deviceList"]["device"]["serviceList"]["service"]["serviceType"])){
+        $name = $device["deviceList"]["device"]["deviceList"]["device"]["serviceList"]["service"]["serviceType"];
+        array_push($result,$name);
+    }
+    else{
+        foreach($device["deviceList"]["device"]["deviceList"]["device"]["serviceList"]["service"] as $type)
+        {
+            $name = $type["serviceType"];
+            array_push($result,$name);
+        }
+    }
     if (!$result) {
        // иногда отсутствуют SERVICES  для устройств MSMD Gate тогда берем friendlyName
        	return $device["friendlyName"];
