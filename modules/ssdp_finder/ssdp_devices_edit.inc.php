@@ -19,7 +19,6 @@
       $ok=0;
     }
 
-    global $create_sd;
     global $create_od;
     global $create_term;
  
@@ -84,10 +83,9 @@
       $rec['ID']=SQLInsert($table_name, $rec); // adding new record
  
       // moya dobavka автодобавление устройств в онлайн и простые устройства
-      if($create_sd==true){
        $this->add_to_SSDPdevices($rec['ID']);
-      }
-      if($create_od==true){
+
+       if($create_od==true){
        $this->add_to_pinghost($rec['ID']);
       }
       if($create_term==true AND $type=='MediaRenderer'){
@@ -115,7 +113,6 @@
      $ok=0;
     }
    session_start();
-   global $create_sd;
    global $create_od;
    global $create_term;
    //updating 'use_to_say' (varchar)
@@ -177,9 +174,7 @@
       $new_rec=1;
       $rec['ID']=SQLInsert($table_name, $rec); // adding new record]
       // moya dobavka автодобавление устройств в онлайн и простые устройства
-      if($create_sd==true){
-       $this->add_to_SSDPdevices($rec['ID']);
-      }
+      $this->add_to_SSDPdevices($rec['ID']);
       if($create_od==true){
        $this->add_to_pinghost($rec['ID']);
       }
