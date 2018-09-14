@@ -201,7 +201,7 @@ function getServices($device){
         $name = $device["deviceList"]["device"]["serviceList"]["service"]["serviceType"];
         array_push($result,$name);
     }
-    else{
+    else if(isset($device["deviceList"]["device"]["serviceList"]["service"])) {
         foreach($device["deviceList"]["device"]["serviceList"]["service"] as $type)
         {
             $name = $type["serviceType"];
@@ -213,7 +213,7 @@ function getServices($device){
         $name = $device["deviceList"]["device"]["deviceList"]["device"]["serviceList"]["service"]["serviceType"];
         array_push($result,$name);
     }
-    else{
+    else if(isset($device["deviceList"]["device"]["deviceList"]["device"]["serviceList"]["service"])){
         foreach($device["deviceList"]["device"]["deviceList"]["device"]["serviceList"]["service"] as $type)
         {
             $name = $type["serviceType"];
