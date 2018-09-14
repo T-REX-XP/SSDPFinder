@@ -8,98 +8,96 @@
   $table_name='ssdp_devices';
   $rec=SQLSelectOne("SELECT * FROM $table_name WHERE ID='$id'");
 
-// режим сохранения устройств
+  // режим сохранения устройств
   if ($this->mode=='update') {
-   $ok=1;
-  //updating '<%LANG_TITLE%>' (varchar, required)
-   global $title;
-   $rec['TITLE']=$title;
-   if ($rec['TITLE']=='') {
-    $out['ERR_TITLE']=1;
-    $ok=0;
-   }
-
-   global $create_sd;
-   global $create_od;
-   global $create_term;
-
-   //updating 'use_to_say' (varchar)
-   global $use_to_say;
-   //updating 'controladdress' (varchar)
-   global $controladdress;
-   $rec['CONTROLADDRESS']=$controladdress;
-   //updating 'Uuid' (varchar)
-   global $uuid;
-   $rec['UUID']=$uuid;
-   //updating 'TITLE' (varchar)
-   global $title;
-   $rec['TITLE']=$title;
-  //updating 'Type' (varchar)
-   global $type;
-   $rec['TYPE']=$type;
-  //updating 'services' (varchar)
-   global $services;
-   $rec['SERVICES']=$services;
-   //updating 'Address' (varchar)
-   global $address;
-   $rec['ADDRESS']=$address;
-  //updating 'Description' (varchar)
-   global $description;
-   $rec['DESCRIPTION']=$description;
-  //updating 'Model' (varchar)
-   global $model;
-   $rec['MODEL']=$model;
-  //updating 'Manufacturer' (varchar)
-   global $manufacturer;
-   $rec['MANUFACTURER']=$manufacturer;
-  //updating 'location' (varchar)
-   global $location;
-   $rec['LOCATION']=$location;
- //updating 'Logo' (varchar)
-   global $logo;
-   $rec['LOGO']=$logo;
-  //updating '<%LANG_LINKED_OBJECT%>' (varchar)
-   global $linked_object;
-   $rec['LINKED_OBJECT']=$linked_object;
-  //updating '<%LANG_LINKED_PROPERTY%>' (varchar)
-   global $linked_property;
-   $rec['LINKED_PROPERTY']=$linked_property;
-  //updating '<%LANG_METHOD%>' (varchar)
-   global $linked_method;
-   $rec['LINKED_METHOD']=$linked_method;
-  //updating '<%LANG_UPDATED%>' (datetime)
-   global $updated_date;
-   global $updated_minutes;
-   global $updated_hours;
-   if($use_to_say==true){
-      $rec['USE_TO_SAY']=1;
-   }
-   $rec['UPDATED']=toDBDate($updated_date)." $updated_hours:$updated_minutes:00";
-  //UPDATING RECORD
-   if ($ok) {
-    if ($rec['ID']) {
-     SQLUpdate($table_name, $rec); // update
-    } else {
-     $new_rec=1;
-     $rec['ID']=SQLInsert($table_name, $rec); // adding new record
-
-     // moya dobavka автодобавление устройств в онлайн и простые устройства
-     if($create_sd==true){
-      $this->add_to_SSDPdevices($rec['ID']);
-     }
-     if($create_od==true){
-      $this->add_to_pinghost($rec['ID']);
-     }
-     if($create_term==true AND $type=='MediaRenderer'){
-      $this->add_to_terminal($rec['ID']);
-     }
+    $ok=1;
+    //updating '<%LANG_TITLE%>' (varchar, required)
+    global $title;
+    $rec['TITLE']=$title;
+    if ($rec['TITLE']=='') {
+      $out['ERR_TITLE']=1;
+      $ok=0;
     }
-    $out['OK']=1;
-   } else {
-    $out['ERR']=1;
-   }
-  // после сохранения устройства переходим на основную страницу 
-   $this->redirect("?");
+
+    global $create_od;
+    global $create_term;
+ 
+    //updating 'use_to_say' (varchar)
+    global $use_to_say;
+    //updating 'controladdress' (varchar)
+    global $controladdress;
+    $rec['CONTROLADDRESS']=$controladdress;
+    //updating 'Uuid' (varchar)
+    global $uuid;
+    $rec['UUID']=$uuid;
+    //updating 'TITLE' (varchar)
+    global $title;
+    $rec['TITLE']=$title;
+    //updating 'Type' (varchar)
+    global $type;
+    $rec['TYPE']=$type;
+    //updating 'services' (varchar)
+    global $services;
+    $rec['SERVICES']=$services;
+    //updating 'Address' (varchar)
+    global $address;
+    $rec['ADDRESS']=$address;
+    //updating 'Description' (varchar)
+    global $description;
+    $rec['DESCRIPTION']=$description;
+    //updating 'Model' (varchar)
+    global $model;
+    $rec['MODEL']=$model;
+    //updating 'Manufacturer' (varchar)
+    global $manufacturer;
+    $rec['MANUFACTURER']=$manufacturer;
+    //updating 'location' (varchar)
+    global $location;
+    $rec['LOCATION']=$location;
+    //updating 'Logo' (varchar)
+    global $logo;
+    $rec['LOGO']=$logo;
+    //updating '<%LANG_LINKED_OBJECT%>' (varchar)
+    //global $linked_object;
+    //$rec['LINKED_OBJECT']=$linked_object;
+    //updating '<%LANG_LINKED_PROPERTY%>' (varchar)
+    //global $linked_property;
+    //$rec['LINKED_PROPERTY']=$linked_property;
+    //updating '<%LANG_METHOD%>' (varchar)
+    //global $linked_method;
+    //$rec['LINKED_METHOD']=$linked_method;
+    //updating '<%LANG_UPDATED%>' (datetime)
+    global $updated_date;
+    global $updated_minutes;
+    global $updated_hours;
+    if($use_to_say==true){
+       $rec['USE_TO_SAY']=1;
+    }
+    $rec['UPDATED']=toDBDate($updated_date)." $updated_hours:$updated_minutes:00";
+    //UPDATING RECORD
+    if ($ok) {
+     if ($rec['ID']) {
+      SQLUpdate($table_name, $rec); // update
+     } else {
+      $new_rec=1;
+      $rec['ID']=SQLInsert($table_name, $rec); // adding new record
+ 
+      // moya dobavka автодобавление устройств в онлайн и простые устройства
+       $this->add_to_SSDPdevices($rec['ID']);
+
+       if($create_od==true){
+       $this->add_to_pinghost($rec['ID']);
+      }
+      if($create_term==true AND $type=='MediaRenderer'){
+       $this->add_to_terminal($rec['ID']);
+      }
+     }
+     $out['OK']=1;
+    } else {
+     $out['ERR']=1;
+    }
+   // после сохранения устройства переходим на основную страницу 
+    $this->redirect("?");
   }
 
 // режим добваления устройств
@@ -115,7 +113,6 @@
      $ok=0;
     }
    session_start();
-   global $create_sd;
    global $create_od;
    global $create_term;
    //updating 'use_to_say' (varchar)
@@ -153,14 +150,14 @@
    global $logo;
    $rec['LOGO']=  $_SESSION[$uuid];//$logo;
   //updating '<%LANG_LINKED_OBJECT%>' (varchar)
-   global $linked_object;
-   $rec['LINKED_OBJECT']=$linked_object;
+  // global $linked_object;
+   //$rec['LINKED_OBJECT']=$linked_object;
   //updating '<%LANG_LINKED_PROPERTY%>' (varchar)
-   global $linked_property;
-   $rec['LINKED_PROPERTY']=$linked_property;
+   //global $linked_property;
+   //$rec['LINKED_PROPERTY']=$linked_property;
   //updating '<%LANG_METHOD%>' (varchar)
-   global $linked_method;
-   $rec['LINKED_METHOD']=$linked_method;
+  // global $linked_method;
+  // $rec['LINKED_METHOD']=$linked_method;
   //updating '<%LANG_UPDATED%>' (datetime)
    global $updated_date;
    global $updated_minutes;
@@ -177,9 +174,7 @@
       $new_rec=1;
       $rec['ID']=SQLInsert($table_name, $rec); // adding new record]
       // moya dobavka автодобавление устройств в онлайн и простые устройства
-      if($create_sd==true){
-       $this->add_to_SSDPdevices($rec['ID']);
-      }
+      $this->add_to_SSDPdevices($rec['ID']);
       if($create_od==true){
        $this->add_to_pinghost($rec['ID']);
       }

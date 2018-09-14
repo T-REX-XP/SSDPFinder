@@ -186,13 +186,13 @@ function startsWith($haystack, $needle){
 function getServices($device){
     $result = array();
     if(isset($device["serviceList"]["service"]["serviceType"])){
-        $name = explode(":", $device["serviceList"]["service"]["serviceType"])[3].':'.explode(":", $device["serviceList"]["service"]["serviceType"])[4];
+        $name = $device["serviceList"]["service"]["serviceType"];
         array_push($result,$name);
     }
     else{
         foreach($device["serviceList"]["service"] as $type)
         {
-            $name = explode(":", $type["serviceType"])[3].':'.explode(":", $type["serviceType"])[4];
+            $name = $type["serviceType"];
             array_push($result,$name);
         }
     }
