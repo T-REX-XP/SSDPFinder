@@ -19,35 +19,123 @@
       if ( $plug_number['TITLE'] == $namemodule ){
         $url= $plug_number['REPOSITORY_URL'];
         $name = $plug_number['MODULE_NAME'];
+        $version = $plug_number['LATEST_VERSION'];
         break;
       };
     };
     //загружаем модуль в папку сайвресторе
-    if (!is_dir(ROOT.'cms/saverestore')) {
+    if (!is_dir(ROOT . 'cms/saverestore')) {
         @umask(0);
-        @mkdir(ROOT.'cms/saverestore', 0777);
-       }
-  
-	  // change the type file 
-	  //$url = 'https://github.com/Gelezako/MajorDomo-Yeelight/archive/master.tar.gz';
-	  $url = str_replace(".tar.gz", ".zip", $url);
+        @mkdir(ROOT . 'cms/saverestore', 0777);
+    }
+    umask(0);
+    @mkdir(ROOT . 'cms/saverestore/temp', 0777);
+    
     $filename=ROOT.'cms/saverestore/'.$name.'.tgz';
     @unlink(ROOT.'cms/saverestore/'.$name.'.tgz');
     @unlink(ROOT.'cms/saverestore/'.$name.'.tar');
     $f = fopen($filename, 'wb');
+    DebMes("Downloading plugin $name ($version) from $url");
     $ch = curl_init();
-
     curl_setopt($ch, CURLOPT_URL, $url);
     curl_setopt($ch, CURLOPT_TIMEOUT, 600);
     curl_setopt($ch, CURLOPT_FOLLOWLOCATION, TRUE);
-    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);     
-    curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2); 
-    curl_setopt($ch, CURLOPT_FILE, $f); 
+    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+    curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
+    curl_setopt($ch, CURLOPT_FILE, $f);
     $incoming = curl_exec($ch);
     curl_close($ch);
     @fclose($f);
+
+// procedura ustanovki modulya
+    if (file_exists($filename)) {
+        $file = basename($filename);
+        DebMes("Installing/updating plugin $name ($version) $file");
+        chdir(ROOT . 'cms/saverestore/temp');
+        if (IsWindowsOS()) {
+          //DebMes("Running ".DOC_ROOT.'/gunzip ../'.$file);
+          exec(DOC_ROOT . '/gunzip ../' . $file, $output, $res);
+          //DebMes("Running ".DOC_ROOT.'/tar xvf ../'.str_replace('.tgz', '.tar', $file));
+          exec(DOC_ROOT . '/tar xvf ../' . str_replace('.tgz', '.tar', $file), $output, $res);
+        } else {
+          exec('tar xzvf ../' . $file, $output, $res);
+        }
+        $x = 0;
+        $latest_dir = '';
+        $latest_file = '';
+        $dir = opendir('./');
+        while (($filec = readdir($dir)) !== false) {
+          if ($filec == '.' || $filec == '..') {
+            continue;
+          }
+          if (is_Dir($filec)) {
+            $latest_dir = $filec;
+          } elseif (is_File($filec)) {
+            $latest_file = $filec;
+          }
+          $x++;
+        }
+        if ($x == 1 && $latest_dir) {
+          $folder = '/' . $latest_dir;
+        }
+        chdir('../../');
+        DebMes("Latest folder: $latest_dir");             
+        $mkt->installUnpacketPlugin(ROOT . 'cms/saverestore/temp' . $folder, $name);
+        // zapisivaem chto modul ustanovlen
+        $rec = SQLSelectOne("SELECT * FROM plugins WHERE MODULE_NAME LIKE '" . DBSafe($name) . "'");
+        $rec['MODULE_NAME'] = $name;
+        $rec['CURRENT_VERSION'] = $version;
+        $rec['IS_INSTALLED'] = 1;
+        $rec['LATEST_UPDATE'] = date('Y-m-d H:i:s');
+        if ($rec['ID']) {
+          SQLUpdate('plugins', $rec);
+        } else {
+          SQLInsert('plugins', $rec);
+        }
+        //berem dannie s modulya
+        $module_data = file_get_contents(ROOT.'modules/'.$name."/".$name.".class.php");
+        $module_data = substr($module_data, 1, 800);
+        // berem imya modulya
+        $start_pos = stripos($module_data, '$this->name="');
+        $module_data = substr($module_data, $start_pos+13);
+        $end_pos = stripos($module_data, '";');
+        $module_name = substr($module_data, 0, $end_pos);        
+        DebMes ("Имя Модуля ".$module_name);
+        $module_data = substr($module_data, $end_pos);
+
+        // berem title modulya
+        $start_pos = stripos($module_data, '$this->title="');
+        $module_data = substr($module_data, $start_pos+14);
+        $end_pos = stripos($module_data, '";');
+        $module_title = substr($module_data, 0, $end_pos);        
+        DebMes ("Описание модуля ".$module_title);
+        $module_data = substr($module_data, $end_pos);
+
+        // berem category modulya
+        $start_pos = stripos($module_data, '$this->module_category="');
+        $module_data = substr($module_data, $start_pos+24);
+        $end_pos = stripos($module_data, '";');
+        $module_category = substr($module_data, 0, $end_pos);        
+        DebMes ("Категория модуля ".$module_category);
+
+        // заполняем данные о модуле
+        $rec = SQLSelectOne("SELECT * FROM project_modules WHERE NAME LIKE '" . DBSafe($name) . "'");
+        $rec['NAME'] = $module_name;
+        $rec['TITLE'] = $module_title;
+        $rec['CATEGORY'] = $module_category;
+        $rec['HIDDEN'] = 0;
+        $rec['PRIORITY'] = 0;
+        $rec['ADDED'] = date('Y-m-d H:i:s');
+        if ($rec['ID']) {
+          SQLUpdate('project_modules', $rec);
+        } else {
+          SQLInsert('project_modules', $rec);
+        }
+
+    }
+    @rmdir(ROOT.'cms/saverestore/temp/');
     
-////////////////////////////////////////////////////////////
+// konec ustanovki modulya
 }  
 
 // добавление устройства в таблицу ssdp_devices
