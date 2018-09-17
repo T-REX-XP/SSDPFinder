@@ -606,12 +606,12 @@ function delete_ssdp_devices($id) {
         SQLExec("DELETE FROM pinghosts WHERE LINKED_OBJECT='".$rec['LINKED_OBJECT']."'"); 
         // delete from terminals
         SQLExec("DELETE FROM terminals WHERE LINKED_OBJECT='".$rec['LINKED_OBJECT']."'"); 
-       // standart code
-       // delete fromp tables ssdp_devices
-       SQLExec("DELETE FROM ssdp_devices WHERE ID='".$rec['ID']."'"); 
-       // delete fromp tables classes
-       SQLExec("DELETE FROM classes WHERE TITLE='S".$rec['TYPE']."'");
-       }
+        // standart code
+        // delete fromp tables ssdp_devices
+        SQLExec("DELETE FROM ssdp_devices WHERE ID='".$rec['ID']."'"); 
+        // delete fromp tables classes
+        SQLExec("DELETE FROM classes WHERE TITLE='S".$rec['TYPE']."'");
+        }
     }
 
 
@@ -624,28 +624,28 @@ function deleteDrivers($device_type){
     //выбираем количество устройств из базы данных по одному типу
     $devices = SQLSelect("SELECT * FROM ssdp_devices WHERE TYPE LIKE '".$device_type."'");
     // проверяем на присутствие еще такого устройства для определения необходимости удаления драйверов устройства
-    if (count($devices)==1){
+    if (count($devices)==1 and !$devices['ID']){
         // удаляем методы устройства
         $device = SQLSelectOne("SELECT * FROM classes WHERE TITLE LIKE 'S".$device_type."'");
         $methods = SQLSelect("SELECT * FROM methods WHERE CLASS_ID='".$device['ID']."'");
         foreach ($methods as $method) {
             //удаляем методы из мажордомо
-            if (file_exists(ROOT.'/modules/devices/S'.$device_type.'_'.$method['TITLE'].'.php')) {
+            if ($method['TITLE'] and file_exists(ROOT.'/modules/devices/S'.$device_type.'_'.$method['TITLE'].'.php')) {
                 unlink(ROOT.'/modules/devices/S'.$device_type.'_'.$method['TITLE'].'.php');
                 };
-            // удаляем из базы записи о методах
-            SQLExec("DELETE FROM methods WHERE TITLE='".$method['TITLE']."'");
-
+		    if ($method['TITLE']) {// удаляем из базы записи о методах
+                SQLExec("DELETE FROM methods WHERE TITLE='".$method['TITLE']."'");
+		        };
             };
         // удаляем шаблон для устройства
-        if (file_exists(ROOT.'/templates/classes/views/S'.$device_type.'.html')) {
+        if ($device_type and file_exists(ROOT.'/templates/classes/views/S'.$device_type.'.html')) {
             unlink(ROOT.'/templates/classes/views/S'.$device_type.'.html');
             };
         // удаляем управляющий класс для устройства
-        if (file_exists(ROOT.'/modules/ssdp_finder/upnp/vendor/jalder/upnp/src/'.$device_type.'.php')) {
+        if ($device_type and file_exists(ROOT.'/modules/ssdp_finder/upnp/vendor/jalder/upnp/src/'.$device_type.'.php')) {
             unlink(ROOT.'/modules/ssdp_finder/upnp/vendor/jalder/upnp/src/'.$device_type.'.php');
             };
-        if (file_exists(ROOT.'/modules/ssdp_finder/upnp/vendor/jalder/upnp/src/'.$device_type.'/Remote.php')) {
+        if ($device_type and file_exists(ROOT.'/modules/ssdp_finder/upnp/vendor/jalder/upnp/src/'.$device_type.'/Remote.php')) {
             unlink(ROOT.'/modules/ssdp_finder/upnp/vendor/jalder/upnp/src/'.$device_type.'/Remote.php');
             };
         for ($i = 1; $i <= 10; $i++) {
@@ -657,7 +657,7 @@ function deleteDrivers($device_type){
         // удаляем директорию для текущего устройства
         rmdir(ROOT.'/modules/ssdp_finder/upnp/vendor/jalder/upnp/src/'.$device_type);
         // удаляем structure in addons для устройства
-        if (file_exists(ROOT.'/modules/devices/addons/SSDPFinder_'.$device_type.'_structure.php')) {
+        if ($device_type and file_exists(ROOT.'/modules/devices/addons/SSDPFinder_'.$device_type.'_structure.php')) {
              unlink(ROOT.'/modules/devices/addons/SSDPFinder_'.$device_type.'_structure.php');
             };
         };
