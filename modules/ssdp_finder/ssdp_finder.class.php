@@ -634,6 +634,7 @@ function deleteDrivers($device_type){
                 unlink(ROOT.'/modules/devices/S'.$device_type.'_'.$method['TITLE'].'.php');
                 };
             if ($method['TITLE'] and $device_type and $device['PARENT_ID']!=0) {// удаляем из базы записи о методах
+               DebMes ('Beda udalyaem pustie metodi');
                 SQLExec("DELETE FROM methods WHERE TITLE='".$method['TITLE']."'");
 		        };
             };
