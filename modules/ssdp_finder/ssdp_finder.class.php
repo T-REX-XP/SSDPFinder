@@ -624,7 +624,7 @@ function deleteDrivers($device_type){
     //выбираем количество устройств из базы данных по одному типу
     $devices = SQLSelect("SELECT * FROM ssdp_devices WHERE TYPE LIKE '".$device_type."'");
     // проверяем на присутствие еще такого устройства для определения необходимости удаления драйверов устройства
-    if (count($devices)==1 and !$devices['ID']){
+    if (count($devices)==1 and $devices['ID']){
         // удаляем методы устройства
         $device = SQLSelectOne("SELECT * FROM classes WHERE TITLE LIKE 'S".$device_type."'");
         $methods = SQLSelect("SELECT * FROM methods WHERE CLASS_ID='".$device['ID']."'");
@@ -633,7 +633,8 @@ function deleteDrivers($device_type){
             if ($method['TITLE'] and file_exists(ROOT.'/modules/devices/S'.$device_type.'_'.$method['TITLE'].'.php')) {
                 unlink(ROOT.'/modules/devices/S'.$device_type.'_'.$method['TITLE'].'.php');
                 };
-		    if ($method['TITLE']) {// удаляем из базы записи о методах
+            if ($method['TITLE'] and $device_type and $device['PARENT_ID']!=0) {// удаляем из базы записи о методах
+               DebMes ('Beda udalyaem pustie metodi');
                 SQLExec("DELETE FROM methods WHERE TITLE='".$method['TITLE']."'");
 		        };
             };
