@@ -66,49 +66,6 @@ function Scan()
         // перебираем по очереди все найденные устройства
         foreach($everything as $deviceInfo)
             {
-
-            // если устройство yeelight
-            if (substr($deviceInfo['location'], 0, 9) == "yeelight:")
-                {
-                $control_url = str_ireplace("yeelight:", "http:", $deviceInfo['location']);
-
-                // проверяем на наличие в базе для запрета вывода
-                $uuid = $deviceInfo['location'];
-                $existed = SQLSelectOne("SELECT * FROM $table_name WHERE UUID='" . $uuid . "'");
-
-                // need for chek device type
-                $device_type = 'YeelightSmartBulb'; //DeviceType
-                $services = 'YeelightSmartBulb'; //DeviceServices
-                // проверяем на наличие модуля в системе
-                $mod_cheked = SQLSelectOne("SELECT * FROM plugins WHERE MODULE_NAME LIKE '" . $modules['YeelightSmartBulb'] . "'");
-
-                if (!array_search_result($result, 'UUID', $uuid) && !is_null($uuid) && !($existed))
-                    {
-                    $result[] = [
-                    "ID" => $existed["ID"], //existed id Majordomo
-                    "TITLE" => 'Yeelight bulb', //friendly name
-                    "ADDRESS" => 'https://www.yeelight.com', //presentation url (web UI of device),//presentation url (web UI of device)
-                    "UUID" => $deviceInfo['location'], 
-                    "LOGO" => "/templates/ssdp_finder/img/YeelightSmartBulb.png", //Logo
-                    "DESCRIPTION" => 'Yeelight WiFi Light', //description get from xml or field "server"
-                    "TYPE" => $device_type, //DeviceType
-                    "SERIAL" => 'not existed', //serialnumber
-                    "MANUFACTURERURL" => 'https://www.yeelight.com', //manufacturer url
-                    "UPDATED" => '', "MODEL" => 'not existed', //model
-                    "MODELNUMBER" => 'not existed', //modelNumber
-                    "MANUFACTURER" => 'YeelightSmartBulb', //Manufacturer
-                    "SERVICES" => $services, //list services of device
-                    "CONTROLADDRESS" => $control_url, //list services of device
-                    "EXTENDED_MODULES" => $modules[$device_type], // проверка на наличие модуля
-                    "MODULE_INSTALLED" => $mod_cheked, //chek the installed module
-                    "EXTENDED_SIMPLEDEVICE" => check_seample_device($device_type) , //chek the simple device extended
-                    ];
-                    $_SESSION[$uuid] = $logo;
-                    }
-                } 
-              else  // иначе проверяем остальные устройства
-                {
-
                 // то что надо обработать в первую очередь
                 $device = $deviceInfo['description']['device'];
                 $control_url = $deviceInfo['location'];
@@ -171,22 +128,21 @@ function Scan()
                     "TYPE" => $device_type, //DeviceType
                     "SERIAL" => $serialnumber, //serialnumber
                     "MANUFACTURERURL" => $device["manufacturerURL"], //manufacturer url
-                    "UPDATED" => '', "MODEL" => $device["modelName"], //model
+                    "UPDATED" => date('Y-m-d H:i:s'), 
+					"MODEL" => $device["modelName"], //model
                     "MODELNUMBER" => $device["modelNumber"], //modelNumber
                     "MANUFACTURER" => $device["manufacturer"], //Manufacturer
                     "SERVICES" => $services, //list services of device
                     "CONTROLADDRESS" => $control_url, //list services of device
                     "EXTENDED_MODULES" => $modules[$device_type], 
                     "MODULE_INSTALLED" => $mod_cheked, //chek the installed module
-                    "EXTENDED_SIMPLEDEVICE" => check_seample_device($device_type) , //chek the simple device extended
+                    "EXTENDED_SIMPLEDEVICE" => $device_type, //check_seample_device($device_type) , //chek the simple device extended
                     ];
                     $_SESSION[$uuid] = $logo;
                     }
                 }
             }
-        }
-
-    return $result;
+        return $result;
     }
 
 function array_search_result($array, $key, $value)
