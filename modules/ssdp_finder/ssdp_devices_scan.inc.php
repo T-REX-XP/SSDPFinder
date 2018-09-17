@@ -76,7 +76,7 @@ function Scan(){
                "CONTROLADDRESS"=> $control_url,//list services of device
                "EXTENDED_MODULES"=>$modules['YeelightSmartBulb'],// проверка на наличие модуля
                "MODULE_INSTALLED"=>$mod_cheked, //chek the installed module
-               "EXTENDED_SIMPLEDEVICE"=>$this->check_seample_device($device_type), //chek the simple device extended
+               "EXTENDED_SIMPLEDEVICE"=>check_seample_device($device_type), //chek the simple device extended
             ];
       $_SESSION[$uuid] = $logo;
      //session_write_close();
