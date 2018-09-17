@@ -206,25 +206,24 @@ function getServices($device)
         {
         $name = $device["serviceList"]["service"]["serviceType"];
         array_push($result, $name);
-        }
-      else
-        {
+        } else 
+		if (isset($device["serviceList"]["service"]))
+		{
         foreach($device["serviceList"]["service"] as $type)
             {
             $name = $type["serviceType"];
             array_push($result, $name);
-            }
+            };
         }
 
     // иногда сервис уходит в глубь файла описания еще на одно поле ["deviceList"]["device"]
-
     if (isset($device["deviceList"]["device"]["serviceList"]["service"]["serviceType"]))
         {
         $name = $device["deviceList"]["device"]["serviceList"]["service"]["serviceType"];
         array_push($result, $name);
         }
       else
-    if (isset($device["deviceList"]["device"]["serviceList"]["service"]))
+      if (isset($device["deviceList"]["device"]["serviceList"]["service"]))
         {
         foreach($device["deviceList"]["device"]["serviceList"]["service"] as $type)
             {
