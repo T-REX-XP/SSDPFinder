@@ -1,29 +1,43 @@
 https://github.com/jloutsenhizer/CR-Cast/wiki/Chromecast-Implementation-Documentation-WIP
 
-Запись для себя
-выключатель - состояние on off
+ // если устройство yeelight
+            if (substr($deviceInfo['location'], 0, 9) == "yeelight:")
+                {
+                $control_url = str_ireplace("yeelight:", "http:", $deviceInfo['location']);
 
-<?xml version="1.0" encoding="utf-8"?>
-<root xmlns="urn:schemas-upnp-org:device-1-0">
-<specVersion>
-<major>1</major>
-<minor>0</minor>
-</specVersion>
-<device>
-<deviceType>urn:schemas-upnp-org:device:BinaryLight:1</deviceType>
-<friendlyName>Kitchen Lights</friendlyName>
-<manufacturer>OpenedHand</manufacturer>
-<modelName>Virtual Light</modelName>
-<UDN>uuid:cc93d8e6-6b8b-4f60-87ca-228c36b5b0e8</UDN> -последние 12 символов мак адрес
-<serviceList>
-<service>
-<serviceType>urn:schemas-upnp-org:service:SwitchPower:1</serviceType>
-<serviceId>urn:upnp-org:serviceId:SwitchPower:1</serviceId>
-<SCPDURL>/SwitchPower1.xml</SCPDURL>
-<controlURL>/SwitchPower/Control</controlURL>
-<eventSubURL>/SwitchPower/Event</eventSubURL>
-</service>
-</serviceList>
-</device>
-</root>
+                // проверяем на наличие в базе для запрета вывода
+                $uuid = $deviceInfo['location'];
+                $existed = SQLSelectOne("SELECT * FROM $table_name WHERE UUID='" . $uuid . "'");
 
+                // need for chek device type
+                $device_type = 'YeelightSmartBulb'; //DeviceType
+                $services = 'YeelightSmartBulb'; //DeviceServices
+                // проверяем на наличие модуля в системе
+                $mod_cheked = SQLSelectOne("SELECT * FROM plugins WHERE MODULE_NAME LIKE '" . $modules['YeelightSmartBulb'] . "'");
+
+                if (!array_search_result($result, 'UUID', $uuid) && !is_null($uuid) && !($existed))
+                    {
+                    $result[] = [
+                    "ID" => $existed["ID"], //existed id Majordomo
+                    "TITLE" => 'Yeelight bulb', //friendly name
+                    "ADDRESS" => 'https://www.yeelight.com', //presentation url (web UI of device),//presentation url (web UI of device)
+                    "UUID" => $deviceInfo['location'], 
+                    "LOGO" => "/templates/ssdp_finder/img/YeelightSmartBulb.png", //Logo
+                    "DESCRIPTION" => 'Yeelight WiFi Light', //description get from xml or field "server"
+                    "TYPE" => $device_type, //DeviceType
+                    "SERIAL" => 'not existed', //serialnumber
+                    "MANUFACTURERURL" => 'https://www.yeelight.com', //manufacturer url
+                    "UPDATED" => '', "MODEL" => 'not existed', //model
+                    "MODELNUMBER" => 'not existed', //modelNumber
+                    "MANUFACTURER" => 'YeelightSmartBulb', //Manufacturer
+                    "SERVICES" => $services, //list services of device
+                    "CONTROLADDRESS" => $control_url, //list services of device
+                    "EXTENDED_MODULES" => $modules[$device_type], // проверка на наличие модуля
+                    "MODULE_INSTALLED" => $mod_cheked, //chek the installed module
+                    "EXTENDED_SIMPLEDEVICE" => check_seample_device($device_type) , //chek the simple device extended
+                    ];
+                    $_SESSION[$uuid] = $logo;
+                    }
+                } 
+              else  // иначе проверяем остальные устройства
+                {
