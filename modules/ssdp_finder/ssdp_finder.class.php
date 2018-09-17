@@ -667,10 +667,10 @@ function deleteDrivers($device_type){
 
 function propertySetHandle($object, $property, $value) {
   $this->getConfig();
-   $table='ssdp_devices';
-   $properties=SQLSelect("SELECT ID FROM $table WHERE LINKED_OBJECT LIKE '".DBSafe($object)."' AND LINKED_PROPERTY LIKE '".DBSafe($property)."'");
-   $total=count($properties);
-   if ($total) {
+  $table='ssdp_devices';
+  $properties=SQLSelect("SELECT ID FROM $table WHERE LINKED_OBJECT LIKE '".DBSafe($object)."' AND LINKED_PROPERTY LIKE '".DBSafe($property)."'");
+  $total=count($properties);
+  if ($total) {
     for($i=0;$i<$total;$i++) {
      //to-do
     }
@@ -678,6 +678,10 @@ function propertySetHandle($object, $property, $value) {
  }
 
 function chek_update_drivers($curl='') {
+  // проверяем присутсвые записей в устройствах и  если пусто то обновлять нету смыслы поскольку там пусто
+  $table='ssdp_devices';
+  $devices=SQLSelect("SELECT ID FROM ssdp_devices ");
+  if (!$devices['ID'][1]) { return;}
   
   $url = 'https://api.github.com/repos/tarasfrompir/SSDPDrivers/commits';
   $ch = curl_init();
@@ -873,7 +877,7 @@ if ($event=='SAYTO') {
 */
  function uninstall() {
 
-			 
+		 
  // delete devices from ssdpdevices
   $allrec=SQLSelect("SELECT * FROM ssdp_devices"); 
   foreach ($allrec as $rec )   {
@@ -888,6 +892,12 @@ if ($event=='SAYTO') {
   unsubscribeFromEvent($this->name, 'SAYTO');
   unsubscribeFromEvent($this->name, 'ASK');
   unsubscribeFromEvent($this->name, 'SAYREPLY');
+
+  // удаляем structure in addons для устройства
+  if (!file_exists(ROOT.'/modules/devices/addons/SSDPFinder_structure.php')) {
+    unlink(ROOT.'/modules/devices/addons/SSDPFinder_structure.php');
+    }
+
 
   //delete ssdp_finder module
   parent::uninstall();
