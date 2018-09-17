@@ -136,7 +136,7 @@ function Scan()
                     "CONTROLADDRESS" => $control_url, //list services of device
                     "EXTENDED_MODULES" => $modules[$device_type], 
                     "MODULE_INSTALLED" => $mod_cheked, //chek the installed module
-                    "EXTENDED_SIMPLEDEVICE" => $device_type, //check_seample_device($device_type) , //chek the simple device extended
+                    "EXTENDED_SIMPLEDEVICE" => check_seample_device($device_type) , //chek the simple device extended
                     ];
                     $_SESSION[$uuid] = $logo;
                     }
@@ -223,7 +223,7 @@ function getServices($device)
         array_push($result, $name);
         }
       else
-      if (isset($device["deviceList"]["device"]["serviceList"]["service"]))
+    if (isset($device["deviceList"]["device"]["serviceList"]["service"]))
         {
         foreach($device["deviceList"]["device"]["serviceList"]["service"] as $type)
             {
