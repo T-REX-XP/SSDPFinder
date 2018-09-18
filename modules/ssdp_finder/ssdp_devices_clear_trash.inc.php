@@ -136,6 +136,8 @@ deleteDirectory(DIR_MODULES.'/ssdp_finder/upnp/vendor/jalder/upnp/src/Chromecast
 deleteDirectory(DIR_MODULES.'/ssdp_finder/upnp/vendor/jalder/upnp/src/Dial');
 deleteDirectory(DIR_MODULES.'/ssdp_finder/upnp/vendor/jalder/upnp/src/Mediaserver');
 deleteDirectory(DIR_MODULES.'/ssdp_finder/upnp/vendor/jalder/upnp/src/Renderer');
+deleteDirectory(DIR_MODULES.'/ssdp_finder/upnp/vendor/jalder/upnp/src/MediaRenderer');
+deleteDirectory(DIR_MODULES.'/ssdp_finder/upnp/vendor/jalder/upnp/src/InternetGatewayDevice');
 deleteDirectory(DIR_MODULES.'/ssdp_finder/upnp/vendor/jalder/upnp/src/Roku');
 deleteDirectory(DIR_MODULES.'/ssdp_finder/upnp/vendor/jalder/upnp/bin');
 deleteDirectory(DIR_MODULES.'/ssdp_finder/upnp/vendor/jalder/upnp/examples');
