@@ -45,7 +45,7 @@ class Core {
         // search device of you PC
         socket_sendto($socket, $request, strlen($request), 0, '255.255.255.255', 1900);
         // search device of other net
-        //socket_sendto($socket, $request, strlen($request), 0, '239.255.255.250', 1900);
+        socket_sendto($socket, $request, strlen($request), 0, '239.255.255.250', 1900);
 
         // send the data from socket
         socket_set_option($socket, SOL_SOCKET, SO_RCVTIMEO, array('sec'=>$sockTimout, 'usec'=>'128'));
