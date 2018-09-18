@@ -13,7 +13,7 @@ class Core {
         //$this->user_agent = 'Xbox';
     }
     
-    public function search($st = 'ssdp:all', $mx = 2, $man = 'ssdp:discover', $from = null, $port = null, $sockTimout = '2')
+    public function search($st = 'ssdp:all', $mx = 2, $man = 'ssdp:discover', $from = null, $port = null, $sockTimout = '1')
     {
         //create the socket
     	$socket = socket_create(AF_INET, SOCK_DGRAM, 0);
@@ -47,11 +47,11 @@ class Core {
         // search device of other net
         socket_sendto($socket, $request, strlen($request), 0, '239.255.255.250', 1900);
 		// send the data from socket
-        socket_set_option($socket, SOL_SOCKET, SO_RCVTIMEO, array('sec'=>$sockTimout, 'usec'=>'50'));
+        socket_set_option($socket, SOL_SOCKET, SO_RCVTIMEO, array('sec'=>$sockTimout, 'usec'=>'128'));
         $response = array();
         do {
             $buf = null;
-            if (($len = @socket_recvfrom($socket, $buf, 1024, 0, $ip, $port)) == -1) {
+            if (($len = @socket_recvfrom($socket, $buf, 2048, 0, $ip, $port)) == -1) {
                 echo "socket_read() failed: " . socket_strerror(socket_last_error()) . "\n";
             }
             if(!is_null($buf)){

@@ -77,7 +77,7 @@ function Scan()
                 $device_type = 'YeelightSmartBulb'; //DeviceType
                 $services = 'YeelightSmartBulb'; //DeviceServices
                 // проверяем на наличие модуля в системе
-                $mod_cheked = SQLSelectOne("SELECT * FROM plugins WHERE MODULE_NAME LIKE '" . $modules['YeelightSmartBulb'] . "'");
+                $mod_cheked = SQLSelectOne("SELECT * FROM project_modules WHERE NAME LIKE '" . $modules['YeelightSmartBulb'] . "'");
 
                 if (!array_search_result($result, 'UUID', $uuid) && !is_null($uuid) && !($existed))
                     {
@@ -96,7 +96,7 @@ function Scan()
                     "MANUFACTURER" => 'YeelightSmartBulb', //Manufacturer
                     "SERVICES" => $services, //list services of device
                     "CONTROLADDRESS" => $control_url, //list services of device
-                    "EXTENDED_MODULES" => $modules[$device_type], // проверка на наличие модуля
+                    "EXTENDED_MODULES" => ext_search_modules($services), // проверка на наличие модуля
                     "MODULE_INSTALLED" => $mod_cheked, //chek the installed module
                     "EXTENDED_SIMPLEDEVICE" => check_seample_device($device_type) , //chek the simple device extended
                     ];
@@ -155,7 +155,7 @@ function Scan()
                     }
                 $services = getServices($device);
                 // проверяем на наличие модуля в системе
-                $mod_cheked = SQLSelectOne("SELECT * FROM plugins WHERE MODULE_NAME LIKE '" . $modules[$device_type] . "'");
+                $mod_cheked = SQLSelectOne("SELECT * FROM project_modules WHERE NAME LIKE '" . $modules[$device_type] . "'");
                 if (!array_search_result($result, 'UUID', $uuid) && !is_null($uuid) && !($existed))
                     {
                     $result[] = [
@@ -188,20 +188,13 @@ function Scan()
 
 function ext_search_modules($services)
     {
-            // подключение массива существующих модулей для найденных устройств
-        include_once (DIR_MODULES . 'ssdp_finder/extended_modules.php');
-
-
-    //DebMes ($services);
+    // подключение массива существующих модулей для найденных устройств
+    include (DIR_MODULES . 'ssdp_finder/extended_modules.php');
     $services = explode (',',$services);
     foreach ( $services as $service)
     {
-      $ext_module = $modules['MediaServer']; 
-      DebMes ($service);
-      DebMes ('modules - '.serialize($modules));
-      if ($ext_module) {
-          $out = $ext_module;
-          return $ext_module;
+      if ($modules[$service]) {
+          return $modules[$service];
       }
     }
     return;
