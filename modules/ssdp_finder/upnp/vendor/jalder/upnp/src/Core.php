@@ -9,7 +9,7 @@ class Core {
 
     public function __construct()
     {
-        $this->user_agent = 'Majordomo/ver-x.x (Dlya prikola)';
+        $this->user_agent = 'Majordomo/ver-x.x UDAP/2.0 Win/7';
         //$this->user_agent = 'Xbox';
     }
     
