@@ -540,7 +540,7 @@ function add_to_terminal($id) {
   $terminal=array(); // опции добавления
   $terminal['NAME'] = $ssdpdevice['LINKED_OBJECT'];
   $terminal['TITLE'] = $ssdpdevice['LINKED_OBJECT'];
-  $terminal['HOST'] = $ssdpdevice['CONTROLADDRESS'];
+  $terminal['HOST'] = $this->getIp($ssdpdevice['ADDRESS'],false);
   $terminal['CANPLAY'] = '1';
   $terminal['PLAYER_TYPE'] = 'dnla';
   $terminal['PLAYER_PORT'] = $this->getPort($ssdpdevice['ADDRESS']);
