@@ -681,8 +681,8 @@ function propertySetHandle($object, $property, $value) {
 function chek_update_drivers($curl='') {
   // проверяем присутсвые записей в устройствах и  если пусто то обновлять нету смыслы поскольку там пусто
   $table='ssdp_devices';
-  $devices=SQLSelect("SELECT ID FROM ssdp_devices ");
-  if (!$devices['ID'][1]) { return;}
+  $devices=SQLSelectOne("SELECT * FROM ssdp_devices WHERE `ID` IS NOT NULL");
+  if (!$devices['ID']) { return;}
   
   $url = 'https://api.github.com/repos/tarasfrompir/SSDPDrivers/commits';
   $ch = curl_init();
