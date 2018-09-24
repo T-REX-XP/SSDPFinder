@@ -262,7 +262,7 @@ function getServices($device)
         $name = $device["serviceList"]["service"]["serviceType"];
         array_push($result, $name);
         }
-      else
+      else if (isset($device["serviceList"]["service"]))
         {
         foreach($device["serviceList"]["service"] as $type)
             {
@@ -278,8 +278,7 @@ function getServices($device)
         $name = $device["deviceList"]["device"]["serviceList"]["service"]["serviceType"];
         array_push($result, $name);
         }
-      else
-    if (isset($device["deviceList"]["device"]["serviceList"]["service"]))
+      else if (isset($device["deviceList"]["device"]["serviceList"]["service"]))
         {
         foreach($device["deviceList"]["device"]["serviceList"]["service"] as $type)
             {
@@ -295,8 +294,7 @@ function getServices($device)
         $name = $device["deviceList"]["device"]["deviceList"]["device"]["serviceList"]["service"]["serviceType"];
         array_push($result, $name);
         }
-      else
-    if (isset($device["deviceList"]["device"]["deviceList"]["device"]["serviceList"]["service"]))
+      else if (isset($device["deviceList"]["device"]["deviceList"]["device"]["serviceList"]["service"]))
         {
         foreach($device["deviceList"]["device"]["deviceList"]["device"]["serviceList"]["service"] as $type)
             {
