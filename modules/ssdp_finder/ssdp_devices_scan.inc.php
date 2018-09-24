@@ -84,9 +84,9 @@ function Scan()
                     $result[] = [
                     "ID" => $existed["ID"], //existed id Majordomo
                     "TITLE" => 'Yeelight bulb', //friendly name
-                    "ADDRESS" => 'https://www.yeelight.com', //presentation url (web UI of device),//presentation url (web UI of device)
+                    "ADDRESS" => $control_url, //presentation url (web UI of device),//presentation url (web UI of device)
                     "UUID" => $deviceInfo['location'], 
-                    "LOGO" => "/templates/ssdp_finder/img/YeelightSmartBulb.png", //Logo
+                    "LOGO" => getDefImg($control_url, $device_type), //Logo
                     "DESCRIPTION" => 'Yeelight WiFi Light', //description get from xml or field "server"
                     "TYPE" => $device_type, //DeviceType
                     "SERIAL" => 'not existed', //serialnumber
