@@ -131,7 +131,7 @@ function Scan()
 
                 // проверяем на наличие в базе для запрета вывода
                 $uuid = $device["UDN"];
-                $existed = SQLSelectOne("SELECT * FROM $table_name WHERE UUID='" . $uuid . "' AND TYPE='" . $device_type . "'");
+                $existed = SQLSelectOne("SELECT * FROM $table_name WHERE UUID='" . $uuid . "' AND TYPE LIKE'" . $device_type . "'");
 
                 // иногда вместо serialNumber есть modelNumber
                 $serialnumber = $device["serialNumber"];
