@@ -20,30 +20,30 @@ class Core {
         socket_set_option($socket, SOL_SOCKET, SO_BROADCAST, true);
 
         // поиск устройств milight, MagicHome
-        $request = 'HF-A11ASSISTHREAD'."\r\n";
-        socket_sendto($socket, $request, strlen($request), 0, '239.255.255.250', 48899);		
+        //$request = 'HF-A11ASSISTHREAD'."\r\n";
+        //socket_sendto($socket, $request, strlen($request), 0, '239.255.255.250', 48899);		
 
 
         //поиск устройств yeelight
-        $request = 'M-SEARCH * HTTP/1.1'."\r\n";
-        $request .= 'HOST: 239.255.255.250:1982'."\r\n";
-        $request .= 'MAN: "'.$man.'"'."\r\n";
-        $request .= 'MX: '.$mx.''."\r\n";
-        $request .= 'ST: wifi_bulb'."\r\n";
-        $request .= "\r\n";
-        socket_sendto($socket, $request, strlen($request), 0, '239.255.255.250', 1982);		
+        //$request = 'M-SEARCH * HTTP/1.1'."\r\n";
+        //$request .= 'HOST: 239.255.255.250:1982'."\r\n";
+        //$request .= 'MAN: "'.$man.'"'."\r\n";
+        //$request .= 'MX: '.$mx.''."\r\n";
+        //$request .= 'ST: wifi_bulb'."\r\n";
+        //$request .= "\r\n";
+        //socket_sendto($socket, $request, strlen($request), 0, '239.255.255.250', 1982);		
 
         //all
-        $request = 'M-SEARCH * HTTP/1.1'."\r\n";
-        $request .= 'HOST: 239.255.255.250:1900'."\r\n";
-        $request .= 'MAN: "'.$man.'"'."\r\n";
-        $request .= 'MX: '.$mx.''."\r\n";
-        $request .= 'ST: '.$st.''."\r\n";
-        $request .= 'USER-AGENT: '.$this->user_agent."\r\n";
-        $request .= "\r\n";
+//        $request = 'M-SEARCH * HTTP/1.1'."\r\n";
+ //       $request .= 'HOST: 239.255.255.250:1900'."\r\n";
+  //      $request .= 'MAN: "'.$man.'"'."\r\n";
+   //     $request .= 'MX: '.$mx.''."\r\n";
+     //   $request .= 'ST: '.$st.''."\r\n";
+      //  $request .= 'USER-AGENT: '.$this->user_agent."\r\n";
+       // $request .= "\r\n";
 		
         // search device of you PC
-        socket_sendto($socket, $request, strlen($request), 0, '255.255.255.255', 1900);
+//        socket_sendto($socket, $request, strlen($request), 0, '255.255.255.255', 1900);
         // search device of other net
         socket_sendto($socket, $request, strlen($request), 0, '239.255.255.250', 1900);
 
