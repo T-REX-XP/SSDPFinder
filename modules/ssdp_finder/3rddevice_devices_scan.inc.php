@@ -59,8 +59,45 @@ function Scan_3rddevice()
         foreach($everything as $deviceInfo)
             {
 
-            // если устройство yeelight
-            if (substr($deviceInfo['location'], 0, 9) == "yeelight:")
+            // если устройство mag250
+            DebMes ($deviceInfo);
+            if ($deviceInfo['MAGaddres'])
+                {
+                $control_url = $deviceInfo['MAGaddres'];
+
+                // проверяем на наличие в базе для запрета вывода
+                $uuid = $deviceInfo['MAGSN'];
+                $existed = SQLSelectOne("SELECT * FROM $table_name WHERE UUID='" . $uuid . "'");
+
+                // need for chek device type
+                $device_type = 'MagXXXdevice'; //DeviceType
+                $services = 'STB DeviceServices'; //DeviceServices
+                // проверяем на наличие модуля в системе
+                $mod_cheked = SQLSelectOne("SELECT * FROM project_modules WHERE NAME LIKE '" . $modules['YeelightSmartBulb'] . "'");
+                if (!array_search_result($result, 'UUID', $uuid) && !is_null($uuid) && !($existed))
+                    {
+                    $result[] = [
+                    "ID" => $existed["ID"], //existed id Majordomo
+                    "TITLE" => $deviceInfo['MAGname'], //friendly name
+                    "ADDRESS" => $control_url, //presentation url (web UI of device),//presentation url (web UI of device)
+                    "UUID" => $deviceInfo['MAGSN'], 
+                    "LOGO" => getDefImg($control_url, $device_type), //Logo
+                    "DESCRIPTION" => 'TV smart box', //description get from xml or field "server"
+                    "TYPE" => $device_type, //DeviceType
+                    "SERIAL" => $deviceInfo['MAGSN'], //serialnumber
+                    "MANUFACTURERURL" => '', //manufacturer url
+					"MODEL" => $deviceInfo['type'], //model
+                    "MODELNUMBER" => 'not existed', //modelNumber
+                    "SERVICES" => $services, //list services of device
+                    "CONTROLADDRESS" => $control_url, //list services of device
+                    "EXTENDED_MODULES" => ext_search_modules($services), // проверка на наличие модуля
+                    "MODULE_INSTALLED" => $mod_cheked, //chek the installed module
+                    "EXTENDED_SIMPLEDEVICE" => check_seample_device($device_type) , //chek the simple device extended
+                    ];
+                    $_SESSION[$uuid] = $logo;
+                    }
+                } 
+              else if (substr($deviceInfo['location'], 0, 9) == "yeelight:")
                 {
                 $control_url = str_ireplace("yeelight:", "http:", $deviceInfo['location']);
 
@@ -86,7 +123,8 @@ function Scan_3rddevice()
                     "TYPE" => $device_type, //DeviceType
                     "SERIAL" => 'not existed', //serialnumber
                     "MANUFACTURERURL" => 'https://www.yeelight.com', //manufacturer url
-                    "UPDATED" => '', "MODEL" => 'not existed', //model
+                    "UPDATED" => '', 
+					"MODEL" => 'not existed', //model
                     "MODELNUMBER" => 'not existed', //modelNumber
                     "MANUFACTURER" => 'YeelightSmartBulb', //Manufacturer
                     "SERVICES" => $services, //list services of device
@@ -362,8 +400,8 @@ function getDefImg($control_url, $device)
     $path = "";
     $url = "";
     $baseUrl = getIp($control_url, True);
-    $icons = $device["iconList"]["icon"];
-    if (!$icons)
+    $icons = @$device["iconList"]["icon"];
+    if (!@$device["iconList"]["icon"])
         {
         return "/templates/ssdp_finder/img/" . explode(":", $device["deviceType"]) [3] . ".png"; //"Icons not found
         }
