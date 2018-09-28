@@ -144,6 +144,9 @@ function admin(&$out) {
   if ($this->view_mode=='scan_ssdp_devices') {
          $this->scan_ssdp_devices($out);
   }
+  if ($this->view_mode=='scan_3rddevice_devices') {
+         $this->scan_3rddevice_devices($out);
+  }
   if ($this->view_mode=='edit_ssdp_devices') {
    $this->edit_ssdp_devices($out, $this->id);
   }
@@ -218,6 +221,15 @@ function usual(&$out) {
 */
  function scan_ssdp_devices(&$out) {
   require(DIR_MODULES.$this->name.'/ssdp_devices_scan.inc.php');
+ }
+
+/**
+* ssdp_devices scan
+*
+* @access public
+*/
+ function scan_3rddevice_devices(&$out) {
+  require(DIR_MODULES.$this->name.'/3rddevice_devices_scan.inc.php');
  }
 
 
