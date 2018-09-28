@@ -25,6 +25,7 @@ $dictionary = array (
    'SSDP_USETOSYSTEMMESAGE' => 'Use to play system mesage',
    'SSDP_CLEARMODULE' => 'Clear all devices and trash from module',
    'SSDP_UPDATE_METHODS_SHABLON' => 'Update methods & shablons',
+   'SSDP_SCAN_UPNP_DEVICE' => 'Scan UPNP devices',
 );
 
 foreach ($dictionary as $k => $v) {
