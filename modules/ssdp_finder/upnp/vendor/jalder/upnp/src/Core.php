@@ -34,13 +34,13 @@ class Core {
         //socket_sendto($socket, $request, strlen($request), 0, '239.255.255.250', 1982);		
 
         //all
-        $request = 'M-SEARCH * HTTP/1.1'."\r\n";
-        $request .= 'HOST: 239.255.255.250:1900'."\r\n";
-        $request .= 'MAN: "'.$man.'"'."\r\n";
-        $request .= 'MX: '.$mx.''."\r\n";
-        $request .= 'ST: '.$st.''."\r\n";
-        $request .= 'USER-AGENT: '.$this->user_agent."\r\n";
-        $request .= "\r\n";
+//        $request = 'M-SEARCH * HTTP/1.1'."\r\n";
+ //       $request .= 'HOST: 239.255.255.250:1900'."\r\n";
+  //      $request .= 'MAN: "'.$man.'"'."\r\n";
+   //     $request .= 'MX: '.$mx.''."\r\n";
+     //   $request .= 'ST: '.$st.''."\r\n";
+      //  $request .= 'USER-AGENT: '.$this->user_agent."\r\n";
+       // $request .= "\r\n";
 		
         // search device of you PC
 //        socket_sendto($socket, $request, strlen($request), 0, '255.255.255.255', 1900);
