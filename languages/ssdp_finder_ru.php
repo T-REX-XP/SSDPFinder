@@ -26,6 +26,7 @@ $dictionary = array (
    'SSDP_CLEARMODULE' => 'Удалить все устройства и мусор модуля',
    'SSDP_UPDATE_METHODS_SHABLON' => 'Обновить методы и шаблоны установленных устройств',
    'SSDP_SCAN_UPNP_DEVICE' => 'Сканировать UPNP устройства',
+   'SSDP_SCAN_3DDEVICE_DEVICE' => 'Сканировать ВСЕ устройства',
 );
 
 foreach ($dictionary as $k => $v) {

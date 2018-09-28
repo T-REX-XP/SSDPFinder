@@ -25,6 +25,7 @@ $dictionary=array(
  'SSDP_CLEARMODULE' => 'Видалити всі пристрої та сміття модулю',
  'SSDP_UPDATE_METHODS_SHABLON' => 'Оновити методи та шаблони всіх встановленних пристроїв',
  'SSDP_SCAN_UPNP_DEVICE' => 'Сканувати UPNP пристрої',
+ 'SSDP_SCAN_3DDEVICE_DEVICE' => 'Сканувати ВСІ пристрої',
 
 );
 

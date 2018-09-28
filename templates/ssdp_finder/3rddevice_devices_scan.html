@@ -1,0 +1,249 @@
+[#if VIEW_MODE="" || VIEW_MODE="scan_3rddevice_devices"#]
+<!-- table ssdp_devices search -->
+<p>
+    <a href="?view_mode=scan_ssdp_devices" class="btn btn-default" title="Refresh">
+        <i class="glyphicon glyphicon-refresh"></i> Refresh</a>
+
+</p>
+<script>
+    $(document).ready(function () {
+        $('#results').DataTable();
+    });
+</script>
+<table width=100% border=0 id="results">
+    <tr>
+        <td valign=top>
+            <!-- results -->
+            [#if RESULT#]
+            <!-- paging -->
+            [#if PAGES#]
+            <table border=0>
+                <td align=right>
+                    <b>Pages:</b>&nbsp;</td>
+                [#begin PREVPAGE#]
+                <td>
+                    <a href="?view_mode=<#VIEW_MODE#>&mode=<#MODE#>&save_qry=1&page=[#NUM#]">&lt;&lt;&lt;</a>
+                </td>[#end PREVPAGE#]
+                <td>
+                    [#begin PAGES#] [#if !SELECTED#]
+                    <a href="?view_mode=<#VIEW_MODE#>&mode=<#MODE#>&save_qry=1&page=[#NUM#]">[#else#]
+                        <b>[#endif#][#NUM#]</b>
+                    </a> [#end PAGES#]
+                </td>
+                [#begin NEXTPAGE#]
+                <td>
+                    <a href="?view_mode=<#VIEW_MODE#>&mode=<#MODE#>&save_qry=1&page=[#NUM#]">&gt;&gt;&gt;</a>
+                </td>[#end NEXTPAGE#]
+            </table>
+            [#endif PAGES#]
+            <!-- / paging -->
+            <!-- search results (list) -->
+            <form action="?" method="post" name="frmList_ssdp_devices" style="padding:0px" class="form">
+                <table align=center class="table table-striped" data-toggle="table">
+                    <tr>
+                        <th>
+                        </th>
+                        <th>
+                            <#LANG_TITLE#>
+                        </th>
+                        <th>Description</th>
+                        <th data-field="TYPE" data-sortable="true">
+                            <#LANG_TYPE#>
+                        </th>
+                        <th>
+                            <#LANG_GENERAL_SERVICE#>
+                        </th>
+                        <th>
+                            <#LANG_ACTION#>
+                        </th>
+                    </tr>
+                    <tbody>
+                        [#begin RESULT#]
+                        <tr style="height:52px" class="hover_btn2">
+                            <td style="vertical-align:middle">
+                                [#if LOGO!=""#]
+                                <img src=" [#LOGO#]" alt="Device Logo" width="48" height="48"> [#else#] &nbsp; [#endif#]
+                            </td>
+                            <td style="vertical-align:middle">
+                                <div>
+                                    [#if ADDRESS!=""#]
+                                    <h5 class="list-group-item-heading">
+                                        <strong>
+                                            <a href="[#ADDRESS#]">[#TITLE#]</a>
+                                        </strong>
+                                    </h5>
+                                    <p style="font-size:10px" class="list-group-item-text small">[#if MANUFACTURER!=""#] [#MANUFACTURER#] [#else#] &nbsp; [#endif#]</p>
+                                    <span style="clear: both;"></span>
+                                    [#else#]
+                                    <h4 class="list-group-item-heading">
+                                        <strong>[#TITLE#]</strong>
+                                    </h4>
+                                    <p style="font-size:10px" class="list-group-item-text small">[#if MANUFACTURER!=""#]
+                                        <a href="[#MANUFACTURERURL#]">[#MANUFACTURER#]</a> [#else#] &nbsp; [#endif#]</p>
+                                    <span style="clear: both;"></span>
+                                    </ul>
+                                    [#endif#]
+                                </div>
+                            </td>
+                            <td style="vertical-align:middle">
+                                [#if DESCRIPTION!=""#] [#DESCRIPTION#] [#else#] &nbsp; [#endif#]
+                            </td>
+                            <td style="vertical-align:middle">
+                                [#if TYPE!=""#]
+                                <a href="[#IP#]">[#TYPE#]</a> [#else#] &nbsp; [#endif#]
+                                <p style="font-size:10px" class="list-group-item-text small">Model:[#if MODEL!=""#] [#MODEL#] [#else#] &nbsp; [#endif#]</p>
+                                <span style="clear: both;"></span>
+                            </td>
+                            <td style="vertical-align:middle">
+                                [#if SERVICES!=""#] [#SERVICES#] [#else#] &nbsp; [#endif#]
+                            </td>
+                            <td style="vertical-align:middle" width="1%" nowrap>
+                                <div style="width:120px">
+                                    <div class="btn-group">[#if ID=""#]
+                                        [#if EXTENDED_MODULES!=""#]
+                                        <a onClick="return confirm('Are you sure? Please confirm.')" 
+					                   [#if MODULE_INSTALLED!=""#] 
+                                             class="btn btn-default" 
+                                             title="Добавить в список это устройство Модуль уже установлен"
+                                          [#else#] 
+                                             class="btn btn-success" 
+                                             title="Добавить Модуль и в список это устройство"
+                                          [#endif#]
+                                          href="?data_source=<#DATA_SOURCE#>&view_mode=install_module&id=[#ID#]&namemodule=[#EXTENDED_MODULES#]&installed_module=[#MODULE_INSTALLED#]&title=[#TITLE#]&type=[#TYPE#]&uuid=[#UUID#]&services=[#SERVICES#]&address=[#ADDRESS#]&description=[#DESCRIPTION#]&model=[#MODEL#]&manufacturer=[#MANUFACTURER#]&controladdress=[#CONTROLADDRESS#]">
+                                          <i class="glyphicon glyphicon-compressed"></i>
+                                        </a>
+                                        [#endif#]
+										[#if EXTENDED_SIMPLEDEVICE!=""#]
+                                        <a onClick="return confirm('Are you sure? Please confirm.')" 
+                                           href="?data_source=<#DATA_SOURCE#>&mode=add&view_mode=edit_ssdp_devices&title=[#TITLE#]&type=[#TYPE#]&uuid=[#UUID#]&services=[#SERVICES#]&address=[#ADDRESS#]&description=[#DESCRIPTION#]&model=[#MODEL#]&manufacturer=[#MANUFACTURER#]&controladdress=[#CONTROLADDRESS#]"
+                                           class="btn btn-success" title="Добавить как простое устройство">
+                                            <i class="glyphicon glyphicon-sd-video"></i>
+                                        </a>
+										[#endif#]
+                                        [#else#]
+                                        <a href="?data_source=<#DATA_SOURCE#>&view_mode=edit_ssdp_devices&id=[#ID#]" class="btn btn-info" title="Edit">
+                                            <i class="glyphicon glyphicon-pencil"></i>
+                                        </a>
+                                        [#endif#]
+                                        <a data-toggle="modal" data-target="#myModal" class="btn btn-default" title="Device Info">
+                                            <i class="glyphicon glyphicon-info-sign"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <!-- Modal -->
+                        <div class="modal fade" id="myModal" role="dialog">
+                            <div class="modal-dialog">
+
+                                <!-- Modal content-->
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                        <h4 class="modal-title"> [#TITLE#]</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form class="form-horizontal">
+                                            <fieldset>
+                                                <div class="form-group">
+                                                    <label class="control-label col-sm-2" for="MANUFACTURER">Manufacturer:</label>
+                                                    <div class="col-sm-10">
+                                                        <input class="form-control" id="MANUFACTURER" value="[#MANUFACTURER#]">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="control-label col-sm-2" for="address">Address:</label>
+                                                    <div class="col-sm-10">
+                                                        <input type="text" class="form-control" id="address" value="[#ADDRESS#]">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="control-label col-sm-2" for="model">Model:</label>
+                                                    <div class="col-sm-10">
+                                                        <input type="text" class="form-control" id="model" value="[#MODEL#]">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="control-label col-sm-2" for="description">Description:</label>
+                                                    <div class="col-sm-10">
+                                                        <textarea type="text" rows="4" class="form-control" id="description">[#DESCRIPTION#]</textarea>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="control-label col-sm-2" for="serial">Serial:</label>
+                                                    <div class="col-sm-10">
+                                                        <input type="text" class="form-control" id="serial" value="[#SERIAL#]">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="control-label col-sm-2" for="type">Type:</label>
+                                                    <div class="col-sm-10">
+                                                        <input type="text" class="form-control" id="type" value="[#TYPE#]">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="control-label col-sm-2" for="uuid">UUID:</label>
+                                                    <div class="col-sm-10">
+                                                        <input type="text" class="form-control" id="uuid" value="[#UUID#]">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="control-label col-sm-2" for="modelNumber">Model Number:</label>
+                                                    <div class="col-sm-10">
+                                                        <input type="text" class="form-control" id="modelNumber" value="[#MODELNUMBER#]">
+                                                    </div>
+                                                </div>
+                                            </fieldset>
+                                        </form>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                        [#end RESULT#]
+                    </tbody>
+                </table>
+                <input type="hidden" name="data_source" value="<#DATA_SOURCE#>">
+                <input type="hidden" name="view_mode" value="multiple_ssdp_devices">
+            </form>
+
+            <!-- / search results (list) -->
+            <!-- paging -->
+            [#if PAGES#]
+            <table border=0>
+                <td align=right>
+                    <b>Pages:</b>&nbsp;</td>
+                [#begin PREVPAGE#]
+                <td>
+                    <a href="?view_mode=<#VIEW_MODE#>&mode=<#MODE#>&save_qry=1&page=[#NUM#]">&lt;&lt;&lt;</a>
+                </td>[#end PREVPAGE#]
+                <td>
+                    [#begin PAGES#] [#if !SELECTED#]
+                    <a href="?view_mode=<#VIEW_MODE#>&mode=<#MODE#>&save_qry=1&page=[#NUM#]">[#else#]
+                        <b>[#endif#][#NUM#]</b>
+                    </a> [#end PAGES#]
+                </td>
+                [#begin NEXTPAGE#]
+                <td>
+                    <a href="?view_mode=<#VIEW_MODE#>&mode=<#MODE#>&save_qry=1&page=[#NUM#]">&gt;&gt;&gt;</a>
+                </td>[#end NEXTPAGE#]
+            </table>
+            [#endif PAGES#]
+            <!-- / paging -->
+            [#else RESULT#]
+            <p>
+                <font color="red">
+                    <#LANG_NO_RECORDS_FOUND#>
+                </font>
+            </p>
+            [#endif RESULT#]
+            <!-- / results -->
+        </td>
+    </tr>
+</table>
+
+[#endif VIEW_MODE#]

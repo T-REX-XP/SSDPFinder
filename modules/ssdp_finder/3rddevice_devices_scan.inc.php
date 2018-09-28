@@ -26,7 +26,7 @@ if ($save_qry)
     }
 
 if (!$qry) $qry = "1";
-$res = Scan();
+$res = Scan_3rddevice();
 
 if ($res[0]['UUID'])
     {
@@ -48,16 +48,59 @@ if ($res[0]['UUID'])
 
 // функция сканирования устройств
 
-function Scan()
+function Scan_3rddevice()
     {
     $upnp = new Upnp();
-    $everything = $upnp->discover();
+    $everything = $upnp->discover_3rddevice();
     $result = [];
     $table_name = 'ssdp_devices';
 
         // перебираем по очереди все найденные устройства
         foreach($everything as $deviceInfo)
             {
+
+            // если устройство yeelight
+            if (substr($deviceInfo['location'], 0, 9) == "yeelight:")
+                {
+                $control_url = str_ireplace("yeelight:", "http:", $deviceInfo['location']);
+
+                // проверяем на наличие в базе для запрета вывода
+                $uuid = $deviceInfo['location'];
+                $existed = SQLSelectOne("SELECT * FROM $table_name WHERE UUID='" . $uuid . "'");
+
+                // need for chek device type
+                $device_type = 'YeelightSmartBulb'; //DeviceType
+                $services = 'YeelightSmartBulb'; //DeviceServices
+                // проверяем на наличие модуля в системе
+                $mod_cheked = SQLSelectOne("SELECT * FROM project_modules WHERE NAME LIKE '" . $modules['YeelightSmartBulb'] . "'");
+
+                if (!array_search_result($result, 'UUID', $uuid) && !is_null($uuid) && !($existed))
+                    {
+                    $result[] = [
+                    "ID" => $existed["ID"], //existed id Majordomo
+                    "TITLE" => 'Yeelight bulb', //friendly name
+                    "ADDRESS" => $control_url, //presentation url (web UI of device),//presentation url (web UI of device)
+                    "UUID" => $deviceInfo['location'], 
+                    "LOGO" => getDefImg($control_url, $device_type), //Logo
+                    "DESCRIPTION" => 'Yeelight WiFi Light', //description get from xml or field "server"
+                    "TYPE" => $device_type, //DeviceType
+                    "SERIAL" => 'not existed', //serialnumber
+                    "MANUFACTURERURL" => 'https://www.yeelight.com', //manufacturer url
+                    "UPDATED" => '', "MODEL" => 'not existed', //model
+                    "MODELNUMBER" => 'not existed', //modelNumber
+                    "MANUFACTURER" => 'YeelightSmartBulb', //Manufacturer
+                    "SERVICES" => $services, //list services of device
+                    "CONTROLADDRESS" => $control_url, //list services of device
+                    "EXTENDED_MODULES" => ext_search_modules($services), // проверка на наличие модуля
+                    "MODULE_INSTALLED" => $mod_cheked, //chek the installed module
+                    "EXTENDED_SIMPLEDEVICE" => check_seample_device($device_type) , //chek the simple device extended
+                    ];
+                    $_SESSION[$uuid] = $logo;
+                    }
+                } 
+              else  // иначе проверяем остальные устройства
+                {
+
                 // то что надо обработать в первую очередь
                 $device = $deviceInfo['description']['device'];
                 $control_url = $deviceInfo['location'];
@@ -81,7 +124,6 @@ function Scan()
                 // получаем логотип на устройство
                 $logo = getDefImg($control_url, $device);
 
- 
 
                 // иногда вместо serialNumber есть modelNumber
                 $serialnumber = $device["serialNumber"];
@@ -109,7 +151,7 @@ function Scan()
                 $uuid = $device["UDN"];
                 $existed = SQLSelectOne("SELECT * FROM $table_name WHERE UUID='" . $uuid . "' AND SERVICES='" . $services . "'"); 
 
-               // проверяем на наличие модуля в системе
+                // проверяем на наличие модуля в системе
                 $mod_cheked = SQLSelectOne("SELECT * FROM project_modules WHERE NAME LIKE '" . $modules[$device_type] . "'");
                 if (!array_search_result($result, 'UUID', $uuid) && !is_null($uuid) && !($existed))
                     {
@@ -135,9 +177,9 @@ function Scan()
                     $_SESSION[$uuid] = $logo;
                     }
                 }
+            }
     return $result;
     }
-
 
 function ext_search_modules($services)
     {

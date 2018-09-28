@@ -21,11 +21,9 @@ class Upnp extends Core{
         return parent::search();
     }
 	
-    public function discover_ip($host)
-    {   if (!$host) {
-         $host = '239.255.255.250';
-         }
-        return parent::search_ip($host);
+    public function discover_3rddevice()
+    {   
+        return parent::search_3rddevice();
     }
     public function alive()
     {
