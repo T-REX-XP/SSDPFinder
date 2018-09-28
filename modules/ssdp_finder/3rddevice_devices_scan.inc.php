@@ -86,7 +86,7 @@ function Scan_3rddevice()
                     "TYPE" => $device_type, //DeviceType
                     "SERIAL" => $deviceInfo['MAGSN'], //serialnumber
                     "MANUFACTURERURL" => '', //manufacturer url
-					"MODEL" => $deviceInfo['type'], //model
+		     "MODEL" => $deviceInfo['type'], //model
                     "MODELNUMBER" => 'not existed', //modelNumber
                     "SERVICES" => $services, //list services of device
                     "CONTROLADDRESS" => $control_url, //list services of device
