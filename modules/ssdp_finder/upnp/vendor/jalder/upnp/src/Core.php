@@ -51,6 +51,7 @@ class Core {
    
     public function search_3rddevice($st = 'ssdp:all', $mx = 2, $man = 'ssdp:discover', $from = null, $port = null, $sockTimout = '2')
     {
+        $response = array();
         //create the socket
     	$socket = socket_create(AF_INET, SOCK_DGRAM, 0);
         socket_set_option($socket, SOL_SOCKET, SO_BROADCAST, true);
@@ -83,11 +84,11 @@ class Core {
         $request .= "\r\n";
 		
         // search device of you PC
-        socket_sendto($socket, $request, strlen($request), 0, '255.255.255.255', 1900);
+        socket_sendto($socket, $request, strlen($request), 0, '239.255.255.250', 1900);
 
         // send the data from socket
         socket_set_option($socket, SOL_SOCKET, SO_RCVTIMEO, array('sec'=>$sockTimout, 'usec'=>'128'));
-        $response = array();
+
         do {
             $buf = null;
             if (($len = @socket_recvfrom($socket, $buf, 2048, 0, $ip, $port)) == -1) {
@@ -98,12 +99,51 @@ class Core {
                 $response[$data['usn']] = $data;
             }
         } while(!is_null($buf));
+		
+		$arr = array(
+        'protocol' => 'remote_stb_1.0',
+        'port' => 6777
+        );
+        $post_data = json_encode($arr);
+
+        // create socket
+        $sock = socket_create(AF_INET, SOCK_DGRAM, 0);
+        socket_set_option($sock, SOL_SOCKET, SO_BROADCAST, 1);
+        socket_bind($sock, 0, 6777);
+        socket_sendto($sock, $post_data, strlen($post_data) , 0, '239.255.255.250', 6000);
+        socket_set_option($sock, SOL_SOCKET, SO_RCVTIMEO, array( "sec" => 1, "usec" => 10));
+        do
+          {
+            $buf = null;
+            @socket_recvfrom($sock, $buf, 1024, 0, $host, $sport);
+            if (!is_null($buf))
+             {
+                $data = $this->parsemag250($buf, $host);
+                $response[$data['usn']] = $data;
+             }
+         }
+        while (!is_null($buf));
         socket_close($socket);
 
         return $response;
     }
 
- 
+     private function parsemag250($response, $ip)
+    {
+        //var_dump($response);
+        $messages = explode(",", $response);
+        $parsedResponse = array();
+        foreach( $messages as $row ) {
+            $parsedResponse['MAGaddres'] = $ip;
+            if( stripos( $row, '"name":') === 0 )
+                $parsedResponse['MAGname'] = str_ireplace( '"', '', str_ireplace( '"name":"', '', $row ));
+            if( stripos( $row, '"serialNumber":"') === 0 )
+                $parsedResponse['MAGSN'] = str_ireplace( '"', '', str_ireplace( '"serialNumber":"', '', $row ));
+            if( stripos( $row, '"type":"') === 0 )
+                $parsedResponse['type'] = str_ireplace( '"', '', str_ireplace( '"type":"', '', $row ));
+        }
+        return $parsedResponse;
+    }
    
     private function parseSearchResponse($response)
     {
