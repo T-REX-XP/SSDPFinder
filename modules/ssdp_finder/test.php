@@ -4,7 +4,7 @@ use jalder\Upnp\Upnp;
 
 $upnp = new Upnp();
 print('searching...'.PHP_EOL);
-$everything = $upnp->discover();
+$everything = $upnp->discover_3rddevice();
 if(!count($everything)){
 	print_r('no upnp devices found'.PHP_EOL);
 }
