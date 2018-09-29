@@ -86,7 +86,7 @@ function Scan_3rddevice()
                     "TYPE" => $device_type, //DeviceType
                     "SERIAL" => $deviceInfo['MAGSN'], //serialnumber
                     "MANUFACTURERURL" => 'http://infomir.com.ua/', //manufacturer url
-                    "MANUFACTURER" => 'Инфомир', //Manufacturer
+                    "MANUFACTURER" => 'InfoMir', //Manufacturer
                     "MODEL" => $deviceInfo['type'], //model
                     "MODELNUMBER" => 'not existed', //modelNumber
                     "SERVICES" => $services, //list services of device
