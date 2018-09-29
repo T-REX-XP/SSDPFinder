@@ -400,13 +400,17 @@ function getDefImg($control_url, $device)
     $path = "";
     $url = "";
     $baseUrl = getIp($control_url, True);
-    $icons = @$device["iconList"]["icon"];
+    if (is_array($device)){
+	    $icons = $device["iconList"]["icon"];
+        }
     if (!$icons)
         {
-        return "/templates/ssdp_finder/img/" . explode(":", $device["deviceType"]) [3] . ".png"; //"Icons not found
-        }
-      else
-        {
+	    if (is_array($device)){
+            return "/templates/ssdp_finder/img/" . explode(":", $device["deviceType"]) [3] . ".png"; //"Icons not found
+        } else {
+			return "/templates/ssdp_finder/img/" . $device . ".png"; //"Icons not found
+		}
+	} else {
         if (isset($icons["url"]))
             {
             $url = $icons["url"];
