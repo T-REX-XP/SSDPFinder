@@ -95,7 +95,7 @@
                                 <span style="clear: both;"></span>
                             </td>
 		    
-                            <td style="vertical-align:middle" id="service">
+                            <td style="vertical-align:middle" name="service">
                              [#if SERVICES!=""#] [#SERVICES#] [#else#] &nbsp; [#endif#]
                             </td>
                             <td style="vertical-align:middle" width="1%" nowrap>
@@ -213,7 +213,7 @@
             </form>
 <script>
 	$(document).ready(function(){
-       	var services=  $("#service");
+       	var services=  document.getElementsByName("service")
 	console.log("services count:"+services.length );
     })
 	
