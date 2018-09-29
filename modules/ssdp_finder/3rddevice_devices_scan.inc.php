@@ -401,7 +401,7 @@ function getDefImg($control_url, $device)
     $url = "";
     $baseUrl = getIp($control_url, True);
     $icons = @$device["iconList"]["icon"];
-    if (!@$device["iconList"]["icon"])
+    if (!$icons)
         {
         return "/templates/ssdp_finder/img/" . explode(":", $device["deviceType"]) [3] . ".png"; //"Icons not found
         }
