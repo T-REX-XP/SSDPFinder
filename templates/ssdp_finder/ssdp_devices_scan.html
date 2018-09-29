@@ -94,8 +94,9 @@
                                 <p style="font-size:10px" class="list-group-item-text small">Model:[#if MODEL!=""#] [#MODEL#] [#else#] &nbsp; [#endif#]</p>
                                 <span style="clear: both;"></span>
                             </td>
+		    
                             <td style="vertical-align:middle">
-                                [#if SERVICES!=""#] <script>getDisplayName([#SERVICES#])</script> [#else#] &nbsp; [#endif#]
+                             <script>   [#if SERVICES!=""#] getDisplayName([#SERVICES#]) [#else#] &nbsp; [#endif#]</script>
                             </td>
                             <td style="vertical-align:middle" width="1%" nowrap>
                                 <div style="width:120px">
