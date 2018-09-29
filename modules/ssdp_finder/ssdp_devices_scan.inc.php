@@ -207,9 +207,22 @@ function startsWith($haystack, $needle)
     return (substr($haystack, 0, $length) === $needle);
     }
 
-function getServices($device)
+
     {
-    $result = array();
+        $result = array();
+        if(isset($device["serviceList"]["service"]["serviceType"])){
+            $name = explode(":", $device["serviceList"]["service"]["serviceType"])[3];
+            array_push($result,$name);
+        }
+        else{
+            foreach($device["serviceList"]["service"] as $type)
+            {
+                $name = explode(":", $type["serviceType"])[3];
+                array_push($result,$name);
+            }
+        }
+        return implode(",",$result);
+    /*$result = array();
     if (isset($device["serviceList"]["service"]["serviceType"]))
         {
         $name = $device["serviceList"]["service"]["serviceType"];
@@ -265,6 +278,7 @@ function getServices($device)
         }
 
     return implode(",", $result);
+    */
     }
 
 function endsWith($haystack, $needle)
