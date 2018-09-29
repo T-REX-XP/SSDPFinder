@@ -80,12 +80,13 @@ function Scan_3rddevice()
                     "ID" => $existed["ID"], //existed id Majordomo
                     "TITLE" => $deviceInfo['MAGname'], //friendly name
                     "ADDRESS" => $control_url, //presentation url (web UI of device),//presentation url (web UI of device)
-                    "UUID" => $deviceInfo['MAGSN'], 
+                    "UUID" => $uuid, 
                     "LOGO" => getDefImg($control_url, $device_type), //Logo
                     "DESCRIPTION" => 'TV smart box', //description get from xml or field "server"
                     "TYPE" => $device_type, //DeviceType
                     "SERIAL" => $deviceInfo['MAGSN'], //serialnumber
-                    "MANUFACTURERURL" => 'Инфомир', //manufacturer url
+                    "MANUFACTURERURL" => 'http://infomir.com.ua/', //manufacturer url
+                    "MANUFACTURER" => 'InfoMir', //Manufacturer
                     "MODEL" => $deviceInfo['type'], //model
                     "MODELNUMBER" => 'not existed', //modelNumber
                     "SERVICES" => $services, //list services of device
@@ -117,7 +118,7 @@ function Scan_3rddevice()
                     "ID" => $existed["ID"], //existed id Majordomo
                     "TITLE" => 'Yeelight bulb', //friendly name
                     "ADDRESS" => $control_url, //presentation url (web UI of device),//presentation url (web UI of device)
-                    "UUID" => $deviceInfo['location'], 
+                    "UUID" => $uuid, 
                     "LOGO" => getDefImg($control_url, $device_type), //Logo
                     "DESCRIPTION" => 'Yeelight WiFi Light', //description get from xml or field "server"
                     "TYPE" => $device_type, //DeviceType
@@ -429,11 +430,15 @@ function getDefImg($control_url, $device)
     if (substr($url, 0, 4) == "http")
         {
         $path = $url;
+   } else if (substr($url, 0, 4) == "://:")
+        {
+        $path = "http://".getLocalIp(). $url;
         }
       else
         {
         $path = $baseUrl . $url;
         };
+		DebMes($path);
     $current = get_web_page($path);
     $type = pathinfo($path, PATHINFO_EXTENSION);
 
