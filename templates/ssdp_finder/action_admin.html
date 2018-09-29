@@ -14,11 +14,7 @@
         <i class="glyphicon glyphicon-cog"></i> 
 	<#LANG_SETUP#>
     </a>
-    <a class="btn btn-default" href="?view_mode=clear_trash" 
-	onClick="return confirm('Are you sure? Please confirm.')" >
-        <i class="glyphicon glyphicon-trash"></i>
-        <#LANG_SSDP_CLEARMODULE#>
-    </a>
+  
     [#if UPDATE_METHODS!=""#] <a class="btn btn-success" href="?view_mode=update_methods">
         <i class="glyphicon glyphicon-retweet"></i>
         <#LANG_SSDP_UPDATE_METHODS_SHABLON#>
@@ -112,6 +108,11 @@
                 <input type="hidden" name="view_mode" value="update_settings">
                 <input type="hidden" name="mode" value="update">
             </div>
+<a class="btn btn-default" href="?view_mode=clear_trash" 
+	onClick="return confirm('Are you sure? Please confirm.')" >
+        <i class="glyphicon glyphicon-trash"></i>
+        <#LANG_SSDP_CLEARMODULE#>
+    </a>
         </fieldset>
     </form>
 </div>
