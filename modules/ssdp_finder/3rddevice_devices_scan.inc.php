@@ -85,7 +85,8 @@ function Scan_3rddevice()
                     "DESCRIPTION" => 'TV smart box', //description get from xml or field "server"
                     "TYPE" => $device_type, //DeviceType
                     "SERIAL" => $deviceInfo['MAGSN'], //serialnumber
-                    "MANUFACTURERURL" => 'Инфомир', //manufacturer url
+                    "MANUFACTURERURL" => 'http://infomir.com.ua/', //manufacturer url
+                    "MANUFACTURER" => 'Инфомир', //Manufacturer
                     "MODEL" => $deviceInfo['type'], //model
                     "MODELNUMBER" => 'not existed', //modelNumber
                     "SERVICES" => $services, //list services of device
