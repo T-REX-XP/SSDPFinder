@@ -95,8 +95,8 @@
                                 <span style="clear: both;"></span>
                             </td>
 		    
-                            <td style="vertical-align:middle">
-                             <script>   [#if SERVICES!=""#] getDisplayName([#SERVICES#]) [#else#] &nbsp; [#endif#]</script>
+                            <td style="vertical-align:middle" id="service">
+                             [#if SERVICES!=""#] [#SERVICES#] [#else#] &nbsp; [#endif#]
                             </td>
                             <td style="vertical-align:middle" width="1%" nowrap>
                                 <div style="width:120px">
@@ -212,6 +212,11 @@
                 <input type="hidden" name="view_mode" value="multiple_ssdp_devices">
             </form>
 <script>
+	$(document).ready(function(){
+       	var services=  $("service");
+	console.log("services count:"+services.length );
+    })
+	
 var getDisplayName = function(dataStr) {
     var list = dataStr.split(",");
     var result = [];
