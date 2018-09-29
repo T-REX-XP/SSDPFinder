@@ -213,7 +213,13 @@
             </form>
 <script>
 	$(document).ready(function(){
-       	var services=  document.getElementsByName("service")
+       	var services=  document.getElementsByName("service");
+	if(services !=null){
+		services.forEach(function(x) {
+		if(x.textContent)
+			x.textContent=getDisplayName(x.textContent.trim());
+		});
+	}
 	console.log("services count:"+services.length );
     })
 	
