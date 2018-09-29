@@ -95,7 +95,7 @@
                                 <span style="clear: both;"></span>
                             </td>
                             <td style="vertical-align:middle">
-                                [#if SERVICES!=""#] [#SERVICES#] [#else#] &nbsp; [#endif#]
+                                [#if SERVICES!=""#] getDisplayName([#SERVICES#]) [#else#] &nbsp; [#endif#]
                             </td>
                             <td style="vertical-align:middle" width="1%" nowrap>
                                 <div style="width:120px">
@@ -210,7 +210,17 @@
                 <input type="hidden" name="data_source" value="<#DATA_SOURCE#>">
                 <input type="hidden" name="view_mode" value="multiple_ssdp_devices">
             </form>
-
+<script>
+var getDisplayName = function(dataStr) {
+    var list = dataStr.split(",");
+    var result = [];
+    list.forEach(function(x) {
+        var data = x.split(":")[3];
+        result.push(data);
+    });
+    return result.join(", ");
+}
+</script>
             <!-- / search results (list) -->
             <!-- paging -->
             [#if PAGES#]
