@@ -406,9 +406,9 @@ function getDefImg($control_url, $device)
     if (!$icons)
         {
         if (is_array($device)){
-            return "/templates/ssdp_finder/img/" . explode(":", $device["deviceType"]) [3] . ".png"; //"Icons not found
+            $url = "/templates/ssdp_finder/img/" . explode(":", $device["deviceType"]) [3] . ".png"; //"Icons not found
         } else {
-            return "/templates/ssdp_finder/img/" . $device . ".png"; //"Icons not found
+            $url = "/templates/ssdp_finder/img/" . $device . ".png"; //"Icons not found
         }
     } else {
         if (isset($icons["url"]))
@@ -429,11 +429,13 @@ function getDefImg($control_url, $device)
     if (substr($url, 0, 4) == "http")
         {
         $path = $url;
-        }
-      else
+    } else if ($baseUrl == "://:")
         {
+        $path = "http://".getLocalIp(). $url;
+    } else {
         $path = $baseUrl . $url;
         };
+		//DebMes($path);
     $current = get_web_page($path);
     $type = pathinfo($path, PATHINFO_EXTENSION);
 
