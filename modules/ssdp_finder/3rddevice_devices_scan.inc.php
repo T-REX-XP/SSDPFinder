@@ -85,8 +85,8 @@ function Scan_3rddevice()
                     "DESCRIPTION" => 'TV smart box', //description get from xml or field "server"
                     "TYPE" => $device_type, //DeviceType
                     "SERIAL" => $deviceInfo['MAGSN'], //serialnumber
-                    "MANUFACTURERURL" => '', //manufacturer url
-		     "MODEL" => $deviceInfo['type'], //model
+                    "MANUFACTURERURL" => 'Инфомир', //manufacturer url
+                    "MODEL" => $deviceInfo['type'], //model
                     "MODELNUMBER" => 'not existed', //modelNumber
                     "SERVICES" => $services, //list services of device
                     "CONTROLADDRESS" => $control_url, //list services of device
@@ -124,7 +124,7 @@ function Scan_3rddevice()
                     "SERIAL" => 'not existed', //serialnumber
                     "MANUFACTURERURL" => 'https://www.yeelight.com', //manufacturer url
                     "UPDATED" => '', 
-					"MODEL" => 'not existed', //model
+                    "MODEL" => 'not existed', //model
                     "MODELNUMBER" => 'not existed', //modelNumber
                     "MANUFACTURER" => 'YeelightSmartBulb', //Manufacturer
                     "SERVICES" => $services, //list services of device
@@ -400,13 +400,17 @@ function getDefImg($control_url, $device)
     $path = "";
     $url = "";
     $baseUrl = getIp($control_url, True);
-    $icons = @$device["iconList"]["icon"];
+    if (is_array($device)){
+        $icons = $device["iconList"]["icon"];
+        }
     if (!$icons)
         {
-        return "/templates/ssdp_finder/img/" . explode(":", $device["deviceType"]) [3] . ".png"; //"Icons not found
+        if (is_array($device)){
+            return "/templates/ssdp_finder/img/" . explode(":", $device["deviceType"]) [3] . ".png"; //"Icons not found
+        } else {
+            return "/templates/ssdp_finder/img/" . $device . ".png"; //"Icons not found
         }
-      else
-        {
+    } else {
         if (isset($icons["url"]))
             {
             $url = $icons["url"];
