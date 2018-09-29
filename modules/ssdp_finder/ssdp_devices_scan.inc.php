@@ -207,7 +207,7 @@ function startsWith($haystack, $needle)
     return (substr($haystack, 0, $length) === $needle);
     }
 
-
+function getServices($device)
     {
         $result = array();
         if(isset($device["serviceList"]["service"]["serviceType"])){
