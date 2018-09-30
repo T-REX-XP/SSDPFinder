@@ -121,9 +121,7 @@
 [#if VIEW_MODE="edit_ssdp_devices"#] [#inc ssdp_devices_edit.html#] [#endif VIEW_MODE#]
 
 <!-- table ssdp_devices edit -->
-[#if VIEW_MODE="scan_ssdp_devices"#] [#inc ssdp_devices_scan.html#] [#endif VIEW_MODE#]
-<!-- table ssdp_devices edit -->
-[#if VIEW_MODE="scan_3rddevice_devices"#] [#inc 3rddevice_devices_scan.html#] [#endif VIEW_MODE#]
+[#if VIEW_MODE="scan_ssdp_devices" || VIEW_MODE="scan_3rddevice_devices"#] [#inc ssdp_devices_scan.html#] [#endif VIEW_MODE#]
 <!-- / table ssdp_devices edit -->
 <!-- table ssdp_devices view -->
 [#if VIEW_MODE="view_ssdp_devices"#] [#inc ssdp_devices_view.html#] [#endif VIEW_MODE#]
