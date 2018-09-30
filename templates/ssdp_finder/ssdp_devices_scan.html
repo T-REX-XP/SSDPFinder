@@ -213,8 +213,8 @@
             </form>
 <script>
 	$(document).ready(function(){
-       	var services=  document.getElementsByName("service");
-	if(services !=null){
+       	var services =  document.getElementsByName("service");
+	if(isArray(services)){
 		services.forEach(function(x) {
 		if(x.textContent)
 			x.textContent=getDisplayName(x.textContent.trim());
