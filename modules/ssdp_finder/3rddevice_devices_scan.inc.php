@@ -74,6 +74,10 @@ function Scan_3rddevice()
                 $services = 'STB DeviceServices'; //DeviceServices
                 // проверяем на наличие модуля в системе
                 $mod_cheked = SQLSelectOne("SELECT * FROM project_modules WHERE NAME LIKE '" . $modules['YeelightSmartBulb'] . "'");
+
+                // получаем логотип на устройство
+                $logo = getDefImg($control_url, $device_type);
+				
                 if (!array_search_result($result, 'UUID', $uuid) && !is_null($uuid) && !($existed))
                     {
                     $result[] = [
@@ -81,12 +85,11 @@ function Scan_3rddevice()
                     "TITLE" => $deviceInfo['MAGname'], //friendly name
                     "ADDRESS" => $control_url, //presentation url (web UI of device),//presentation url (web UI of device)
                     "UUID" => $uuid, 
-                    "LOGO" => getDefImg($control_url, $device_type), //Logo
+                    "LOGO" => $logo, //Logo
                     "DESCRIPTION" => 'TV smart box', //description get from xml or field "server"
                     "TYPE" => $device_type, //DeviceType
                     "SERIAL" => $deviceInfo['MAGSN'], //serialnumber
-                    "MANUFACTURERURL" => 'http://infomir.com.ua/', //manufacturer url
-                    "MANUFACTURER" => 'InfoMir', //Manufacturer
+                    "MANUFACTURERURL" => 'Инфомир', //manufacturer url
                     "MODEL" => $deviceInfo['type'], //model
                     "MODELNUMBER" => 'not existed', //modelNumber
                     "SERVICES" => $services, //list services of device
@@ -109,8 +112,12 @@ function Scan_3rddevice()
                 // need for chek device type
                 $device_type = 'YeelightSmartBulb'; //DeviceType
                 $services = 'YeelightSmartBulb'; //DeviceServices
+
                 // проверяем на наличие модуля в системе
                 $mod_cheked = SQLSelectOne("SELECT * FROM project_modules WHERE NAME LIKE '" . $modules['YeelightSmartBulb'] . "'");
+
+                // получаем логотип на устройство
+                $logo = getDefImg($control_url, $device_type);
 
                 if (!array_search_result($result, 'UUID', $uuid) && !is_null($uuid) && !($existed))
                     {
@@ -119,7 +126,7 @@ function Scan_3rddevice()
                     "TITLE" => 'Yeelight bulb', //friendly name
                     "ADDRESS" => $control_url, //presentation url (web UI of device),//presentation url (web UI of device)
                     "UUID" => $uuid, 
-                    "LOGO" => getDefImg($control_url, $device_type), //Logo
+                    "LOGO" => $logo, //Logo
                     "DESCRIPTION" => 'Yeelight WiFi Light', //description get from xml or field "server"
                     "TYPE" => $device_type, //DeviceType
                     "SERIAL" => 'not existed', //serialnumber
