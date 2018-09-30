@@ -59,9 +59,47 @@ function Scan_3rddevice()
         foreach($everything as $deviceInfo)
             {
 
-            // если устройство mag250
-            DebMes ($deviceInfo);
-            if ($deviceInfo['MAGaddres'])
+            // если устройство magik home and clones 
+            //DebMes ($deviceInfo);
+            if ($deviceInfo['MHip'])
+                {
+                $control_url = $deviceInfo['MHip'];
+
+                // проверяем на наличие в базе для запрета вывода
+                $uuid = $deviceInfo['MHMAC'];
+                $existed = SQLSelectOne("SELECT * FROM $table_name WHERE UUID='" . $uuid . "'");
+
+                // need for chek device type
+                $device_type = 'Magichome'; //DeviceType
+                $services = 'MagicHome and Co WIFI RGB controllers '; //DeviceServices
+                // проверяем на наличие модуля в системе
+                $mod_cheked = SQLSelectOne("SELECT * FROM project_modules WHERE NAME LIKE '" . $modules['Magichome'] . "'");
+
+                // получаем логотип на устройство
+                $logo = getDefImg($control_url, $device_type);
+				
+                if (!array_search_result($result, 'UUID', $uuid) && !is_null($uuid) && !($existed))
+                    {
+                    $result[] = [
+                    "ID" => $existed["ID"], //existed id Majordomo
+                    "TITLE" => $deviceInfo['MHname'], //friendly name
+                    "ADDRESS" => $control_url, //presentation url (web UI of device),//presentation url (web UI of device)
+                    "UUID" => $uuid, 
+                    "LOGO" => $logo, //Logo
+                    "DESCRIPTION" => 'RGB WIFI dimmer', //description get from xml or field "server"
+                    "TYPE" => $device_type, //DeviceType
+                    "SERIAL" => $deviceInfo['MHMAC'], //serialnumber
+                    "MANUFACTURERURL" => 'China controllers', //manufacturer url
+                    "SERVICES" => $services, //list services of device
+                    "CONTROLADDRESS" => $control_url, //list services of device
+                    "EXTENDED_MODULES" => ext_search_modules($services), // проверка на наличие модуля
+                    "MODULE_INSTALLED" => $mod_cheked, //chek the installed module
+                    "EXTENDED_SIMPLEDEVICE" => check_seample_device($device_type) , //chek the simple device extended
+                    ];
+                    $_SESSION[$uuid] = $logo;
+                    }
+                } 
+              else if ($deviceInfo['MAGaddres'])
                 {
                 $control_url = $deviceInfo['MAGaddres'];
 
@@ -73,7 +111,7 @@ function Scan_3rddevice()
                 $device_type = 'MagXXXdevice'; //DeviceType
                 $services = 'STB DeviceServices'; //DeviceServices
                 // проверяем на наличие модуля в системе
-                $mod_cheked = SQLSelectOne("SELECT * FROM project_modules WHERE NAME LIKE '" . $modules['YeelightSmartBulb'] . "'");
+                $mod_cheked = SQLSelectOne("SELECT * FROM project_modules WHERE NAME LIKE '" . $modules['STB DeviceServices'] . "'");
 
                 // получаем логотип на устройство
                 $logo = getDefImg($control_url, $device_type);
