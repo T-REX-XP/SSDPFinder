@@ -49,7 +49,7 @@ class Core {
     }
 
    
-    public function search_3rddevice($st = 'ssdp:all', $mx = 2, $man = 'ssdp:discover', $from = null, $port = null, $sockTimout = '2')
+    public function search_3rddevice($st = 'ssdp:all', $mx = 2, $man = 'ssdp:discover', $from = null, $port = null, $sockTimout = '3')
     {
         $response = array();
         //create the socket
@@ -87,7 +87,7 @@ class Core {
         socket_sendto($socket, $request, strlen($request), 0, '255.255.255.255', 1900);
 
         // send the data from socket
-        socket_set_option($socket, SOL_SOCKET, SO_RCVTIMEO, array('sec'=>$sockTimout, 'usec'=>'128'));
+        socket_set_option($socket, SOL_SOCKET, SO_RCVTIMEO, array('sec'=>$sockTimout, 'usec'=>'256'));
 
         do {
             $buf = null;
@@ -118,7 +118,7 @@ class Core {
         socket_set_option($sock, SOL_SOCKET, SO_BROADCAST, 1);
         socket_bind($sock, 0, 6777);
         socket_sendto($sock, $post_data, strlen($post_data) , 0, '239.255.255.250', 6000);
-        socket_set_option($sock, SOL_SOCKET, SO_RCVTIMEO, array( "sec" => 1, "usec" => 10));
+        socket_set_option($sock, SOL_SOCKET, SO_RCVTIMEO, array( "sec" => 3, "usec" => 256));
         do
           {
             $buf = null;
