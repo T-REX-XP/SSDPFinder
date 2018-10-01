@@ -96,7 +96,7 @@ class Core {
             }
             if(!is_null($buf)){
 				//если это MagicHome и емы подобные то парсим этим путем
-				if ((preg_match("/[a-fA-F0-9]{12}/", $buf, $output_array))) {
+				if ((preg_match("/[A-F0-9]{12}/", $buf, $output_array))) {
 					$data = $this->parseMagicHome($buf);
                     $response[$data['usn']] = $data;
 				} else {
