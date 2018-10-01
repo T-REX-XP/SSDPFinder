@@ -60,7 +60,7 @@ class Core {
         $request = 'HF-A11ASSISTHREAD'."\r\n";
         socket_sendto($socket, $request, strlen($request), 0, '239.255.255.250', 48899);		
 
-        // seech milo device
+        // seech ксяоми хом device
         $request = hex2bin('21310020ffffffffffffffffffffffffffffffffffffffffffffffffffffffff');
         socket_sendto($socket, $request, strlen($request), 0, '239.255.255.250', 54321);		
 
@@ -95,15 +95,15 @@ class Core {
                 echo "socket_read() failed: " . socket_strerror(socket_last_error()) . "\n";
             }
             if(!is_null($buf)){
-				//если это MagicHome и емы подобные то парсим этим путем
-				if ((preg_match("/[A-F0-9]{12}/", $buf, $output_array))) {
-					$data = $this->parseMagicHome($buf);
+		//если это MagicHome и емы подобные то парсим этим путем
+		if ((preg_match("/[A-F0-9]{12}/", $buf, $output_array))) {
+		    $data = $this->parseMagicHome($buf);
                     $response[$data['usn']] = $data;
-				} else {
-				    // обычный парсинг строки
+		} else {
+	           // обычный парсинг строки
                     $data = $this->parseSearchResponse($buf);
                     $response[$data['usn']] = $data;
-				}
+		}
             }
         } while(!is_null($buf));
 		
@@ -151,8 +151,9 @@ private function parseMagicHome($response)
         }
         return $parsedResponse;
     }
+
 // парсинг маг250 и их клонов
-	private function parsemag250($response, $ip)
+private function parsemag250($response, $ip)
     {
         //var_dump($response);
         $messages = explode(",", $response);
@@ -168,8 +169,8 @@ private function parseMagicHome($response)
         }
         return $parsedResponse;
     }
-   
-    private function parseSearchResponse($response)
+// парсим осталные ответы
+private function parseSearchResponse($response)
     {
         //var_dump($response);
         $messages = explode("\r\n", $response);
@@ -215,29 +216,22 @@ private function parseMagicHome($response)
 
     public function getHeader($url)
     {
-//        var_dump($url);
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_HEADER, 1);
-//        curl_setopt($ch, CURLOPT_VERBOSE, 1);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         $content = curl_exec($ch);
         $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-//        var_dump($httpCode);
         $size = curl_getinfo($ch, CURLINFO_HEADER_SIZE);
-//        var_dump($content);
         $header = substr($content, 0, $size);
         curl_close($ch);
-//        var_dump($header);
         $messages = explode("\r\n", $header);
         $parsed = [];
-        foreach($messages as $m){
-            //            var_dump($m);
+        foreach($messages as $m) {
             if(count(explode(':',$m))>1){
                 list($param, $value) = explode(':',$m, 2);
                 $parsed[$param] = $value;
-            }
-            else{
+            } else{
                 $parsed[$m] = $m;
             }
         }
@@ -284,7 +278,7 @@ private function parseMagicHome($response)
         }
         return $response;
     }
-
+    // получает айпи адрес с портом или без 
     public function baseUrl($url)
     {
         $url = parse_url($url);
