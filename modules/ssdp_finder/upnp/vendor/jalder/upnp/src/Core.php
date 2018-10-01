@@ -13,7 +13,7 @@ class Core {
         //$this->user_agent = 'Xbox';
     }
     
-    public function search($st = 'ssdp:all', $mx = 2, $man = 'ssdp:discover', $from = null, $port = null, $sockTimout = '1')
+    public function search($st = 'ssdp:all', $mx = 2, $man = 'ssdp:discover', $from = null, $port = null, $sockTimout = '2')
     {
         //create the socket
     	$socket = socket_create(AF_INET, SOCK_DGRAM, 0);
@@ -118,7 +118,7 @@ class Core {
         socket_set_option($sock, SOL_SOCKET, SO_BROADCAST, 1);
         socket_bind($sock, 0, 6777);
         socket_sendto($sock, $post_data, strlen($post_data) , 0, '239.255.255.250', 6000);
-        socket_set_option($sock, SOL_SOCKET, SO_RCVTIMEO, array( "sec" => 1, "usec" => 10));
+        socket_set_option($sock, SOL_SOCKET, SO_RCVTIMEO, array( "sec" => 2, "usec" => 128));
         do
           {
             $buf = null;
