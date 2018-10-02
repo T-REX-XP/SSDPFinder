@@ -97,7 +97,7 @@ class Core {
             if(!is_null($buf)){
 		//если это MIHOME и емы подобные то парсим этим путем
 		if ((preg_match("/[A-F0-9]{64}/", $buf, $output_array))) {
-		    $data = $this->parsemihome($buf);
+		    $data = $this->parsemihome($buf, $ip);
                     $response[$data['usn']] = $data;
 		} else if ((preg_match("/[A-F0-9]{12}/", $buf, $output_array))) {
 		//если это MagicHome и емы подобные то парсим этим путем
@@ -111,7 +111,7 @@ class Core {
             }
         } while(!is_null($buf));
 		
-		$arr = array(
+	$arr = array(
         'protocol' => 'remote_stb_1.0',
         'port' => 6777
         );
@@ -140,12 +140,13 @@ class Core {
     }
 
 // парсинг MIHOME и их клонов	
-private function parseMagicHome($response)
+private function parseMagicHome($response, $ip)
     {
         //var_dump($response);
         $parsedResponse = array();
-        $parsedResponse['MIHOMEdevicetype'] = substr($response, 32, 4);
-        $parsedResponse['MIHOMEdeviceID'] = substr($response, 36, 4);
+        $parsedResponse['XHOMEdeviceip'] = $ip;
+	$parsedResponse['XHOMEdevicetype'] = substr($response, 32, 4);
+        $parsedResponse['XHOMEdeviceID'] = substr($response, 36, 4);
         return $parsedResponse;
     }
 
