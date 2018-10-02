@@ -58,10 +58,47 @@ function Scan_3rddevice()
         // перебираем по очереди все найденные устройства
         foreach($everything as $deviceInfo)
             {
-
-            // если устройство magik home and clones 
+            // если устройство xyaomi 
             //DebMes ($deviceInfo);
-            if ($deviceInfo['MHip'])
+            if ($deviceInfo['XHOMEdeviceip'])
+                {
+                $control_url = $deviceInfo['XHOMEdeviceip'];
+
+                // проверяем на наличие в базе для запрета вывода
+                $uuid = $deviceInfo['XHOMEdeviceip'].$deviceInfo['XHOMEdevicetype'].$deviceInfo['XHOMEdeviceID'] ;
+                $existed = SQLSelectOne("SELECT * FROM $table_name WHERE UUID='" . $uuid . "'");
+
+                // need for chek device type
+                $device_type = 'miIO protocol device'; //DeviceType
+                $services = 'miIO protokol device'; //DeviceServices
+                // проверяем на наличие модуля в системе
+                $mod_cheked = SQLSelectOne("SELECT * FROM project_modules WHERE NAME LIKE '" . $modules['miIO'] . "'");
+
+                // получаем логотип на устройство
+                $logo = getDefImg($control_url, $device_type);
+				
+                if (!array_search_result($result, 'UUID', $uuid) && !is_null($uuid) && !($existed))
+                    {
+                    $result[] = [
+                    "ID" => $existed["ID"], //existed id Majordomo
+                    "TITLE" => 'Type-'.$deviceInfo['XHOMEdevicetype'].' ID-'.$deviceInfo['XHOMEdeviceID'], //friendly name
+                    "ADDRESS" => $control_url, //presentation url (web UI of device),//presentation url (web UI of device)
+                    "UUID" => $uuid, 
+                    "LOGO" => $logo, //Logo
+                    "DESCRIPTION" => 'miIO protocol device', //description get from xml or field "server"
+                    "TYPE" => $device_type, //DeviceType
+                    "SERIAL" => $deviceInfo['XHOMEdeviceID'], //serialnumber
+                    "MANUFACTURERURL" => 'China controllers', //manufacturer url
+                    "SERVICES" => $services, //list services of device
+                    "CONTROLADDRESS" => $control_url, //list services of device
+                    "EXTENDED_MODULES" => ext_search_modules($services), // проверка на наличие модуля
+                    "MODULE_INSTALLED" => $mod_cheked, //chek the installed module
+                    "EXTENDED_SIMPLEDEVICE" => check_seample_device($device_type) , //chek the simple device extended
+                    ];
+                    $_SESSION[$uuid] = $logo;
+                    }
+                } 
+              else if ($deviceInfo['MHip'])
                 {
                 $control_url = $deviceInfo['MHip'];
 
