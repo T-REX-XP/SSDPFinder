@@ -9,7 +9,8 @@ if(!count($everything)){
 	print_r('no upnp devices found'.PHP_EOL);
 }
 foreach($everything as $device){
-	print_r($device."\r\n");
+	print_r($device);
+	print_r("\r\n");
 	//u	ncomment to see all available array elements for a device.
 		   // 	$info = $device['description']['device'];
 	// 	$summary = $info['friendlyName'].', '.$info['modelName'].', '.$info['UDN'];

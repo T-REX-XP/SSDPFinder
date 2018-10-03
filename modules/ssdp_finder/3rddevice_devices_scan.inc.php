@@ -70,7 +70,7 @@ function Scan_3rddevice()
 
                 // need for chek device type
                 $device_type = 'miIO protocol device'; //DeviceType
-                $services = 'miIO protokol device'; //DeviceServices
+                $services = 'miIO protocol device'; //DeviceServices
                 // проверяем на наличие модуля в системе
                 $mod_cheked = SQLSelectOne("SELECT * FROM project_modules WHERE NAME LIKE '" . $modules['miIO'] . "'");
 

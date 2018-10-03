@@ -103,6 +103,7 @@ class Core {
             } else 
                 //если это XAOMI HOME и емы подобные то парсим этим путем
                 if ((preg_match("/[A-F0-9]{64}/", $buf, $output_array))) {
+                    $buf=bin2hex($buf);
                     $data = $this->parsemihome($buf, $ip);
                     $response[$data['usn']] = $data;
             } else if (strstr($buf, 'HTTP/1.1 200 OK')) {
