@@ -57,7 +57,7 @@ class Core {
         socket_set_option($socket, SOL_SOCKET, SO_BROADCAST, true);
 
         // поиск устройств milight, MagicHome
-        $request = 'HF-A11ASSISTHREAD'."\r\n";
+        $request = 'HF-A11ASSISTHREAD';
         socket_sendto($socket, $request, strlen($request), 0, '255.255.255.255', 48899);        
 
         // seech ксяоми хом device
