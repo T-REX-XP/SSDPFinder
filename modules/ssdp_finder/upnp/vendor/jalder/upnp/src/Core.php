@@ -16,7 +16,7 @@ class Core {
     public function search($st = 'ssdp:all', $mx = 2, $man = 'ssdp:discover', $from = null, $port = null, $sockTimout = '2')
     {
         //create the socket
-    	$socket = socket_create(AF_INET, SOCK_DGRAM, 0);
+        $socket = socket_create(AF_INET, SOCK_DGRAM, 0);
         socket_set_option($socket, SOL_SOCKET, SO_BROADCAST, true);
 
         //all
@@ -27,7 +27,7 @@ class Core {
         $request .= 'ST: '.$st.''."\r\n";
         $request .= 'USER-AGENT: '.$this->user_agent."\r\n";
         $request .= "\r\n";
-		
+        
         socket_sendto($socket, $request, strlen($request), 0, '239.255.255.250', 1900);
 
         // send the data from socket
@@ -53,16 +53,16 @@ class Core {
     {
         $response = array();
         //create the socket
-    	$socket = socket_create(AF_INET, SOCK_DGRAM, 0);
+        $socket = socket_create(AF_INET, SOCK_DGRAM, 0);
         socket_set_option($socket, SOL_SOCKET, SO_BROADCAST, true);
 
         // поиск устройств milight, MagicHome
         $request = 'HF-A11ASSISTHREAD'."\r\n";
-        socket_sendto($socket, $request, strlen($request), 0, '239.255.255.250', 48899);		
+        socket_sendto($socket, $request, strlen($request), 0, '239.255.255.250', 48899);        
 
         // seech ксяоми хом device
         $request = hex2bin('21310020ffffffffffffffffffffffffffffffffffffffffffffffffffffffff');
-        socket_sendto($socket, $request, strlen($request), 0, '239.255.255.250', 54321);		
+        socket_sendto($socket, $request, strlen($request), 0, '239.255.255.250', 54321);        
 
 
         //поиск устройств yeelight
@@ -72,7 +72,7 @@ class Core {
         $request .= 'MX: '.$mx.''."\r\n";
         $request .= 'ST: wifi_bulb'."\r\n";
         $request .= "\r\n";
-        socket_sendto($socket, $request, strlen($request), 0, '239.255.255.250', 1982);		
+        socket_sendto($socket, $request, strlen($request), 0, '239.255.255.250', 1982);        
 
          //all
         $request = 'M-SEARCH * HTTP/1.1'."\r\n";
@@ -82,7 +82,7 @@ class Core {
         $request .= 'ST: '.$st.''."\r\n";
         $request .= 'USER-AGENT: '.$this->user_agent."\r\n";
         $request .= "\r\n";
-		
+        
         // search device of you PC
         socket_sendto($socket, $request, strlen($request), 0, '255.255.255.255', 1900);
 
@@ -95,25 +95,28 @@ class Core {
                 echo "socket_read() failed: " . socket_strerror(socket_last_error()) . "\n";
             }
             if(!is_null($buf)){
-		if (preg_match("/.+[,][A-F0-9]{12}[,].+/", $buf, $output_array))  {
-		//если это MagicHome и емы подобные то парсим этим путем
-		    $data = $this->parseMagicHome($buf);
-                    $response[$data['usn']] = $data;
+                if (preg_match("/.+[,][A-F0-9]{12}[,].+/", $buf, $output_array))  {
+                //если это MagicHome и емы подобные то парсим этим путем
+                $data = $this->parseMagicHome($buf);
+                $response[$data['usn']] = $data;
 
-		} else 
+            } else 
                 //если это XAOMI HOME и емы подобные то парсим этим путем
-		if ((preg_match("/[A-F0-9]{64}/", $buf, $output_array))) {
-		    $data = $this->parsemihome($buf, $ip);
+                if ((preg_match("/[A-F0-9]{64}/", $buf, $output_array))) {
+                    $data = $this->parsemihome($buf, $ip);
                     $response[$data['usn']] = $data;
-		} else {
-	           // обычный парсинг строки
-                    $data = $this->parseSearchResponse($buf);
-                    $response[$data['usn']] = $data;
-		}
+            } else if (strstr($buf, 'HTTP/1.1 200 OK')) {
+                // обычный парсинг строки
+                $data = $this->parseSearchResponse($buf);
+                $response[$data['usn']] = $data;
+            } else {
+                // остальные ответы от всехустройств
+                $response[$data['usn']] = $buf;
             }
-        } while(!is_null($buf));
-		
-	$arr = array(
+        }
+    } while(!is_null($buf));
+        
+    $arr = array(
         'protocol' => 'remote_stb_1.0',
         'port' => 6777
         );
@@ -141,13 +144,13 @@ class Core {
         return $response;
     }
 
-// парсинг MIHOME и их клонов	
+// парсинг MIHOME и их клонов    
 private function parseMagicHome($response, $ip)
     {
         //var_dump($response);
         $parsedResponse = array();
         $parsedResponse['XHOMEdeviceip'] = $ip;
-	$parsedResponse['XHOMEdevicetype'] = substr($response, 32, 4);
+    $parsedResponse['XHOMEdevicetype'] = substr($response, 32, 4);
         $parsedResponse['XHOMEdeviceID'] = substr($response, 36, 4);
         return $parsedResponse;
     }
@@ -253,12 +256,12 @@ private function parseSearchResponse($response)
         $body .='</s:Envelope>';
  
         $header = array(
-			'Host: '.$this->getLocalIp().':'.$hostPort,
+            'Host: '.$this->getLocalIp().':'.$hostPort,
             'User-Agent: '.$this->user_agent, //fudge the user agent to get desired video format
             'Content-Length: ' . strlen($body),
-			'Connection: close',
+            'Connection: close',
             'Content-Type: text/xml; charset="utf-8"',
-			'SOAPAction: "urn:schemas-upnp-org:service:'.$type.':1#'.$method.'"',
+            'SOAPAction: "urn:schemas-upnp-org:service:'.$type.':1#'.$method.'"',
         );
 
         $ch = curl_init();
