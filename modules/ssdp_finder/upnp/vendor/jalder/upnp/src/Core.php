@@ -95,13 +95,13 @@ class Core {
                 echo "socket_read() failed: " . socket_strerror(socket_last_error()) . "\n";
             }
             if(!is_null($buf)){
-		if (preg_match("/[,][A-F0-9]{12}[,]/", $buf, $output_array))  {
+		if (preg_match("/.+[,][A-F0-9]{12}[,].+/", $buf, $output_array))  {
 		//если это MagicHome и емы подобные то парсим этим путем
 		    $data = $this->parseMagicHome($buf);
                     $response[$data['usn']] = $data;
 
 		} else 
-                //если это MIHOME и емы подобные то парсим этим путем
+                //если это XAOMI HOME и емы подобные то парсим этим путем
 		if ((preg_match("/[A-F0-9]{64}/", $buf, $output_array))) {
 		    $data = $this->parsemihome($buf, $ip);
                     $response[$data['usn']] = $data;
