@@ -48,7 +48,8 @@ class Core {
         return $response;
     }
 
-    public function search_3rddevice($st = 'ssdp:all', $mx = 2, $man = 'ssdp:discover', $from = null, $port = null, $sockTimout = '2')
+   
+    public function search_3rddevice($st = 'ssdp:all', $mx = 2, $man = 'ssdp:discover', $from = null, $port = null, $sockTimout = '5')
     {
         $response = array();
         //create the socket
@@ -57,7 +58,34 @@ class Core {
 
         // поиск устройств milight, MagicHome
         $request = 'HF-A11ASSISTHREAD'."\r\n";
-        socket_sendto($socket, $request, strlen($request), 0, '239.255.255.250', 48899);        
+        socket_sendto($socket, $request, strlen($request), 0, '255.255.255.255', 48899);        
+
+        // seech ксяоми хом device
+        $request = hex2bin('21310020ffffffffffffffffffffffffffffffffffffffffffffffffffffffff');
+        socket_sendto($socket, $request, strlen($request), 0, '255.255.255.255', 54321);        
+
+
+        //поиск устройств yeelight
+        $request = 'M-SEARCH * HTTP/1.1'."\r\n";
+        $request .= 'HOST: 239.255.255.250:1982'."\r\n";
+        $request .= 'MAN: "'.$man.'"'."\r\n";
+        $request .= 'MX: '.$mx.''."\r\n";
+        $request .= 'ST: wifi_bulb'."\r\n";
+        $request .= "\r\n";
+        socket_sendto($socket, $request, strlen($request), 0, '255.255.255.255', 1982);        
+
+         //all
+        $request = 'M-SEARCH * HTTP/1.1'."\r\n";
+        $request .= 'HOST: 239.255.255.250:1900'."\r\n";
+        $request .= 'MAN: "'.$man.'"'."\r\n";
+        $request .= 'MX: '.$mx.''."\r\n";
+        $request .= 'ST: '.$st.''."\r\n";
+        $request .= 'USER-AGENT: '.$this->user_agent."\r\n";
+        $request .= "\r\n";
+        
+        // search device of you PC
+        socket_sendto($socket, $request, strlen($request), 0, '255.255.255.255', 1900);
+
         // send the data from socket
         socket_set_option($socket, SOL_SOCKET, SO_RCVTIMEO, array('sec'=>$sockTimout, 'usec'=>'500'));
 
@@ -71,89 +99,24 @@ class Core {
                 //если это MagicHome и емы подобные то парсим этим путем
                 $data = $this->parseMagicHome($buf);
                 $response[$data['usn']] = $data;
+
+            } else 
+                //если это XAOMI HOME и емы подобные то парсим этим путем
+                if ((preg_match("/[A-F0-9]{64}/", $buf, $output_array))) {
+                    $data = $this->parsemihome($buf, $ip);
+                    $response[$data['usn']] = $data;
+            } else if (strstr($buf, 'HTTP/1.1 200 OK')) {
+                // обычный парсинг строки
+                $data = $this->parseSearchResponse($buf);
+                $response[$data['usn']] = $data;
             } else {
                 // остальные ответы от всехустройств
                 $response[$data['usn']] = $buf;
             }
         }
     } while(!is_null($buf));
-
-        // seech ксяоми хом device
-        $request = hex2bin('21310020ffffffffffffffffffffffffffffffffffffffffffffffffffffffff');
-        socket_sendto($socket, $request, strlen($request), 0, '239.255.255.250', 54321);        
-        // send the data from socket
-        //socket_set_option($socket, SOL_SOCKET, SO_RCVTIMEO, array('sec'=>$sockTimout, 'usec'=>'500'));
-
-        do {
-            $buf = null;
-            if (($len = @socket_recvfrom($socket, $buf, 2048, 0, $ip, $port)) == -1) {
-                echo "socket_read() failed: " . socket_strerror(socket_last_error()) . "\n";
-            }
-            if(!is_null($buf)){
-                 //если это XAOMI HOME и емы подобные то парсим этим путем
-                if ((preg_match("/[A-F0-9]{64}/", $buf, $output_array))) {
-                    $data = $this->parsemihome($buf, $ip);
-                    $response[$data['usn']] = $data;
-                } else {
-                    // остальные ответы от всехустройств
-                    $response[$data['usn']] = $buf;
-                }
-            }
-        } while(!is_null($buf));
-
-
-        //поиск устройств yeelight
-        $request = 'M-SEARCH * HTTP/1.1'."\r\n";
-        $request .= 'HOST: 239.255.255.250:1982'."\r\n";
-        $request .= 'MAN: "'.$man.'"'."\r\n";
-        $request .= 'MX: '.$mx.''."\r\n";
-        $request .= 'ST: wifi_bulb'."\r\n";
-        $request .= "\r\n";
-        socket_sendto($socket, $request, strlen($request), 0, '239.255.255.250', 1982);        
-        // send the data from socket
-        //socket_set_option($socket, SOL_SOCKET, SO_RCVTIMEO, array('sec'=>$sockTimout, 'usec'=>'500'));
-
-        do {
-            $buf = null;
-            if (($len = @socket_recvfrom($socket, $buf, 2048, 0, $ip, $port)) == -1) {
-                echo "socket_read() failed: " . socket_strerror(socket_last_error()) . "\n";
-            }
-            if(!is_null($buf)){
-                // обычный парсинг строки
-                $data = $this->parseSearchResponse($buf);
-                $response[$data['usn']] = $data;
-            }
-        } while(!is_null($buf));
-
-         //all
-        $request = 'M-SEARCH * HTTP/1.1'."\r\n";
-        $request .= 'HOST: 239.255.255.250:1900'."\r\n";
-        $request .= 'MAN: "'.$man.'"'."\r\n";
-        $request .= 'MX: '.$mx.''."\r\n";
-        $request .= 'ST: '.$st.''."\r\n";
-        $request .= 'USER-AGENT: '.$this->user_agent."\r\n";
-        $request .= "\r\n";
-        socket_sendto($socket, $request, strlen($request), 0, '255.255.255.255', 1900);
-        //socket_set_option($socket, SOL_SOCKET, SO_RCVTIMEO, array('sec'=>$sockTimout, 'usec'=>'500'));
-
-        do {
-            $buf = null;
-            if (($len = @socket_recvfrom($socket, $buf, 2048, 0, $ip, $port)) == -1) {
-                echo "socket_read() failed: " . socket_strerror(socket_last_error()) . "\n";
-            }
-            if(!is_null($buf)){
-                if (strstr($buf, 'HTTP/1.1 200 OK')) {
-                    // обычный парсинг строки
-                    $data = $this->parseSearchResponse($buf);
-                    $response[$data['usn']] = $data;
-                } else {
-                    // остальные ответы от всехустройств
-                    $response[$data['usn']] = $buf;
-                }
-            }
-        } while(!is_null($buf));
         
-        $arr = array(
+    $arr = array(
         'protocol' => 'remote_stb_1.0',
         'port' => 6777
         );
@@ -183,110 +146,8 @@ class Core {
          }
         while (!is_null($buf));
         socket_close($socket);
-        socket_close($sock);
         return $response;
-    }    
-    
-// arhive function   
-//    public function search_3rddevice($st = 'ssdp:all', $mx = 2, $man = 'ssdp:discover', $from = null, $port = null, $sockTimout = '5')
-//    {
-//        $response = array();
-//        //create the socket
-//        $socket = socket_create(AF_INET, SOCK_DGRAM, 0);
-//        socket_set_option($socket, SOL_SOCKET, SO_BROADCAST, true);
-//
-//        // поиск устройств milight, MagicHome
-//        $request = 'HF-A11ASSISTHREAD'."\r\n";
-//       socket_sendto($socket, $request, strlen($request), 0, '239.255.255.250', 48899);        
-//
-//        // seech ксяоми хом device
-//        $request = hex2bin('21310020ffffffffffffffffffffffffffffffffffffffffffffffffffffffff');
-//        socket_sendto($socket, $request, strlen($request), 0, '239.255.255.250', 54321);        
-//
-//
-//        //поиск устройств yeelight
-//        $request = 'M-SEARCH * HTTP/1.1'."\r\n";
-//        $request .= 'HOST: 239.255.255.250:1982'."\r\n";
-//        $request .= 'MAN: "'.$man.'"'."\r\n";
-//       $request .= 'MX: '.$mx.''."\r\n";
-//        $request .= 'ST: wifi_bulb'."\r\n";
-//        $request .= "\r\n";
-//        socket_sendto($socket, $request, strlen($request), 0, '239.255.255.250', 1982);        
-
-         //all
-//        $request = 'M-SEARCH * HTTP/1.1'."\r\n";
-//        $request .= 'HOST: 239.255.255.250:1900'."\r\n";
-//        $request .= 'MAN: "'.$man.'"'."\r\n";
-//        $request .= 'MX: '.$mx.''."\r\n";
-//        $request .= 'ST: '.$st.''."\r\n";
-//        $request .= 'USER-AGENT: '.$this->user_agent."\r\n";
-//        $request .= "\r\n";
-        
-        // search device of you PC
-//        socket_sendto($socket, $request, strlen($request), 0, '255.255.255.255', 1900);
-//
-//        // send the data from socket
-//        socket_set_option($socket, SOL_SOCKET, SO_RCVTIMEO, array('sec'=>$sockTimout, 'usec'=>'500'));
-//
-//        do {
-//            $buf = null;
-//            if (($len = @socket_recvfrom($socket, $buf, 2048, 0, $ip, $port)) == -1) {
-//                echo "socket_read() failed: " . socket_strerror(socket_last_error()) . "\n";
-//            }
-//            if(!is_null($buf)){
-//                if (preg_match("/.+[,][A-F0-9]{12}[,].+/", $buf, $output_array))  {
-//                //если это MagicHome и емы подобные то парсим этим путем
-//                $data = $this->parseMagicHome($buf);
-//                $response[$data['usn']] = $data;
-//
-//            } else 
-//                //если это XAOMI HOME и емы подобные то парсим этим путем
-//                if ((preg_match("/[A-F0-9]{64}/", $buf, $output_array))) {
-//                    $data = $this->parsemihome($buf, $ip);
-//                    $response[$data['usn']] = $data;
-//            } else if (strstr($buf, 'HTTP/1.1 200 OK')) {
-//                // обычный парсинг строки
-//                $data = $this->parseSearchResponse($buf);
-//                $response[$data['usn']] = $data;
-//            } else {
-//                // остальные ответы от всехустройств
-//                $response[$data['usn']] = $buf;
-//           }
-//        }
-//    } while(!is_null($buf));
-        
-//    $arr = array(
-//        'protocol' => 'remote_stb_1.0',
-//        'port' => 6777
-//        );
-//        $post_data = json_encode($arr);
-//
-//        // create socket
-//        $sock = socket_create(AF_INET, SOCK_DGRAM, 0);
-//        socket_set_option($sock, SOL_SOCKET, SO_BROADCAST, 1);
-//        socket_bind($sock, 0, 6777);
-//        socket_sendto($sock, $post_data, strlen($post_data) , 0, '239.255.255.250', 6000);
-//        socket_set_option($sock, SOL_SOCKET, SO_RCVTIMEO, array( 'sec'=>$sockTimout, 'usec'=>'500'));
-//        do
-//          {
-//            $buf = null;
-//            @socket_recvfrom($sock, $buf, 1024, 0, $host, $sport);
-//            if (!is_null($buf))
-//             {
-//              if (strstr($buf, '"msgType":"Info"'))  {
-//                //если это МАГ 250 и емы подобные то парсим этим путем
-//                $data = $this->parsemag250($buf, $host);
-//                $response[$data['usn']] = $data;
-//              } else {
-//                // остальные ответы от всехустройств
-//                $response[$data['usn']] = $buf;
-//              }
-//            }
-//         }
-//        while (!is_null($buf));
-//        socket_close($socket);
-//        return $response;
-//    }
+    }
 
 // парсинг MIHOME и их клонов    
 private function parseMagicHome($response, $ip)
