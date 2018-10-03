@@ -174,11 +174,11 @@ if (!$installed_module)
         $rec['HIDDEN'] = 0;
         $rec['PRIORITY'] = 0;
         $rec['ADDED'] = date('Y-m-d H:i:s');
-        if ($rec['ID'])
+        if ($rec['ID'] and $module_data)
             {
             SQLUpdate('project_modules', $rec);
             }
-          else
+          else if ($module_data)
             {
             SQLInsert('project_modules', $rec);
             }
