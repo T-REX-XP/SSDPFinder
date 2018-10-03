@@ -4,7 +4,7 @@
         'MagicHome'=>'magichome',
         'MiLight'=>'MiLight',
         'urn:schemas-sony-com:service:IRCC:1'=>'sonytv',
-        'STB DeviceServices'=>'mag250',
+        'STB DeviceServices'=>'app_mag250',
         'miIO protocol device'=>'xiaomimiio',
 );
 
