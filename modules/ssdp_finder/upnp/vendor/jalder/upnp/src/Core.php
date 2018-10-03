@@ -95,13 +95,15 @@ class Core {
                 echo "socket_read() failed: " . socket_strerror(socket_last_error()) . "\n";
             }
             if(!is_null($buf)){
-		//если это MIHOME и емы подобные то парсим этим путем
-		if ((preg_match("/[A-F0-9]{64}/", $buf, $output_array))) {
-		    $data = $this->parsemihome($buf, $ip);
-                    $response[$data['usn']] = $data;
-		} else if ((preg_match("/[A-F0-9]{12}/", $buf, $output_array))) {
+		if (preg_match("/[,][A-F0-9]{12}[,]/", $buf, $output_array))  {
 		//если это MagicHome и емы подобные то парсим этим путем
 		    $data = $this->parseMagicHome($buf);
+                    $response[$data['usn']] = $data;
+
+		} else 
+                //если это MIHOME и емы подобные то парсим этим путем
+		if ((preg_match("/[A-F0-9]{64}/", $buf, $output_array))) {
+		    $data = $this->parsemihome($buf, $ip);
                     $response[$data['usn']] = $data;
 		} else {
 	           // обычный парсинг строки
@@ -147,24 +149,6 @@ private function parseMagicHome($response, $ip)
         $parsedResponse['XHOMEdeviceip'] = $ip;
 	$parsedResponse['XHOMEdevicetype'] = substr($response, 32, 4);
         $parsedResponse['XHOMEdeviceID'] = substr($response, 36, 4);
-        return $parsedResponse;
-    }
-
-// парсинг MAGICHOME и их клонов	
-private function parseMagicHome($response)
-    {
-        //var_dump($response);
-        $messages = explode(",", $response);
-        $parsedResponse = array();
-        foreach( $messages as $row ) {
-            if(filter_var($row, FILTER_VALIDATE_IP)){ 
-                $parsedResponse['MHip'] = $row;
-            } else if (strlen($row)==12 AND stristr($row, '.') === FALSE){
-		        $parsedResponse['MHMAC'] = $row;
-	        } else {
-		        $parsedResponse['MHname'] = $row;
-            }
-        }
         return $parsedResponse;
     }
 
