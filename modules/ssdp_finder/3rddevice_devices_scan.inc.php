@@ -88,7 +88,7 @@ function Scan_3rddevice()
                     "DESCRIPTION" => 'miIO protocol device', //description get from xml or field "server"
                     "TYPE" => $device_type, //DeviceType
                     "SERIAL" => $deviceInfo['XHOMEdeviceID'], //serialnumber
-                    "MANUFACTURERURL" => 'China controllers', //manufacturer url
+                    "MANUFACTURER" => 'China controllers', //manufacturer url
                     "SERVICES" => $services, //list services of device
                     "CONTROLADDRESS" => $control_url, //list services of device
                     "EXTENDED_MODULES" => ext_search_modules($services), // проверка на наличие модуля
@@ -126,7 +126,7 @@ function Scan_3rddevice()
                     "DESCRIPTION" => 'RGB WIFI dimmer', //description get from xml or field "server"
                     "TYPE" => $device_type, //DeviceType
                     "SERIAL" => $deviceInfo['MHMAC'], //serialnumber
-                    "MANUFACTURERURL" => 'China controllers', //manufacturer url
+                    "MANUFACTURER" => 'China controllers', //manufacturer url
                     "SERVICES" => $services, //list services of device
                     "CONTROLADDRESS" => $control_url, //list services of device
                     "EXTENDED_MODULES" => ext_search_modules($services), // проверка на наличие модуля
