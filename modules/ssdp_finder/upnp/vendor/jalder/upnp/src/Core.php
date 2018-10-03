@@ -57,7 +57,7 @@ class Core {
         socket_set_option($socket, SOL_SOCKET, SO_BROADCAST, true);
 
         // поиск устройств milight, MagicHome
-        $request = 'HF-A11ASSISTHREAD'."\r\n";
+        $request = 'HF-A11ASSISTHREAD';
         socket_sendto($socket, $request, strlen($request), 0, '255.255.255.255', 48899);        
 
         // seech ксяоми хом device
@@ -116,8 +116,9 @@ class Core {
             }
         }
     } while(!is_null($buf));
-        
-    $arr = array(
+    socket_close($socket);
+
+        $arr = array(
         'protocol' => 'remote_stb_1.0',
         'port' => 6777
         );
@@ -127,12 +128,12 @@ class Core {
         $sock = socket_create(AF_INET, SOCK_DGRAM, 0);
         socket_set_option($sock, SOL_SOCKET, SO_BROADCAST, 1);
         socket_bind($sock, 0, 6777);
-        socket_sendto($sock, $post_data, strlen($post_data) , 0, '239.255.255.250', 6000);
+        socket_sendto($sock, $post_data, strlen($post_data) , 0, '255.255.255.255', 6000);
         socket_set_option($sock, SOL_SOCKET, SO_RCVTIMEO, array( 'sec'=>$sockTimout, 'usec'=>'500'));
         do
           {
             $buf = null;
-            @socket_recvfrom($sock, $buf, 1024, 0, $host, $sport);
+            @socket_recvfrom($sock, $buf, 2048, 0, $host, $sport);
             if (!is_null($buf))
              {
               if (strstr($buf, '"msgType":"Info"'))  {
@@ -146,7 +147,7 @@ class Core {
             }
          }
         while (!is_null($buf));
-        socket_close($socket);
+        socket_close($sock);
         return $response;
     }
 
