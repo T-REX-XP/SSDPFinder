@@ -50,7 +50,7 @@ class Core
         socket_close($socket);
         return $response;
         }
-    public function search_3rddevice($st = 'ssdp:all', $mx = 2, $man = 'ssdp:discover', $from = null, $port = null, $sockTimout = '1')
+    public function search_3rddevice($st = 'ssdp:all', $mx = 2, $man = 'ssdp:discover', $from = null, $port = null, $sockTimout = '2')
 
         {
         $response = array();
@@ -58,9 +58,10 @@ class Core
         $stb = $this->search_STB($sockTimout = '1');
         $magic = $this->search_MagicHome($sockTimout = '1');
         $other = $this->search_otherdevices($st = 'ssdp:all', $mx = 2, $man = 'ssdp:discover', $from = null, $port = null, $sockTimout = '1');
-        $response = array_merge($response, $xaomi, $stb, $magic, $other);
+        $response = array_merge($response, $other, $xaomi, $stb, $magic );
         return $response;
         }
+
     private function search_otherdevices($st = 'ssdp:all', $mx = 2, $man = 'ssdp:discover', $from = null, $port = null, $sockTimout = '1')
         {
         $response = array();
@@ -115,16 +116,24 @@ class Core
     private function search_MagicHome($sockTimout = '1')
         {
         $response = array();
-        // create the socket
-        $socket = socket_create(AF_INET, SOCK_DGRAM, SOL_UDP);
-        socket_set_option($socket, SOL_SOCKET, SO_BROADCAST, 1);
-        // поиск устройств milight, MagicHome
-        $request = 'HF-A11ASSISTHREAD';
-        socket_sendto($socket, $request, strlen($request) , 0, '255.255.255.255', 48899);
-        socket_set_option($socket, SOL_SOCKET, SO_RCVTIMEO, array(
-            'sec' => $sockTimout,
-            'usec' => '512'
-        ));
+        $ip = "255.255.255.255";
+$port = 48899;
+
+$str  = 'HF-A11ASSISTHREAD';
+
+
+		$socket = socket_create(AF_INET, SOCK_DGRAM, SOL_UDP);
+
+		if(!$socket){
+echo "error socket";
+		}
+
+		socket_set_option($socket, SOL_SOCKET, SO_REUSEADDR, 1);
+		socket_set_option($socket, SOL_SOCKET, SO_BROADCAST, 1);
+		socket_set_option($socket, SOL_SOCKET, SO_RCVTIMEO, array('sec'=>$sockTimout, 'usec'=>128));
+		socket_bind($cs, 0, 0);
+
+socket_sendto($cs, $str, strlen($str), 0, $ip, $port);
         do
             {
             $buf = null;
@@ -138,7 +147,7 @@ class Core
                     {
                     // если это MagicHome и емы подобные то парсим этим путем
                     $data = $this->parseMagicHome($buf, $ip);
-                    $response[$data['usn']] = $buf;
+                    $response[$data['usn']] = $data;
                     }
                   else
                     {
@@ -155,19 +164,19 @@ class Core
         {
         $response = array();
         $arr = array(
-            'protocol' => 'remote_stb_1.0',
-            'port' => 6777
-        );
-        $post_data = json_encode($arr);
-        // create socket
-        $sock = socket_create(AF_INET, SOCK_DGRAM, 0);
-        socket_set_option($sock, SOL_SOCKET, SO_BROADCAST, 1);
-        socket_bind($sock, 0, 6777);
-        socket_sendto($sock, $post_data, strlen($post_data) , 0, '255.255.255.255', 6000);
-        socket_set_option($sock, SOL_SOCKET, SO_RCVTIMEO, array(
-            'sec' => $sockTimout,
-            'usec' => '500'
-        ));
+        'protocol' => 'remote_stb_1.0',
+        'port' => 6777
+    );
+    $post_data = json_encode($arr);
+    // create socket
+    $sock = socket_create(AF_INET, SOCK_DGRAM, 0);
+    socket_set_option($sock, SOL_SOCKET, SO_BROADCAST, 1);
+    socket_bind($sock, 0, 6777);
+    socket_sendto($sock, $post_data, strlen($post_data) , 0, '255.255.255.255', 6000);
+    socket_set_option($sock, SOL_SOCKET, SO_RCVTIMEO, array(
+        "sec" => $sockTimout,
+        "usec" => 100
+    ));
         do
             {
             $buf = null;
@@ -215,7 +224,7 @@ class Core
             if ((preg_match("/[A-F0-9]{64}/", $buf, $output_array)))
                 {
                 $data = $this->parseXAOMI($buf, $ip);
-                $response[$data['usn']] = $buf;
+                $response[$data['usn']] = $data;
                 }
               else
                 {
