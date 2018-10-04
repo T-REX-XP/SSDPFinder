@@ -50,9 +50,8 @@ class Core
         socket_close($socket);
         return $response;
         }
-    public function search_3rddevice($st = 'ssdp:all', $mx = 2, $man = 'ssdp:discover', $from = null, $port = null, $sockTimout = '2')
 
-        {
+    public function search_3rddevice($st = 'ssdp:all', $mx = 2, $man = 'ssdp:discover', $from = null, $port = null, $sockTimout = '2') {
         $response = array();
         $xaomi = $this->search_XAOMI($sockTimout = '1');
         $stb = $this->search_STB($sockTimout = '1');
@@ -122,16 +121,16 @@ $port = 48899;
 $str  = 'HF-A11ASSISTHREAD';
 
 
-		$socket = socket_create(AF_INET, SOCK_DGRAM, SOL_UDP);
+        $socket = socket_create(AF_INET, SOCK_DGRAM, SOL_UDP);
 
-		if(!$socket){
+        if(!$socket){
 echo "error socket";
-		}
+        }
 
-		socket_set_option($socket, SOL_SOCKET, SO_REUSEADDR, 1);
-		socket_set_option($socket, SOL_SOCKET, SO_BROADCAST, 1);
-		socket_set_option($socket, SOL_SOCKET, SO_RCVTIMEO, array('sec'=>$sockTimout, 'usec'=>128));
-		socket_bind($socket, 0, 0);
+        socket_set_option($socket, SOL_SOCKET, SO_REUSEADDR, 1);
+        socket_set_option($socket, SOL_SOCKET, SO_BROADCAST, 1);
+        socket_set_option($socket, SOL_SOCKET, SO_RCVTIMEO, array('sec'=>$sockTimout, 'usec'=>128));
+        socket_bind($socket, 0, 0);
 
 socket_sendto($socket, $str, strlen($str), 0, $ip, $port);
         do
@@ -160,33 +159,27 @@ socket_sendto($socket, $str, strlen($str), 0, $ip, $port);
         socket_close($socket);
         return $response;
         }
-    private function search_STB($sockTimout = '1')
-        {
+    private function search_STB($sockTimout = '1') {
         $response = array();
-        $arr = array(
-        'protocol' => 'remote_stb_1.0',
-        'port' => 6777
-    );
-    $post_data = json_encode($arr);
-    // create socket
-    $sock = socket_create(AF_INET, SOCK_DGRAM, 0);
-    socket_set_option($sock, SOL_SOCKET, SO_BROADCAST, 1);
-    socket_bind($sock, 0, 6777);
-    socket_sendto($sock, $post_data, strlen($post_data) , 0, '255.255.255.255', 6000);
-    socket_set_option($sock, SOL_SOCKET, SO_RCVTIMEO, array(
-        "sec" => $sockTimout,
-        "usec" => 100
-    ));
-        do
-            {
+        $arr = array('protocol' => 'remote_stb_1.0','port' => 6777);
+        $post_data = json_encode($arr);
+        // create socket
+        $sock = socket_create(AF_INET, SOCK_DGRAM, 0);
+        socket_set_option($sock, SOL_SOCKET, SO_BROADCAST, 1);
+        socket_bind($sock, 0, 6777);
+        socket_sendto($sock, $post_data, strlen($post_data) , 0, '255.255.255.255', 6000);
+        socket_set_option($sock, SOL_SOCKET, SO_RCVTIMEO, array("sec" => $sockTimout,"usec" => 10 ));
+        do {
             $buf = null;
-            @socket_recvfrom($sock, $buf, 2048, 0, $host, $sport);
-            if (!is_null($buf))
+            if (($len = @socket_recvfrom($socket, $buf, 2048, 0, $ip, $port)) == - 1)
                 {
-                if (strstr($buf, '"msgType":"Info"'))
+                echo "socket_read() failed: " . socket_strerror(socket_last_error()) . "\n";
+                }
+            if (!is_null($buf)) {
+                if (json_decode($buf, true))
                     {
                     // если это МАГ 250 и емы подобные то парсим этим путем
-                    $data = $this->parsemag250($buf, $host);
+                    $data = $this->parsemag250($buf, $ip);
                     $response[$data['usn']] = $data;
                     }
                   else
@@ -195,11 +188,11 @@ socket_sendto($socket, $str, strlen($str), 0, $ip, $port);
                     $response[$data['usn']] = $buf;
                     }
                 }
-            }
-        while (!is_null($buf));
+            } while (!is_null($buf));
         socket_close($sock);
         return $response;
         }
+
     private function search_XAOMI($sockTimout = '1')
         {
         $response = array();
