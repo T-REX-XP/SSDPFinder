@@ -96,14 +96,13 @@ class Core {
             if(!is_null($buf)){
                 if (preg_match("/.+[,][A-F0-9]{12}[,].+/", $buf, $output_array))  {
                 //если это MagicHome и емы подобные то парсим этим путем
-                $data = $this->parseMagicHome($buf);
+                $data = $this->parseMagicHome($buf, $ip);
                 $response[$data['usn']] = $data;
 
             } else 
                 //если это XAOMI HOME и емы подобные то парсим этим путем
                 if ((preg_match("/[A-F0-9]{64}/", $buf, $output_array))) {
-                    $buf=bin2hex($buf);
-                    $data = $this->parsemihome($buf, $ip);
+                    $data = $this->parseXAOMI($buf, $ip);
                     $response[$data['usn']] = $data;
             } else if (strstr($buf, 'HTTP/1.1 200 OK')) {
                 // обычный парсинг строки
@@ -144,20 +143,31 @@ class Core {
                 $response[$data['usn']] = $buf;
               }
             }
-         }
-        while (!is_null($buf));
+         } while (!is_null($buf));
         socket_close($sock);
         return $response;
     }
 
-// парсинг MIHOME и их клонов    
-private function parseMagicHome($response, $ip)
+// парсинг XAOMI и их клонов    
+private function parseXAOMI($response, $ip)
     {
         //var_dump($response);
         $parsedResponse = array();
         $parsedResponse['XHOMEdeviceip'] = $ip;
-    $parsedResponse['XHOMEdevicetype'] = substr($response, 32, 4);
+        $parsedResponse['XHOMEdevicetype'] = substr($response, 32, 4);
         $parsedResponse['XHOMEdeviceID'] = substr($response, 36, 4);
+        return $parsedResponse;
+    }
+    
+    // парсинг XAOMI и их клонов    
+private function parseMagicHome($response, $ip)
+    {
+        //var_dump($response);
+        $parsedResponse = array();
+        $par=explode(",",$response);
+        $parsedResponse['MHMAC'] = $par[1];
+        $parsedResponse['MHname'] = $par[2];
+        $parsedResponse['MHip'] = $ip;
         return $parsedResponse;
     }
 
