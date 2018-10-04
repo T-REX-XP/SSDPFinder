@@ -131,9 +131,9 @@ echo "error socket";
 		socket_set_option($socket, SOL_SOCKET, SO_REUSEADDR, 1);
 		socket_set_option($socket, SOL_SOCKET, SO_BROADCAST, 1);
 		socket_set_option($socket, SOL_SOCKET, SO_RCVTIMEO, array('sec'=>$sockTimout, 'usec'=>128));
-		socket_bind($cs, 0, 0);
+		socket_bind($socket, 0, 0);
 
-socket_sendto($cs, $str, strlen($str), 0, $ip, $port);
+socket_sendto($socket, $str, strlen($str), 0, $ip, $port);
         do
             {
             $buf = null;
