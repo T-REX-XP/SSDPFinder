@@ -53,12 +53,10 @@ class Core {
     {
         $response = array();
         //create the socket
-        $socket = socket_create(AF_INET, SOCK_DGRAM, 0);
-        socket_set_option($socket, SOL_SOCKET, SO_BROADCAST, true);
-
-        // поиск устройств milight, MagicHome
-        $request = 'HF-A11ASSISTHREAD';
-        socket_sendto($socket, $request, strlen($request), 0, '255.255.255.255', 48899);        
+        $socket = socket_create(AF_INET, SOCK_DGRAM, SOL_UDP);
+   		socket_set_option($socket, SOL_SOCKET, SO_REUSEADDR, 1);
+        socket_set_option($socket, SOL_SOCKET, SO_BROADCAST, 1);
+        socket_set_option($socket, SOL_SOCKET, SO_RCVTIMEO, array('sec'=>$sockTimout, 'usec'=>'512'));      
 
         // seech ксяоми хом device
         $request = hex2bin('21310020ffffffffffffffffffffffffffffffffffffffffffffffffffffffff');
@@ -86,9 +84,10 @@ class Core {
         // search device of you PC
         socket_sendto($socket, $request, strlen($request), 0, '255.255.255.255', 1900);
 
-        // send the data from socket
-        socket_set_option($socket, SOL_SOCKET, SO_RCVTIMEO, array('sec'=>$sockTimout, 'usec'=>'500'));
-
+        // поиск устройств milight, MagicHome
+        $request = 'HF-A11ASSISTHREAD';
+        socket_sendto($socket, $request, strlen($request), 0, '255.255.255.255', 48899);  
+        
         do {
             $buf = null;
             if (($len = @socket_recvfrom($socket, $buf, 2048, 0, $ip, $port)) == -1) {
