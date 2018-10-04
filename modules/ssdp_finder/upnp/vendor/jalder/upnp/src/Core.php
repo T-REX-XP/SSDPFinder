@@ -54,9 +54,7 @@ class Core {
         $response = array();
         //create the socket
         $socket = socket_create(AF_INET, SOCK_DGRAM, SOL_UDP);
-   		socket_set_option($socket, SOL_SOCKET, SO_REUSEADDR, 1);
         socket_set_option($socket, SOL_SOCKET, SO_BROADCAST, 1);
-        socket_set_option($socket, SOL_SOCKET, SO_RCVTIMEO, array('sec'=>$sockTimout, 'usec'=>'512'));      
 
         // seech ксяоми хом device
         $request = hex2bin('21310020ffffffffffffffffffffffffffffffffffffffffffffffffffffffff');
@@ -87,6 +85,8 @@ class Core {
         // поиск устройств milight, MagicHome
         $request = 'HF-A11ASSISTHREAD';
         socket_sendto($socket, $request, strlen($request), 0, '255.255.255.255', 48899);  
+
+        socket_set_option($socket, SOL_SOCKET, SO_RCVTIMEO, array('sec'=>$sockTimout, 'usec'=>'512'));      
         
         do {
             $buf = null;
@@ -97,13 +97,13 @@ class Core {
                 if (preg_match("/.+[,][A-F0-9]{12}[,].+/", $buf, $output_array))  {
                 //если это MagicHome и емы подобные то парсим этим путем
                 $data = $this->parseMagicHome($buf, $ip);
-                $response[$data['usn']] = $data;
+                $response[$data['usn']] = $buf;
 
             } else 
                 //если это XAOMI HOME и емы подобные то парсим этим путем
                 if ((preg_match("/[A-F0-9]{64}/", $buf, $output_array))) {
                     $data = $this->parseXAOMI($buf, $ip);
-                    $response[$data['usn']] = $data;
+                    $response[$data['usn']] = $buf;
             } else if (strstr($buf, 'HTTP/1.1 200 OK')) {
                 // обычный парсинг строки
                 $data = $this->parseSearchResponse($buf);
