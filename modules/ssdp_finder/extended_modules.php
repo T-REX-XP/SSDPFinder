@@ -1,7 +1,7 @@
 <?php
  $modules= array(
         'YeelightSmartBulb'=>'Yeelight', 
-        'MagicHome'=>'magichome',
+        'Magichome'=>'magichome',
         'MiLight'=>'MiLight',
         'urn:schemas-sony-com:service:IRCC:1'=>'sonytv',
         'STB DeviceServices'=>'app_mag250',
