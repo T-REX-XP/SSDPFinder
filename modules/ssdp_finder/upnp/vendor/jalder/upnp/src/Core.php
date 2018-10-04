@@ -1,240 +1,307 @@
 <?php
-
 namespace jalder\Upnp;
+class Core
 
-class Core {
-
+    {
     private $user_agent;
     public $cache;
 
     public function __construct()
-    {
+
+        {
         $this->user_agent = 'Majordomo/ver-x.x UDAP/2.0 Win/7';
-        //$this->user_agent = 'Xbox';
-    }
-    
+        // $this->user_agent = 'Xbox';
+        }
     public function search($st = 'ssdp:all', $mx = 2, $man = 'ssdp:discover', $from = null, $port = null, $sockTimout = '2')
-    {
-        //create the socket
+
+        {
+        // create the socket
         $socket = socket_create(AF_INET, SOCK_DGRAM, 0);
         socket_set_option($socket, SOL_SOCKET, SO_BROADCAST, true);
-
-        //all
-        $request = 'M-SEARCH * HTTP/1.1'."\r\n";
-        $request .= 'HOST: 239.255.255.250:1900'."\r\n";
-        $request .= 'MAN: "'.$man.'"'."\r\n";
-        $request .= 'MX: '.$mx.''."\r\n";
-        $request .= 'ST: '.$st.''."\r\n";
-        $request .= 'USER-AGENT: '.$this->user_agent."\r\n";
-        $request .= "\r\n";
-        
-        socket_sendto($socket, $request, strlen($request), 0, '239.255.255.250', 1900);
-
+        // all
+        $request = 'M-SEARCH * HTTP/1.1' . "\r\n";
+        $request.= 'HOST: 239.255.255.250:1900' . "\r\n";
+        $request.= 'MAN: "' . $man . '"' . "\r\n";
+        $request.= 'MX: ' . $mx . '' . "\r\n";
+        $request.= 'ST: ' . $st . '' . "\r\n";
+        $request.= 'USER-AGENT: ' . $this->user_agent . "\r\n";
+        $request.= "\r\n";
+        socket_sendto($socket, $request, strlen($request) , 0, '239.255.255.250', 1900);
         // send the data from socket
-        socket_set_option($socket, SOL_SOCKET, SO_RCVTIMEO, array('sec'=>$sockTimout, 'usec'=>'128'));
+        socket_set_option($socket, SOL_SOCKET, SO_RCVTIMEO, array(
+            'sec' => $sockTimout,
+            'usec' => '128'
+        ));
         $response = array();
-        do {
+        do
+            {
             $buf = null;
-            if (($len = @socket_recvfrom($socket, $buf, 2048, 0, $ip, $port)) == -1) {
+            if (($len = @socket_recvfrom($socket, $buf, 2048, 0, $ip, $port)) == - 1)
+                {
                 echo "socket_read() failed: " . socket_strerror(socket_last_error()) . "\n";
-            }
-            if(!is_null($buf)){
+                }
+            if (!is_null($buf))
+                {
                 $data = $this->parseSearchResponse($buf);
                 $response[$data['usn']] = $data;
+                }
             }
-        } while(!is_null($buf));
+        while (!is_null($buf));
         socket_close($socket);
-
         return $response;
-    }
+        }
+    public function search_3rddevice($st = 'ssdp:all', $mx = 2, $man = 'ssdp:discover', $from = null, $port = null, $sockTimout = '1')
 
-   
-    public function search_3rddevice($st = 'ssdp:all', $mx = 2, $man = 'ssdp:discover', $from = null, $port = null, $sockTimout = '5')
-    {
+        {
         $response = array();
-        //create the socket
+        $xaomi = $this->search_XAOMI($sockTimout = '1');
+        $stb = $this->search_STB($sockTimout = '1');
+        $magic = $this->search_MagicHome($sockTimout = '1');
+        $other = $this->search_otherdevices($st = 'ssdp:all', $mx = 2, $man = 'ssdp:discover', $from = null, $port = null, $sockTimout = '1');
+        $response = array_merge($response, $xaomi, $stb, $magic, $other);
+        return $response;
+        }
+    private function search_otherdevices($st = 'ssdp:all', $mx = 2, $man = 'ssdp:discover', $from = null, $port = null, $sockTimout = '1')
+        {
+        $response = array();
+        // create the socket
         $socket = socket_create(AF_INET, SOCK_DGRAM, SOL_UDP);
         socket_set_option($socket, SOL_SOCKET, SO_BROADCAST, 1);
-
-        // seech ксяоми хом device
-        $request = hex2bin('21310020ffffffffffffffffffffffffffffffffffffffffffffffffffffffff');
-        socket_sendto($socket, $request, strlen($request), 0, '255.255.255.255', 54321);        
-
-
-        //поиск устройств yeelight
-        $request = 'M-SEARCH * HTTP/1.1'."\r\n";
-        $request .= 'HOST: 239.255.255.250:1982'."\r\n";
-        $request .= 'MAN: "'.$man.'"'."\r\n";
-        $request .= 'MX: '.$mx.''."\r\n";
-        $request .= 'ST: wifi_bulb'."\r\n";
-        $request .= "\r\n";
-        socket_sendto($socket, $request, strlen($request), 0, '255.255.255.255', 1982);        
-
-         //all
-        $request = 'M-SEARCH * HTTP/1.1'."\r\n";
-        $request .= 'HOST: 239.255.255.250:1900'."\r\n";
-        $request .= 'MAN: "'.$man.'"'."\r\n";
-        $request .= 'MX: '.$mx.''."\r\n";
-        $request .= 'ST: '.$st.''."\r\n";
-        $request .= 'USER-AGENT: '.$this->user_agent."\r\n";
-        $request .= "\r\n";
-        
+        // поиск устройств yeelight
+        $request = 'M-SEARCH * HTTP/1.1' . "\r\n";
+        $request.= 'HOST: 239.255.255.250:1982' . "\r\n";
+        $request.= 'MAN: "' . $man . '"' . "\r\n";
+        $request.= 'MX: ' . $mx . '' . "\r\n";
+        $request.= 'ST: wifi_bulb' . "\r\n";
+        $request.= "\r\n";
+        socket_sendto($socket, $request, strlen($request) , 0, '255.255.255.255', 1982);
+        // all
+        $request = 'M-SEARCH * HTTP/1.1' . "\r\n";
+        $request.= 'HOST: 239.255.255.250:1900' . "\r\n";
+        $request.= 'MAN: "' . $man . '"' . "\r\n";
+        $request.= 'MX: ' . $mx . '' . "\r\n";
+        $request.= 'ST: ' . $st . '' . "\r\n";
+        $request.= 'USER-AGENT: ' . $this->user_agent . "\r\n";
+        $request.= "\r\n";
         // search device of you PC
-        socket_sendto($socket, $request, strlen($request), 0, '255.255.255.255', 1900);
-
-        // поиск устройств milight, MagicHome
-        $request = 'HF-A11ASSISTHREAD';
-        socket_sendto($socket, $request, strlen($request), 0, '255.255.255.255', 48899);  
-
-        socket_set_option($socket, SOL_SOCKET, SO_RCVTIMEO, array('sec'=>$sockTimout, 'usec'=>'512'));      
-        
-        do {
+        socket_sendto($socket, $request, strlen($request) , 0, '255.255.255.255', 1900);
+        socket_set_option($socket, SOL_SOCKET, SO_RCVTIMEO, array(
+            'sec' => $sockTimout,
+            'usec' => '512'
+        ));
+        do
+            {
             $buf = null;
-            if (($len = @socket_recvfrom($socket, $buf, 2048, 0, $ip, $port)) == -1) {
+            if (($len = @socket_recvfrom($socket, $buf, 2048, 0, $ip, $port)) == - 1)
+                {
                 echo "socket_read() failed: " . socket_strerror(socket_last_error()) . "\n";
-            }
-            if(!is_null($buf)){
-                if (preg_match("/.+[,][A-F0-9]{12}[,].+/", $buf, $output_array))  {
-                //если это MagicHome и емы подобные то парсим этим путем
-                $data = $this->parseMagicHome($buf, $ip);
-                $response[$data['usn']] = $buf;
-
-            } else 
-                //если это XAOMI HOME и емы подобные то парсим этим путем
-                if ((preg_match("/[A-F0-9]{64}/", $buf, $output_array))) {
-                    $data = $this->parseXAOMI($buf, $ip);
-                    $response[$data['usn']] = $buf;
-            } else if (strstr($buf, 'HTTP/1.1 200 OK')) {
+                }
+            if (strstr($buf, 'HTTP/1.1 200 OK'))
+                {
                 // обычный парсинг строки
                 $data = $this->parseSearchResponse($buf);
                 $response[$data['usn']] = $data;
-            } else {
+                }
+              else
+                {
                 // остальные ответы от всехустройств
                 $response[$data['usn']] = $buf;
+                }
             }
+        while (!is_null($buf));
+        socket_close($socket);
+        return $response;
         }
-    } while(!is_null($buf));
-    socket_close($socket);
-
+    private function search_MagicHome($sockTimout = '1')
+        {
+        $response = array();
+        // create the socket
+        $socket = socket_create(AF_INET, SOCK_DGRAM, SOL_UDP);
+        socket_set_option($socket, SOL_SOCKET, SO_BROADCAST, 1);
+        // поиск устройств milight, MagicHome
+        $request = 'HF-A11ASSISTHREAD';
+        socket_sendto($socket, $request, strlen($request) , 0, '255.255.255.255', 48899);
+        socket_set_option($socket, SOL_SOCKET, SO_RCVTIMEO, array(
+            'sec' => $sockTimout,
+            'usec' => '512'
+        ));
+        do
+            {
+            $buf = null;
+            if (($len = @socket_recvfrom($socket, $buf, 2048, 0, $ip, $port)) == - 1)
+                {
+                echo "socket_read() failed: " . socket_strerror(socket_last_error()) . "\n";
+                }
+            if (!is_null($buf))
+                {
+                if (preg_match("/.+[,][A-F0-9]{12}[,].+/", $buf, $output_array))
+                    {
+                    // если это MagicHome и емы подобные то парсим этим путем
+                    $data = $this->parseMagicHome($buf, $ip);
+                    $response[$data['usn']] = $buf;
+                    }
+                  else
+                    {
+                    // остальные ответы от всехустройств
+                    $response[$data['usn']] = $buf;
+                    }
+                }
+            }
+        while (!is_null($buf));
+        socket_close($socket);
+        return $response;
+        }
+    private function search_STB($sockTimout = '1')
+        {
+        $response = array();
         $arr = array(
-        'protocol' => 'remote_stb_1.0',
-        'port' => 6777
+            'protocol' => 'remote_stb_1.0',
+            'port' => 6777
         );
         $post_data = json_encode($arr);
-
         // create socket
         $sock = socket_create(AF_INET, SOCK_DGRAM, 0);
         socket_set_option($sock, SOL_SOCKET, SO_BROADCAST, 1);
         socket_bind($sock, 0, 6777);
         socket_sendto($sock, $post_data, strlen($post_data) , 0, '255.255.255.255', 6000);
-        socket_set_option($sock, SOL_SOCKET, SO_RCVTIMEO, array( 'sec'=>$sockTimout, 'usec'=>'500'));
+        socket_set_option($sock, SOL_SOCKET, SO_RCVTIMEO, array(
+            'sec' => $sockTimout,
+            'usec' => '500'
+        ));
         do
-          {
+            {
             $buf = null;
             @socket_recvfrom($sock, $buf, 2048, 0, $host, $sport);
             if (!is_null($buf))
-             {
-              if (strstr($buf, '"msgType":"Info"'))  {
-                //если это МАГ 250 и емы подобные то парсим этим путем
-                $data = $this->parsemag250($buf, $host);
-                $response[$data['usn']] = $data;
-              } else {
-                // остальные ответы от всехустройств
-                $response[$data['usn']] = $buf;
-              }
+                {
+                if (strstr($buf, '"msgType":"Info"'))
+                    {
+                    // если это МАГ 250 и емы подобные то парсим этим путем
+                    $data = $this->parsemag250($buf, $host);
+                    $response[$data['usn']] = $data;
+                    }
+                  else
+                    {
+                    // остальные ответы от всехустройств
+                    $response[$data['usn']] = $buf;
+                    }
+                }
             }
-         } while (!is_null($buf));
+        while (!is_null($buf));
         socket_close($sock);
         return $response;
-    }
-
-// парсинг XAOMI и их клонов    
-private function parseXAOMI($response, $ip)
-    {
-        //var_dump($response);
+        }
+    private function search_XAOMI($sockTimout = '1')
+        {
+        $response = array();
+        // create the socket
+        $socket = socket_create(AF_INET, SOCK_DGRAM, SOL_UDP);
+        socket_set_option($socket, SOL_SOCKET, SO_BROADCAST, 1);
+        // seech ксяоми хом device
+        $request = hex2bin('21310020ffffffffffffffffffffffffffffffffffffffffffffffffffffffff');
+        socket_sendto($socket, $request, strlen($request) , 0, '255.255.255.255', 54321);
+        socket_set_option($socket, SOL_SOCKET, SO_RCVTIMEO, array(
+            'sec' => $sockTimout,
+            'usec' => '512'
+        ));
+        do
+            {
+            $buf = null;
+            if (($len = @socket_recvfrom($socket, $buf, 2048, 0, $ip, $port)) == - 1)
+                {
+                echo "socket_read() failed: " . socket_strerror(socket_last_error()) . "\n";
+                }
+            // если это XAOMI HOME и емы подобные то парсим этим путем
+            if ((preg_match("/[A-F0-9]{64}/", $buf, $output_array)))
+                {
+                $data = $this->parseXAOMI($buf, $ip);
+                $response[$data['usn']] = $buf;
+                }
+              else
+                {
+                // остальные ответы от всехустройств
+                $response[$data['usn']] = $buf;
+                }
+            }
+        while (!is_null($buf));
+        socket_close($socket);
+        return $response;
+        }
+    // парсинг XAOMI и их клонов
+    private function parseXAOMI($response, $ip)
+        {
+        // var_dump($response);
         $parsedResponse = array();
         $parsedResponse['XHOMEdeviceip'] = $ip;
         $parsedResponse['XHOMEdevicetype'] = substr($response, 32, 4);
         $parsedResponse['XHOMEdeviceID'] = substr($response, 36, 4);
         return $parsedResponse;
-    }
-    
-    // парсинг XAOMI и их клонов    
-private function parseMagicHome($response, $ip)
-    {
-        //var_dump($response);
+        }
+    // парсинг XAOMI и их клонов
+    private function parseMagicHome($response, $ip)
+        {
+        // var_dump($response);
         $parsedResponse = array();
-        $par=explode(",",$response);
+        $par = explode(",", $response);
         $parsedResponse['MHMAC'] = $par[1];
         $parsedResponse['MHname'] = $par[2];
         $parsedResponse['MHip'] = $ip;
         return $parsedResponse;
-    }
-
-// парсинг маг250 и их клонов
-private function parsemag250($response, $ip)
-    {
-        //var_dump($response);
+        }
+    // парсинг маг250 и их клонов
+    private function parsemag250($response, $ip)
+        {
+        // var_dump($response);
         $messages = explode(",", $response);
         $parsedResponse = array();
-        foreach( $messages as $row ) {
+        foreach($messages as $row)
+            {
             $parsedResponse['MAGaddres'] = $ip;
-            if( stripos( $row, '"name":') === 0 )
-                $parsedResponse['MAGname'] = str_ireplace( '"', '', str_ireplace( '"name":"', '', $row ));
-            if( stripos( $row, '"serialNumber":"') === 0 )
-                $parsedResponse['MAGSN'] = str_ireplace( '"', '', str_ireplace( '"serialNumber":"', '', $row ));
-            if( stripos( $row, '"type":"') === 0 )
-                $parsedResponse['type'] = str_ireplace( '"', '', str_ireplace( '"type":"', '', $row ));
-        }
+            if (stripos($row, '"name":') === 0) $parsedResponse['MAGname'] = str_ireplace('"', '', str_ireplace('"name":"', '', $row));
+            if (stripos($row, '"serialNumber":"') === 0) $parsedResponse['MAGSN'] = str_ireplace('"', '', str_ireplace('"serialNumber":"', '', $row));
+            if (stripos($row, '"type":"') === 0) $parsedResponse['type'] = str_ireplace('"', '', str_ireplace('"type":"', '', $row));
+            }
         return $parsedResponse;
-    }
-// парсим осталные ответы
-private function parseSearchResponse($response)
-    {
-        //var_dump($response);
+        }
+    // парсим осталные ответы
+    private function parseSearchResponse($response)
+        {
+        // var_dump($response);
         $messages = explode("\r\n", $response);
         $parsedResponse = array();
-        foreach( $messages as $row ) {
-            if( stripos( $row, 'http' ) === 0 )
-                $parsedResponse['http'] = $row;
-            if( stripos( $row, 'cach' ) === 0 )
-                $parsedResponse['cache-control'] = str_ireplace( 'cache-control: ', '', $row );
-            if( stripos( $row, 'date') === 0 )
-                $parsedResponse['date'] = str_ireplace( 'date: ', '', $row );
-            if( stripos( $row, 'ext') === 0 )
-                $parsedResponse['ext'] = str_ireplace( 'ext: ', '', $row );
-            if( stripos( $row, 'loca') === 0 )
-                $parsedResponse['location'] = str_ireplace( 'location: ', '', $row );
-            if( stripos( $row, 'serv') === 0 )
-                $parsedResponse['server'] = str_ireplace( 'server: ', '', $row );
-            if( stripos( $row, 'st:') === 0 )
-                $parsedResponse['st'] = str_ireplace( 'st: ', '', $row );
-            if( stripos( $row, 'usn:') === 0 )
-                $parsedResponse['usn'] = str_ireplace( 'usn: ', '', $row );
-            if( stripos( $row, 'cont') === 0 )
-                $parsedResponse['content-length'] = str_ireplace( 'content-length: ', '', $row );
-        }
+        foreach($messages as $row)
+            {
+            if (stripos($row, 'http') === 0) $parsedResponse['http'] = $row;
+            if (stripos($row, 'cach') === 0) $parsedResponse['cache-control'] = str_ireplace('cache-control: ', '', $row);
+            if (stripos($row, 'date') === 0) $parsedResponse['date'] = str_ireplace('date: ', '', $row);
+            if (stripos($row, 'ext') === 0) $parsedResponse['ext'] = str_ireplace('ext: ', '', $row);
+            if (stripos($row, 'loca') === 0) $parsedResponse['location'] = str_ireplace('location: ', '', $row);
+            if (stripos($row, 'serv') === 0) $parsedResponse['server'] = str_ireplace('server: ', '', $row);
+            if (stripos($row, 'st:') === 0) $parsedResponse['st'] = str_ireplace('st: ', '', $row);
+            if (stripos($row, 'usn:') === 0) $parsedResponse['usn'] = str_ireplace('usn: ', '', $row);
+            if (stripos($row, 'cont') === 0) $parsedResponse['content-length'] = str_ireplace('content-length: ', '', $row);
+            }
         $parsedResponse['description'] = $this->getDescription($parsedResponse['location']);
         return $parsedResponse;
-    }
-    
+        }
     public function getDescription($url)
-    {
+
+        {
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_HEADER, 0);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         $content = curl_exec($ch);
-        libxml_use_internal_errors(true); 
+        libxml_use_internal_errors(true);
         $xml = simplexml_load_string($content);
         $json = json_encode($xml);
         $desc = (array)json_decode($json, true);
         curl_close($ch);
         return $desc;
-    }
-
+        }
     public function getHeader($url)
-    {
+
+        {
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_HEADER, 1);
@@ -246,70 +313,76 @@ private function parseSearchResponse($response)
         curl_close($ch);
         $messages = explode("\r\n", $header);
         $parsed = [];
-        foreach($messages as $m) {
-            if(count(explode(':',$m))>1){
-                list($param, $value) = explode(':',$m, 2);
+        foreach($messages as $m)
+            {
+            if (count(explode(':', $m)) > 1)
+                {
+                list($param, $value) = explode(':', $m, 2);
                 $parsed[$param] = $value;
-            } else{
+                }
+              else
+                {
                 $parsed[$m] = $m;
+                }
             }
-        }
         $parsed['httpCode'] = $httpCode;
         return $parsed;
-    }
-
-    public function sendRequestToDevice($method, $arguments, $url, $type, $hostIp = '127.0.0.1', $hostPort = '80')
-    {
-        $body  ='<?xml version="1.0" encoding="utf-8"?>' . "\r\n";
-        $body .='<s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/" s:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/">';
-        $body .='<s:Body>';
-        $body .='<u:'.$method.' xmlns:u="urn:schemas-upnp-org:service:'.$type.':1">';
-        foreach( $arguments as $arg=>$value ) {
-            $body .='<'.$arg.'>'.$value.'</'.$arg.'>';
         }
-        $body .='</u:'.$method.'>';
-        $body .='</s:Body>';
-        $body .='</s:Envelope>';
- 
+    public function sendRequestToDevice($method, $arguments, $url, $type, $hostIp = '127.0.0.1', $hostPort = '80')
+
+        {
+        $body = '<?xml version="1.0" encoding="utf-8"?>' . "\r\n";
+        $body.= '<s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/" s:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/">';
+        $body.= '<s:Body>';
+        $body.= '<u:' . $method . ' xmlns:u="urn:schemas-upnp-org:service:' . $type . ':1">';
+        foreach($arguments as $arg => $value)
+            {
+            $body.= '<' . $arg . '>' . $value . '</' . $arg . '>';
+            }
+        $body.= '</u:' . $method . '>';
+        $body.= '</s:Body>';
+        $body.= '</s:Envelope>';
         $header = array(
-            'Host: '.$this->getLocalIp().':'.$hostPort,
-            'User-Agent: '.$this->user_agent, //fudge the user agent to get desired video format
-            'Content-Length: ' . strlen($body),
+            'Host: ' . $this->getLocalIp() . ':' . $hostPort,
+            'User-Agent: ' . $this->user_agent, //fudge the user agent to get desired video format
+            'Content-Length: ' . strlen($body) ,
             'Connection: close',
             'Content-Type: text/xml; charset="utf-8"',
-            'SOAPAction: "urn:schemas-upnp-org:service:'.$type.':1#'.$method.'"',
+            'SOAPAction: "urn:schemas-upnp-org:service:' . $type . ':1#' . $method . '"',
         );
-
         $ch = curl_init();
-        curl_setopt( $ch, CURLOPT_HTTPHEADER, $header );
-        curl_setopt( $ch, CURLOPT_HEADER, 0);
-        curl_setopt( $ch, CURLOPT_RETURNTRANSFER, 1 );
-        curl_setopt( $ch, CURLOPT_URL, $url );
-        curl_setopt( $ch, CURLOPT_POST, TRUE );
-        curl_setopt( $ch, CURLOPT_POSTFIELDS, $body );
-        $response = curl_exec( $ch );
-        curl_close( $ch );
-        $doc = new \DOMDocument();
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
+        curl_setopt($ch, CURLOPT_HEADER, 0);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_POST, TRUE);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $body);
+        $response = curl_exec($ch);
+        curl_close($ch);
+        $doc = new DOMDocument();
         $doc->loadXML($response);
         $result = $doc->getElementsByTagName('Result');
-        if(is_object($result->item(0))){
+        if (is_object($result->item(0)))
+            {
             return $result->item(0)->nodeValue;
-        }
+            }
         return $response;
-    }
-    // получает айпи адрес с портом или без 
+        }
+    // получает айпи адрес с портом или без
     public function baseUrl($url)
-    {
-        $url = parse_url($url);
-        return $url['scheme'].'://'.$url['host'].':'.$url['port'];
-    }
 
+        {
+        $url = parse_url($url);
+        return $url['scheme'] . '://' . $url['host'] . ':' . $url['port'];
+        }
     public function setUserAgent($agent)
-    {
+
+        {
         $this->user_agent = $agent;
+        }
+    // получаем hostname адрес локального компьютера
+    private function getLocalIp()
+        {
+        return gethostbyname(trim(`hostname`));
+        }
     }
-    //получаем hostname адрес локального компьютера
-    private function getLocalIp() { 
-      return gethostbyname(trim(`hostname`)); 
-    }
-}
