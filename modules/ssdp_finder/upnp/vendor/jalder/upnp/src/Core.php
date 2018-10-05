@@ -3,12 +3,10 @@
 namespace jalder\Upnp;
 
 class Core {
-
     private $user_agent;
     public $cache;
 
-    public function __construct()
-    {
+    public function __construct() {
         $this->user_agent = 'Majordomo/ver-x.x UDAP/2.0 Win/7';
         //$this->user_agent = 'Xbox';
     }
@@ -131,11 +129,11 @@ class Core {
         // сканируем ксяоми устройства отдельно
         $xyaomi = $this->search_XYAOMIDEVICES($sockTimout = '2');
         // соеденяем ответы в кучу
-        $response = array_merge($response, $mghome, $xyaomi);		
+        $response = array_merge($response, $mghome, $xyaomi);        
         return $response;
     }
 
-//фуеция поиска ксяоми устройств
+//фунция поиска ксяоми устройств
 private function search_XYAOMIDEVICES($sockTimout = '2') {
     $response = array();
     //create the socket
@@ -168,24 +166,24 @@ private function search_XYAOMIDEVICES($sockTimout = '2') {
     }
     
 private function search_MAGICHOME($sockTimout = '2') {
-        $response = array();
-        //create the socket
-        $socket = socket_create(AF_INET, SOCK_DGRAM, SOL_UDP);
-        socket_set_option($socket, SOL_SOCKET, SO_REUSEADDR, 1);
-        socket_set_option($socket, SOL_SOCKET, SO_BROADCAST, 1);
-        socket_set_option($socket, SOL_SOCKET, SO_RCVTIMEO, array('sec'=>$sockTimout, 'usec'=>'500'));
+    $response = array();
+    //create the socket
+    $socket = socket_create(AF_INET, SOCK_DGRAM, SOL_UDP);
+    socket_set_option($socket, SOL_SOCKET, SO_REUSEADDR, 1);
+    socket_set_option($socket, SOL_SOCKET, SO_BROADCAST, 1);
+    socket_set_option($socket, SOL_SOCKET, SO_RCVTIMEO, array('sec'=>$sockTimout, 'usec'=>'500'));
     socket_bind($socket, 0, 0);
-        // поиск устройств milight, MagicHome
-        $request = 'HF-A11ASSISTHREAD';
-        socket_sendto($socket, $request, strlen($request), 0, '255.255.255.255', 48899);       
-        do {
-            $buf = null;
-            if (($len = @socket_recvfrom($socket, $buf, 2048, 0, $ip, $port)) == -1) {
-                echo "socket_read() failed: " . socket_strerror(socket_last_error()) . "\n";
+    // поиск устройств milight, MagicHome
+    $request = 'HF-A11ASSISTHREAD';
+    socket_sendto($socket, $request, strlen($request), 0, '255.255.255.255', 48899);       
+    do {
+        $buf = null;
+        if (($len = @socket_recvfrom($socket, $buf, 2048, 0, $ip, $port)) == -1) {
+            echo "socket_read() failed: " . socket_strerror(socket_last_error()) . "\n";
             }
-            if(!is_null($buf)){
-                if (preg_match("/.+[,][A-F0-9]{12}[,].+/", $buf, $output_array))  {
-                //если это MagicHome и емы подобные то парсим этим путем
+        if(!is_null($buf)){
+            if (preg_match("/.+[,][A-F0-9]{12}[,].+/", $buf, $output_array))  {
+               //если это MagicHome и емы подобные то парсим этим путем
                 $data = $this->parseMagicHome($buf, $ip);
                 $response[$data['usn']] = $data;
             } else {
@@ -199,7 +197,7 @@ private function search_MAGICHOME($sockTimout = '2') {
     }
 
     
-// парсинг MIHOME и их клонов    
+// парсинг ксяоми и их клонов    
 private function parsexaomi($response, $ip)
     {
         //var_dump($response);
