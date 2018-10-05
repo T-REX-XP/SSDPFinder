@@ -128,10 +128,9 @@ class Core {
 
         // сканируем магикхом устройства отдельно
         $mghome = $this->search_MAGICHOME($sockTimout = '2');
-        $response = array_merge($response, $mghome);
-
         // сканируем ксяоми устройства отдельно
         $xyaomi = $this->search_XYAOMIDEVICES($sockTimout = '2');
+        // соеденяем ответы в кучу
         $response = array_merge($response, $mghome, $xyaomi);		
         return $response;
     }
