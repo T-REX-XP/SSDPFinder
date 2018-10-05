@@ -167,7 +167,8 @@ class Core {
             } else {
                 // остальные ответы от всехустройств
                 $response[$data['usn']] = $buf;
-            }
+                }
+			}
     } while(!is_null($buf));
     socket_close($socket);
     return $response;
