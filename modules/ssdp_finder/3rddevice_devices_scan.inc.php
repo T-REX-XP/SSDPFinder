@@ -70,7 +70,7 @@ function Scan_3rddevice()
 
                 // need for chek device type
                 $device_type = 'miIO protocol device'; //DeviceType
-                $services = 'miIO protocol device'; //DeviceServices
+                $services = 'system:1:miIO protocol device'; //DeviceServices
                 // проверяем на наличие модуля в системе
                 $mod_cheked = SQLSelectOne("SELECT * FROM project_modules WHERE NAME LIKE '" . $modules['miIO'] . "'");
 
@@ -91,7 +91,7 @@ function Scan_3rddevice()
                     "MANUFACTURER" => 'China controllers', //manufacturer url
                     "SERVICES" => $services, //list services of device
                     "CONTROLADDRESS" => $control_url, //list services of device
-                    "EXTENDED_MODULES" => ext_search_modules($services), // проверка на наличие модуля
+                    "EXTENDED_MODULES" => ext_search_modules($device_type), // проверка на наличие модуля
                     "MODULE_INSTALLED" => $mod_cheked, //chek the installed module
                     "EXTENDED_SIMPLEDEVICE" => check_seample_device($device_type) , //chek the simple device extended
                     ];
@@ -108,7 +108,7 @@ function Scan_3rddevice()
 
                 // need for chek device type
                 $device_type = 'Magichome'; //DeviceType
-                $services = 'MagicHome and Co WIFI RGB controllers '; //DeviceServices
+                $services = 'system:1:MagicHome and Co WIFI RGBW controllers '; //DeviceServices
                 // проверяем на наличие модуля в системе
                 $mod_cheked = SQLSelectOne("SELECT * FROM project_modules WHERE NAME LIKE '" . $modules['Magichome'] . "'");
 
@@ -123,13 +123,14 @@ function Scan_3rddevice()
                     "ADDRESS" => $control_url, //presentation url (web UI of device),//presentation url (web UI of device)
                     "UUID" => $uuid, 
                     "LOGO" => $logo, //Logo
-                    "DESCRIPTION" => 'RGB WIFI dimmer', //description get from xml or field "server"
+                    "DESCRIPTION" => 'RGB WIFI controller', //description get from xml or field "server"
                     "TYPE" => $device_type, //DeviceType
                     "SERIAL" => $deviceInfo['MHMAC'], //serialnumber
                     "MANUFACTURER" => 'China controllers', //manufacturer url
+                    "MODEL" => $deviceInfo['MHname'], //model
                     "SERVICES" => $services, //list services of device
                     "CONTROLADDRESS" => $control_url, //list services of device
-                    "EXTENDED_MODULES" => ext_search_modules($services), // проверка на наличие модуля
+                    "EXTENDED_MODULES" => ext_search_modules('Magichome'), // проверка на наличие модуля
                     "MODULE_INSTALLED" => $mod_cheked, //chek the installed module
                     "EXTENDED_SIMPLEDEVICE" => check_seample_device($device_type) , //chek the simple device extended
                     ];
