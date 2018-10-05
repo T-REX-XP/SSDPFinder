@@ -104,7 +104,7 @@ class Core {
                 //если это XAOMI HOME и емы подобные то парсим этим путем
                 if ((preg_match("/[A-F0-9]{64}/", $buf, $output_array))) {
                     $buf=bin2hex($buf);
-                    $data = $this->parsemihome($buf, $ip);
+                    $data = $this->parsexaomi($buf, $ip);
                     $response[$data['usn']] = $data;
             } else if (strstr($buf, 'HTTP/1.1 200 OK')) {
                 // обычный парсинг строки
@@ -152,7 +152,7 @@ class Core {
     }
 
 // парсинг MIHOME и их клонов    
-private function parseMagicHome($response, $ip)
+private function parsexaomi($response, $ip)
     {
         //var_dump($response);
         $parsedResponse = array();
@@ -160,6 +160,16 @@ private function parseMagicHome($response, $ip)
     $parsedResponse['XHOMEdevicetype'] = substr($response, 32, 4);
         $parsedResponse['XHOMEdeviceID'] = substr($response, 36, 4);
         return $parsedResponse;
+    }
+    // парсинг MIHOME и их клонов    
+private function parseMagicHome($response, $ip) {
+    //var_dump($response);
+    $parsedResponse = array();
+    $par=explode(",",$response);
+    $parsedResponse['MHip'] = $ip;
+    $parsedResponse['MHMAC'] = $par[2];
+    $parsedResponse['MHname'] = $par[1];
+    return $parsedResponse;
     }
 
 // парсинг маг250 и их клонов
