@@ -49,21 +49,11 @@ class Core {
     }
 
    
-    public function search_3rddevice($st = 'ssdp:all', $mx = 2, $man = 'ssdp:discover', $from = null, $port = null, $sockTimout = '5')
-    {
+    public function search_3rddevice($st = 'ssdp:all', $mx = 2, $man = 'ssdp:discover', $from = null, $port = null, $sockTimout = '2') {
         $response = array();
         //create the socket
         $socket = socket_create(AF_INET, SOCK_DGRAM, 0);
         socket_set_option($socket, SOL_SOCKET, SO_BROADCAST, true);
-
-        // поиск устройств milight, MagicHome
-        $request = 'HF-A11ASSISTHREAD';
-        socket_sendto($socket, $request, strlen($request), 0, '255.255.255.255', 48899);        
-
-        // seech ксяоми хом device
-        $request = hex2bin('21310020ffffffffffffffffffffffffffffffffffffffffffffffffffffffff');
-        socket_sendto($socket, $request, strlen($request), 0, '255.255.255.255', 54321);        
-
 
         //поиск устройств yeelight
         $request = 'M-SEARCH * HTTP/1.1'."\r\n";
@@ -94,19 +84,7 @@ class Core {
             if (($len = @socket_recvfrom($socket, $buf, 2048, 0, $ip, $port)) == -1) {
                 echo "socket_read() failed: " . socket_strerror(socket_last_error()) . "\n";
             }
-            if(!is_null($buf)){
-                if (preg_match("/.+[,][A-F0-9]{12}[,].+/", $buf, $output_array))  {
-                //если это MagicHome и емы подобные то парсим этим путем
-                $data = $this->parseMagicHome($buf);
-                $response[$data['usn']] = $data;
-
-            } else 
-                //если это XAOMI HOME и емы подобные то парсим этим путем
-                if ((preg_match("/[A-F0-9]{64}/", $buf, $output_array))) {
-                    $buf=bin2hex($buf);
-                    $data = $this->parsemihome($buf, $ip);
-                    $response[$data['usn']] = $data;
-            } else if (strstr($buf, 'HTTP/1.1 200 OK')) {
+            if (strstr($buf, 'HTTP/1.1 200 OK')) {
                 // обычный парсинг строки
                 $data = $this->parseSearchResponse($buf);
                 $response[$data['usn']] = $data;
@@ -114,9 +92,8 @@ class Core {
                 // остальные ответы от всехустройств
                 $response[$data['usn']] = $buf;
             }
-        }
-    } while(!is_null($buf));
-    socket_close($socket);
+        } while(!is_null($buf));
+        socket_close($socket);
 
         $arr = array(
         'protocol' => 'remote_stb_1.0',
@@ -148,18 +125,100 @@ class Core {
          }
         while (!is_null($buf));
         socket_close($sock);
+
+        // сканируем магикхом устройства отдельно
+        $mghome = $this->search_MAGICHOME($sockTimout = '2');
+        $response = array_merge($response, $mghome);
+
+        // сканируем ксяоми устройства отдельно
+        $xyaomi = $this->search_XYAOMIDEVICES($sockTimout = '2');
+        $response = array_merge($response, $mghome, $xyaomi);		
         return $response;
     }
 
+//фуеция поиска ксяоми устройств
+private function search_XYAOMIDEVICES($sockTimout = '2') {
+    $response = array();
+    //create the socket
+    $socket = socket_create(AF_INET, SOCK_DGRAM, SOL_UDP);
+    socket_set_option($socket, SOL_SOCKET, SO_REUSEADDR, 1);
+    socket_set_option($socket, SOL_SOCKET, SO_BROADCAST, 1);
+    socket_set_option($socket, SOL_SOCKET, SO_RCVTIMEO, array('sec'=>$sockTimout, 'usec'=>'500'));
+    socket_bind($socket, 0, 0);
+    // seech ксяоми хом device
+    $request = hex2bin('21310020ffffffffffffffffffffffffffffffffffffffffffffffffffffffff');
+    socket_sendto($socket, $request, strlen($request), 0, '255.255.255.255', 54321);        
+    do {
+        $buf = null;
+        if (($len = @socket_recvfrom($socket, $buf, 4096, 0, $ip, $port)) == -1) {
+                echo "socket_read() failed: " . socket_strerror(socket_last_error()) . "\n";
+            }
+        if(!is_null($buf)){
+            if ((preg_match("/[A-F0-9]{64}/", $buf, $output_array))) {
+                $buf=bin2hex($buf);
+                $data = $this->parsexaomi($buf, $ip);
+                $response[$data['usn']] = $data;
+            } else {
+                // остальные ответы от всехустройств
+                $response[$data['usn']] = $buf;
+            }
+        }
+    } while(!is_null($buf));
+    socket_close($socket);
+    return $response;
+    }
+    
+private function search_MAGICHOME($sockTimout = '2') {
+        $response = array();
+        //create the socket
+        $socket = socket_create(AF_INET, SOCK_DGRAM, SOL_UDP);
+        socket_set_option($socket, SOL_SOCKET, SO_REUSEADDR, 1);
+        socket_set_option($socket, SOL_SOCKET, SO_BROADCAST, 1);
+        socket_set_option($socket, SOL_SOCKET, SO_RCVTIMEO, array('sec'=>$sockTimout, 'usec'=>'500'));
+    socket_bind($socket, 0, 0);
+        // поиск устройств milight, MagicHome
+        $request = 'HF-A11ASSISTHREAD';
+        socket_sendto($socket, $request, strlen($request), 0, '255.255.255.255', 48899);       
+        do {
+            $buf = null;
+            if (($len = @socket_recvfrom($socket, $buf, 2048, 0, $ip, $port)) == -1) {
+                echo "socket_read() failed: " . socket_strerror(socket_last_error()) . "\n";
+            }
+            if(!is_null($buf)){
+                if (preg_match("/.+[,][A-F0-9]{12}[,].+/", $buf, $output_array))  {
+                //если это MagicHome и емы подобные то парсим этим путем
+                $data = $this->parseMagicHome($buf, $ip);
+                $response[$data['usn']] = $data;
+            } else {
+                // остальные ответы от всехустройств
+                $response[$data['usn']] = $buf;
+                }
+            }
+    } while(!is_null($buf));
+    socket_close($socket);
+    return $response;
+    }
+
+    
 // парсинг MIHOME и их клонов    
-private function parseMagicHome($response, $ip)
+private function parsexaomi($response, $ip)
     {
         //var_dump($response);
         $parsedResponse = array();
         $parsedResponse['XHOMEdeviceip'] = $ip;
-    $parsedResponse['XHOMEdevicetype'] = substr($response, 32, 4);
+        $parsedResponse['XHOMEdevicetype'] = substr($response, 32, 4);
         $parsedResponse['XHOMEdeviceID'] = substr($response, 36, 4);
         return $parsedResponse;
+    }
+    // парсинг MIHOME и их клонов    
+private function parseMagicHome($response, $ip) {
+    //var_dump($response);
+    $parsedResponse = array();
+    $par=explode(",",$response);
+    $parsedResponse['MHip'] = $ip;
+    $parsedResponse['MHMAC'] = $par[1];
+    $parsedResponse['MHname'] = $par[2];
+    return $parsedResponse;
     }
 
 // парсинг маг250 и их клонов
