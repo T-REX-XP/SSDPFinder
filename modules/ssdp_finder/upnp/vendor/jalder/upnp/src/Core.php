@@ -162,7 +162,7 @@ class Core {
             if(!is_null($buf)){
                 if (preg_match("/.+[,][A-F0-9]{12}[,].+/", $buf, $output_array))  {
                 //если это MagicHome и емы подобные то парсим этим путем
-                $data = $this->parseMagicHome($buf);
+                $data = $this->parseMagicHome($buf, $ip);
                 $response[$data['usn']] = $data;
             } else {
                 // остальные ответы от всехустройств
@@ -181,7 +181,7 @@ private function parsexaomi($response, $ip)
         //var_dump($response);
         $parsedResponse = array();
         $parsedResponse['XHOMEdeviceip'] = $ip;
-    $parsedResponse['XHOMEdevicetype'] = substr($response, 32, 4);
+        $parsedResponse['XHOMEdevicetype'] = substr($response, 32, 4);
         $parsedResponse['XHOMEdeviceID'] = substr($response, 36, 4);
         return $parsedResponse;
     }
@@ -191,8 +191,8 @@ private function parseMagicHome($response, $ip) {
     $parsedResponse = array();
     $par=explode(",",$response);
     $parsedResponse['MHip'] = $ip;
-    $parsedResponse['MHMAC'] = $par[2];
-    $parsedResponse['MHname'] = $par[1];
+    $parsedResponse['MHMAC'] = $par[1];
+    $parsedResponse['MHname'] = $par[2];
     return $parsedResponse;
     }
 
