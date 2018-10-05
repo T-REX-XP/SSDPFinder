@@ -55,11 +55,6 @@ class Core {
         $socket = socket_create(AF_INET, SOCK_DGRAM, 0);
         socket_set_option($socket, SOL_SOCKET, SO_BROADCAST, true);
 
-        // seech ксяоми хом device
-        $request = hex2bin('21310020ffffffffffffffffffffffffffffffffffffffffffffffffffffffff');
-        socket_sendto($socket, $request, strlen($request), 0, '255.255.255.255', 54321);        
-
-
         //поиск устройств yeelight
         $request = 'M-SEARCH * HTTP/1.1'."\r\n";
         $request .= 'HOST: 239.255.255.250:1982'."\r\n";
@@ -89,11 +84,7 @@ class Core {
             if (($len = @socket_recvfrom($socket, $buf, 2048, 0, $ip, $port)) == -1) {
                 echo "socket_read() failed: " . socket_strerror(socket_last_error()) . "\n";
             }
-            if ((preg_match("/[A-F0-9]{64}/", $buf, $output_array))) {
-                    $buf=bin2hex($buf);
-                    $data = $this->parsexaomi($buf, $ip);
-                    $response[$data['usn']] = $data;
-            } else if (strstr($buf, 'HTTP/1.1 200 OK')) {
+            if (strstr($buf, 'HTTP/1.1 200 OK')) {
                 // обычный парсинг строки
                 $data = $this->parseSearchResponse($buf);
                 $response[$data['usn']] = $data;
@@ -138,22 +129,56 @@ class Core {
         // сканируем магикхом устройства отдельно
         $mghome = $this->search_MAGICHOME($sockTimout = '2');
         $response = array_merge($response, $mghome);
+
+        // сканируем ксяоми устройства отдельно
+        $xyaomi = $this->search_XYAOMIDEVICES($sockTimout = '2');
+        $response = array_merge($response, $mghome, $xyaomi);		
         return $response;
     }
 
-    private function search_MAGICHOME($sockTimout = '2') {
+//фуеция поиска ксяоми устройств
+private function search_XYAOMIDEVICES($sockTimout = '2') {
+    $response = array();
+    //create the socket
+    $socket = socket_create(AF_INET, SOCK_DGRAM, SOL_UDP);
+    socket_set_option($socket, SOL_SOCKET, SO_REUSEADDR, 1);
+    socket_set_option($socket, SOL_SOCKET, SO_BROADCAST, 1);
+    socket_set_option($socket, SOL_SOCKET, SO_RCVTIMEO, array('sec'=>$sockTimout, 'usec'=>'500'));
+    socket_bind($socket, 0, 0);
+    // seech ксяоми хом device
+    $request = hex2bin('21310020ffffffffffffffffffffffffffffffffffffffffffffffffffffffff');
+    socket_sendto($socket, $request, strlen($request), 0, '255.255.255.255', 54321);        
+    do {
+        $buf = null;
+        if (($len = @socket_recvfrom($socket, $buf, 4096, 0, $ip, $port)) == -1) {
+                echo "socket_read() failed: " . socket_strerror(socket_last_error()) . "\n";
+            }
+        if(!is_null($buf)){
+            if ((preg_match("/[A-F0-9]{64}/", $buf, $output_array))) {
+                $buf=bin2hex($buf);
+                $data = $this->parsexaomi($buf, $ip);
+                $response[$data['usn']] = $data;
+            } else {
+                // остальные ответы от всехустройств
+                $response[$data['usn']] = $buf;
+            }
+        }
+    } while(!is_null($buf));
+    socket_close($socket);
+    return $response;
+    }
+    
+private function search_MAGICHOME($sockTimout = '2') {
         $response = array();
         //create the socket
         $socket = socket_create(AF_INET, SOCK_DGRAM, SOL_UDP);
-   		socket_set_option($socket, SOL_SOCKET, SO_REUSEADDR, 1);
+        socket_set_option($socket, SOL_SOCKET, SO_REUSEADDR, 1);
         socket_set_option($socket, SOL_SOCKET, SO_BROADCAST, 1);
         socket_set_option($socket, SOL_SOCKET, SO_RCVTIMEO, array('sec'=>$sockTimout, 'usec'=>'500'));
-		socket_bind($socket, 0, 0);
+    socket_bind($socket, 0, 0);
         // поиск устройств milight, MagicHome
         $request = 'HF-A11ASSISTHREAD';
-        socket_sendto($socket, $request, strlen($request), 0, '255.255.255.255', 48899);        
-
-
+        socket_sendto($socket, $request, strlen($request), 0, '255.255.255.255', 48899);       
         do {
             $buf = null;
             if (($len = @socket_recvfrom($socket, $buf, 2048, 0, $ip, $port)) == -1) {
@@ -168,7 +193,7 @@ class Core {
                 // остальные ответы от всехустройств
                 $response[$data['usn']] = $buf;
                 }
-			}
+            }
     } while(!is_null($buf));
     socket_close($socket);
     return $response;
