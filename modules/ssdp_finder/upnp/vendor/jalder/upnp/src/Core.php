@@ -99,11 +99,36 @@ class Core {
         $xyaomi = $this->search_XYAOMIDEVICES($sockTimout = '2');
         // сканируем ксяоми устройства отдельно
         $mag250 = $this->search_MAG250($sockTimout = '2');
+        // сканируем ксяоми устройства отдельно
+        $onvif = $this->search_ONVIF($sockTimout = '2');
         // соеденяем ответы в кучу
-        $response = array_merge($response, $mghome, $xyaomi, $mag250);        
+        $response = array_merge($response, $mghome, $xyaomi, $mag250, $onvif);        
         return $response;
     }
 
+//фунция поиска ONVIF устройств
+private function search_ONVIF($sockTimout = '2') {
+    $response = array();
+    $post_data = '<?xml version="1.0" encoding="UTF-8"?><e:Envelope xmlns:e="http://www.w3.org/2003/05/soap-envelope" xmlns:w="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:d="http://schemas.xmlsoap.org/ws/2005/04/discovery" xmlns:dn="http://www.onvif.org/ver10/network/wsdl"><e:Header><w:MessageID>uuid:84ede3de-7dec-11d0-c360-f01234567890</w:MessageID><w:To e:mustUnderstand="true">urn:schemas-xmlsoap-org:ws:2005:04:discovery</w:To><w:Action a:mustUnderstand="true">http://schemas.xmlsoap.org/ws/2005/04/discovery/Probe</w:Action></e:Header><e:Body><d:Probe><d:Types>dn:NetworkVideoTransmitter</d:Types></d:Probe></e:Body></e:Envelope>';
+
+    // create socket
+    $sock = socket_create(AF_INET, SOCK_DGRAM, 0);
+    socket_set_option($sock, SOL_SOCKET, SO_BROADCAST, 1);
+    socket_bind($sock, 0, 3789);
+    socket_sendto($sock, $post_data, strlen($post_data) , 0, '239.255.255.250', 3702);
+    socket_set_option($sock, SOL_SOCKET, SO_RCVTIMEO, array( 'sec'=>$sockTimout, 'usec'=>'256'));
+    do {
+        $buf = null;
+        @socket_recvfrom($sock, $buf, 2048, 0, $ip, $sport);
+        if (!is_null($buf)) {
+            // остальные ответы от всехустройств
+            $response[$data['usn']] = $buf;
+            }
+         } while (!is_null($buf));
+    socket_close($sock);
+    return $response;
+    }
+	
 //фунция поиска MAG устройств
 private function search_MAG250($sockTimout = '2') {
     $response = array();
