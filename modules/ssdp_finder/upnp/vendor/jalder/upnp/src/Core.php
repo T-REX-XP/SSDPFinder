@@ -104,7 +104,7 @@ class Core {
         return $response;
     }
 
-	//фунция поиска ксяоми устройств
+//фунция поиска MAG устройств
 private function search_MAG250($sockTimout = '2') {
     $response = array();
     $arr = array('protocol' => 'remote_stb_1.0', 'port' => 6777 );
@@ -113,7 +113,7 @@ private function search_MAG250($sockTimout = '2') {
     $sock = socket_create(AF_INET, SOCK_DGRAM, 0);
     socket_set_option($sock, SOL_SOCKET, SO_BROADCAST, 1);
     socket_bind($sock, 0, 6777);
-    socket_sendto($sock, $post_data, strlen($post_data) , 0, '255.255.255.255', 6000);
+    socket_sendto($sock, $post_data, strlen($post_data) , 0, '239.255.255.250', 6000);
     socket_set_option($sock, SOL_SOCKET, SO_RCVTIMEO, array( 'sec'=>$sockTimout, 'usec'=>'256'));
     do {
         $buf = null;
