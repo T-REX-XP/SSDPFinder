@@ -72,8 +72,9 @@ private function search_ONVIF($sockTimout = '2') {
     $socket = socket_create(AF_INET, SOCK_DGRAM, SOL_UDP);
     //socket_set_option($socket, SOL_SOCKET, SO_REUSEADDR, 1);
     socket_set_option($socket, SOL_SOCKET, SO_BROADCAST, 1);
-    //socket_bind($socket, 0, 0);
+    socket_bind($socket, 0, 33333);
     socket_sendto($socket, $post_data, strlen($post_data) , 0, '239.255.255.250', 3702);
+    socket_set_option($socket, IPPROTO_IP, MCAST_JOIN_GROUP, array('group' => $this->'239.255.255.250'));
     socket_set_option($socket, SOL_SOCKET, SO_RCVTIMEO, array( 'sec'=>$sockTimout, 'usec'=>'256'));
     do {
         $buf = null;
