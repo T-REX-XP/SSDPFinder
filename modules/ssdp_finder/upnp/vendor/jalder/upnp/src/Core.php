@@ -135,14 +135,15 @@ private function search_MAG250($sockTimout = '2') {
     $arr = array('protocol' => 'remote_stb_1.0', 'port' => 6777 );
     $post_data = json_encode($arr);
     // create socket
-    $sock = socket_create(AF_INET, SOCK_DGRAM, 0);
-    socket_set_option($sock, SOL_SOCKET, SO_BROADCAST, 1);
-    socket_bind($sock, 0, 6777);
-    socket_sendto($sock, $post_data, strlen($post_data) , 0, '239.255.255.250', 6000);
-    socket_set_option($sock, SOL_SOCKET, SO_RCVTIMEO, array( 'sec'=>$sockTimout, 'usec'=>'256'));
+    $socket = socket_create(AF_INET, SOCK_DGRAM, SOL_UDP);
+    socket_set_option($socket, SOL_SOCKET, SO_REUSEADDR, 1);
+    socket_set_option($socket, SOL_SOCKET, SO_BROADCAST, 1);
+    socket_bind($socket, 0, 6777);
+    socket_sendto($socket, $post_data, strlen($post_data) , 0, '239.255.255.250', 6000);
+    socket_set_option($socket, SOL_SOCKET, SO_RCVTIMEO, array( 'sec'=>$sockTimout, 'usec'=>'256'));
     do {
         $buf = null;
-        @socket_recvfrom($sock, $buf, 2048, 0, $ip, $sport);
+        @socket_recvfrom($socket, $buf, 2048, 0, $ip, $sport);
         if (!is_null($buf)) {
             if (json_decode($buf, true))  {
                 //если это МАГ 250 и емы подобные то парсим этим путем
@@ -154,7 +155,7 @@ private function search_MAG250($sockTimout = '2') {
                 }
             }
          } while (!is_null($buf));
-    socket_close($sock);
+    socket_close($socket);
     return $response;
     }
 	
@@ -195,11 +196,12 @@ private function search_MAGICHOME($sockTimout = '2') {
     //create the socket
     $socket = socket_create(AF_INET, SOCK_DGRAM, SOL_UDP);
     socket_set_option($socket, SOL_SOCKET, SO_REUSEADDR, 1);
-    socket_set_option($socket, SOL_SOCKET, SO_RCVTIMEO, array('sec'=>$sockTimout, 'usec'=>'256'));
+    socket_set_option($socket, SOL_SOCKET, SO_BROADCAST, 1);
     socket_bind($socket, 0, 0);
     // поиск устройств milight, MagicHome
     $request = 'HF-A11ASSISTHREAD';
     socket_sendto($socket, $request, strlen($request), 0, '255.255.255.255', 48899);       
+    socket_set_option($socket, SOL_SOCKET, SO_RCVTIMEO, array('sec'=>$sockTimout, 'usec'=>'256'));
     do {
         $buf = null;
         if (($len = @socket_recvfrom($socket, $buf, 2048, 0, $ip, $port)) == -1) {
