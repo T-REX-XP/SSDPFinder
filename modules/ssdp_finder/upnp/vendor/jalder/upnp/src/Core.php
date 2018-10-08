@@ -112,9 +112,9 @@ private function search_ONVIF($sockTimout = '2') {
     $post_data = '<?xml version="1.0" encoding="UTF-8"?><e:Envelope xmlns:e="http://www.w3.org/2003/05/soap-envelope" xmlns:w="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:d="http://schemas.xmlsoap.org/ws/2005/04/discovery" xmlns:dn="http://www.onvif.org/ver10/network/wsdl"><e:Header><w:MessageID>uuid:84ede3de-7dec-11d0-c360-f01234567890</w:MessageID><w:To e:mustUnderstand="true">urn:schemas-xmlsoap-org:ws:2005:04:discovery</w:To><w:Action a:mustUnderstand="true">http://schemas.xmlsoap.org/ws/2005/04/discovery/Probe</w:Action></e:Header><e:Body><d:Probe><d:Types>dn:NetworkVideoTransmitter</d:Types></d:Probe></e:Body></e:Envelope>';
     // create socket
     $socket = socket_create(AF_INET, SOCK_DGRAM, SOL_UDP);
-    socket_set_option($socket, SOL_SOCKET, SO_REUSEADDR, 1);
+    //socket_set_option($socket, SOL_SOCKET, SO_REUSEADDR, 1);
     socket_set_option($socket, SOL_SOCKET, SO_BROADCAST, 1);
-    socket_bind($socket, 0, 0);
+    //socket_bind($socket, 0, 0);
     socket_sendto($socket, $post_data, strlen($post_data) , 0, '239.255.255.250', 3702);
     socket_set_option($socket, SOL_SOCKET, SO_RCVTIMEO, array( 'sec'=>$sockTimout, 'usec'=>'256'));
     do {
@@ -123,7 +123,7 @@ private function search_ONVIF($sockTimout = '2') {
         if (!is_null($buf)) {
             // остальные ответы от всехустройств
             $data = $this->parseSearchResponse($buf);
-            $response[$data['usn']] = $data;
+            $response[$data['usn']] = $buf;
             }
          } while (!is_null($buf));
     socket_close($socket);
