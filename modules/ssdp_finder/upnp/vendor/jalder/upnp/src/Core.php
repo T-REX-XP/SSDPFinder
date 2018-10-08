@@ -122,8 +122,8 @@ private function search_ONVIF($sockTimout = '2') {
         @socket_recvfrom($socket, $buf, 2048, 0, $ip, $port);
         if (!is_null($buf)) {
             // остальные ответы от всехустройств
-            $buf = $this->_xml2array($buf);
-            $response[$data['usn']] = $buf['Envelope']['Body']['ProbeMatches']['ProbeMatch'];
+            $data = $this->parseSearchResponse($buf);
+            $response[$data['usn']] = $data;
             }
          } while (!is_null($buf));
     socket_close($socket);
