@@ -76,8 +76,8 @@ private function search_ONVIF($sockTimout = '2') {
     $response = array();
     require 'scanonvif.php';
 
-    $onvif = new scanonvif();
-    $response = $onvif->discover();
+    $onvifscan = new scanponvif();
+    $response = $onvifscan->discover();
 
     return $response;
     }
