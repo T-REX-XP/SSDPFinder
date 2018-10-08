@@ -51,16 +51,23 @@ class Core {
         $response = array();
          // сканируем остальные устройства отдельно
         $other = $this->search_OTHER($sockTimout = '2');
-        // сканируем магикхом устройства отдельно
-        $mghome = $this->search_MAGICHOME($sockTimout = '2');
-        // сканируем ксяоми устройства отдельно
-        $xyaomi = $this->search_XYAOMIDEVICES($sockTimout = '2');
-        // сканируем ксяоми устройства отдельно
+        $response = array_merge($response, $other);
+		
+		// сканируем магикхом устройства отдельно
+        //$mghome = $this->search_MAGICHOME($sockTimout = '2');
+		//$response = array_merge($response, $mghome);
+        
+		// сканируем ксяоми устройства отдельно
+        //$xyaomi = $this->search_XYAOMIDEVICES($sockTimout = '2');
+		//$response = array_merge($response, $xyaomi);
+        
+		// сканируем ксяоми устройства отдельно
         $mag250 = $this->search_MAG250($sockTimout = '2');
-        // сканируем ксяоми устройства отдельно
-        $onvif = $this->search_ONVIF($sockTimout = '2');
-        // соеденяем ответы в кучу
-        $response = array_merge($other, $mghome, $xyaomi, $mag250, $onvif);        
+		$response = array_merge($response, $mag250);
+        
+		// сканируем ксяоми устройства отдельно
+        //$onvif = $this->search_ONVIF($sockTimout = '2');
+        //$response = array_merge($response, $onvif);        
         return $response;
     }
 
@@ -69,26 +76,22 @@ private function search_ONVIF($sockTimout = '2') {
     $response = array();
     $timeout = time() + $sockTimout;
     $post_string = '<?xml version="1.0" encoding="UTF-8"?><e:Envelope xmlns:e="http://www.w3.org/2003/05/soap-envelope" xmlns:w="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:d="http://schemas.xmlsoap.org/ws/2005/04/discovery" xmlns:dn="http://www.onvif.org/ver10/network/wsdl"><e:Header><w:MessageID>uuid:84ede3de-7dec-11d0-c360-f01234567890</w:MessageID><w:To e:mustUnderstand="true">urn:schemas-xmlsoap-org:ws:2005:04:discovery</w:To><w:Action a:mustUnderstand="true">http://schemas.xmlsoap.org/ws/2005/04/discovery/Probe</w:Action></e:Header><e:Body><d:Probe><d:Types>dn:NetworkVideoTransmitter</d:Types></d:Probe></e:Body></e:Envelope>';
-    try {
-        if(FALSE == ($sock = @socket_create(AF_INET, SOCK_DGRAM, SOL_UDP))){
-	    echo('Create socket error: ['.socket_last_error().'] '.socket_strerror(socket_last_error()));
-	}
-			if(FALSE == @socket_bind($sock, '0.0.0.0', rand(20000, 40000))){
-				echo('Bind socket error: ['.socket_last_error().'] '.socket_strerror(socket_last_error()));
-			}
-			socket_set_option($sock, IPPROTO_IP, MCAST_JOIN_GROUP, array('group' => '239.255.255.250'));
-			socket_sendto($sock, $post_string, strlen($post_string), 0, '239.255.255.250', 3702);
-			socket_set_nonblock($sock);
-			while(time() < $timeout){
-				if(FALSE !== @socket_recvfrom($sock, $buf, 9999, 0, $from, 3702)){
-					if($response != NULL && $response != $post_string){
-						$data = $this->parseSearchResponse($buf);
-                                                $response[$data['usn']] = $buf;
-					}
-				}
-			}
-			socket_close($sock);
-		} catch (Exception $e) {}
+	$sock = @socket_create(AF_INET, SOCK_DGRAM, SOL_UDP);
+	//@socket_bind($sock, '0.0.0.0', rand(20000, 40000));
+	socket_set_option($sock, IPPROTO_IP, MCAST_JOIN_GROUP, array('group' => '239.255.255.250'));
+	socket_sendto($sock, $post_string, strlen($post_string), 0, '239.255.255.250', 3702);
+	socket_set_nonblock($sock);
+    do {
+            $buf = null;
+            if (($len = @socket_recvfrom($socket, $buf, 9999, 0, $ip, $port)) == -1) {
+                echo "socket_read() failed: " . socket_strerror(socket_last_error()) . "\n";
+            }
+            if(!is_null($buf)){
+                $data = $this->parseSearchResponse($buf);
+                $response[$data['usn']] = $buf;
+            }
+        } while(!is_null($buf));
+        socket_close($sock);
     return $response;
     }
 	
@@ -101,7 +104,7 @@ private function search_MAG250($sockTimout = '2') {
     $socket = socket_create(AF_INET, SOCK_DGRAM, SOL_UDP);
     socket_set_option($socket, SOL_SOCKET, SO_BROADCAST, true);
     socket_bind($socket, 0, 6777);
-    socket_sendto($socket, $post_data, strlen($post_data) , 0, '255.255.255.255', 6000);
+    socket_sendto($socket, $post_data, strlen($post_data) , 0, '239.255.255.250', 6000);
     socket_set_option($socket, SOL_SOCKET, SO_RCVTIMEO, array( 'sec'=>$sockTimout, 'usec'=>'256'));
     do {
         $buf = null;
@@ -132,7 +135,7 @@ private function search_XYAOMIDEVICES($sockTimout = '2') {
     socket_bind($socket, 0, 0);
     // seech ксяоми хом device
     $request = hex2bin('21310020ffffffffffffffffffffffffffffffffffffffffffffffffffffffff');
-    socket_sendto($socket, $request, strlen($request), 0, '255.255.255.255', 54321);        
+    socket_sendto($socket, $request, strlen($request), 0, '239.255.255.250', 54321);        
     do {
         $buf = null;
         if (($len = @socket_recvfrom($socket, $buf, 4096, 0, $ip, $port)) == -1) {
@@ -162,7 +165,7 @@ private function search_MAGICHOME($sockTimout = '2') {
     socket_bind($socket, 0, 0);
     // поиск устройств milight, MagicHome
     $request = 'HF-A11ASSISTHREAD';
-    socket_sendto($socket, $request, strlen($request), 0, '255.255.255.255', 48899);       
+    socket_sendto($socket, $request, strlen($request), 0, '239.255.255.250', 48899);       
     socket_set_option($socket, SOL_SOCKET, SO_RCVTIMEO, array('sec'=>$sockTimout, 'usec'=>'256'));
     do {
         $buf = null;
@@ -197,7 +200,7 @@ public function search_OTHER($sockTimout = '2') {
         $request .= 'MX: 2'."\r\n";
         $request .= 'ST: wifi_bulb'."\r\n";
         $request .= "\r\n";
-        socket_sendto($socket, $request, strlen($request), 0, '255.255.255.255', 1982);        
+        socket_sendto($socket, $request, strlen($request), 0, '239.255.255.250', 1982);        
          //all
         $request = 'M-SEARCH * HTTP/1.1'."\r\n";
         $request .= 'HOST: 239.255.255.250:1900'."\r\n";
