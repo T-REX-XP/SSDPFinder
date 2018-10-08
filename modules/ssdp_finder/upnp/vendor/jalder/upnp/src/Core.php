@@ -50,15 +50,15 @@ class Core {
     public function search_3rddevice($sockTimout = '2') {
         $response = array();
          // сканируем остальные устройства отдельно
-        //$other = $this->search_OTHER($sockTimout = '2');
+        $other = $this->search_OTHER($sockTimout = '2');
         // сканируем магикхом устройства отдельно
-        //$mghome = $this->search_MAGICHOME($sockTimout = '2');
+        $mghome = $this->search_MAGICHOME($sockTimout = '2');
         // сканируем ксяоми устройства отдельно
-        //$xyaomi = $this->search_XYAOMIDEVICES($sockTimout = '2');
+        $xyaomi = $this->search_XYAOMIDEVICES($sockTimout = '2');
         // сканируем ксяоми устройства отдельно
         $mag250 = $this->search_MAG250($sockTimout = '2');
         // сканируем ксяоми устройства отдельно
-        //$onvif = $this->search_ONVIF($sockTimout = '2');
+        $onvif = $this->search_ONVIF($sockTimout = '2');
         // соеденяем ответы в кучу
         $response = array_merge($other, $mghome, $xyaomi, $mag250, $onvif);        
         return $response;
