@@ -75,7 +75,7 @@ class Core {
         socket_sendto($socket, $request, strlen($request), 0, '255.255.255.255', 1900);
 
         // send the data from socket
-        socket_set_option($socket, SOL_SOCKET, SO_RCVTIMEO, array('sec'=>$sockTimout, 'usec'=>'500'));
+        socket_set_option($socket, SOL_SOCKET, SO_RCVTIMEO, array('sec'=>$sockTimout, 'usec'=>'256'));
 
         do {
             $buf = null;
@@ -92,47 +92,47 @@ class Core {
             }
         } while(!is_null($buf));
         socket_close($socket);
-
-        $arr = array(
-        'protocol' => 'remote_stb_1.0',
-        'port' => 6777
-        );
-        $post_data = json_encode($arr);
-
-        // create socket
-        $sock = socket_create(AF_INET, SOCK_DGRAM, 0);
-        socket_set_option($sock, SOL_SOCKET, SO_BROADCAST, 1);
-        socket_bind($sock, 0, 6777);
-        socket_sendto($sock, $post_data, strlen($post_data) , 0, '255.255.255.255', 6000);
-        socket_set_option($sock, SOL_SOCKET, SO_RCVTIMEO, array( 'sec'=>$sockTimout, 'usec'=>'500'));
-        do
-          {
-            $buf = null;
-            @socket_recvfrom($sock, $buf, 2048, 0, $host, $sport);
-            if (!is_null($buf))
-             {
-              if (strstr($buf, '"msgType":"Info"'))  {
-                //если это МАГ 250 и емы подобные то парсим этим путем
-                $data = $this->parsemag250($buf, $host);
-                $response[$data['usn']] = $data;
-              } else {
-                // остальные ответы от всехустройств
-                $response[$data['usn']] = $buf;
-              }
-            }
-         }
-        while (!is_null($buf));
-        socket_close($sock);
-
+		
         // сканируем магикхом устройства отдельно
         $mghome = $this->search_MAGICHOME($sockTimout = '2');
         // сканируем ксяоми устройства отдельно
         $xyaomi = $this->search_XYAOMIDEVICES($sockTimout = '2');
+        // сканируем ксяоми устройства отдельно
+        $mag250 = $this->search_MAG250($sockTimout = '2');
         // соеденяем ответы в кучу
-        $response = array_merge($response, $mghome, $xyaomi);        
+        $response = array_merge($response, $mghome, $xyaomi, $mag250);        
         return $response;
     }
 
+	//фунция поиска ксяоми устройств
+private function search_MAG250($sockTimout = '2') {
+    $response = array();
+    $arr = array('protocol' => 'remote_stb_1.0', 'port' => 6777 );
+    $post_data = json_encode($arr);
+    // create socket
+    $sock = socket_create(AF_INET, SOCK_DGRAM, 0);
+    socket_set_option($sock, SOL_SOCKET, SO_BROADCAST, 1);
+    socket_bind($sock, 0, 6777);
+    socket_sendto($sock, $post_data, strlen($post_data) , 0, '255.255.255.255', 6000);
+    socket_set_option($sock, SOL_SOCKET, SO_RCVTIMEO, array( 'sec'=>$sockTimout, 'usec'=>'256'));
+    do {
+        $buf = null;
+        @socket_recvfrom($sock, $buf, 2048, 0, $ip, $sport);
+        if (!is_null($buf)) {
+            if (json_decode($buf, true))  {
+                //если это МАГ 250 и емы подобные то парсим этим путем
+                $data = $this->parsemag250($buf, $ip);
+                $response[$data['usn']] = $data;
+            } else {
+                // остальные ответы от всехустройств
+                $response[$data['usn']] = $buf;
+                }
+            }
+         } while (!is_null($buf));
+    socket_close($sock);
+    return $response;
+    }
+	
 //фунция поиска ксяоми устройств
 private function search_XYAOMIDEVICES($sockTimout = '2') {
     $response = array();
@@ -140,7 +140,7 @@ private function search_XYAOMIDEVICES($sockTimout = '2') {
     $socket = socket_create(AF_INET, SOCK_DGRAM, SOL_UDP);
     socket_set_option($socket, SOL_SOCKET, SO_REUSEADDR, 1);
     socket_set_option($socket, SOL_SOCKET, SO_BROADCAST, 1);
-    socket_set_option($socket, SOL_SOCKET, SO_RCVTIMEO, array('sec'=>$sockTimout, 'usec'=>'500'));
+    socket_set_option($socket, SOL_SOCKET, SO_RCVTIMEO, array('sec'=>$sockTimout, 'usec'=>'256'));
     socket_bind($socket, 0, 0);
     // seech ксяоми хом device
     $request = hex2bin('21310020ffffffffffffffffffffffffffffffffffffffffffffffffffffffff');
@@ -170,8 +170,7 @@ private function search_MAGICHOME($sockTimout = '2') {
     //create the socket
     $socket = socket_create(AF_INET, SOCK_DGRAM, SOL_UDP);
     socket_set_option($socket, SOL_SOCKET, SO_REUSEADDR, 1);
-    socket_set_option($socket, SOL_SOCKET, SO_BROADCAST, 1);
-    socket_set_option($socket, SOL_SOCKET, SO_RCVTIMEO, array('sec'=>$sockTimout, 'usec'=>'500'));
+    socket_set_option($socket, SOL_SOCKET, SO_RCVTIMEO, array('sec'=>$sockTimout, 'usec'=>'256'));
     socket_bind($socket, 0, 0);
     // поиск устройств milight, MagicHome
     $request = 'HF-A11ASSISTHREAD';
