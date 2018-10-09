@@ -53,7 +53,7 @@ class Core {
         //$other = $this->search_OTHER($sockTimout = '2');
         //$response = array_merge($response, $other);
 		
-		// сканируем магикхом устройства отдельно
+	// сканируем магикхом устройства отдельно
         $mghome = $this->search_MAGICHOME($sockTimout = '2');
 	$response = array_merge($response, $mghome);
         
@@ -91,7 +91,7 @@ private function search_MAG250($sockTimout = '2') {
     $socket = socket_create(AF_INET, SOCK_DGRAM, SOL_UDP);
     socket_set_option($socket, SOL_SOCKET, SO_BROADCAST, true);
     socket_bind($socket, 0, 6777);
-    socket_sendto($socket, $post_data, strlen($post_data) , 0, '255.255.255.255', 6000);
+    socket_sendto($socket, $post_data, strlen($post_data) , 0, '239.255.255.250', 6000);
     socket_set_option($socket, SOL_SOCKET, SO_RCVTIMEO, array( 'sec'=>$sockTimout, 'usec'=>'256'));
     do {
         $buf = null;
