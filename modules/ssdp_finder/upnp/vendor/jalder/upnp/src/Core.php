@@ -90,7 +90,7 @@ private function search_MAG250($sockTimout = '2') {
     // create socket
     $socket = socket_create(AF_INET, SOCK_DGRAM, SOL_UDP);
     socket_set_option($socket, SOL_SOCKET, SO_BROADCAST, true);
-    //socket_bind($socket, 0, 6777);
+    socket_bind($socket, 0, 6777);
     socket_sendto($socket, $post_data, strlen($post_data) , 0, '255.255.255.255', 6000);
     socket_set_option($socket, SOL_SOCKET, SO_RCVTIMEO, array( 'sec'=>$sockTimout, 'usec'=>'256'));
     do {
