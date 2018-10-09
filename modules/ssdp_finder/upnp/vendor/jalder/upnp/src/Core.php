@@ -147,10 +147,10 @@ private function search_MAGICHOME($sockTimout = '2') {
     $response = array();
     //create the socket
     $socket = socket_create(AF_INET, SOCK_DGRAM, SOL_UDP);
-    socket_set_option($socket, SOL_SOCKET, SO_REUSEADDR, 1);
+    //socket_set_option($socket, SOL_SOCKET, SO_REUSEADDR, 1);
     socket_set_option($socket, SOL_SOCKET, SO_BROADCAST, 1);
     socket_set_option($socket, SOL_SOCKET, SO_RCVTIMEO, array('sec'=>$sockTimout, 'usec'=>'256'));
-    socket_bind($socket, 0, 0);
+    // socket_bind($socket, 0, 0);
     // поиск устройств milight, MagicHome
     $request = 'HF-A11ASSISTHREAD';
     socket_sendto($socket, $request, strlen($request), 0, '255.255.255.255', 48899);       
