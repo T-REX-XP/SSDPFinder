@@ -63,8 +63,8 @@ class Core {
         
 	// сканируем ксяоми устройства отдельно
         $mag250 = $this->search_MAG250($sockTimout = '2');
-	//$response = array_merge($response, $mag250);
-	$response = array_merge($mag250, $mghome);
+	$response = array_merge($response, $mag250);
+
 	// сканируем ксяоми устройства отдельно
         //$onvif = $this->search_ONVIF($sockTimout = '2');
         //$response = array_merge($response, $onvif);        
