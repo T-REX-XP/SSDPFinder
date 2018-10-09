@@ -54,8 +54,8 @@ class Core {
         //$response = array_merge($response, $other);
 		
 	// сканируем магикхом устройства отдельно
-        //$mghome = $this->search_MAGICHOME($sockTimout = '2');
-	//$response = array_merge($response, $mghome);
+        $mghome = $this->search_MAGICHOME($sockTimout = '2');
+	$response = array_merge($response, $mghome);
 	    
 	// сканируем ксяоми устройства отдельно
         //$xyaomi = $this->search_XYAOMIDEVICES($sockTimout = '2');
