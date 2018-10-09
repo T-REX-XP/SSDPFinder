@@ -48,27 +48,26 @@ class Core {
 
    
     public function search_3rddevice($sockTimout = '2') {
-        $devices = array();
+        $response = array();
          // сканируем остальные устройства отдельно
         //$other = $this->search_OTHER($sockTimout = '2');
         //$response = array_merge($response, $other);
 		
 	// сканируем магикхом устройства отдельно
         $mghome = $this->search_MAGICHOME($sockTimout = '2');
-	$devices = array_merge($devices, $mghome);
-	    
+	$response[$mghome['usn']] = $mghome;	    
 	// сканируем ксяоми устройства отдельно
         //$xyaomi = $this->search_XYAOMIDEVICES($sockTimout = '2');
 	//$response = array_merge($response, $xyaomi);
         
 	// сканируем ксяоми устройства отдельно
         $mag250 = $this->search_MAG250($sockTimout = '2');
-	$devices = array_merge($devices, $mag250);
+	$response[$mag250['usn']] = $mag250;
 
 	// сканируем ксяоми устройства отдельно
         //$onvif = $this->search_ONVIF($sockTimout = '2');
         //$response = array_merge($response, $onvif);        
-        return $devices;
+        return $responce;
     }
 
 //фунция поиска ONVIF устройств
@@ -77,9 +76,9 @@ private function search_ONVIF($sockTimout = '2') {
     require 'scanonvif.php';
 
     $onvifscan = new scanponvif();
-    $response = $onvifscan->discover();
+    $data = $onvifscan->discover();
 
-    return $response;
+    return $data;
     }
 	
 //фунция поиска MAG устройств
@@ -100,15 +99,14 @@ private function search_MAG250($sockTimout = '2') {
             if (json_decode($buf, true))  {
                 //если это МАГ 250 и емы подобные то парсим этим путем
 		$data = $this->parsemag250($buf, $mip);
-                $response[$data['usn']] = $data;
             } else {
                 // остальные ответы от всехустройств
-                $response[$data['usn']] = $buf;
+                $data = $buf;
                 }
             }
          } while (!is_null($buf));
     socket_close($socket);
-    return $response;
+    return $data;
     }
 	
 //фунция поиска ксяоми устройств
@@ -132,15 +130,14 @@ private function search_XYAOMIDEVICES($sockTimout = '2') {
             if ((preg_match("/[A-F0-9]{64}/", $buf, $output_array))) {
                 $buf=bin2hex($buf);
                 $data = $this->parsexaomi($buf, $ip);
-                $response[$data['usn']] = $data;
             } else {
                 // остальные ответы от всехустройств
-                $response[$data['usn']] = $buf;
+                $data = $buf;
             }
         }
     } while(!is_null($buf));
     socket_close($socket);
-    return $response;
+    return $data;
     }
     
 private function search_MAGICHOME($sockTimout = '2') {
@@ -161,15 +158,14 @@ private function search_MAGICHOME($sockTimout = '2') {
             if (preg_match("/.+[,][A-F0-9]{12}[,].+/", $buf, $output_array))  {
                //если это MagicHome и емы подобные то парсим этим путем
                 $data = $this->parseMagicHome($buf, $ip);
-                $response[$data['usn']] = $data;
             } else {
                 // остальные ответы от всехустройств
-                $response[$data['usn']] = $buf;
+                $data = $buf;
                 }
             }
     } while(!is_null($buf));
     socket_close($socket);
-    return $response;
+    return $data;
     }
 
     
@@ -207,14 +203,13 @@ public function search_OTHER($sockTimout = '2') {
             if (strstr($buf, 'HTTP/1.1 200 OK')) {
                 // обычный парсинг строки
                 $data = $this->parseSearchResponse($buf);
-                $response[$data['usn']] = $data;
             } else {
                 // остальные ответы от всехустройств
-                $response[$data['usn']] = $buf;
+                $data = $buf;
             }
         } while(!is_null($buf));
         socket_close($socket);
-		        return $response;
+        return $data;
 }
 	
 	
