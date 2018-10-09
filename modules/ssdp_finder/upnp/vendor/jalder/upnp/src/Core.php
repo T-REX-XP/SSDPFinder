@@ -50,8 +50,8 @@ class Core {
     public function search_3rddevice($sockTimout = '2') {
         $response = array();
          // сканируем остальные устройства отдельно
-        //$other = $this->search_OTHER($sockTimout = '2');
-        //$response = array_merge($response, $other);
+        $other = $this->search_OTHER($sockTimout = '2');
+        $response = array_merge($response, $other);
 		
 	// сканируем магикхом устройства отдельно
         $mghome = $this->search_MAGICHOME($sockTimout = '2');
