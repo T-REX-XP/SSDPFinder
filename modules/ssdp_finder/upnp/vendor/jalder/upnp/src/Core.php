@@ -68,7 +68,7 @@ class Core {
 	// сканируем ксяоми устройства отдельно
         //$onvif = $this->search_ONVIF($sockTimout = '2');
         //$response = array_merge($response, $onvif);        
-        return $response;
+        return $devices;
     }
 
 //фунция поиска ONVIF устройств
