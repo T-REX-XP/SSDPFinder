@@ -57,15 +57,15 @@ class Core {
         $mghome = $this->search_MAGICHOME($sockTimout = '2');
 	$response = array_merge($response, $mghome);
         
-		// сканируем ксяоми устройства отдельно
+	// сканируем ксяоми устройства отдельно
         //$xyaomi = $this->search_XYAOMIDEVICES($sockTimout = '2');
 	//$response = array_merge($response, $xyaomi);
         
-		// сканируем ксяоми устройства отдельно
-       // $mag250 = $this->search_MAG250($sockTimout = '2');
-	//$response = array_merge($response, $mag250);
+	// сканируем ксяоми устройства отдельно
+        $mag250 = $this->search_MAG250($sockTimout = '2');
+	$response = array_merge($response, $mag250);
         
-		// сканируем ксяоми устройства отдельно
+	// сканируем ксяоми устройства отдельно
         //$onvif = $this->search_ONVIF($sockTimout = '2');
         //$response = array_merge($response, $onvif);        
         return $response;
@@ -91,7 +91,7 @@ private function search_MAG250($sockTimout = '2') {
     $socket = socket_create(AF_INET, SOCK_DGRAM, SOL_UDP);
     socket_set_option($socket, SOL_SOCKET, SO_BROADCAST, true);
     socket_bind($socket, 0, 6777);
-    socket_sendto($socket, $post_data, strlen($post_data) , 0, '239.255.255.250', 6000);
+    socket_sendto($socket, $post_data, strlen($post_data) , 0, '255.255.255.255', 6000);
     socket_set_option($socket, SOL_SOCKET, SO_RCVTIMEO, array( 'sec'=>$sockTimout, 'usec'=>'256'));
     do {
         $buf = null;
@@ -151,7 +151,7 @@ private function search_MAGICHOME($sockTimout = '2') {
     socket_set_option($socket, SOL_SOCKET, SO_RCVTIMEO, array('sec'=>$sockTimout, 'usec'=>'256'));
     // поиск устройств milight, MagicHome
     $request = 'HF-A11ASSISTHREAD';
-    socket_sendto($socket, $request, strlen($request), 0, '255.255.255.250', 48899);       
+    socket_sendto($socket, $request, strlen($request), 0, '255.255.255.255', 48899);       
     do {
         $buf = null;
         if (($len = @socket_recvfrom($socket, $buf, 2048, 0, $ip, $port)) == -1) {
