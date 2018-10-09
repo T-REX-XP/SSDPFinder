@@ -55,7 +55,7 @@ class Core {
 		
 	// сканируем магикхом устройства отдельно
         $mghome = $this->search_MAGICHOME($sockTimout = '2');
-	$response = array_merge($response, $mghome);
+	//$response = array_merge($response, $mghome);
 	    
 	// сканируем ксяоми устройства отдельно
         //$xyaomi = $this->search_XYAOMIDEVICES($sockTimout = '2');
@@ -63,7 +63,7 @@ class Core {
         
 	// сканируем ксяоми устройства отдельно
         $mag250 = $this->search_MAG250($sockTimout = '2');
-	$response = array_merge($response, $mag250);
+	//$response = array_merge($response, $mag250);
 	$response = array_merge($mag250, $mghome);
 	// сканируем ксяоми устройства отдельно
         //$onvif = $this->search_ONVIF($sockTimout = '2');
