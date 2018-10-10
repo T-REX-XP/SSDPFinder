@@ -240,17 +240,12 @@ private function parseMagicHome($response, $ip) {
 private function parsemag250($response, $ip)
     {
         var_dump($response, $ip);
-        $messages = explode(",", $response);
+        $messages = json_decode($response, true);;
         $parsedResponse = array();
-        foreach( $messages as $row ) {
-            $parsedResponse['MAGaddres'] = $ip;
-            if( stripos( $row, '"name":') === 0 )
-                $parsedResponse['MAGname'] = str_ireplace( '"', '', str_ireplace( '"name":"', '', $row ));
-            if( stripos( $row, '"serialNumber":"') === 0 )
-                $parsedResponse['MAGSN'] = str_ireplace( '"', '', str_ireplace( '"serialNumber":"', '', $row ));
-            if( stripos( $row, '"type":"') === 0 )
-                $parsedResponse['type'] = str_ireplace( '"', '', str_ireplace( '"type":"', '', $row ));
-        }
+        $parsedResponse['MAGaddres'] = $ip;
+        $parsedResponse['MAGname'] = $messages['name'];
+        $parsedResponse['MAGSN'] = $messages['serialNumber'];
+        $parsedResponse['type'] = $messages['type'];
         return $parsedResponse;
     }
 // парсим осталные ответы
