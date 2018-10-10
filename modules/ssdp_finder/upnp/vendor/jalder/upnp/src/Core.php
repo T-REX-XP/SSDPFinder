@@ -92,19 +92,21 @@ private function search_MAG250($sockTimout = '2') {
     socket_bind($socket, 0, 6777);
     socket_sendto($socket, $post_data, strlen($post_data) , 0, '255.255.255.255', 6000);
     socket_set_option($socket, SOL_SOCKET, SO_RCVTIMEO, array( 'sec'=>$sockTimout, 'usec'=>'256'));
+    $number_answer = 0;
     do {
         $buf = null;
         if (($len = @socket_recvfrom($socket, $buf, 4096, 0, $mip, $mport)) == -1) {
             echo "socket_read() failed: " . socket_strerror(socket_last_error()) . "\n";
             }
         if (!is_null($buf)) {
+            $number_answer = $nomber_answer + 1;
             if (json_decode($buf, true))  {
                 //если это МАГ 250 и емы подобные то парсим этим путем
                 $data = $this->parsemag250($buf, $mip);
-                $response[$data['usn']] = $data;
+                $response[$nomber_answer['usn']] = $data;
             } else {
                 // остальные ответы от всехустройств
-                $response[$buf['usn']] = $buf;
+                $response[$number_answer['usn']] = $buf;
                 }
             }
          } while (!is_null($buf));
