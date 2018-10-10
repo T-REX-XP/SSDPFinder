@@ -50,19 +50,19 @@ class Core {
     $response = array();
     // сканируем остальные устройства отдельно
     $other = $this->search_OTHER($sockTimout = '2');
-    $response [] = $other;
+    $response = array_merge($response, $other);
         
     // сканируем магикхом устройства отдельно
     $mghome = $this->search_MAGICHOME($sockTimout = '2');
-    $response [] = $mghome;
+    $response = array_merge($response, $mghome);
     
     // сканируем ксяоми устройства отдельно
     $xyaomi = $this->search_XYAOMIIO($sockTimout = '2');
-    $response[$xyaomi['usn']] = $xyaomi;
+    $response = array_merge($response, $xyaomi);
         
     // сканируем ксяоми устройства отдельно
     $mag250 = $this->search_MAG250($sockTimout = '2');
-    $response[$mag250['usn']] = $mag250;
+    $response = array_merge($response, $mag250);
 
     // сканируем ксяоми устройства отдельно
         //$onvif = $this->search_ONVIF($sockTimout = '2');
