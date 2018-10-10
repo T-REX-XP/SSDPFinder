@@ -128,14 +128,13 @@ private function search_XYAOMIIO($sockTimout = '2') {
         if (($len = @socket_recvfrom($socket, $buf, 4096, 0, $ip, $port)) == -1) {
                 echo "socket_read() failed: " . socket_strerror(socket_last_error()) . "\n";
             }
+        $buf=bin2hex($buf);
         if(!is_null($buf)){
-            if ((preg_match("/[A-F0-9]{64}/", $buf, $output_array))) {
-                $buf=bin2hex($buf);
+            if ((preg_match("/[a-f0-9]{64}/", $buf, $output_array))) {
                 $data = $this->parsexaomiIO($buf, $ip);
 		$response[$buf['usn']] = $data;
             } else {
                 // остальные ответы от всехустройств
-		$buf=bin2hex($buf);
                 $response[$buf['usn']] = $buf;
             }
         }
