@@ -100,7 +100,7 @@ private function search_MAG250($sockTimout = '2') {
         if (!is_null($buf)) {
             //если это МАГ 250 и емы подобные то парсим этим путем
             $data = $this->parsemag250($buf, $ip);
-            $response[$ip['usn']] = $data;
+            $response = array_merge_recursive($response, $data);
             }
          } while (!is_null($buf));
     socket_close($socket);
@@ -243,8 +243,7 @@ private function parsemag250($response, $ip)
         return $parsedResponse;
     }
 // парсим осталные ответы
-private function parseSearchResponse($response)
-    {
+private function parseSearchResponse($response) {
         //var_dump($response);
         $messages = explode("\r\n", $response);
         $parsedResponse = array();
