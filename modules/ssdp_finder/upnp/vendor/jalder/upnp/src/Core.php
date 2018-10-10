@@ -58,11 +58,11 @@ class Core {
     
     // сканируем ксяоми устройства отдельно
     $xyaomi = $this->search_XYAOMIIO($sockTimout = '2');
-    $response [] = $xyaomi;
+    $response[$xyaomi['usn']] = $xyaomi;
         
     // сканируем ксяоми устройства отдельно
     $mag250 = $this->search_MAG250($sockTimout = '2');
-    $response [] = $mag250;
+    $response[$mag250['usn']] = $mag250;
 
     // сканируем ксяоми устройства отдельно
         //$onvif = $this->search_ONVIF($sockTimout = '2');
@@ -231,16 +231,15 @@ private function parseMagicHome($response, $ip) {
     }
 
 // парсинг маг250 и их клонов
-private function parsemag250($response, $ip)
-    {
-        var_dump($response, $ip);
-        $messages = json_decode($response, true);;
-        $parsedResponse = array();
-        $parsedResponse['MAGaddres'] = $ip;
-        $parsedResponse['MAGname'] = $messages['name'];
-        $parsedResponse['MAGSN'] = $messages['serialNumber'];
-        $parsedResponse['type'] = $messages['type'];
-        return $parsedResponse;
+private function parsemag250($response, $ip) {
+    // var_dump($response, $ip);
+    $messages = json_decode($response, true);;
+    $parsedResponse = array();
+    $parsedResponse['MAGaddres'] = $ip;
+    $parsedResponse['MAGname'] = $messages['name'];
+    $parsedResponse['MAGSN'] = $messages['serialNumber'];
+    $parsedResponse['type'] = $messages['type'];
+    return $parsedResponse;
     }
 // парсим осталные ответы
 private function parseSearchResponse($response) {
