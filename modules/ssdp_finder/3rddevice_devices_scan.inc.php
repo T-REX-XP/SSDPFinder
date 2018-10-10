@@ -70,7 +70,7 @@ function Scan_3rddevice()
 
                 // need for chek device type
                 $device_type = 'miIO protocol device'; //DeviceType
-                $services = 'system:1:miIO protocol device'; //DeviceServices
+                $services = 'miIO protocol device'; //DeviceServices
                 // проверяем на наличие модуля в системе
                 $mod_cheked = SQLSelectOne("SELECT * FROM project_modules WHERE NAME LIKE '" . $modules['miIO'] . "'");
 
@@ -108,7 +108,7 @@ function Scan_3rddevice()
 
                 // need for chek device type
                 $device_type = 'Magichome'; //DeviceType
-                $services = 'system:1:MagicHome and Co WIFI RGBW controllers '; //DeviceServices
+                $services = 'MagicHome and Co WIFI RGBW controllers '; //DeviceServices
                 // проверяем на наличие модуля в системе
                 $mod_cheked = SQLSelectOne("SELECT * FROM project_modules WHERE NAME LIKE '" . $modules['Magichome'] . "'");
 
