@@ -50,19 +50,19 @@ class Core {
     $response = array();
     // сканируем остальные устройства отдельно
     $other = $this->search_OTHER($sockTimout = '2');
-    $response = array_merge($response, $other);
+    $response [] = $other;
         
     // сканируем магикхом устройства отдельно
     $mghome = $this->search_MAGICHOME($sockTimout = '2');
-    $response = array_merge($response, $mghome);
+    $response [] = $mghome;
     
     // сканируем ксяоми устройства отдельно
     $xyaomi = $this->search_XYAOMIIO($sockTimout = '2');
-    $response = array_merge($response, $xyaomi);
+    $response [] = $xyaomi;
         
     // сканируем ксяоми устройства отдельно
     $mag250 = $this->search_MAG250($sockTimout = '2');
-    $response = array_merge($response, $mag250);
+    $response [] = $mag250;
 
     // сканируем ксяоми устройства отдельно
         //$onvif = $this->search_ONVIF($sockTimout = '2');
@@ -100,7 +100,7 @@ private function search_MAG250($sockTimout = '2') {
         if (!is_null($buf)) {
             //если это МАГ 250 и емы подобные то парсим этим путем
             $data = $this->parsemag250($buf, $ip);
-            $response = array_merge_recursive($response, $data);
+            $response[] = $data;
             }
          } while (!is_null($buf));
     socket_close($socket);
@@ -127,7 +127,7 @@ private function search_XYAOMIIO($sockTimout = '2') {
         if(!is_null($buf)){
             $buf=bin2hex($buf);
             $data = $this->parsexaomiIO($buf, $ip);
-            $response[$ip['usn']] = $data;
+            $response[] = $data;
             }
     } while(!is_null($buf));
     socket_close($socket);
@@ -152,10 +152,10 @@ private function search_MAGICHOME($sockTimout = '2') {
             if (preg_match("/.+[,][A-F0-9]{12}[,].+/", $buf, $output_array))  {
                //если это MagicHome и емы подобные то парсим этим путем
                 $data = $this->parseMagicHome($buf, $ip);
-                $response[$ip['usn']] = $data;
+                $response[] = $data;
              } else {
                 // остальные ответы от всехустройств
-                $response[$ip['usn']] = $buf;
+                $response[] = $buf;
                 }
             }
     } while(!is_null($buf));
