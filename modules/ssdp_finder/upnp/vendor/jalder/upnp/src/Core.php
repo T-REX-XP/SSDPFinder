@@ -122,7 +122,7 @@ private function search_XYAOMIIO($sockTimout = '2') {
     socket_bind($socket, 0, 0);
     // seech ксяоми хом device
     $request = hex2bin('21310020ffffffffffffffffffffffffffffffffffffffffffffffffffffffff');
-    socket_sendto($socket, $request, strlen($request), 0, '239.255.255.250', 54321);        
+    socket_sendto($socket, $request, strlen($request), 0, '255.255.255.255', 54321);        
     do {
         $buf = null;
         if (($len = @socket_recvfrom($socket, $buf, 4096, 0, $ip, $port)) == -1) {
@@ -130,7 +130,7 @@ private function search_XYAOMIIO($sockTimout = '2') {
             }
         if(!is_null($buf)){
             if ((preg_match("/[A-F0-9]{64}/", $buf, $output_array))) {
-                $buf=bin2hex($buf);
+                //$buf=bin2hex($buf);
                 $data = $this->parsexaomiIO($buf, $ip);
 		$response[$buf['usn']] = $data;
             } else {
