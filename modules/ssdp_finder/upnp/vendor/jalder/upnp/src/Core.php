@@ -239,7 +239,7 @@ private function parseMagicHome($response, $ip) {
 // парсинг маг250 и их клонов
 private function parsemag250($response, $ip)
     {
-        var_dump($response);
+        var_dump($response, $ip);
         $messages = explode(",", $response);
         $parsedResponse = array();
         foreach( $messages as $row ) {
