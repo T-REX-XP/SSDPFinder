@@ -130,7 +130,7 @@ private function search_XYAOMIIO($sockTimout = '2') {
             }
         if(!is_null($buf)){
             if ((preg_match("/[A-F0-9]{64}/", $buf, $output_array))) {
-                //$buf=bin2hex($buf);
+                $buf=bin2hex($buf);
                 $data = $this->parsexaomiIO($buf, $ip);
 		$response[$buf['usn']] = $data;
             } else {
