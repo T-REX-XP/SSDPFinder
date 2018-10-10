@@ -240,7 +240,7 @@ private function parseMagicHome($response, $ip) {
 private function parsemag250($response, $ip)
     {
         //var_dump($response);
-        $messages = explode(",", $response);
+        $messages = explode("\r\n", $response);
         $parsedResponse = array();
         foreach( $messages as $row ) {
             $parsedResponse['MAGaddres'] = $ip;
