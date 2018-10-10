@@ -158,7 +158,8 @@ private function search_MAGICHOME($sockTimout = '2') {
             if (preg_match("/.+[,][A-F0-9]{12}[,].+/", $buf, $output_array))  {
                //если это MagicHome и емы подобные то парсим этим путем
                 $data = $this->parseMagicHome($buf, $ip);
-                $response[$ip['usn']] = $data;
+                //$response[$ip['usn']] = $data;
+                $response = array_merge($response, $data);
             } else {
                 // остальные ответы от всехустройств
                 $response[$ip['usn']] = $buf;
