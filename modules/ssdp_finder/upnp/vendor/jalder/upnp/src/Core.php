@@ -58,7 +58,7 @@ class Core {
 	$response = array_merge($response, $mghome);
 	
 	// сканируем ксяоми устройства отдельно
-        $xyaomi = $this->search_XYAOMIDEVICES($sockTimout = '2');
+        $xyaomi = $this->search_XYAOMIIO($sockTimout = '2');
 	$response = array_merge($response, $xyaomi);
         
 	// сканируем ксяоми устройства отдельно
@@ -112,7 +112,7 @@ private function search_MAG250($sockTimout = '2') {
     }
 	
 //фунция поиска ксяоми устройств
-private function search_XYAOMIDEVICES($sockTimout = '2') {
+private function search_XYAOMIIO($sockTimout = '2') {
     $response = array();
     //create the socket
     $socket = socket_create(AF_INET, SOCK_DGRAM, SOL_UDP);
@@ -131,7 +131,7 @@ private function search_XYAOMIDEVICES($sockTimout = '2') {
         if(!is_null($buf)){
             if ((preg_match("/[A-F0-9]{64}/", $buf, $output_array))) {
                 $buf=bin2hex($buf);
-                $data = $this->parsexaomi($buf, $ip);
+                $data = $this->parsexaomiIO($buf, $ip);
 		$response[$buf['usn']] = $data;
             } else {
                 // остальные ответы от всехустройств
@@ -219,7 +219,7 @@ public function search_OTHER($sockTimout = '2') {
 	
 	
 // парсинг ксяоми и их клонов    
-private function parsexaomi($response, $ip)
+private function parsexaomiIO($response, $ip)
     {
         //var_dump($response);
         $parsedResponse = array();
