@@ -42,7 +42,6 @@ class Core {
             }
         } while(!is_null($buf));
         socket_close($socket);
-
         return $response;
     }
 
@@ -95,12 +94,14 @@ private function search_MAG250($sockTimout = '2') {
     socket_set_option($socket, SOL_SOCKET, SO_RCVTIMEO, array( 'sec'=>$sockTimout, 'usec'=>'256'));
     do {
         $buf = null;
-        @socket_recvfrom($socket, $buf, 4096, 0, $mip, $mport);
+        if (($len = @socket_recvfrom($socket, $buf, 4096, 0, $mip, $mport)) == -1) {
+            echo "socket_read() failed: " . socket_strerror(socket_last_error()) . "\n";
+            }
         if (!is_null($buf)) {
             if (json_decode($buf, true))  {
                 //если это МАГ 250 и емы подобные то парсим этим путем
-        $data = $this->parsemag250($buf, $mip);
-        $response[$buf['usn']] = $data;
+                $data = $this->parsemag250($buf, $mip);
+                $response[$buf['usn']] = $data;
             } else {
                 // остальные ответы от всехустройств
                 $response[$buf['usn']] = $buf;
@@ -118,11 +119,11 @@ private function search_XYAOMIIO($sockTimout = '2') {
     $socket = socket_create(AF_INET, SOCK_DGRAM, SOL_UDP);
     socket_set_option($socket, SOL_SOCKET, SO_REUSEADDR, 1);
     socket_set_option($socket, SOL_SOCKET, SO_BROADCAST, 1);
-    socket_set_option($socket, SOL_SOCKET, SO_RCVTIMEO, array('sec'=>$sockTimout, 'usec'=>'256'));
     socket_bind($socket, 0, 0);
     // seech ксяоми хом device
     $request = hex2bin('21310020ffffffffffffffffffffffffffffffffffffffffffffffffffffffff');
     socket_sendto($socket, $request, strlen($request), 0, '255.255.255.255', 54321);        
+    socket_set_option($socket, SOL_SOCKET, SO_RCVTIMEO, array('sec'=>$sockTimout, 'usec'=>'256'));
     do {
         $buf = null;
         if (($len = @socket_recvfrom($socket, $buf, 4096, 0, $ip, $port)) == -1) {
@@ -143,10 +144,10 @@ private function search_MAGICHOME($sockTimout = '2') {
     //create the socket
     $socket = socket_create(AF_INET, SOCK_DGRAM, SOL_UDP);
     socket_set_option($socket, SOL_SOCKET, SO_BROADCAST, 1);
-    socket_set_option($socket, SOL_SOCKET, SO_RCVTIMEO, array('sec'=>$sockTimout, 'usec'=>'256'));
     // поиск устройств milight, MagicHome
     $request = 'HF-A11ASSISTHREAD';
     socket_sendto($socket, $request, strlen($request), 0, '255.255.255.255', 48899);       
+    socket_set_option($socket, SOL_SOCKET, SO_RCVTIMEO, array('sec'=>$sockTimout, 'usec'=>'256'));
     do {
         $buf = null;
         if (($len = @socket_recvfrom($socket, $buf, 2048, 0, $ip, $port)) == -1) {
@@ -202,7 +203,7 @@ public function search_OTHER($sockTimout = '2') {
             if (strstr($buf, 'HTTP/1.1 200 OK')) {
                 // обычный парсинг строки
                 $data = $this->parseSearchResponse($buf);
-        $response[$data['usn']] = $data;
+                $response[$data['usn']] = $data;
             } else {
                 // остальные ответы от всехустройств
                 $response[$buf['usn']] = $buf;
