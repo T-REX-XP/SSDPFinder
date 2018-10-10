@@ -129,16 +129,10 @@ private function search_XYAOMIIO($sockTimout = '2') {
                 echo "socket_read() failed: " . socket_strerror(socket_last_error()) . "\n";
             }
         if(!is_null($buf)){
-            if ((preg_match("/[0-1]{256}/", $buf, $output_array))) {
-				$buf=bin2hex($buf);
-                $data = $this->parsexaomiIO($buf, $ip);
-                $response[$buf['usn']] = $data;
-            } else {
-                // остальные ответы от всехустройств
-                $buf=bin2hex($buf);
-				$response[$buf['usn']] = $buf;
+            $buf=bin2hex($buf);
+            $data = $this->parsexaomiIO($buf, $ip);
+            $response[$buf['usn']] = $data;
             }
-        }
     } while(!is_null($buf));
     socket_close($socket);
     return $response;
