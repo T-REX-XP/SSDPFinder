@@ -87,8 +87,9 @@ function Scan_3rddevice()
                     "LOGO" => $logo, //Logo
                     "DESCRIPTION" => 'miIO protocol device', //description get from xml or field "server"
                     "TYPE" => $device_type, //DeviceType
-                    "SERIAL" => $deviceInfo['XHOMEdeviceID'], //serialnumber
+                    "SERIAL" => $deviceInfo['XHOMEdeviceID'].'-'.$deviceInfo['XHOMEdevicetype'], //serialnumber
                     "MANUFACTURER" => 'China controllers', //manufacturer url
+                    "MODEL" => $deviceInfo['XHOMEdeviceID'], //model
                     "SERVICES" => $services, //list services of device
                     "CONTROLADDRESS" => $control_url, //list services of device
                     "EXTENDED_MODULES" => ext_search_modules($device_type), // проверка на наличие модуля
