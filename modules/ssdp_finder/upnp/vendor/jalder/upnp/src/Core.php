@@ -52,20 +52,20 @@ class Core {
          // сканируем остальные устройства отдельно
         $other = $this->search_OTHER($sockTimout = '2');
         $response = array_merge($response, $other);
-		
-	// сканируем магикхом устройства отдельно
-        $mghome = $this->search_MAGICHOME($sockTimout = '2');
-	$response = array_merge($response, $mghome);
-	
-	// сканируем ксяоми устройства отдельно
-        $xyaomi = $this->search_XYAOMIIO($sockTimout = '2');
-	$response = array_merge($response, $xyaomi);
         
-	// сканируем ксяоми устройства отдельно
+    // сканируем магикхом устройства отдельно
+        $mghome = $this->search_MAGICHOME($sockTimout = '2');
+    $response = array_merge($response, $mghome);
+    
+    // сканируем ксяоми устройства отдельно
+        $xyaomi = $this->search_XYAOMIIO($sockTimout = '2');
+    $response = array_merge($response, $xyaomi);
+        
+    // сканируем ксяоми устройства отдельно
         $mag250 = $this->search_MAG250($sockTimout = '2');
-	$response = array_merge($response, $mag250);
+    $response = array_merge($response, $mag250);
 
-	// сканируем ксяоми устройства отдельно
+    // сканируем ксяоми устройства отдельно
         //$onvif = $this->search_ONVIF($sockTimout = '2');
         //$response = array_merge($response, $onvif);        
         return $response;
@@ -81,7 +81,7 @@ private function search_ONVIF($sockTimout = '2') {
 
     return $data;
     }
-	
+    
 //фунция поиска MAG устройств
 private function search_MAG250($sockTimout = '2') {
     $response = array();
@@ -99,8 +99,8 @@ private function search_MAG250($sockTimout = '2') {
         if (!is_null($buf)) {
             if (json_decode($buf, true))  {
                 //если это МАГ 250 и емы подобные то парсим этим путем
-		$data = $this->parsemag250($buf, $mip);
-		$response[$buf['usn']] = $data;
+        $data = $this->parsemag250($buf, $mip);
+        $response[$buf['usn']] = $data;
             } else {
                 // остальные ответы от всехустройств
                 $response[$buf['usn']] = $buf;
@@ -110,7 +110,7 @@ private function search_MAG250($sockTimout = '2') {
     socket_close($socket);
     return $response;
     }
-	
+    
 //фунция поиска ксяоми устройств
 private function search_XYAOMIIO($sockTimout = '2') {
     $response = array();
@@ -128,14 +128,15 @@ private function search_XYAOMIIO($sockTimout = '2') {
         if (($len = @socket_recvfrom($socket, $buf, 4096, 0, $ip, $port)) == -1) {
                 echo "socket_read() failed: " . socket_strerror(socket_last_error()) . "\n";
             }
-        $buf=bin2hex($buf);
         if(!is_null($buf)){
-            if ((preg_match("/[a-f0-9]{64}/", $buf, $output_array))) {
+            if ((preg_match("/[0-1]{256}/", $buf, $output_array))) {
+				$buf=bin2hex($buf);
                 $data = $this->parsexaomiIO($buf, $ip);
-		$response[$buf['usn']] = $data;
+                $response[$buf['usn']] = $data;
             } else {
                 // остальные ответы от всехустройств
-                $response[$buf['usn']] = $buf;
+                $buf=bin2hex($buf);
+				$response[$buf['usn']] = $buf;
             }
         }
     } while(!is_null($buf));
@@ -161,7 +162,7 @@ private function search_MAGICHOME($sockTimout = '2') {
             if (preg_match("/.+[,][A-F0-9]{12}[,].+/", $buf, $output_array))  {
                //если это MagicHome и емы подобные то парсим этим путем
                 $data = $this->parseMagicHome($buf, $ip);
-		$response[$buf['usn']] = $data;
+        $response[$buf['usn']] = $data;
             } else {
                 // остальные ответы от всехустройств
                 $response[$buf['usn']] = $buf;
@@ -207,7 +208,7 @@ public function search_OTHER($sockTimout = '2') {
             if (strstr($buf, 'HTTP/1.1 200 OK')) {
                 // обычный парсинг строки
                 $data = $this->parseSearchResponse($buf);
-		$response[$data['usn']] = $data;
+        $response[$data['usn']] = $data;
             } else {
                 // остальные ответы от всехустройств
                 $response[$buf['usn']] = $buf;
@@ -216,18 +217,17 @@ public function search_OTHER($sockTimout = '2') {
         socket_close($socket);
         return $response;
 }
-	
-	
+    
+    
 // парсинг ксяоми и их клонов    
-private function parsexaomiIO($response, $ip)
-    {
-        //var_dump($response);
-        $parsedResponse = array();
-        $parsedResponse['XHOMEdeviceip'] = $ip;
-        $parsedResponse['XHOMEdevicetype'] = substr($response, 16, 4);
-        $parsedResponse['XHOMEdeviceID'] = substr($response, 20, 4);
-	$parsedResponse['XHOMEdeviceTOKEN'] = substr($response, 32, 32);
-        return $parsedResponse;
+private function parsexaomiIO($response, $ip) {
+    //var_dump($response);
+    $parsedResponse = array();
+    $parsedResponse['XHOMEdeviceip'] = $ip;
+    $parsedResponse['XHOMEdevicetype'] = substr($response, 16, 4);
+    $parsedResponse['XHOMEdeviceID'] = substr($response, 20, 4);
+    $parsedResponse['XHOMEdeviceTOKEN'] = substr($response, 32, 32);
+    return $parsedResponse;
     }
     // парсинг MIHOME и их клонов    
 private function parseMagicHome($response, $ip) {
