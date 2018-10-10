@@ -102,10 +102,12 @@ private function search_MAG250($sockTimout = '2') {
             if (json_decode($buf, true))  {
                 //если это МАГ 250 и емы подобные то парсим этим путем
                 $data = $this->parsemag250($buf, $ip);
-                $response[$ip['usn']] = $data;
+                //$response[$ip['usn']] = $data;
+                $response = array_merge($response, $data);
             } else {
                 // остальные ответы от всехустройств
-                $response[$ip['usn']] = $buf;
+                //$response[$ip['usn']] = $buf;
+                $response = array_merge($response, $buf);
                 }
             }
          } while (!is_null($buf));
@@ -162,7 +164,8 @@ private function search_MAGICHOME($sockTimout = '2') {
                 $response = array_merge($response, $data);
             } else {
                 // остальные ответы от всехустройств
-                $response[$ip['usn']] = $buf;
+                //$response[$ip['usn']] = $buf;
+                $response = array_merge($response, $buf);
                 }
             }
     } while(!is_null($buf));
