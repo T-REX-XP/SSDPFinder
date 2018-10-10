@@ -214,11 +214,13 @@
 <script>
 	$(document).ready(function(){
        	var services=  document.getElementsByName("service");
-	if(services !=null){
+	if(services.isArray()){
 		services.forEach(function(x) {
 		if(x.textContent)
 			x.textContent=getDisplayName(x.textContent.trim());
 		});
+	}  else {
+		x.textContent=services;
 	}
 	console.log("services count:"+services.length );
     })
