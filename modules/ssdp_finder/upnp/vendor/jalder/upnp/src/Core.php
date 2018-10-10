@@ -98,15 +98,9 @@ private function search_MAG250($sockTimout = '2') {
             echo "socket_read() failed: " . socket_strerror(socket_last_error()) . "\n";
             }
         if (!is_null($buf)) {
-            $number_answer = $nomber_answer + 1;
-            if (json_decode($buf, true))  {
-                //если это МАГ 250 и емы подобные то парсим этим путем
-                $data = $this->parsemag250($buf, $ip);
-                $response = array_merge($response, $data);
-            } else {
-                // остальные ответы от всехустройств
-                $response = array_merge($response, $buf);
-                }
+            //если это МАГ 250 и емы подобные то парсим этим путем
+            $data = $this->parsemag250($buf, $ip);
+            $response[$ip['usn']] = $data;
             }
          } while (!is_null($buf));
     socket_close($socket);
