@@ -224,8 +224,8 @@ private function parsexaomiIO($response, $ip)
         //var_dump($response);
         $parsedResponse = array();
         $parsedResponse['XHOMEdeviceip'] = $ip;
-        $parsedResponse['XHOMEdevicetype'] = substr($response, 32, 4);
-        $parsedResponse['XHOMEdeviceID'] = substr($response, 36, 4);
+        $parsedResponse['XHOMEdevicetype'] = substr($response, 16, 4);
+        $parsedResponse['XHOMEdeviceID'] = substr($response, 20, 4);
         return $parsedResponse;
     }
     // парсинг MIHOME и их клонов    
