@@ -100,10 +100,10 @@ private function search_MAG250($sockTimout = '2') {
             if (json_decode($buf, true))  {
                 //если это МАГ 250 и емы подобные то парсим этим путем
 		$data = $this->parsemag250($buf, $mip);
-		$response[$data['usn']] = $data;
+		$response[$buf['usn']] = $data;
             } else {
                 // остальные ответы от всехустройств
-                $response[$data['usn']] = $buf;
+                $response[$buf['usn']] = $buf;
                 }
             }
          } while (!is_null($buf));
@@ -132,10 +132,10 @@ private function search_XYAOMIDEVICES($sockTimout = '2') {
             if ((preg_match("/[A-F0-9]{64}/", $buf, $output_array))) {
                 $buf=bin2hex($buf);
                 $data = $this->parsexaomi($buf, $ip);
-		$response[$data['usn']] = $data;
+		$response[$buf['usn']] = $data;
             } else {
                 // остальные ответы от всехустройств
-                $response[$data['usn']] = $buf;
+                $response[$buf['usn']] = $buf;
             }
         }
     } while(!is_null($buf));
@@ -161,10 +161,10 @@ private function search_MAGICHOME($sockTimout = '2') {
             if (preg_match("/.+[,][A-F0-9]{12}[,].+/", $buf, $output_array))  {
                //если это MagicHome и емы подобные то парсим этим путем
                 $data = $this->parseMagicHome($buf, $ip);
-		$response[$data['usn']] = $data;
+		$response[$buf['usn']] = $data;
             } else {
                 // остальные ответы от всехустройств
-                $response[$data['usn']] = $buf;
+                $response[$buf['usn']] = $buf;
                 }
             }
     } while(!is_null($buf));
@@ -210,7 +210,7 @@ public function search_OTHER($sockTimout = '2') {
 		$response[$data['usn']] = $data;
             } else {
                 // остальные ответы от всехустройств
-                $response[$data['usn']] = $buf;
+                $response[$buf['usn']] = $buf;
             }
         } while(!is_null($buf));
         socket_close($socket);
