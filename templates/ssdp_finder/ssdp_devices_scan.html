@@ -214,7 +214,7 @@
 <script>
 	$(document).ready(function(){
        	var services=  document.getElementsByName("service");
-	if(services.contains(",")){
+	if(services.contains(":")){
 		services.forEach(function(x) {
 		if(x.textContent)
 			x.textContent=getDisplayName(x.textContent.trim());
