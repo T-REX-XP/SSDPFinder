@@ -135,6 +135,7 @@ private function search_XYAOMIIO($sockTimout = '2') {
 		$response[$buf['usn']] = $data;
             } else {
                 // остальные ответы от всехустройств
+		$buf=bin2hex($buf);
                 $response[$buf['usn']] = $buf;
             }
         }
