@@ -133,7 +133,7 @@ private function search_XYAOMIIO($sockTimout = '2') {
         if(!is_null($buf)){
             $buf=bin2hex($buf);
             $data = $this->parsexaomiIO($buf, $ip);
-            $response[$buf['usn']] = $data;
+            $response[$ip['usn']] = $data;
             }
     } while(!is_null($buf));
     socket_close($socket);
@@ -158,10 +158,10 @@ private function search_MAGICHOME($sockTimout = '2') {
             if (preg_match("/.+[,][A-F0-9]{12}[,].+/", $buf, $output_array))  {
                //если это MagicHome и емы подобные то парсим этим путем
                 $data = $this->parseMagicHome($buf, $ip);
-                $response[$buf['usn']] = $data;
+                $response[$ip['usn']] = $data;
             } else {
                 // остальные ответы от всехустройств
-                $response[$buf['usn']] = $buf;
+                $response[$ip['usn']] = $buf;
                 }
             }
     } while(!is_null($buf));
