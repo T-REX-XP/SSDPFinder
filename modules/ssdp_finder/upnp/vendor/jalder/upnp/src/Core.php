@@ -160,7 +160,7 @@ $s = socket_create(AF_INET, SOCK_DGRAM, SOL_UDP);
 
 			$host = substr($host, 0, strlen($host) - 1);
 			$macaddres = substr($macaddres, 0, strlen($macaddres) - 1);
-			$device_name = $this->getmodel($devtype);
+			$device_name = $this->getmodel('0x'.$devtype);
 			var_dump ($host);
 			var_dump ($macaddres);
 			var_dump ($device_name);
