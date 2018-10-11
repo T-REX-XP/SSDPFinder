@@ -78,7 +78,7 @@ class Core {
 // scaniruem google cromecast
 private function search_CHROMECAST($wait = 4) {
 		require_once("Chromecast.php");
-		//var_dump(Chromecast::scan());
+		var_dump(Chromecast::scan());
 		return (Chromecast::scan());
 	}
 	
