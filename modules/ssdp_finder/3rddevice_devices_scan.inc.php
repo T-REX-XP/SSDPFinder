@@ -67,7 +67,7 @@ function Scan_3rddevice()
                 $existed = SQLSelectOne("SELECT * FROM $table_name WHERE UUID='" . $uuid . "'");
 
                 // need for chek device type
-                $device_type = 'broadlink'; //DeviceType
+                $device_type = 'Broadlink'; //DeviceType
                 $services = 'BROADLINK protocol device'; //DeviceServices
                 // проверяем на наличие модуля в системе
                 $mod_cheked = SQLSelectOne("SELECT * FROM project_modules WHERE NAME LIKE '" . $modules['broadlink'] . "'");
