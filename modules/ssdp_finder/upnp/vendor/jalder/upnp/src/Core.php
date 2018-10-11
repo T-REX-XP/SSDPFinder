@@ -150,12 +150,12 @@ $s = socket_create(AF_INET, SOCK_DGRAM, SOL_UDP);
  				$host .= $ip . ".";
 			}
 			foreach ( $mac as $ma ) {
- 				$host .= dechex($ma) . ":";
+ 				$macaddres .= dechex($ma) . ":";
 			}
 
 			$host = substr($host, 0, strlen($host) - 1);
 			var_dump ($host);
-			var_dump ($mac);
+			var_dump ($macaddres);
 		}
     @socket_shutdown($cs, 2);
     socket_close($cs);
