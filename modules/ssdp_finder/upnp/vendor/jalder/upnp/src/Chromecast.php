@@ -4,6 +4,8 @@
 //require_once ("CCprotoBuf.php");
 //require_once ("CCDefaultMediaPlayer.php");
 //require_once ("CCPlexPlayer.php");
+namespace jalder\Upnp;
+
 require_once ("mdns.php");
 
 class Chromecast
