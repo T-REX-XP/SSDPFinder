@@ -128,9 +128,12 @@ private function search_BROADLINK($sockTimout = '2') {
     $packet[0x20] = $checksum & 0xff;
     $packet[0x21] = $checksum >> 8;
     // preobrazuem v stroku
+    var_dump ('packet '.$packet);
     $post_data = implode(array_map("chr", $packet));
 
     var_dump ($post_data);
+    var_dump ('dlinna zaprosaa - '.strlen($post_data));
+    
 
     socket_sendto($socket, $post_data, strlen($post_data) , 0, '255.255.255.255', 80);
     socket_set_option($socket, SOL_SOCKET, SO_RCVTIMEO, array( 'sec'=>$sockTimout, 'usec'=>'256'));
