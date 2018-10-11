@@ -139,10 +139,12 @@ $s = socket_create(AF_INET, SOCK_DGRAM, SOL_UDP);
 			$host = '';
 			$responsepacket = $this->byte2array($buf);
 			$devtype = hexdec(sprintf("%x%x", $responsepacket[0x35], $responsepacket[0x34]));
-			var_dump ($devtype);
+			var_dump ($responsepacket[0x35]);
+			var_dump ($responsepacket[0x34]);
 			$host_array = array_slice($responsepacket, 0x36, 4);
 			$mac = array_slice($responsepacket, 0x3a, 6);
-			var_dump ($mac);
+			$mac1 = $responsepacket[0x3a].$responsepacket[0x3b].$responsepacket[0x3c].$responsepacket[0x3d].$responsepacket[0x3e].$responsepacket[0x3f];
+			var_dump ($mac1);
 			if (array_slice($responsepacket, 0, 8) !== array(0x5a, 0xa5, 0xaa, 0x55, 0x5a, 0xa5, 0xaa, 0x55)) {
 				$host_array = array_reverse($host_array);
 			}
