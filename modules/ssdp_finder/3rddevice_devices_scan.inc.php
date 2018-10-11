@@ -65,7 +65,7 @@ function Scan_3rddevice()
                 $uuid = $deviceInfo['target'] ;
                 $existed = SQLSelectOne("SELECT * FROM $table_name WHERE UUID='" . $uuid . "'");
                 // need for chek device type
-                $device_type = 'Google Home'; //DeviceType
+                $device_type = 'Chromecast'; //DeviceType
                 $services = 'Google Home device'; //DeviceServices
                 // проверяем на наличие модуля в системе
                 $mod_cheked = SQLSelectOne("SELECT * FROM project_modules WHERE NAME LIKE '" . $modules[$device_type] . "'");
