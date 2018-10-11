@@ -75,7 +75,7 @@ class Core {
     return $response;
     }
 	
-public function search_OTHER($st = 'upnp:rootdevice', $mx = 2, $man = 'ssdp:discover', $from = null, $port = null, $sockTimout = '2') {
+public function search_OTHER($st = 'urn:dial-multiscreen-org:device:dial:1', $mx = 2, $man = 'ssdp:discover', $from = null, $port = null, $sockTimout = '2') {
         //create the socket
         $socket = socket_create(AF_INET, SOCK_DGRAM, 0);
         socket_set_option($socket, SOL_SOCKET, SO_BROADCAST, true);
