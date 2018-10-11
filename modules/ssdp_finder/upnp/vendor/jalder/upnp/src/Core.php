@@ -86,7 +86,7 @@ class Core {
         $request .= 'MAN: "'.$man.'"'."\r\n";
         $request .= 'MX: '.$mx.''."\r\n";
         $request .= 'ST: '.$st.''."\r\n";
-        $request .= 'USER-AGENT: '.'Majordomo/ver-x.x'."\r\n";
+        $request .= 'USER-AGENT: Roku/DVP-5.5 (025.05E00410A)'."\r\n";
         $request .= "\r\n";
         
         // search device of you PC
