@@ -55,7 +55,7 @@ class Chromecasts
 	public static function scan($wait = 2)
 	{
 		// Wrapper for scan
-		$result = Chromecast::scansub($wait);
+		$result = Chromecasts::scansub($wait);
 		return $result;
 	}
 	
