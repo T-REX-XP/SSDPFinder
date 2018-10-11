@@ -150,7 +150,12 @@ $s = socket_create(AF_INET, SOCK_DGRAM, SOL_UDP);
  				$host .= $ip . ".";
 			}
 			foreach ( $mac as $ma ) {
- 				$macaddres .= dechex($ma) . ":";
+                                if (strlen (dechex($ma))=1) {
+					$m='0'.dechex($ma);
+				} else {
+					$m=dechex($ma);
+				}
+				$macaddres = $m . ":" . $macaddres;
 			}
 
 			$host = substr($host, 0, strlen($host) - 1);
