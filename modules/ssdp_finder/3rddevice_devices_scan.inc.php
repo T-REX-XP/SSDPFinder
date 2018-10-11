@@ -58,10 +58,46 @@ function Scan_3rddevice()
         // перебираем по очереди все найденные устройства
         foreach($everything as $deviceInfo)
             {
-            // если устройство xyaomi 
-            //DebMes ($deviceInfo);
-            if ($deviceInfo['XHOMEdeviceip'])
-                {
+            if ($deviceInfo['BROADLINKip']) {
+            // если устройство BROADLINK
+                $control_url = $deviceInfo['BROADLINKip'];
+
+                // проверяем на наличие в базе для запрета вывода
+                $uuid = $deviceInfo['BROADLINKmac'] ;
+                $existed = SQLSelectOne("SELECT * FROM $table_name WHERE UUID='" . $uuid . "'");
+
+                // need for chek device type
+                $device_type = 'BROADLINK protocol device'; //DeviceType
+                $services = 'BROADLINK protocol device'; //DeviceServices
+                // проверяем на наличие модуля в системе
+                $mod_cheked = SQLSelectOne("SELECT * FROM project_modules WHERE NAME LIKE '" . $modules['broadlink'] . "'");
+
+                // получаем логотип на устройство
+                $logo = getDefImg($control_url, $device_type);
+				
+                if (!array_search_result($result, 'UUID', $uuid) && !is_null($uuid) && !($existed))
+                    {
+                    $result[] = [
+                    "ID" => $existed["ID"], //existed id Majordomo
+                    "TITLE" => $deviceInfo['BROADLINKname'], //friendly name
+                    "ADDRESS" => $control_url, //presentation url (web UI of device),//presentation url (web UI of device)
+                    "UUID" => $uuid, 
+                    "LOGO" => $logo, //Logo
+                    "DESCRIPTION" => 'Broadlink protocol device', //description get from xml or field "server"
+                    "TYPE" => $device_type, //DeviceType
+                    "SERIAL" => $deviceInfo['BROADLINKmac'], //serialnumber
+                    "MANUFACTURER" => 'Smart controllers', //manufacturer url
+                    "MODEL" => $deviceInfo['BROADLINKname'], //model
+                    "SERVICES" => $services, //list services of device
+                    "CONTROLADDRESS" => $control_url, //list services of device
+                    "EXTENDED_MODULES" => ext_search_modules($device_type), // проверка на наличие модуля
+                    "MODULE_INSTALLED" => $mod_cheked, //chek the installed module
+                    "EXTENDED_SIMPLEDEVICE" => check_seample_device($device_type) , //chek the simple device extended
+                    ];
+                    $_SESSION[$uuid] = $logo;
+                    }
+                } else if ($deviceInfo['XHOMEdeviceip']) {
+		// если устройство xyaomi 
                 $control_url = $deviceInfo['XHOMEdeviceip'];
 
                 // проверяем на наличие в базе для запрета вывода
@@ -98,9 +134,7 @@ function Scan_3rddevice()
                     ];
                     $_SESSION[$uuid] = $logo;
                     }
-                } 
-              else if ($deviceInfo['MHip'])
-                {
+                } else if ($deviceInfo['MHip']) {
                 $control_url = $deviceInfo['MHip'];
 
                 // проверяем на наличие в базе для запрета вывода
