@@ -138,7 +138,9 @@ $s = socket_create(AF_INET, SOCK_DGRAM, SOL_UDP);
                         $macaddres = '';
 			$host = '';
 			$responsepacket = $this->byte2array($buf);
-			$devtype = dechex($responsepacket[0x35].$responsepacket[0x34]);
+			$devtype = sprintf("%x%x", $responsepacket[0x35], $responsepacket[0x34]);
+			var_dump ($devtype);
+			$devtype = hexdec($devtype);
 			var_dump ($devtype);
 			$host_array = array_slice($responsepacket, 0x36, 4);
 			$mac = array_slice($responsepacket, 0x3a, 6);
@@ -159,6 +161,7 @@ $s = socket_create(AF_INET, SOCK_DGRAM, SOL_UDP);
 			}
 
 			$host = substr($host, 0, strlen($host) - 1);
+			$macaddres = substr($macaddres, 0, strlen($macaddres) - 1);
 			var_dump ($host);
 			var_dump ($macaddres);
 		}
