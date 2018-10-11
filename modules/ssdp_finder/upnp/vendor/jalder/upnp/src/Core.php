@@ -134,10 +134,10 @@ $s = socket_create(AF_INET, SOCK_DGRAM, SOL_UDP);
 		$packet[0x21] = $checksum >> 8;
 
 		socket_sendto($cs, $this->byte($packet), sizeof($packet), 0, '255.255.255.255', 80);
-		while(socket_recvfrom($cs, $response, 2048, 0, $from, $port)){
+		while(socket_recvfrom($cs, $buf, 2048, 0, $from, $port)){
 
 			$host = '';
-			$responsepacket = $this->byte2array($response);
+			$responsepacket = $this->byte2array($buf);
 			$devtype = hexdec(sprintf("%x%x", $responsepacket[0x35], $responsepacket[0x34]));
 			var_dump ($devtype);
 			$host_array = array_slice($responsepacket, 0x36, 4);
@@ -154,10 +154,8 @@ $s = socket_create(AF_INET, SOCK_DGRAM, SOL_UDP);
 			$host = substr($host, 0, strlen($host) - 1);
 			var_dump ($host);
 			}
-		}
-
-		@socket_shutdown($cs, 2);
-		socket_close($cs);
+    @socket_shutdown($cs, 2);
+    socket_close($cs);
     return $response;
     }
     
