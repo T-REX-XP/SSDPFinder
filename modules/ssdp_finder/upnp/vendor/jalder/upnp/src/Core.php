@@ -49,7 +49,7 @@ class Core {
     public function search_3rddevice($sockTimout = '2') {
     $response = array();
     // сканируем остальные устройства отдельно
-    $other = $this->search_OTHER($sockTimout = '2');
+    $other = $this->search_OTHER($st = 'ssdp:all', $mx = 2, $man = 'ssdp:discover', $from = null, $port = null, $sockTimout = '2');
     $response = array_merge($response, $other);
         
     // сканируем магикхом устройства отдельно
@@ -85,7 +85,7 @@ public function search_OTHER($st = 'ssdp:all', $mx = 2, $man = 'ssdp:discover', 
         $request .= 'MAN: "'.$man.'"'."\r\n";
         $request .= 'MX: '.$mx.''."\r\n";
         $request .= 'ST: '.$st.''."\r\n";
-        $request .= 'USER-AGENT: '.$this->user_agent."\r\n";
+        $request .= 'USER-AGENT: Roku/DVP-5.5 (025.05E00410A)'."\r\n";
         $request .= "\r\n";
         
         socket_sendto($socket, $request, strlen($request), 0, '255.255.255.255', 1900);
