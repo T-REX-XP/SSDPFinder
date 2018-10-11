@@ -70,7 +70,7 @@ function Scan_3rddevice()
                 $device_type = 'Broadlink'; //DeviceType
                 $services = 'BROADLINK protocol device'; //DeviceServices
                 // проверяем на наличие модуля в системе
-                $mod_cheked = SQLSelectOne("SELECT * FROM project_modules WHERE NAME LIKE '" . $modules['broadlink'] . "'");
+                $mod_cheked = SQLSelectOne("SELECT * FROM project_modules WHERE NAME LIKE '" . $modules[$device_type] . "'");
 
                 // получаем логотип на устройство
                 $logo = getDefImg($control_url, $device_type);
