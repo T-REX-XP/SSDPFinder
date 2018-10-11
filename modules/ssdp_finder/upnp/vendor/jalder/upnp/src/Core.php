@@ -84,7 +84,7 @@ public function search_OTHER($st = 'ssdp:all', $mx = 2, $man = 'ssdp:discover', 
         $request .= 'HOST: 239.255.255.250:1900'."\r\n";
         $request .= 'MAN: "'.$man.'"'."\r\n";
         $request .= 'MX: '.$mx.''."\r\n";
-        $request .= 'ST: '.$st.''."\r\n";
+        $request .= 'ST: urn:dial-multiscreen-org:service:dial:1'."\r\n";
         $request .= 'USER-AGENT: Roku/DVP-5.5 (025.05E00410A)'."\r\n";
         $request .= "\r\n";
         socket_sendto($socket, $request, strlen($request), 0, '255.255.255.255', 1900);        
