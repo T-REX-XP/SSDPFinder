@@ -38,7 +38,7 @@ class Core {
             }
             if(!is_null($buf)){
                 $data = $this->parseSearchResponse($buf);
-                $response[] = $data;
+                $response[$data['usn']] = $data;
             }
         } while(!is_null($buf));
         socket_close($socket);
@@ -49,7 +49,7 @@ class Core {
     public function search_3rddevice($sockTimout = '2') {
     $response = array();
     // сканируем остальные устройства отдельно
-    $other = $this->search_OTHER($st = 'urn:dial-multiscreen-org:device:dial:1', $mx = 2, $man = 'ssdp:discover', $from = null, $port = null, $sockTimout = '2');
+    $other = $this->search_OTHER($sockTimout = '2');
     $response = array_merge($response, $other);
         
     // сканируем магикхом устройства отдельно
@@ -66,81 +66,9 @@ class Core {
 
     // сканируем ксяоми устройства отдельно
     $broadlink = $this->search_BROADLINK($sockTimout = '2');
-    $response = array_merge($response, $broadlink);  	    
-
-    // сканируем YEELIGHT устройства отдельно
-    $yeeligth = $this->search_YEELIGHT($sockTimout = '2');
-    $response = array_merge($response, $yeeligth);  
-	    
+    $response = array_merge($response, $broadlink);        
     return $response;
     }
-	
-public function search_OTHER($st = 'ssdp:all', $mx = 2, $man = 'ssdp:discover', $from = null, $port = null, $sockTimout = '2') {
-        //create the socket
-        $socket = socket_create(AF_INET, SOCK_DGRAM, 0);
-        socket_set_option($socket, SOL_SOCKET, SO_BROADCAST, true);
-        $request = 'M-SEARCH * HTTP/1.1'."\r\n";
-        $request .= 'HOST: 239.255.255.250:1900'."\r\n";
-        $request .= 'MAN: "'.$man.'"'."\r\n";
-        $request .= 'MX: '.$mx.''."\r\n";
-        $request .= 'ST: '.$st.''."\r\n";
-        $request .= 'USER-AGENT: '.$this->user_agent."\r\n";
-        $request .= "\r\n";
-	socket_sendto($socket, $request, strlen($request), 0, '239.255.255.250', 1900);
-	//all
-        $request = 'M-SEARCH * HTTP/1.1'."\r\n";
-        $request .= 'HOST: 239.255.255.250:1900'."\r\n";
-        $request .= 'MAN: "'.$man.'"'."\r\n";
-        $request .= 'MX: '.$mx.''."\r\n";
-        $request .= 'ST: ssdp:all'."\r\n";
-        $request .= 'USER-AGENT: '.$this->user_agent."\r\n";
-        $request .= "\r\n";
-        socket_sendto($socket, $request, strlen($request), 0, '255.255.255.255', 1900);        
-        // send the data from socket
-        socket_set_option($socket, SOL_SOCKET, SO_RCVTIMEO, array('sec'=>'2', 'usec'=>'128'));
-        $response = array();
-        do {
-            $buf = null;
-            if (($len = @socket_recvfrom($socket, $buf, 4096, 0, $ip, $port)) == -1) {
-                echo "socket_read() failed: " . socket_strerror(socket_last_error()) . "\n";
-            }
-            if(!is_null($buf)){
-                $data = $this->parseSearchResponse($buf);
-                $response[] = $data;
-                $response[] = $buf;
-            }
-        } while(!is_null($buf));
-        socket_close($socket);
-        return $response;
-}
-	
-	public function search_YEELIGHT($sockTimout = '2') {
-        $response = array();
-        //create the socket
-        $socket = socket_create(AF_INET, SOCK_DGRAM, 0);
-        socket_set_option($socket, SOL_SOCKET, SO_BROADCAST, true);
-        //поиск устройств yeelight
-        $request = 'M-SEARCH * HTTP/1.1'."\r\n";
-        $request .= 'HOST: 239.255.255.250:1982'."\r\n";
-        $request .= 'MAN: "ssdp:discover"'."\r\n";
-        $request .= 'MX: 2'."\r\n";
-        $request .= 'ST: wifi_bulb'."\r\n";
-        $request .= "\r\n";
-        socket_sendto($socket, $request, strlen($request), 0, '239.255.255.250', 1982);        
-        
-        // send the data from socket
-        socket_set_option($socket, SOL_SOCKET, SO_RCVTIMEO, array('sec'=>$sockTimout, 'usec'=>'256'));
-        do {
-            $buf = null;
-            if (($len = @socket_recvfrom($socket, $buf, 2048, 0, $ip, $port)) == -1) {
-                echo "socket_read() failed: " . socket_strerror(socket_last_error()) . "\n";
-            }
-            $data = $this->parseSearchResponse($buf);
-            $response[] = $data;
-        } while(!is_null($buf));
-        socket_close($socket);
-        return $response;
-}
 //фунция поиска BROADLINK устройств
 private function search_BROADLINK($sockTimout = '2') {
     $response = array();
@@ -298,6 +226,51 @@ private function search_MAGICHOME($sockTimout = '2') {
     socket_close($socket);
     return $response;
     }
+
+    
+public function search_OTHER($sockTimout = '2') {
+        $response = array();
+        //create the socket
+        $socket = socket_create(AF_INET, SOCK_DGRAM, 0);
+        socket_set_option($socket, SOL_SOCKET, SO_BROADCAST, true);
+        //поиск устройств yeelight
+        $request = 'M-SEARCH * HTTP/1.1'."\r\n";
+        $request .= 'HOST: 239.255.255.250:1982'."\r\n";
+        $request .= 'MAN: "ssdp:discover"'."\r\n";
+        $request .= 'MX: 2'."\r\n";
+        $request .= 'ST: wifi_bulb'."\r\n";
+        $request .= "\r\n";
+        socket_sendto($socket, $request, strlen($request), 0, '239.255.255.250', 1982);        
+         //all
+        $request = 'M-SEARCH * HTTP/1.1'."\r\n";
+        $request .= 'HOST: 239.255.255.250:1900'."\r\n";
+        $request .= 'MAN: "ssdp:discover"'."\r\n";
+        $request .= 'MX: 2'."\r\n";
+        $request .= 'ST: ssdp:all'."\r\n";
+        $request .= 'USER-AGENT: '.$this->user_agent."\r\n";
+        $request .= "\r\n";
+        
+        // search device of you PC
+        socket_sendto($socket, $request, strlen($request), 0, '255.255.255.255', 1900);
+        // send the data from socket
+        socket_set_option($socket, SOL_SOCKET, SO_RCVTIMEO, array('sec'=>$sockTimout, 'usec'=>'256'));
+        do {
+            $buf = null;
+            if (($len = @socket_recvfrom($socket, $buf, 2048, 0, $ip, $port)) == -1) {
+                echo "socket_read() failed: " . socket_strerror(socket_last_error()) . "\n";
+            }
+            if (strstr($buf, 'HTTP/1.1 200 OK')) {
+                // обычный парсинг строки
+                $data = $this->parseSearchResponse($buf);
+                $response[$data['usn']] = $data;
+            } else {
+                // остальные ответы от всехустройств
+                $response[$buf['usn']] = $buf;
+            }
+        } while(!is_null($buf));
+        socket_close($socket);
+        return $response;
+}
     
 // парсинг broadlink и их клонов    
 private function parseBROADLINK($buf, $ip) {
