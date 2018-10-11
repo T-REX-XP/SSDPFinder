@@ -160,7 +160,7 @@ $s = socket_create(AF_INET, SOCK_DGRAM, SOL_UDP);
 
 			$host = substr($host, 0, strlen($host) - 1);
 			$macaddres = substr($macaddres, 0, strlen($macaddres) - 1);
-			$device_name = $this->getmodel('0x'.$devtype);
+			$device_name = $this->getmodel($devtype);
 			var_dump ($host);
 			var_dump ($macaddres);
 			var_dump ($device_name);
@@ -472,216 +472,216 @@ $type = "Unknown";
 $model = "Unknown";
 switch ($devtype) {
     case 0x0000:
-        $model = "SP1";
-	$type = 0;
-	return $model;
+            $model = "SP1";
+            $type = 0;
+            return $model;
     case 0x2711:
-	$model = "SP2";
-	$type = 1;
-	return $model;
-			case 0x2719: 
-			case 0x7919:
-			case 0x271a:
-			case 0x791a:
-				$model = "Honeywell SP2";
-				$type = 1;
-				return $model;
-			case 0x2720: 
-				$model = "SPMini";
-				$type = 1;
-				return $model;
-			case 0x753e: 
-				$model = "SP3";
-				$type = 1;
-				return $model;
-			case 0x2728: 
-				$model = "SPMini2";
-				$type = 1;
-				return $model;
-			case 0x2733: 
-			case 0x273e:
-			case 0x7539:
-			case 0x754e:
-			case 0x753d:
-			case 0x7536:
-				$model = "OEM branded SPMini";
-				$type = 1;
-				return $model;
-			case 0x7540:
-				$model = "MP2";
-				$type = 1;
-				return $model;				
-			case 0x7530: 
-			case 0x7918:
-			case 0x7549:
-				$model = "OEM branded SPMini2";
-				$type = 1;
-				return $model;
-			case 0x2736: 
-				$model = "SPMiniPlus";
-				$type = 1;
-				return $model;
-			case 0x947c: 
-				$model = "SPMiniPlus2";
-				$type = 1;
-				return $model;
-			case 0x7547:
-				$model = "SC1 WiFi Box";
-				$type = 1;
-				return $model;
-			case 0x947a: 
-			case 0x9479:
-				$model = "SP3S";
-				$type = 1;
-				return $model;
-			case 0x2710: 
-				$model = "RM1";
-				$type = 2;
-				return $model;
-			case 0x2712: 
-				$model = "RM2";
-				$type = 2;
-				return $model;
-			case 0x2737: 
-				$model = "RM Mini";
-				$type = 2;
-				return $model;
-			case 0x27a2: 
-				$model = "RM Mini R2";
-				$type = 2;
-				return $model;
-			case 0x273d: 
-				$model = "RM Pro Phicomm";
-				$type = 2;
-				return $model;
-			case 0x2783: 
-				$model = "RM2 Home Plus";
-				$type = 2;
-				return $model;
-			case 0x277c: 
-				$model = "RM2 Home Plus GDT";
-				$type = 2;
-				return $model;
-			case 0x272a: 
-				$model = "RM2 Pro Plus";
-				$type = 2;
-				return $model;
-			case 0x2787: 
-				$model = "RM2 Pro Plus2";
-				$type = 2;
-				return $model;
-			case 0x279d: 
-				$model = "RM2 Pro Plus3";
-				$type = 2;
-				return $model;
-			case 0x2797: 
-				$model = "RM2 Pro Plus HYC";
-				$type = 2;
-				return $model;
-			case 0x278b: 
-				$model = "RM2 Pro Plus BL";
-				$type = 2;
-				return $model;	
-			case 0x27a1: 
-				$model = "RM2 Pro Plus R1";
-				$type = 2;
-				return $model;				
-			case 0x278f: 
-				$model = "RM Mini Shate";
-				$type = 2;
-				return $model;
-			case 0x2714:
-			case 0x27a3:
-				$model = "A1";
-				$type = 3;
-				return $model;
-			case 0x4EB5: 
-				$model = "MP1";
-				$type = 4;
-				return $model;
-			case 0x271F: 
-				$model = "MS1";
-				$type = 5;
-				return $model;
-			case 0x2722: 
-				$model = "S1";
-				$type = 6;
-				return $model;
-			case 0x273c: 
-				$model = "S1 Phicomm";
-				$type = 6;
-				return $model;
-			case 0x4f34: 
-			case 0x4f35: 
-			case 0x4f36: 
-				$model = "TW2 Switch";
-				$type = 1;
-				return $model;
-			case 0x4ee6: 
-			case 0x4eee: 
-			case 0x4eef: 
-				$model = "NEW Switch";
-				$type = 1;
-				return $model;
-			case 0x271b: 
-			case 0x271c: 
-				$model = "Honyar switch";
-				$type = 1;
-				return $model;
-			case 0x2721: 
-				$model = "Camera";
-				$type = 100;
-				return $model;
-			case 0x42: 
-			case 0x4e62: 
-				$model = "DEYE HUMIDIFIER";
-				$type = 100;
-				return $model;
-			case 0x2d: 
-			case 0x4f42:
-			case 0x4e4d:
-				$model = "DOOYA CURTAIN";
-				$type = 7;
-				return $model;
-			case 0x2723:
-			case 0x4eda:
-				$model = "HONYAR MS";
-				$type = 100;
-				return $model;
-			case 0x2727:
-			case 0x2726:
-			case 0x2724:
-			case 0x2725:
-				$model = "HONYAR SL";
-				$type = 100;
-				return $model;
-			case 0x4c:
-			case 0x4e6c:
-				$model = "MFRESH AIR";
-				$type = 100;
-				return $model;
-			case 0x271e:
-			case 0x2746:
-				$model = "PLC (TW_ROUTER)";
-				$type = 100;
-				return $model;
-			case 0x2774:
-			case 0x7530:
-			case 0x2742:
-			case 0x4e20:
-				$model = "MIN/MAX AP/OEM";
-				$type = 100;
-				return $model;
-			case 0x4e69:
-				$model = "LIGHTMATES";
-				$type = 100;
-				return $model;
-			case 0x4ead:
-				$model = "HYSEN";
-				$type = 8;
-				return $model;
-			default:
-				return $model;
-		}
+    $model = "SP2";
+    $type = 1;
+    return $model;
+            case 0x2719: 
+            case 0x7919:
+            case 0x271a:
+            case 0x791a:
+                $model = "Honeywell SP2";
+                $type = 1;
+                return $model;
+            case 0x2720: 
+                $model = "SPMini";
+                $type = 1;
+                return $model;
+            case 0x753e: 
+                $model = "SP3";
+                $type = 1;
+                return $model;
+            case 0x2728: 
+                $model = "SPMini2";
+                $type = 1;
+                return $model;
+            case 0x2733: 
+            case 0x273e:
+            case 0x7539:
+            case 0x754e:
+            case 0x753d:
+            case 0x7536:
+                $model = "OEM branded SPMini";
+                $type = 1;
+                return $model;
+            case 0x7540:
+                $model = "MP2";
+                $type = 1;
+                return $model;                
+            case 0x7530: 
+            case 0x7918:
+            case 0x7549:
+                $model = "OEM branded SPMini2";
+                $type = 1;
+                return $model;
+            case 0x2736: 
+                $model = "SPMiniPlus";
+                $type = 1;
+                return $model;
+            case 0x947c: 
+                $model = "SPMiniPlus2";
+                $type = 1;
+                return $model;
+            case 0x7547:
+                $model = "SC1 WiFi Box";
+                $type = 1;
+                return $model;
+            case 0x947a: 
+            case 0x9479:
+                $model = "SP3S";
+                $type = 1;
+                return $model;
+            case 0x2710: 
+                $model = "RM1";
+                $type = 2;
+                return $model;
+            case 0x2712: 
+                $model = "RM2";
+                $type = 2;
+                return $model;
+            case 0x2737: 
+                $model = "RM Mini";
+                $type = 2;
+                return $model;
+            case 0x27a2: 
+                $model = "RM Mini R2";
+                $type = 2;
+                return $model;
+            case 0x273d: 
+                $model = "RM Pro Phicomm";
+                $type = 2;
+                return $model;
+            case 0x2783: 
+                $model = "RM2 Home Plus";
+                $type = 2;
+                return $model;
+            case 0x277c: 
+                $model = "RM2 Home Plus GDT";
+                $type = 2;
+                return $model;
+            case 0x272a: 
+                $model = "RM2 Pro Plus";
+                $type = 2;
+                return $model;
+            case 0x2787: 
+                $model = "RM2 Pro Plus2";
+                $type = 2;
+                return $model;
+            case 0x279d: 
+                $model = "RM2 Pro Plus3";
+                $type = 2;
+                return $model;
+            case 0x2797: 
+                $model = "RM2 Pro Plus HYC";
+                $type = 2;
+                return $model;
+            case 0x278b: 
+                $model = "RM2 Pro Plus BL";
+                $type = 2;
+                return $model;    
+            case 0x27a1: 
+                $model = "RM2 Pro Plus R1";
+                $type = 2;
+                return $model;                
+            case 0x278f: 
+                $model = "RM Mini Shate";
+                $type = 2;
+                return $model;
+            case 0x2714:
+            case 0x27a3:
+                $model = "A1";
+                $type = 3;
+                return $model;
+            case 0x4EB5: 
+                $model = "MP1";
+                $type = 4;
+                return $model;
+            case 0x271F: 
+                $model = "MS1";
+                $type = 5;
+                return $model;
+            case 0x2722: 
+                $model = "S1";
+                $type = 6;
+                return $model;
+            case 0x273c: 
+                $model = "S1 Phicomm";
+                $type = 6;
+                return $model;
+            case 0x4f34: 
+            case 0x4f35: 
+            case 0x4f36: 
+                $model = "TW2 Switch";
+                $type = 1;
+                return $model;
+            case 0x4ee6: 
+            case 0x4eee: 
+            case 0x4eef: 
+                $model = "NEW Switch";
+                $type = 1;
+                return $model;
+            case 0x271b: 
+            case 0x271c: 
+                $model = "Honyar switch";
+                $type = 1;
+                return $model;
+            case 0x2721: 
+                $model = "Camera";
+                $type = 100;
+                return $model;
+            case 0x42: 
+            case 0x4e62: 
+                $model = "DEYE HUMIDIFIER";
+                $type = 100;
+                return $model;
+            case 0x2d: 
+            case 0x4f42:
+            case 0x4e4d:
+                $model = "DOOYA CURTAIN";
+                $type = 7;
+                return $model;
+            case 0x2723:
+            case 0x4eda:
+                $model = "HONYAR MS";
+                $type = 100;
+                return $model;
+            case 0x2727:
+            case 0x2726:
+            case 0x2724:
+            case 0x2725:
+                $model = "HONYAR SL";
+                $type = 100;
+                return $model;
+            case 0x4c:
+            case 0x4e6c:
+                $model = "MFRESH AIR";
+                $type = 100;
+                return $model;
+            case 0x271e:
+            case 0x2746:
+                $model = "PLC (TW_ROUTER)";
+                $type = 100;
+                return $model;
+            case 0x2774:
+            case 0x7530:
+            case 0x2742:
+            case 0x4e20:
+                $model = "MIN/MAX AP/OEM";
+                $type = 100;
+                return $model;
+            case 0x4e69:
+                $model = "LIGHTMATES";
+                $type = 100;
+                return $model;
+            case 0x4ead:
+                $model = "HYSEN";
+                $type = 8;
+                return $model;
+            default:
+                return $model;
+        }
     }
 }
