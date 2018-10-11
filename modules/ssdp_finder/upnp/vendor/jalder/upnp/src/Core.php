@@ -135,37 +135,11 @@ $s = socket_create(AF_INET, SOCK_DGRAM, SOL_UDP);
 
 		socket_sendto($cs, $this->byte($packet), sizeof($packet), 0, '255.255.255.255', 80);
 		while(socket_recvfrom($cs, $buf, 2048, 0, $from, $port)){
-                        $macaddres = '';
-			$host = '';
-			$responsepacket = $this->byte2array($buf);
-			$devtype = sprintf("%x%x", $responsepacket[0x35], $responsepacket[0x34]);
-			var_dump ($devtype);
-			$devtype = hexdec($devtype);
-			var_dump ($devtype);
-			$host_array = array_slice($responsepacket, 0x36, 4);
-			$mac = array_slice($responsepacket, 0x3a, 6);
-			if (array_slice($responsepacket, 0, 8) !== array(0x5a, 0xa5, 0xaa, 0x55, 0x5a, 0xa5, 0xaa, 0x55)) {
-				$host_array = array_reverse($host_array);
-			}
-
-			foreach ( $host_array as $ip ) {
- 				$host .= $ip . ".";
-			}
-			foreach ( $mac as $ma ) {
-                                if (strlen (dechex($ma))==1) {
-					$m='0'.dechex($ma);
-				} else {
-					$m=dechex($ma);
-				}
-				$macaddres = $m . ":" . $macaddres;
-			}
-
-			$host = substr($host, 0, strlen($host) - 1);
-			$macaddres = substr($macaddres, 0, strlen($macaddres) - 1);
-			$device_name = $this->getmodel($devtype);
-			var_dump ($host);
-			var_dump ($macaddres);
-			var_dump ($device_name);
+          if(!is_null($buf)){
+            $buf=bin2hex($buf);
+            $data = $this->parseBROADLINK($buf, $from);
+            $response[] = $data;
+            }
 	}
     @socket_shutdown($cs, 2);
     socket_close($cs);
@@ -299,7 +273,45 @@ public function search_OTHER($sockTimout = '2') {
         return $response;
 }
     
-    
+// парсинг broadlink и их клонов    
+private function parseBROADLINK($response, $ip) {
+    //var_dump($response);
+    $macaddres = '';
+    $host = '';
+    $responsepacket = $this->byte2array($buf);
+    $devtype = sprintf("%x%x", $responsepacket[0x35], $responsepacket[0x34]);
+    //var_dump ($devtype);
+    $devtype = hexdec($devtype);
+    //var_dump ($devtype);
+    $host_array = array_slice($responsepacket, 0x36, 4);
+    $mac = array_slice($responsepacket, 0x3a, 6);
+    if (array_slice($responsepacket, 0, 8) !== array(0x5a, 0xa5, 0xaa, 0x55, 0x5a, 0xa5, 0xaa, 0x55)) {
+         $host_array = array_reverse($host_array);
+    }
+
+    foreach ( $host_array as $ip ) {
+          $host .= $ip . ".";
+    }
+    foreach ( $mac as $ma ) {
+          if (strlen (dechex($ma))==1) {
+   $m='0'.dechex($ma);
+         } else {
+   $m=dechex($ma);
+         }
+         $macaddres = $m . ":" . $macaddres;
+    }
+
+    $host = substr($host, 0, strlen($host) - 1);
+    $macaddres = substr($macaddres, 0, strlen($macaddres) - 1);
+    $device_name = $this->getmodel($devtype);
+    //var_dump ($host);
+    //var_dump ($macaddres);
+    //var_dump ($device_name);
+    $parsedResponse['BROADLINKip'] = $host; 
+    $parsedResponse['BROADLINKmac'] = $macaddres; 
+    $parsedResponse['BROADLINKname'] = $device_name; 
+    return $parsedResponse;
+    }    
 // парсинг ксяоми и их клонов    
 private function parsexaomiIO($response, $ip) {
     //var_dump($response);
