@@ -25,8 +25,8 @@
  *    
  
 **/
-
-class scanonvif {
+namespace jalder\Upnp;
+class scanponvif {
 
 	/*
 		$ipaddress 	ip address of the NVT device
