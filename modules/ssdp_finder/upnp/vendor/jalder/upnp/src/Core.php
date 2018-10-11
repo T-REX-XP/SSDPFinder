@@ -79,7 +79,15 @@ public function search_OTHER($st = 'ssdp:all', $mx = 2, $man = 'ssdp:discover', 
         //create the socket
         $socket = socket_create(AF_INET, SOCK_DGRAM, 0);
         socket_set_option($socket, SOL_SOCKET, SO_BROADCAST, true);
-        //all
+        $request = 'M-SEARCH * HTTP/1.1'."\r\n";
+        $request .= 'HOST: 239.255.255.250:1900'."\r\n";
+        $request .= 'MAN: "'.$man.'"'."\r\n";
+        $request .= 'MX: '.$mx.''."\r\n";
+        $request .= 'ST: urn:dial-multiscreen-org:device:dial:1'."\r\n";
+        $request .= 'USER-AGENT: '.$this->user_agent."\r\n";
+        $request .= "\r\n";
+	socket_sendto($socket, $request, strlen($request), 0, '239.255.255.250', 1900);
+	//all
         $request = 'M-SEARCH * HTTP/1.1'."\r\n";
         $request .= 'HOST: 239.255.255.250:1900'."\r\n";
         $request .= 'MAN: "'.$man.'"'."\r\n";
@@ -88,7 +96,6 @@ public function search_OTHER($st = 'ssdp:all', $mx = 2, $man = 'ssdp:discover', 
         $request .= 'USER-AGENT: '.$this->user_agent."\r\n";
         $request .= "\r\n";
         socket_sendto($socket, $request, strlen($request), 0, '255.255.255.255', 1900);        
-        socket_sendto($socket, $request, strlen($request), 0, '239.255.255.250', 1900);
         // send the data from socket
         socket_set_option($socket, SOL_SOCKET, SO_RCVTIMEO, array('sec'=>'2', 'usec'=>'0'));
         $response = array();
@@ -100,7 +107,7 @@ public function search_OTHER($st = 'ssdp:all', $mx = 2, $man = 'ssdp:discover', 
             if(!is_null($buf)){
                 $data = $this->parseSearchResponse($buf);
                 $response[] = $data;
-                $response[] = compact($buf);
+                $response[] = $buf;
             }
         } while(!is_null($buf));
         socket_close($socket);
