@@ -77,7 +77,7 @@ class Core {
 
 	private function search_CHROMECAST($sockTimout = '2') {
 		require_once("Chromecast.php");
-		var_dump(Chromecast::scan());
+		//var_dump(Chromecast::scan());
 		return (Chromecast::scan());
 	}
 	
