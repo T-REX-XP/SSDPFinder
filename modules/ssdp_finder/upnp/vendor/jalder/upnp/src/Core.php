@@ -76,10 +76,10 @@ class Core {
     }
 	
 // scaniruem google cromecast
-private function search_CHROMECAST($wait = 10) {
-		require_once("Chromecast.php");
-		//var_dump(Chromecast::scan());
-		return (Chromecast::scan());
+private function search_CHROMECAST($wait = 2) {
+		require_once("Chromecasts.php");
+		//var_dump(Chromecasts::scan());
+		return (Chromecasts::scan());
 	}
 	
 	
