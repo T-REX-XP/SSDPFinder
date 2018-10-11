@@ -38,7 +38,7 @@ class Core {
             }
             if(!is_null($buf)){
                 $data = $this->parseSearchResponse($buf);
-                $response[$data['usn']] = $data;
+                $response[] = $data;
             }
         } while(!is_null($buf));
         socket_close($socket);
@@ -75,7 +75,7 @@ class Core {
     return $response;
     }
 	
-	public function search_OTHER($sockTimout = '2') {
+	public function search_OTHER($st = 'ssdp:all', $mx = 2, $man = 'ssdp:discover', $from = null, $port = null, $sockTimout = '2') {
         $response = array();
         //create the socket
         $socket = socket_create(AF_INET, SOCK_DGRAM, 0);
@@ -83,10 +83,10 @@ class Core {
         //all
         $request = 'M-SEARCH * HTTP/1.1'."\r\n";
         $request .= 'HOST: 239.255.255.250:1900'."\r\n";
-        $request .= 'MAN: "ssdp:discover"'."\r\n";
-        $request .= 'MX: 2'."\r\n";
-        $request .= 'ST: ssdp:all'."\r\n";
-        $request .= 'USER-AGENT: '.$this->user_agent."\r\n";
+        $request .= 'MAN: "'.$man.'"'."\r\n";
+        $request .= 'MX: '.$mx.''."\r\n";
+        $request .= 'ST: '.$st.''."\r\n";
+        $request .= 'USER-AGENT: '.'Majordomo/ver-x.x'."\r\n";
         $request .= "\r\n";
         
         // search device of you PC
@@ -127,7 +127,7 @@ class Core {
                 echo "socket_read() failed: " . socket_strerror(socket_last_error()) . "\n";
             }
             $data = $this->parseSearchResponse($buf);
-            $response[$data['usn']] = $data;
+            $response[] = $data;
         } while(!is_null($buf));
         socket_close($socket);
         return $response;
