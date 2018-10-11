@@ -73,13 +73,19 @@ class Core {
 private function search_BROADLINK($sockTimout = '2') {
     $response = array();
     // create socket
+    $s = socket_create(AF_INET, SOCK_DGRAM, SOL_UDP);
+    socket_connect($s ,'8.8.8.8', 53);  // connecting to a UDP address doesn't send packets
+    socket_getsockname($s, $local_ip_address, $port);
+    @socket_shutdown($s, 2);
+    socket_close($s);
+	
     $socket = socket_create(AF_INET, SOCK_DGRAM, SOL_UDP);
     socket_set_option($socket, SOL_SOCKET, SO_REUSEADDR, 1);
     socket_set_option($socket, SOL_SOCKET, SO_BROADCAST, 1);
     socket_bind($socket, 0, 0);
     
     // build zapros to dev
-    $address = explode('.', $this->getLocalIp());
+    $address = explode('.', $local_ip_address);
     // build packet
     $packet = array();
     for($i = 0 ; $i < 30 ; $i++){
