@@ -8,7 +8,7 @@ namespace jalder\Upnp;
 
 require_once ("mdns.php");
 
-class Chromecast
+class Chromecasts
 {
 	// Sends a picture or a video to a Chromecast using reverse
 	// engineered castV2 protocol
@@ -52,14 +52,14 @@ class Chromecast
 		$this->Plex = new CCPlexPlayer($this);
 	}
 	
-	public static function scan($wait = 15)
+	public static function scan($wait = 2)
 	{
 		// Wrapper for scan
 		$result = Chromecast::scansub($wait);
 		return $result;
 	}
 	
-	public static function scansub($wait = 15)
+	public static function scansub($wait = 2)
 	{
 		// Performs an mdns scan of the network to find chromecasts and returns an array
 		// Let's test by finding Google Chromecasts
