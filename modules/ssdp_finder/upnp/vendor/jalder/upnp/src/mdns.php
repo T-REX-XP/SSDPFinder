@@ -2,6 +2,9 @@
 // Simple MDNS query object
 // Chris Ridings
 // www.chrisridings.com
+
+namespace jalder\Upnp;
+
 class mDNS {
 	
 	private $mdnssocket; // Socket to listen to port 5353
