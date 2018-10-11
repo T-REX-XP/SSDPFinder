@@ -101,7 +101,7 @@ public function search_OTHER($st = 'ssdp:all', $mx = 2, $man = 'ssdp:discover', 
         $response = array();
         do {
             $buf = null;
-            if (($len = @socket_recvfrom($socket, $buf, 1024, 0, $ip, $port)) == -1) {
+            if (($len = @socket_recvfrom($socket, $buf, 4096, 0, $ip, $port)) == -1) {
                 echo "socket_read() failed: " . socket_strerror(socket_last_error()) . "\n";
             }
             if(!is_null($buf)){
