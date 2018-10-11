@@ -69,7 +69,7 @@ class Core {
     $response = array_merge($response, $broadlink);   
 	    
     // сканируем Chromecast устройства отдельно
-    $chromecast = $this-> search_CHROMECAST($wait = 4);
+    $chromecast = $this->search_CHROMECAST($wait = 6);
     $response = array_merge($response, $chromecast);   
 	    
     return $response;
