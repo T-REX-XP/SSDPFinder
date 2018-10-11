@@ -65,20 +65,80 @@ class Core {
     $response = array_merge($response, $mag250);
 
     // сканируем ксяоми устройства отдельно
-    $onvif = $this->search_ONVIF($sockTimout = '2');
-    $response = array_merge($response, $onvif);        
-        return $response;
+    $broadlink = $this->search_BROADLINK($sockTimout = '2');
+    $response = array_merge($response, $broadlink);        
+    return $response;
     }
-
-//фунция поиска ONVIF устройств
-private function search_ONVIF($sockTimout = '2') {
+//фунция поиска BROADLINK устройств
+private function search_BROADLINK($sockTimout = '2') {
     $response = array();
-    require 'scanonvif.php';
+    // create socket
+    $socket = socket_create(AF_INET, SOCK_DGRAM, SOL_UDP);
+    socket_set_option($socket, SOL_SOCKET, SO_REUSEADDR, 1);
+    socket_set_option($socket, SOL_SOCKET, SO_BROADCAST, 1);
+    socket_bind($socket, 0, 0);
+    
+    // build zapros to dev
+    $address = explode('.', $this->getLocalIp());
+    // build packet
+    $packet = array();
+    for($i = 0 ; $i < 30 ; $i++){
+	$packet[$i] = 0;
+    }
+    var_dump ($packet);
 
-    $onvifscan = new scanponvif();
-    $data = $onvifscan->discover();
+    $timezone = (int)intval(date("Z"))/-3600;
+    $year = date("Y");
+    if($timezone < 0){
+        $packet[0x08] = 0xff + $timezone - 1;
+        $packet[0x09] = 0xff;
+        $packet[0x0a] = 0xff;
+        $packet[0x0b] = 0xff;
+    } else {
+        $packet[0x08] = $timezone;
+        $packet[0x09] = 0;
+        $packet[0x0a] = 0;
+        $packet[0x0b] = 0;
+    }    
+    $packet[0x0c] = $year & 0xff;
+    $packet[0x0d] = $year >> 8;
+    $packet[0x0e] = intval(date("i"));
+    $packet[0x0f] = intval(date("H"));
+    $subyear = substr($year, 2);
+    $packet[0x10] = intval($subyear);
+    $packet[0x11] = intval(date('N'));
+    $packet[0x12] = intval(date("d"));
+    $packet[0x13] = intval(date("m"));
+    $packet[0x18] = intval($address[0]);
+    $packet[0x19] = intval($address[1]);
+    $packet[0x1a] = intval($address[2]);
+    $packet[0x1b] = intval($address[3]);
+    $packet[0x1c] = $port & 0xff;
+    $packet[0x1d] = $port >> 8;
+    $packet[0x26] = 6;
+    $checksum = 0xbeaf;
+    for($i = 0 ; $i < sizeof($packet) ; $i++){
+	$checksum += $packet[$i];
+    }
+    $checksum = $checksum & 0xffff;
+    $packet[0x20] = $checksum & 0xff;
+    $packet[0x21] = $checksum >> 8;
+    // preobrazuem v stroku
+    $post_data = implode(array_map("chr", $packet));
 
-    return $data;
+    socket_sendto($socket, $post_data, strlen($post_data) , 0, '255.255.255.255', 80);
+    socket_set_option($socket, SOL_SOCKET, SO_RCVTIMEO, array( 'sec'=>$sockTimout, 'usec'=>'256'));
+    do {
+        $buf = null;
+        @socket_recvfrom($socket, $buf, 4096, 0, $mip, $mport);
+        if (!is_null($buf)) {
+            //если это BROADLINK и емы подобные то парсим этим путем
+            //$data = $this->parsemag250($buf, $ip);
+            $response[] = $buf;
+            }
+         } while (!is_null($buf));
+    socket_close($socket);
+    return $response;
     }
     
 //фунция поиска MAG устройств
