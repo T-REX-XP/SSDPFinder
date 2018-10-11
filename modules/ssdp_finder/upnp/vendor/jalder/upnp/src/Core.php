@@ -88,9 +88,7 @@ private function search_BROADLINK($sockTimout = '2') {
     $address = explode('.', $local_ip_address);
     // build packet
     $packet = array();
-    for($i = 0 ; $i < 30 ; $i++){
-	$packet[$i] = 0;
-    }
+    $packet = $this->bytearray(0x30);
     $timezone = (int)intval(date("Z"))/-3600;
     $year = date("Y");
     if($timezone < 0){
@@ -135,7 +133,7 @@ private function search_BROADLINK($sockTimout = '2') {
     var_dump ('dlinna zaprosaa - '.strlen($post_data));
     
 
-    socket_sendto($socket, $post_data, strlen($post_data) , 0, '255.255.255.255', 80);
+    socket_sendto($socket, $this->byte($post_data), sizeof($post_data), 0, '255.255.255.255', 80);
     socket_set_option($socket, SOL_SOCKET, SO_RCVTIMEO, array( 'sec'=>$sockTimout, 'usec'=>'256'));
     do {
         $buf = null;
@@ -433,5 +431,16 @@ private function parseSearchResponse($response) {
     //получаем hostname адрес локального компьютера
     private function getLocalIp() { 
       return gethostbyname(trim(`hostname`)); 
+    }
+// broadlink added  funktion
+    private function bytearray($size){
+    	$packet = array();
+	    for($i = 0 ; $i < $size ; $i++){
+	    	$packet[$i] = 0;
+	    }
+	    return $packet;
+    }
+private function byte($array){
+	    return implode(array_map("chr", $array));
     }
 }
