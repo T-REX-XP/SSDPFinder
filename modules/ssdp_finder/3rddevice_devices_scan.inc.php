@@ -80,10 +80,10 @@ function Scan_3rddevice()
                     "ADDRESS" => $control_url, //presentation url (web UI of device),//presentation url (web UI of device)
                     "UUID" => $uuid, 
                     "LOGO" => $logo, //Logo
-                    "DESCRIPTION" => 'Goole Home device', //description get from xml or field "server"
+                    "DESCRIPTION" => 'smart speakers', //description get from xml or field "server"
                     "TYPE" => $device_type, //DeviceType
                     "SERIAL" => $deviceInfo['target'], //serialnumber
-                    "MANUFACTURER" => 'Google co/', //manufacturer url
+                    "MANUFACTURER" => 'Google Co.', //manufacturer url
                     "MODEL" => 'unknow', //model
                     "SERVICES" => $services, //list services of device
                     "CONTROLADDRESS" => $control_url, //list services of device
