@@ -135,7 +135,7 @@ $s = socket_create(AF_INET, SOCK_DGRAM, SOL_UDP);
 
 		socket_sendto($cs, $this->byte($packet), sizeof($packet), 0, '255.255.255.255', 80);
 		while(socket_recvfrom($cs, $buf, 2048, 0, $from, $port)){
-
+                        $macaddres = '';
 			$host = '';
 			$responsepacket = $this->byte2array($buf);
 			$devtype = dechex($responsepacket[0x35].$responsepacket[0x34]);
@@ -150,7 +150,7 @@ $s = socket_create(AF_INET, SOCK_DGRAM, SOL_UDP);
  				$host .= $ip . ".";
 			}
 			foreach ( $mac as $ma ) {
-                                if (strlen (dechex($ma))=1) {
+                                if (strlen (dechex($ma))==1) {
 					$m='0'.dechex($ma);
 				} else {
 					$m=dechex($ma);
