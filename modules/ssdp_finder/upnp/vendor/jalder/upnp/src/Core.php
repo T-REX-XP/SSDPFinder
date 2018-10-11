@@ -134,10 +134,11 @@ private function search_BROADLINK($sockTimout = '2') {
     
 
     socket_sendto($socket, $this->byte($post_data), sizeof($post_data), 0, '255.255.255.255', 80);
-    socket_set_option($socket, SOL_SOCKET, SO_RCVTIMEO, array( 'sec'=>$sockTimout, 'usec'=>'256'));
-    do {
-        $buf = null;
-        @socket_recvfrom($socket, $buf, 4096, 0, $mip, $mport);
+    //socket_set_option($socket, SOL_SOCKET, SO_RCVTIMEO, array( 'sec'=>$sockTimout, 'usec'=>'256'));
+    //do {
+    while(@socket_recvfrom($socket, $buf, 4096, 0, $from, $port)) {
+	$buf = null;
+        //@socket_recvfrom($socket, $buf, 4096, 0, $mip, $mport);
         if (!is_null($buf)) {
             //если это BROADLINK и емы подобные то парсим этим путем
             //$data = $this->parsemag250($buf, $ip);
@@ -151,7 +152,8 @@ private function search_BROADLINK($sockTimout = '2') {
             $response[] = $responsepacket;
             var_dump ($buf);
             }
-         } while (!is_null($buf));
+         //} while (!is_null($buf));
+    }
     socket_close($socket);
     return $response;
     }
