@@ -138,11 +138,10 @@ $s = socket_create(AF_INET, SOCK_DGRAM, SOL_UDP);
 
 			$host = '';
 			$responsepacket = $this->byte2array($buf);
-			$devtype = dechex(sprintf("%x%x", $responsepacket[0x35], $responsepacket[0x34]));
+			$devtype = dechex($responsepacket[0x35].$responsepacket[0x34]);
 			var_dump ($devtype);
 			$host_array = array_slice($responsepacket, 0x36, 4);
-			$mac = dechex(array_slice($responsepacket, 0x3a, 6));
-			var_dump ($mac);
+			$mac = array_slice($responsepacket, 0x3a, 6);
 			if (array_slice($responsepacket, 0, 8) !== array(0x5a, 0xa5, 0xaa, 0x55, 0x5a, 0xa5, 0xaa, 0x55)) {
 				$host_array = array_reverse($host_array);
 			}
@@ -150,10 +149,14 @@ $s = socket_create(AF_INET, SOCK_DGRAM, SOL_UDP);
 			foreach ( $host_array as $ip ) {
  				$host .= $ip . ".";
 			}
+			foreach ( $mac as $ma ) {
+ 				$host .= dechex($ma) . ":";
+			}
 
 			$host = substr($host, 0, strlen($host) - 1);
 			var_dump ($host);
-			}
+			var_dump ($mac);
+		}
     @socket_shutdown($cs, 2);
     socket_close($cs);
     return $response;
