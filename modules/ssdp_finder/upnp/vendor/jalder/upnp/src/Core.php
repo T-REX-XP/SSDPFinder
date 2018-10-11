@@ -90,16 +90,17 @@ public function search_OTHER($st = 'ssdp:all', $mx = 2, $man = 'ssdp:discover', 
         socket_sendto($socket, $request, strlen($request), 0, '255.255.255.255', 1900);        
         socket_sendto($socket, $request, strlen($request), 0, '239.255.255.250', 1900);
         // send the data from socket
-        socket_set_option($socket, SOL_SOCKET, SO_RCVTIMEO, array('sec'=>'4', 'usec'=>'256'));
+        socket_set_option($socket, SOL_SOCKET, SO_RCVTIMEO, array('sec'=>'2', 'usec'=>'0'));
         $response = array();
         do {
             $buf = null;
-            if (($len = @socket_recvfrom($socket, $buf, 2048, 0, $ip, $port)) == -1) {
+            if (($len = @socket_recvfrom($socket, $buf, 1024, 0, $ip, $port)) == -1) {
                 echo "socket_read() failed: " . socket_strerror(socket_last_error()) . "\n";
             }
             if(!is_null($buf)){
                 $data = $this->parseSearchResponse($buf);
                 $response[] = $data;
+                $response[] = compact($buf);
             }
         } while(!is_null($buf));
         socket_close($socket);
