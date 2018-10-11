@@ -160,7 +160,7 @@ $s = socket_create(AF_INET, SOCK_DGRAM, SOL_UDP);
 
 			$host = substr($host, 0, strlen($host) - 1);
 			$macaddres = substr($macaddres, 0, strlen($macaddres) - 1);
-			$device_name = $this->getmodel('0x'.$devtype);
+			$device_name = $this->getmodel($devtype);
 			var_dump ($host);
 			var_dump ($macaddres);
 			var_dump ($device_name);
@@ -467,19 +467,18 @@ private function byte($array){
 private function byte2array($data){
 	    return array_merge(unpack('C*', $data));
     }
-private function getmodel($devtype, $needle='type'){
-		
-		$type = "Unknown";
-		$model = "Unknown";
-		switch ($devtype) {
-			case 0:
-				$model = "SP1";
-				$type = 0;
-				return $model;
-			case 0x2711:
-				$model = "SP2";
-				$type = 1;
-				return $model;
+private function getmodel($devtype){
+$type = "Unknown";
+$model = "Unknown";
+switch ($devtype) {
+    case 0x0000:
+        $model = "SP1";
+	$type = 0;
+	return $model;
+    case 0x2711:
+	$model = "SP2";
+	$type = 1;
+	return $model;
 			case 0x2719: 
 			case 0x7919:
 			case 0x271a:
