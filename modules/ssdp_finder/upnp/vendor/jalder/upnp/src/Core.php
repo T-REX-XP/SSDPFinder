@@ -75,8 +75,7 @@ class Core {
     return $response;
     }
 	
-	public function search_OTHER($st = 'ssdp:all', $mx = 2, $man = 'ssdp:discover', $from = null, $port = null, $sockTimout = '2') {
-        $response = array();
+public function search_OTHER($st = 'ssdp:all', $mx = 2, $man = 'ssdp:discover', $from = null, $port = null, $sockTimout = '2') {
         //create the socket
         $socket = socket_create(AF_INET, SOCK_DGRAM, 0);
         socket_set_option($socket, SOL_SOCKET, SO_BROADCAST, true);
@@ -86,20 +85,22 @@ class Core {
         $request .= 'MAN: "'.$man.'"'."\r\n";
         $request .= 'MX: '.$mx.''."\r\n";
         $request .= 'ST: '.$st.''."\r\n";
-        $request .= 'USER-AGENT: Roku/DVP-5.5 (025.05E00410A)'."\r\n";
+        $request .= 'USER-AGENT: '.$this->user_agent."\r\n";
         $request .= "\r\n";
         
-        // search device of you PC
         socket_sendto($socket, $request, strlen($request), 0, '255.255.255.255', 1900);
         // send the data from socket
-        socket_set_option($socket, SOL_SOCKET, SO_RCVTIMEO, array('sec'=>$sockTimout, 'usec'=>'256'));
+        socket_set_option($socket, SOL_SOCKET, SO_RCVTIMEO, array('sec'=>$sockTimout, 'usec'=>'128'));
+        $response = array();
         do {
             $buf = null;
             if (($len = @socket_recvfrom($socket, $buf, 2048, 0, $ip, $port)) == -1) {
                 echo "socket_read() failed: " . socket_strerror(socket_last_error()) . "\n";
             }
-            $data = $this->parseSearchResponse($buf);
-            $response[] = $data;
+            if(!is_null($buf)){
+                $data = $this->parseSearchResponse($buf);
+                $response[] = $data;
+            }
         } while(!is_null($buf));
         socket_close($socket);
         return $response;
