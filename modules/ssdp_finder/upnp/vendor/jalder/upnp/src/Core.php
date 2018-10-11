@@ -68,14 +68,15 @@ class Core {
     $broadlink = $this->search_BROADLINK($sockTimout = '2');
     $response = array_merge($response, $broadlink);   
 	    
-	    // сканируем Chromecast устройства отдельно
-    $chromecast = $this-> search_CHROMECAST();
+    // сканируем Chromecast устройства отдельно
+    $chromecast = $this-> search_CHROMECAST($wait = 4);
     $response = array_merge($response, $chromecast);   
 	    
     return $response;
     }
-
-	private function search_CHROMECAST($sockTimout = '2') {
+	
+// scaniruem google cromecast
+private function search_CHROMECAST($wait = 4) {
 		require_once("Chromecast.php");
 		//var_dump(Chromecast::scan());
 		return (Chromecast::scan());
