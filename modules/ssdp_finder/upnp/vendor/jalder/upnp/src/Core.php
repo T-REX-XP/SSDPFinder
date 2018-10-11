@@ -141,7 +141,14 @@ private function search_BROADLINK($sockTimout = '2') {
         if (!is_null($buf)) {
             //если это BROADLINK и емы подобные то парсим этим путем
             //$data = $this->parsemag250($buf, $ip);
-            $response[] = $buf;
+            $responsepacket = $this->byte2array($response);
+            $devtype = hexdec(sprintf("%x%x", $responsepacket[0x35], $responsepacket[0x34]));
+            $host_array = array_slice($responsepacket, 0x36, 4);
+            $mac = array_slice($responsepacket, 0x3a, 6);
+            var_dump ($devtype);
+            var_dump ($host_array);
+            var_dump ($mac);
+            $response[] = $responsepacket;
             var_dump ($buf);
             }
          } while (!is_null($buf));
@@ -442,5 +449,8 @@ private function parseSearchResponse($response) {
     }
 private function byte($array){
 	    return implode(array_map("chr", $array));
+    }
+private function byte2array($data){
+	    return array_merge(unpack('C*', $data));
     }
 }
