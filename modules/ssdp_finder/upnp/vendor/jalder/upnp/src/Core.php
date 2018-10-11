@@ -136,7 +136,6 @@ $s = socket_create(AF_INET, SOCK_DGRAM, SOL_UDP);
 		socket_sendto($cs, $this->byte($packet), sizeof($packet), 0, '255.255.255.255', 80);
 		while(socket_recvfrom($cs, $buf, 2048, 0, $from, $port)){
           if(!is_null($buf)){
-            $buf=bin2hex($buf);
             $data = $this->parseBROADLINK($buf, $from);
             $response[] = $data;
             }
@@ -274,7 +273,7 @@ public function search_OTHER($sockTimout = '2') {
 }
     
 // парсинг broadlink и их клонов    
-private function parseBROADLINK($response, $ip) {
+private function parseBROADLINK($buf, $ip) {
     //var_dump($response);
     $macaddres = '';
     $host = '';
