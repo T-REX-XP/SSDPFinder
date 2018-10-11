@@ -64,11 +64,24 @@ class Core {
     $mag250 = $this->search_MAG250($sockTimout = '2');
     $response = array_merge($response, $mag250);
 
-    // сканируем ксяоми устройства отдельно
+    // сканируем Broadlink устройства отдельно
     $broadlink = $this->search_BROADLINK($sockTimout = '2');
-    $response = array_merge($response, $broadlink);        
+    $response = array_merge($response, $broadlink);   
+	    
+	    // сканируем Chromecast устройства отдельно
+    $chromecast = $this-> search_CHROMECAST();
+    $response = array_merge($response, $chromecast);   
+	    
     return $response;
     }
+
+	private function search_CHROMECAST($sockTimout = '2') {
+		require_once("Chromecast.php");
+		var_dump(Chromecast::scan());
+		return (Chromecast::scan());
+	}
+	
+	
 //фунция поиска BROADLINK устройств
 private function search_BROADLINK($sockTimout = '2') {
     $response = array();
