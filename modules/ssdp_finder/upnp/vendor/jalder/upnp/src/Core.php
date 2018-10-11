@@ -688,10 +688,6 @@ private function getmodel($devtype){
 				break;
 		}
 
-		if($needle=='model') {
-			return $model;
-		} else {
-			return $type;
-		}
+	        return $model;
     }
 }
