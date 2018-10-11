@@ -124,7 +124,7 @@ private function search_BROADLINK($sockTimout = '2') {
     // preobrazuem v stroku
     $post_data = implode(array_map("chr", $packet));
 
-    vardump ($post_data);
+    var_dump ($post_data);
 
     socket_sendto($socket, $post_data, strlen($post_data) , 0, '255.255.255.255', 80);
     socket_set_option($socket, SOL_SOCKET, SO_RCVTIMEO, array( 'sec'=>$sockTimout, 'usec'=>'256'));
@@ -135,7 +135,7 @@ private function search_BROADLINK($sockTimout = '2') {
             //если это BROADLINK и емы подобные то парсим этим путем
             //$data = $this->parsemag250($buf, $ip);
             $response[] = $buf;
-            vardump ($buf);
+            var_dump ($buf);
             }
          } while (!is_null($buf));
     socket_close($socket);
