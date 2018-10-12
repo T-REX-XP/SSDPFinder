@@ -59,10 +59,10 @@ function Scan_3rddevice()
         foreach($everything as $deviceInfo)
             {
 	    if ($deviceInfo['friendlyname']) {
-            // если устройство BROADLINK
+            // если устройство Хромекаст
                 $control_url = $deviceInfo['ip'];
                 // проверяем на наличие в базе для запрета вывода
-                $uuid = $deviceInfo['target'] ;
+                $uuid = $deviceInfo['target'].$deviceInfo['ip'].$deviceInfo['port'] ;
                 $existed = SQLSelectOne("SELECT * FROM $table_name WHERE UUID='" . $uuid . "'");
                 // need for chek device type
                 $device_type = 'Chromecast'; //DeviceType
