@@ -62,7 +62,7 @@ function Scan_3rddevice()
             // если устройство Хромекаст
                 $control_url = $deviceInfo['ip'];
                 // проверяем на наличие в базе для запрета вывода
-                $uuid = $deviceInfo['target'].$deviceInfo['ip'].$deviceInfo['port'] ;
+                $uuid = $deviceInfo['target'].$deviceInfo['ip'].'_'.$deviceInfo['port'] ;
                 $existed = SQLSelectOne("SELECT * FROM $table_name WHERE UUID='" . $uuid . "'");
                 // need for chek device type
                 $device_type = 'Chromecast'; //DeviceType
