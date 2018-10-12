@@ -148,7 +148,7 @@ $s = socket_create(AF_INET, SOCK_DGRAM, SOL_UDP);
 		$packet[0x21] = $checksum >> 8;
 
 		socket_sendto($cs, $this->byte($packet), sizeof($packet), 0, '255.255.255.255', 80);
-		while(socket_recvfrom($cs, $buf, 2048, 0, $from, $port)){
+		while(@socket_recvfrom($cs, $buf, 2048, 0, $from, $port)){
           if(!is_null($buf)){
             $data = $this->parseBROADLINK($buf, $from);
             $response[] = $data;
