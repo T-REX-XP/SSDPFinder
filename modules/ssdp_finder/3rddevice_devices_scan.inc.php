@@ -84,7 +84,7 @@ function Scan_3rddevice()
                     "TYPE" => $device_type, //DeviceType
                     "SERIAL" => $deviceInfo['target'], //serialnumber
                     "MANUFACTURER" => 'Google Co.', //manufacturer url
-                    "MODEL" => $deviceInfo['port'], //model
+                    "MODEL" => $deviceInfo['target'], //model
                     "SERVICES" => $services, //list services of device
                     "CONTROLADDRESS" => 'http://'.$control_url.':'.$deviceInfo['port'], //list services of device
                     "EXTENDED_MODULES" => ext_search_modules($device_type), // проверка на наличие модуля
