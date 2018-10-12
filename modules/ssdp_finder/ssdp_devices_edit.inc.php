@@ -178,7 +178,7 @@
       if($create_od==true){
        $this->add_to_pinghost($rec['ID']);
       }
-      if($create_term==true AND $type=='MediaRenderer'){
+      if($create_term==true AND $type=='MediaRenderer' AND $type=='Chromecast'){
        $this->add_to_terminal($rec['ID']);
       }
      }

@@ -64,11 +64,25 @@ class Core {
     $mag250 = $this->search_MAG250($sockTimout = '2');
     $response = array_merge($response, $mag250);
 
-    // сканируем ксяоми устройства отдельно
+    // сканируем Broadlink устройства отдельно
     $broadlink = $this->search_BROADLINK($sockTimout = '2');
-    $response = array_merge($response, $broadlink);        
+    $response = array_merge($response, $broadlink);   
+	    
+    // сканируем Chromecast устройства отдельно
+    $chromecast = $this->search_CHROMECAST($wait = '6');
+    $response = array_merge($response, $chromecast);   
+	    
     return $response;
     }
+	
+// scaniruem google cromecast
+private function search_CHROMECAST($wait = 2) {
+		require_once("Chromecasts.php");
+		//var_dump(Chromecasts::scan());
+		return (Chromecasts::scan());
+	}
+	
+	
 //фунция поиска BROADLINK устройств
 private function search_BROADLINK($sockTimout = '2') {
     $response = array();
@@ -134,7 +148,7 @@ $s = socket_create(AF_INET, SOCK_DGRAM, SOL_UDP);
 		$packet[0x21] = $checksum >> 8;
 
 		socket_sendto($cs, $this->byte($packet), sizeof($packet), 0, '255.255.255.255', 80);
-		while(socket_recvfrom($cs, $buf, 2048, 0, $from, $port)){
+		while(@socket_recvfrom($cs, $buf, 2048, 0, $from, $port)){
           if(!is_null($buf)){
             $data = $this->parseBROADLINK($buf, $from);
             $response[] = $data;

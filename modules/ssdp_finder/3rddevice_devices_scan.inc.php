@@ -58,7 +58,42 @@ function Scan_3rddevice()
         // перебираем по очереди все найденные устройства
         foreach($everything as $deviceInfo)
             {
-            if ($deviceInfo['BROADLINKip']) {
+	    if ($deviceInfo['friendlyname']) {
+            // если устройство Хромекаст
+                $control_url = $deviceInfo['ip'];
+                // проверяем на наличие в базе для запрета вывода
+                $uuid = $deviceInfo['target'].$deviceInfo['ip'].'_'.$deviceInfo['port'] ;
+                $existed = SQLSelectOne("SELECT * FROM $table_name WHERE UUID='" . $uuid . "'");
+                // need for chek device type
+                $device_type = 'Chromecast'; //DeviceType
+                $services = 'Google Home device'; //DeviceServices
+                // проверяем на наличие модуля в системе
+                $mod_cheked = SQLSelectOne("SELECT * FROM project_modules WHERE NAME LIKE '" . $modules[$device_type] . "'");
+                // получаем логотип на устройство
+                $logo = getDefImg($control_url, $device_type);
+				
+                if (!array_search_result($result, 'UUID', $uuid) && !is_null($uuid) && !($existed))
+                    {
+                    $result[] = [
+                    "ID" => $existed["ID"], //existed id Majordomo
+                    "TITLE" => $deviceInfo['friendlyname'], //friendly name
+                    "ADDRESS" => $control_url, //presentation url (web UI of device),//presentation url (web UI of device)
+                    "UUID" => $uuid, 
+                    "LOGO" => $logo, //Logo
+                    "DESCRIPTION" => 'smart speakers', //description get from xml or field "server"
+                    "TYPE" => $device_type, //DeviceType
+                    "SERIAL" => $deviceInfo['target'], //serialnumber
+                    "MANUFACTURER" => 'Google Co.', //manufacturer url
+                    "MODEL" => $deviceInfo['target'], //model
+                    "SERVICES" => $services, //list services of device
+                    "CONTROLADDRESS" => 'http://'.$control_url.':'.$deviceInfo['port'], //list services of device
+                    "EXTENDED_MODULES" => ext_search_modules($device_type), // проверка на наличие модуля
+                    "MODULE_INSTALLED" => $mod_cheked, //chek the installed module
+                    "EXTENDED_SIMPLEDEVICE" => check_seample_device($device_type) , //chek the simple device extended
+                    ];
+                    $_SESSION[$uuid] = $logo;
+                    }
+                } else if ($deviceInfo['BROADLINKip']) {
             // если устройство BROADLINK
                 $control_url = $deviceInfo['BROADLINKip'];
 

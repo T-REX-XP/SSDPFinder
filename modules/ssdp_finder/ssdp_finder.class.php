@@ -552,10 +552,15 @@ function add_to_terminal($id) {
   $terminal=array(); // опции добавления
   $terminal['NAME'] = $ssdpdevice['LINKED_OBJECT'];
   $terminal['TITLE'] = $ssdpdevice['LINKED_OBJECT'];
-  $terminal['HOST'] = $this->getIp($ssdpdevice['ADDRESS'],false);
+  $terminal['HOST'] = $this->getIp($ssdpdevice['CONTROLADDRESS'],false);
   $terminal['CANPLAY'] = '1';
+
+if (stripos($ssdpdevice['LINKED_OBJECT'], 'Chromecast')) {
+    $terminal['PLAYER_TYPE'] = 'chromecast';
+} else {
   $terminal['PLAYER_TYPE'] = 'dnla';
-  $terminal['PLAYER_PORT'] = $this->getPort($ssdpdevice['ADDRESS']);
+}
+  $terminal['PLAYER_PORT'] = $this->getPort($ssdpdevice['CONTROLADDRESS']);
   $terminal['IS_ONLINE'] = '1';
   $terminal['LINKED_OBJECT'] = $ssdpdevice['LINKED_OBJECT'];
   $terminal['LATEST_ACTIVITY'] = date("Y-m-d H:i:s");  
