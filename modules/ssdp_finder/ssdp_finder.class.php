@@ -555,7 +555,8 @@ function add_to_terminal($id) {
   $terminal['HOST'] = $this->getIp($ssdpdevice['CONTROLADDRESS'],false);
   $terminal['CANPLAY'] = '1';
 
-if (stripos($ssdpdevice['LINKED_OBJECT'], 'Chromecast')) {
+$pos1 = stripos($ssdpdevice['LINKED_OBJECT'], 'Chromecast');
+if ($pos1 === true) {
     $terminal['PLAYER_TYPE'] = 'chromecast';
 } else {
   $terminal['PLAYER_TYPE'] = 'dnla';
