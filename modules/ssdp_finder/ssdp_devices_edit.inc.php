@@ -91,6 +91,9 @@
       if($create_term==true AND $type=='MediaRenderer'){
        $this->add_to_terminal($rec['ID']);
       }
+      if($create_term==true AND $type=='Chromecast'){
+       $this->add_to_terminal($rec['ID']);
+      }
      }
      $out['OK']=1;
     } else {
