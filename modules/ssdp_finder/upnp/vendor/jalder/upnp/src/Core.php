@@ -322,14 +322,15 @@ public function search_OTHER($sockTimout = '2') {
 // парсим onvif ответы
 private function parseONVIFF($response) {
         //var_dump($response);
-        $messages = explode("\r\n", $response);
+        $xml = simplexml_load_string($response);
+	print_r($xml);
         $parsedResponse = array();
         foreach( $messages as $row ) {
             if( stripos( $row, 'http' ) === 0 )
                 $parsedResponse['http'] = $row;
             if( stripos( $row, 'urn:') === 0 )
                 $parsedResponse['urn'] = str_ireplace( 'urn: ', '', $row );
-            var_dump($row);
+            //var_dump($row);
 	}
 return $parsedResponse;
 }
