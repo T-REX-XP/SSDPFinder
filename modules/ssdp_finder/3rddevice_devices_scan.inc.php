@@ -61,7 +61,7 @@ function Scan_3rddevice()
             // если устройство Хромекаст
                 $control_url = $deviceInfo['Envelope']['Body']['ProbeMatches']['ProbeMatch']['XAddrs'];
                 // проверяем на наличие в базе для запрета вывода 
-		$uuid = $deviceInfo['Envelope']['Header']['RelatesTo'] ;
+		$uuid = $deviceInfo['Envelope']['Body']['ProbeMatches']['ProbeMatch']['EndpointReference']['Address'];
                 $existed = SQLSelectOne("SELECT * FROM $table_name WHERE UUID='" . $uuid . "'");
                 // need for chek device type  
                 $device_type = 'ONVIF'; //DeviceType
