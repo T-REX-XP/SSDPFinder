@@ -558,7 +558,7 @@ function add_to_terminal($id) {
   $pos1 = stripos($ssdpdevice['LINKED_OBJECT'], 'romecast');
   DebMes ($pos1);
   DebMes ($ssdpdevice['LINKED_OBJECT']);
-  if ($pos1 === true) {
+  if ($pos1 = 2) {
     $terminal['PLAYER_TYPE'] = 'chromecast';
   } else {
     $terminal['PLAYER_TYPE'] = 'dnla';
