@@ -746,9 +746,9 @@ private function getmodel($devtype){
 		}
 
 	        return $model;
-	
+    }	
 	// onvif added function
-		private function _xml2array($response) {
+	private function _xml2array($response) {
 		$sxe = new SimpleXMLElement($response);
 		$dom_sxe = dom_import_simplexml($sxe);
 		$dom = new DOMDocument('1.0');
@@ -767,5 +767,5 @@ private function getmodel($devtype){
 		return $data;
 	}
 
-    }
+
 }
