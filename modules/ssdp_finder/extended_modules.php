@@ -7,6 +7,8 @@
         'STB DeviceServices'=>'app_mag250',
         'miIO protocol device'=>'xiaomimiio',
         'Broadlink'=>'dev_broadlink',
+        'ONVIF'=>'ONVIF',
+
 );
 
 // https://connect.smartliving.ru/market/?lang=ru&serial=&locale=ru&os=win

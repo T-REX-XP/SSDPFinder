@@ -555,11 +555,14 @@ function add_to_terminal($id) {
   $terminal['HOST'] = $this->getIp($ssdpdevice['CONTROLADDRESS'],false);
   $terminal['CANPLAY'] = '1';
 
-if (stripos($ssdpdevice['LINKED_OBJECT'], 'Chromecast')) {
+  $pos1 = stripos($ssdpdevice['LINKED_OBJECT'], 'romecast');
+  DebMes ($pos1);
+  DebMes ($ssdpdevice['LINKED_OBJECT']);
+  if ($pos1 = 2) {
     $terminal['PLAYER_TYPE'] = 'chromecast';
-} else {
-  $terminal['PLAYER_TYPE'] = 'dnla';
-}
+  } else {
+    $terminal['PLAYER_TYPE'] = 'dnla';
+  }
   $terminal['PLAYER_PORT'] = $this->getPort($ssdpdevice['CONTROLADDRESS']);
   $terminal['IS_ONLINE'] = '1';
   $terminal['LINKED_OBJECT'] = $ssdpdevice['LINKED_OBJECT'];
