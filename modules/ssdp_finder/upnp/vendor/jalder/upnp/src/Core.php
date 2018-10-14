@@ -97,9 +97,9 @@ private function search_ONVIF($sockTimout = '2') {
 			while(time() < $timeout){
 				if(FALSE !== @socket_recvfrom($sock, $response, 9999, 0, $ip, $port)){
 					if($response != NULL && $response != $post_string){
-						var_dump($response);
-					$data = $this->parseSearchResponse($response);
-						$result[] = $data;
+						//var_dump($response);
+					$data = $this->parseONVIFF($response);
+						//$result[] = $data;
 					}
 				}
 			}
@@ -319,6 +319,21 @@ public function search_OTHER($sockTimout = '2') {
         return $response;
 }
     
+// парсим onvif ответы
+private function parseONVIFF($response) {
+        //var_dump($response);
+        $messages = explode("\r\n", $response);
+        $parsedResponse = array();
+        foreach( $messages as $row ) {
+            if( stripos( $row, 'http' ) === 0 )
+                $parsedResponse['http'] = $row;
+            if( stripos( $row, 'urn:') === 0 )
+                $parsedResponse['urn'] = str_ireplace( 'urn: ', '', $row );
+            $parsedResponse['$row'] = $row;
+	}
+return $parsedResponse;
+}
+	
 // парсинг broadlink и их клонов    
 private function parseBROADLINK($buf, $ip) {
     //var_dump($response);
