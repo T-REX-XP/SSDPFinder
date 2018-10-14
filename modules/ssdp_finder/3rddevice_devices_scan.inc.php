@@ -57,11 +57,11 @@ function Scan_3rddevice()
 
         // перебираем по очереди все найденные устройства
         foreach($everything as $deviceInfo) {
-	    if ($deviceInfo['Envelope']['Body']['ProbeMatches']['ProbeMatch']['EndpointReference']['XAddrs']) {
+	    if ($deviceInfo['Envelope']['Header']['Body']['ProbeMatches']['ProbeMatch']['EndpointReference']['XAddrs']) {
             // если устройство Хромекаст
-                $control_url = ['Envelope']['Body']['ProbeMatches']['ProbeMatch']['EndpointReference']['XAddrs'];
+                $control_url = ['Envelope']['Header']['Body']['ProbeMatches']['ProbeMatch']['EndpointReference']['XAddrs'];
                 // проверяем на наличие в базе для запрета вывода
-                $uuid = $deviceInfo['Envelope']['Body']['ProbeMatches']['ProbeMatch']['EndpointReference']['Address'] ;
+                $uuid = $deviceInfo['Envelope']['Header']['Body']['ProbeMatches']['ProbeMatch']['EndpointReference']['Address'] ;
                 $existed = SQLSelectOne("SELECT * FROM $table_name WHERE UUID='" . $uuid . "'");
                 // need for chek device type
                 $device_type = 'ONVIF'; //DeviceType
@@ -81,7 +81,7 @@ function Scan_3rddevice()
                     "LOGO" => $logo, //Logo
                     "DESCRIPTION" => 'smart speakers', //description get from xml or field "server"
                     "TYPE" => $device_type, //DeviceType
-                    "SERIAL" => $deviceInfo['Envelope']['Body']['ProbeMatches']['ProbeMatch']['EndpointReference']['Address'], //serialnumber
+                    "SERIAL" => $deviceInfo['Envelope']['Header']['Body']['ProbeMatches']['ProbeMatch']['EndpointReference']['Address'], //serialnumber
                     "MANUFACTURER" => 'Not detected', //manufacturer url
                     "MODEL" => $existed["ID"], //model
                     "SERVICES" => $services, //list services of device
