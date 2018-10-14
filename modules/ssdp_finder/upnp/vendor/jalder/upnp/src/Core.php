@@ -329,7 +329,7 @@ private function parseONVIFF($response) {
                 $parsedResponse['http'] = $row;
             if( stripos( $row, 'urn:') === 0 )
                 $parsedResponse['urn'] = str_ireplace( 'urn: ', '', $row );
-            $parsedResponse['$row'] = $row;
+            var_dump($row);
 	}
 return $parsedResponse;
 }
