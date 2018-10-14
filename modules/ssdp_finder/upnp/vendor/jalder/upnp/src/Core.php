@@ -322,12 +322,10 @@ public function search_OTHER($sockTimout = '2') {
 // парсим onvif ответы
 private function parseONVIFF($response) {
         //var_dump($response);
-	$par=explode(" ",$response);
         $parsedResponse = array();
-	$parsedResponse['1'] = $par[0];
-	$parsedResponse['2'] = $par[1];
-	$parsedResponse['3'] = $par[2];
-	$parsedResponse['4'] = $par[3];
+	$xml=simplexml_load_string($response);
+		$data=json_decode(json_encode((array)$xml),1);
+		$parsedResponse=array($xml->getName()=>$data);
         return $parsedResponse;
 }
 	
