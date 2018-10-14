@@ -97,7 +97,7 @@ private function search_ONVIF($sockTimout = '2') {
 			while(time() < $timeout){
 				if(FALSE !== @socket_recvfrom($sock, $response, 9999, 0, $ip, $port)){
 					if($response != NULL && $response != $post_string){
-						DebMes($response);
+						var_dump($response);
 					}
 				}
 			}
