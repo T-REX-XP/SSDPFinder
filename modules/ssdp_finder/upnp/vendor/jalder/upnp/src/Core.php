@@ -99,7 +99,7 @@ private function search_ONVIF($sockTimout = '2') {
 					if($response != NULL && $response != $post_string){
 						//var_dump($response);
 					$data = $this->parseONVIFF($response);
-						//$result[] = $data;
+				        $result[] = $data;
 					}
 				}
 			}
@@ -321,7 +321,7 @@ public function search_OTHER($sockTimout = '2') {
     
 // парсим onvif ответы
 private function parseONVIFF($response) {
-        var_dump($response);
+        //var_dump($response);
 	$par=explode(" ",$response);
         $parsedResponse = array();
 	$parsedResponse['1'] = $par[0];
