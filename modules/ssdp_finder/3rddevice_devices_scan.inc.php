@@ -79,7 +79,7 @@ function Scan_3rddevice()
                     "ADDRESS" => $control_url, //presentation url (web UI of device),//presentation url (web UI of device)
                     "UUID" => $uuid, 
                     "LOGO" => $logo, //Logo
-                    "DESCRIPTION" => 'smart speakers', //description get from xml or field "server"
+                    "DESCRIPTION" => 'Video Camera', //description get from xml or field "server"
                     "TYPE" => $device_type, //DeviceType
                     "SERIAL" => $deviceInfo['Envelope']['Body']['ProbeMatches']['ProbeMatch']['EndpointReference']['Address'], //serialnumber
                     "MANUFACTURER" => 'Not detected', //manufacturer url
