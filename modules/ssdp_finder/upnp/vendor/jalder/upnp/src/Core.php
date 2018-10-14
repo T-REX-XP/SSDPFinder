@@ -70,10 +70,23 @@ class Core {
 	    
     // сканируем Chromecast устройства отдельно
     $chromecast = $this->search_CHROMECAST($wait = 6);
-    $response = array_merge($response, $chromecast);   
+    $response = array_merge($response, $chromecast); 
+	 
+    // сканируем Onvif устройства отдельно
+    $onvifs = $this->search_ONVIF();
+    $response = array_merge($response, $onvifs); 
 	    
     return $response;
     }
+
+// scaniruem onvif
+private function search_ONVIF() {
+    require_once("ponvifs.php");
+    $onvif=new Ponvifs();
+    $result = $onvif->discover();
+    var_dump($result);
+    return ($result);
+	}
 	
 // scaniruem google cromecast
 private function search_CHROMECAST($wait = 6) {
