@@ -6,7 +6,7 @@
  * @version 1.0
  * @desc A simple class to help you in developing an ONVIF compliant client
  
- * FIX by KuroNeko 03.03.2017
+ * FIX by KuroNeko 03.03.2017pro
  * getBaseUrl() - fixed "baseuri"
  * _getProfileData() - added "profilename" and fixed "profiletoken"
  * isFault() - added additional check for "Fault" scenario
@@ -53,30 +53,30 @@ class Ponvifs {
 		$discoverymcastport WS-Discovery multicast port
 		$discoveryhideduplicates WS-Discovery flag to show\hide duplicates via source IP
 	*/
-	protected $ipaddress='';
-	protected $username='';
-	protected $password='';
-	protected $mediauri='';
-	protected $deviceuri='';
-	protected $ptzuri='';
-	protected $baseuri='';
-	protected $onvifversion=array();
-	protected $deltatime=0;
-	protected $capabilities=array();
-	protected $videosources=array();
-	protected $sources=array();
-	protected $profiles=array();
-	protected $proxyhost='';
-	protected $proxyport='';
-	protected $proxyusername='';
-	protected $proxypassword='';
-	protected $lastresponse='';
-	protected $intransingent=true;
-	protected $discoverytimeout=2;
-	protected $discoverybindip='0.0.0.0';
-	protected $discoverymcastip='239.255.255.250';
-	protected $discoverymcastport=3702;
-	protected $discoveryhideduplicates=true;
+	private $ipaddress='';
+	private $username='';
+	private $password='';
+	private $mediauri='';
+	private $deviceuri='';
+	private $ptzuri='';
+	private $baseuri='';
+	private $onvifversion=array();
+	private $deltatime=0;
+	private $capabilities=array();
+	private $videosources=array();
+	private $sources=array();
+	private $profiles=array();
+	private $proxyhost='';
+	private $proxyport='';
+	private $proxyusername='';
+	private $proxypassword='';
+	private $lastresponse='';
+	private $intransingent=true;
+	private $discoverytimeout=2;
+	private $discoverybindip='0.0.0.0';
+	private $discoverymcastip='239.255.255.250';
+	private $discoverymcastport=3702;
+	private $discoveryhideduplicates=true;
 
 	/*
 		Properties wrappers
@@ -807,12 +807,12 @@ class Ponvifs {
 	/*
 		Internal functions
 	*/
-	protected function _makeToken() {
+	private function _makeToken() {
 		$timestamp=time()-$this->deltatime;
 		return $this->_passwordDigest($this->username,$this->password,date('Y-m-d\TH:i:s.000\Z',$timestamp));
 	}
 
-	protected function _getOnvifVersion($capabilities) {
+	private function _getOnvifVersion($capabilities) {
 		$version=array();
 		if (isset($capabilities['Device']['System']['SupportedVersions']['Major'])) {
 		// NVT supports a specific onvif version
@@ -835,7 +835,7 @@ class Ponvifs {
 		return $version;
 	}
 
-	protected function _getActiveSources($videoSources,$profiles) {
+	private function _getActiveSources($videoSources,$profiles) {
 		$sources=array();
 		
 		if (isset($videoSources['@attributes'])) {
@@ -856,7 +856,7 @@ class Ponvifs {
 		return $sources;
 	}
 
-	protected function _getProfileData(&$sources,$i,$profiles) {
+	private function _getProfileData(&$sources,$i,$profiles) {
 		$inprofile=0;
 		for ($y=0; $y < count($profiles); $y++) {
 			if ($profiles[$y]['VideoSourceConfiguration']['SourceToken']==$sources[$i]['sourcetoken']) {
@@ -879,7 +879,7 @@ class Ponvifs {
 		}
 	}
 	
-	protected function _getCodecEncoders($codec) { // 'JPEG', 'MPEG4', 'H264' 
+	private function _getCodecEncoders($codec) { // 'JPEG', 'MPEG4', 'H264' 
 		$encoders = Array();
 		foreach( $this->sources as $ncam => $sCam ) {
 			$encoders[$ncam] = Array();
@@ -903,7 +903,7 @@ class Ponvifs {
 		return $encoders;
 	}
 	
-	protected function _xml2array($response) {
+	private function _xml2array($response) {
 		$sxe = new SimpleXMLElement($response);
 		$dom_sxe = dom_import_simplexml($sxe);
 		$dom = new DOMDocument('1.0');
@@ -922,7 +922,7 @@ class Ponvifs {
 		return $data;
 	}
 
-	protected function _passwordDigest( $username, $password, $timestamp = "default", $nonce = "default" ) {
+	private function _passwordDigest( $username, $password, $timestamp = "default", $nonce = "default" ) {
 		if ($timestamp=='default') $timestamp=date('Y-m-d\TH:i:s.000\Z');
 		if ($nonce=='default') $nonce=mt_rand();
 		$REQ=array();
@@ -936,7 +936,7 @@ class Ponvifs {
 		return $REQ;
 	}
 
-	protected function _send_request($url,$post_string) {
+	private function _send_request($url,$post_string) {
 		$soap_do = curl_init();
 		curl_setopt($soap_do, CURLOPT_URL,            $url );
 		if ($this->proxyhost!='' && $this->proxyport!='') {
