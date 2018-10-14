@@ -321,7 +321,7 @@ public function search_OTHER($sockTimout = '2') {
     
 // парсим onvif ответы
 private function parseONVIFF($response) {
-        var_dump($response);
+        print_r($response);
         $parsedResponse = array();
 	$xml = simplexml_load_string($response, "SimpleXMLElement", LIBXML_NOCDATA);
 $json = json_encode($xml);
