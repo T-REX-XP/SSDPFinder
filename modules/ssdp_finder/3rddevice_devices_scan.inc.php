@@ -59,13 +59,13 @@ function Scan_3rddevice()
         foreach($everything as $deviceInfo) {
 	    if ($deviceInfo['Envelope']['Body']['ProbeMatches']['ProbeMatch']['XAddrs']) {
             // если устройство Хромекаст
-                $control_url = ['Envelope']['Body']['ProbeMatches']['ProbeMatch']['XAddrs'];
+                $control_url = $deviceInfo['Envelope']['Body']['ProbeMatches']['ProbeMatch']['XAddrs'];
                 // проверяем на наличие в базе для запрета вывода 
 		$uuid = $deviceInfo['Envelope']['Header']['RelatesTo'] ;
                 $existed = SQLSelectOne("SELECT * FROM $table_name WHERE UUID='" . $uuid . "'");
                 // need for chek device type  
                 $device_type = 'ONVIF'; //DeviceType
-                $services = ['Envelope']['Body']['ProbeMatches']['ProbeMatch']['Types']; //DeviceServices
+                $services = $deviceInfo['Envelope']['Body']['ProbeMatches']['ProbeMatch']['Types']; //DeviceServices
                 // проверяем на наличие модуля в системе
                 $mod_cheked = SQLSelectOne("SELECT * FROM project_modules WHERE NAME LIKE '" . $modules[$device_type] . "'");
                 // получаем логотип на устройство
@@ -81,7 +81,7 @@ function Scan_3rddevice()
                     "LOGO" => $logo, //Logo
                     "DESCRIPTION" => 'Video Camera', //description get from xml or field "server"
                     "TYPE" => $device_type, //DeviceType
-                    "SERIAL" => $deviceInfo['Envelope']['Header']['RelatesTo'], //serialnumber
+                    "SERIAL" => $uuid, //serialnumber
                     "MANUFACTURER" => 'Not detected', //manufacturer url
                     "MODEL" => $existed["ID"], //model
                     "SERVICES" => $services, //list services of device
