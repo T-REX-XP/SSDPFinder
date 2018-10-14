@@ -328,7 +328,6 @@ private function parseONVIFF($response) {
 	$parsedResponse['2'] = $par[1];
 	$parsedResponse['3'] = $par[2];
 	$parsedResponse['4'] = $par[3];
-	}
 return $parsedResponse;
 }
 	
