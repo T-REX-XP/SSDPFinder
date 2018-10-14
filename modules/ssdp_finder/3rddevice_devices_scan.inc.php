@@ -83,7 +83,7 @@ function Scan_3rddevice()
                     "TYPE" => $device_type, //DeviceType
                     "SERIAL" => $uuid, //serialnumber
                     "MANUFACTURER" => 'Not detected', //manufacturer url
-                    "MODEL" => $existed["ID"], //model
+                    "MODEL" => $uuid, //model
                     "SERVICES" => $services, //list services of device
                     "CONTROLADDRESS" => getIp($control_url, True), //list services of device
                     "EXTENDED_MODULES" => ext_search_modules($device_type), // проверка на наличие модуля
