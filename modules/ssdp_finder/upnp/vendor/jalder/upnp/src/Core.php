@@ -98,7 +98,7 @@ private function search_ONVIF($sockTimout = '2') {
 				if(FALSE !== @socket_recvfrom($sock, $response, 9999, 0, $ip, $port)){
 					if($response != NULL && $response != $post_string){
 						//var_dump($response);
-					$data = $this->parseONVIFF($response);
+					$data = $this->_xml2array($response);
 				        $result[] = $data;
 					}
 				}
@@ -319,13 +319,6 @@ public function search_OTHER($sockTimout = '2') {
         return $response;
 }
     
-// парсим onvif ответы
-private function parseONVIFF($response) {
-        //print_r($response);
-        $parsedResponse = array();
-	return $array;
-}
-	
 // парсинг broadlink и их клонов    
 private function parseBROADLINK($buf, $ip) {
     //var_dump($response);
@@ -755,4 +748,22 @@ private function getmodel($devtype){
 
 	        return $model;
     }	
+	private function _xml2array($response) {
+		$sxe = new \SimpleXMLElement($response);
+		$dom_sxe = dom_import_simplexml($sxe);
+		$dom = new \DOMDocument('1.0');
+		$dom_sxe = $dom->importNode($dom_sxe, true);
+		$dom_sxe = $dom->appendChild($dom_sxe);
+		$element = $dom->childNodes->item(0);
+		foreach ($sxe->getDocNamespaces() as $name => $uri) {
+    			$element->removeAttributeNS($uri, $name);
+		}
+		$xmldata=$dom->saveXML();
+		$xmldata=substr($xmldata,strpos($xmldata,"<Envelope>"));
+		$xmldata=substr($xmldata,0,strpos($xmldata,"</Envelope>")+strlen("</Envelope>"));
+		$xml=simplexml_load_string($xmldata);
+		$data=json_decode(json_encode((array)$xml),1);
+		$data=array($xml->getName()=>$data);
+		return $data;
+	}
 }
