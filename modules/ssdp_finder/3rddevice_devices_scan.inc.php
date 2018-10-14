@@ -75,7 +75,7 @@ function Scan_3rddevice()
                     {
                     $result[] = [
                     "ID" => $existed["ID"], //existed id Majordomo
-                    "TITLE" => 'Onvif camera - '.$this->getIp($control_url, false), //friendly name
+                    "TITLE" => 'Onvif camera - '.getIp($control_url, false), //friendly name
                     "ADDRESS" => $control_url, //presentation url (web UI of device),//presentation url (web UI of device)
                     "UUID" => $uuid, 
                     "LOGO" => $logo, //Logo
@@ -85,7 +85,7 @@ function Scan_3rddevice()
                     "MANUFACTURER" => 'Not detected', //manufacturer url
                     "MODEL" => $existed["ID"], //model
                     "SERVICES" => $services, //list services of device
-                    "CONTROLADDRESS" => $this->getIp($control_url, True), //list services of device
+                    "CONTROLADDRESS" => getIp($control_url, True), //list services of device
                     "EXTENDED_MODULES" => ext_search_modules($device_type), // проверка на наличие модуля
                     "MODULE_INSTALLED" => $mod_cheked, //chek the installed module
                     "EXTENDED_SIMPLEDEVICE" => check_seample_device($device_type) , //chek the simple device extended
