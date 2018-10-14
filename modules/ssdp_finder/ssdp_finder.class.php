@@ -555,7 +555,7 @@ function add_to_terminal($id) {
   $terminal['HOST'] = $this->getIp($ssdpdevice['CONTROLADDRESS'],false);
   $terminal['CANPLAY'] = '1';
 
-  $pos1 = stripos($ssdpdevice['LINKED_OBJECT'], 'Chromecast');
+  $pos1 = stripos($ssdpdevice['LINKED_OBJECT'], 'romecast');
   DebMes ($pos1);
   DebMes ($ssdpdevice['LINKED_OBJECT']);
   if ($pos1 === true) {
