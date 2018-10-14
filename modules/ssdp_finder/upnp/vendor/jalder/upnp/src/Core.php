@@ -321,9 +321,7 @@ public function search_OTHER($sockTimout = '2') {
     
 // парсим onvif ответы
 private function parseONVIFF($response) {
-        //var_dump($response);
-        $xml = simplexml_load_string($response);
-	print_r($xml);
+        var_dump($response);
         $parsedResponse = array();
         foreach( $messages as $row ) {
             if( stripos( $row, 'http' ) === 0 )
