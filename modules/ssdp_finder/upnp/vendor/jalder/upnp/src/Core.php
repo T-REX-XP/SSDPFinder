@@ -98,7 +98,8 @@ private function search_ONVIF($sockTimout = '2') {
 				if(FALSE !== @socket_recvfrom($sock, $response, 9999, 0, $ip, $port)){
 					if($response != NULL && $response != $post_string){
 						var_dump($response);
-						$result[] = $response;
+					$data = $this->parseSearchResponse($response);
+						$result[] = $data;
 					}
 				}
 			}
