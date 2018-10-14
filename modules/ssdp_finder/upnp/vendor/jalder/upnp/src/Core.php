@@ -98,12 +98,13 @@ private function search_ONVIF($sockTimout = '2') {
 				if(FALSE !== @socket_recvfrom($sock, $response, 9999, 0, $ip, $port)){
 					if($response != NULL && $response != $post_string){
 						var_dump($response);
+						$result[] = $response;
 					}
 				}
 			}
 			socket_close($sock);
 		} catch (Exception $e) {}
-		return $response;
+		return $result;
 	}
 	
 // scaniruem google cromecast
