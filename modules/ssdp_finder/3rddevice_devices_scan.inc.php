@@ -57,9 +57,9 @@ function Scan_3rddevice()
 
         // перебираем по очереди все найденные устройства
         foreach($everything as $deviceInfo) {
-	    if ($deviceInfo['Envelope']['Header']['Body']['ProbeMatches']['ProbeMatch']['EndpointReference']['XAddrs']) {
+	    if ($deviceInfo['Envelope']['Header']['Body']['ProbeMatches']['ProbeMatch']['XAddrs']) {
             // если устройство Хромекаст
-                $control_url = ['Envelope']['Header']['Body']['ProbeMatches']['ProbeMatch']['EndpointReference']['XAddrs'];
+                $control_url = ['Envelope']['Header']['Body']['ProbeMatches']['ProbeMatch']['XAddrs'];
                 // проверяем на наличие в базе для запрета вывода
                 $uuid = $deviceInfo['Envelope']['Header']['Body']['ProbeMatches']['ProbeMatch']['EndpointReference']['Address'] ;
                 $existed = SQLSelectOne("SELECT * FROM $table_name WHERE UUID='" . $uuid . "'");
