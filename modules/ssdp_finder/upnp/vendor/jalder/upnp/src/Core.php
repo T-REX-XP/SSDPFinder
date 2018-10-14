@@ -73,7 +73,7 @@ class Core {
     $response = array_merge($response, $chromecast); 
 	 
     // сканируем Onvif устройства отдельно
-    $onvifs = $this->search_ONVIF();
+    $onvifs = $this->search_ONVIF($sockTimout = '2');
     $response = array_merge($response, $onvifs); 
 	    
     return $response;
@@ -81,11 +81,30 @@ class Core {
 
 // scaniruem onvif
 private function search_ONVIF() {
-    require_once("ponvifs.php");
-    $onvif=new Ponvifs();
-    $result = $onvif->discover();
-    var_dump($result);
-    return ($result);
+    	$result = array();
+		$timeout = time() + $sockTimout;
+		$post_string = '<?xml version="1.0" encoding="UTF-8"?><e:Envelope xmlns:e="http://www.w3.org/2003/05/soap-envelope" xmlns:w="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:d="http://schemas.xmlsoap.org/ws/2005/04/discovery" xmlns:dn="http://www.onvif.org/ver10/network/wsdl"><e:Header><w:MessageID>uuid:84ede3de-7dec-11d0-c360-f01234567890</w:MessageID><w:To e:mustUnderstand="true">urn:schemas-xmlsoap-org:ws:2005:04:discovery</w:To><w:Action a:mustUnderstand="true">http://schemas.xmlsoap.org/ws/2005/04/discovery/Probe</w:Action></e:Header><e:Body><d:Probe><d:Types>dn:NetworkVideoTransmitter</d:Types></d:Probe></e:Body></e:Envelope>';
+		try {
+			if(FALSE == ($sock = @socket_create(AF_INET, SOCK_DGRAM, SOL_UDP))){
+				echo('Create socket error: ['.socket_last_error().'] '.socket_strerror(socket_last_error()));
+			}
+			if(FALSE == @socket_bind($sock, '0.0.0.0', rand(20000, 40000))){
+				echo('Bind socket error: ['.socket_last_error().'] '.socket_strerror(socket_last_error()));
+			}
+			socket_set_option($sock, IPPROTO_IP, MCAST_JOIN_GROUP, array('group' => '239.255.255.250'));
+			socket_sendto($sock, $post_string, strlen($post_string), 0, '239.255.255.250', 3702);
+			socket_set_nonblock($sock);
+			while(time() < $timeout){
+				if(FALSE !== @socket_recvfrom($sock, $response, 9999, 0, $ip, $port)){
+					if($response != NULL && $response != $post_string){
+						$response = $this->_xml2array($response);
+						DebMes($response);
+					}
+				}
+			}
+			socket_close($sock);
+		} catch (Exception $e) {}
+		return $response;
 	}
 	
 // scaniruem google cromecast
@@ -727,5 +746,26 @@ private function getmodel($devtype){
 		}
 
 	        return $model;
+	
+	// onvif added function
+		private function _xml2array($response) {
+		$sxe = new SimpleXMLElement($response);
+		$dom_sxe = dom_import_simplexml($sxe);
+		$dom = new DOMDocument('1.0');
+		$dom_sxe = $dom->importNode($dom_sxe, true);
+		$dom_sxe = $dom->appendChild($dom_sxe);
+		$element = $dom->childNodes->item(0);
+		foreach ($sxe->getDocNamespaces() as $name => $uri) {
+    			$element->removeAttributeNS($uri, $name);
+		}
+		$xmldata=$dom->saveXML();
+		$xmldata=substr($xmldata,strpos($xmldata,"<Envelope>"));
+		$xmldata=substr($xmldata,0,strpos($xmldata,"</Envelope>")+strlen("</Envelope>"));
+		$xml=simplexml_load_string($xmldata);
+		$data=json_decode(json_encode((array)$xml),1);
+		$data=array($xml->getName()=>$data);
+		return $data;
+	}
+
     }
 }
