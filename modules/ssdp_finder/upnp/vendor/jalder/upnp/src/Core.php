@@ -321,13 +321,9 @@ public function search_OTHER($sockTimout = '2') {
     
 // парсим onvif ответы
 private function parseONVIFF($response) {
-        print_r($response);
+        //print_r($response);
         $parsedResponse = array();
-	$xml = simplexml_load_string($response, "SimpleXMLElement", LIBXML_NOCDATA);
-$json = json_encode($xml);
-$array = json_decode($json,TRUE);
-	var_dump ($array);
-		return $array;
+	return $array;
 }
 	
 // парсинг broadlink и их клонов    
