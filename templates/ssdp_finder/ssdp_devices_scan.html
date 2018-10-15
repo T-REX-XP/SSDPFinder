@@ -1,9 +1,16 @@
 [#if VIEW_MODE="scan_ssdp_devices" || VIEW_MODE="scan_3rddevice_devices" || VIEW_MODE=""#]
 <!-- table ssdp_devices search -->
 <p>
+    [#if VIEW_MODE="scan_ssdp_devices"#]
     <a href="?view_mode=scan_ssdp_devices" class="btn btn-default" title="Refresh">
         <i class="glyphicon glyphicon-refresh"></i> Refresh</a>
-
+    [#endif#]
+    [#if VIEW_MODE="scan_3rddevice_devices"#]
+    <a href="?view_mode=scan_3rddevice_devices" class="btn btn-default" title="Refresh">
+        <i class="glyphicon glyphicon-refresh"></i> Refresh</a>
+    [#endif#]
+    <a href="?md=panel&inst=&action=ssdp_finder" class="btn btn-default" title="Back">
+        <i class="glyphicon glyphicon-home"></i> Back to main page</a>
 </p>
 <script>
     $(document).ready(function () {
