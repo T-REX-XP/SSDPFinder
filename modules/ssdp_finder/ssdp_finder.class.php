@@ -553,13 +553,10 @@ function add_to_terminal($id) {
   $terminal['NAME'] = $ssdpdevice['LINKED_OBJECT'];
   $terminal['TITLE'] = $ssdpdevice['LINKED_OBJECT'];
   $terminal['HOST'] = $this->getIp($ssdpdevice['CONTROLADDRESS'],false);
-  $terminal['PLAYER_CONTROL_ADDRES'] = $ssdpdevice['CONTROLADDRESS'];
   $terminal['CANPLAY'] = '1';
 
-  $pos1 = stripos($ssdpdevice['LINKED_OBJECT'], 'romecast');
-  DebMes ($pos1);
   DebMes ($ssdpdevice['LINKED_OBJECT']);
-  if ($pos1 = 2) {
+  if (strpos($ssdpdevice['LINKED_OBJECT'], 'chromecast')) {
     $terminal['PLAYER_TYPE'] = 'chromecast';
   } else {
     $terminal['PLAYER_TYPE'] = 'dnla';
