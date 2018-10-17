@@ -553,6 +553,7 @@ function add_to_terminal($id) {
   $terminal['NAME'] = $ssdpdevice['LINKED_OBJECT'];
   $terminal['TITLE'] = $ssdpdevice['LINKED_OBJECT'];
   $terminal['HOST'] = $this->getIp($ssdpdevice['CONTROLADDRESS'],false);
+  $terminal['PLAYER_CONTROL_ADDRES'] = $ssdpdevice['CONTROLADDRESS'];
   $terminal['CANPLAY'] = '1';
 
   $pos1 = stripos($ssdpdevice['LINKED_OBJECT'], 'romecast');
