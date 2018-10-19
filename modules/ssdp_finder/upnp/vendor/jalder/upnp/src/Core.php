@@ -69,8 +69,8 @@ class Core {
     $response = array_merge($response, $broadlink);   
 	    
     // сканируем Chromecast устройства отдельно
-    //$chromecast = $this->search_CHROMECAST($wait = 3);
-    //$response = array_merge($response, $chromecast); 
+    $chromecast = $this->search_CHROMECAST($wait = 3);
+    $response = array_merge($response, $chromecast); 
 	 
     // сканируем Onvif устройства отдельно
     $onvifs = $this->search_ONVIF($sockTimout = '2');
