@@ -27,7 +27,7 @@ class mDNS {
 		}
 		//socket_set_option($this->mdnssocket, SOL_SOCKET, SO_BROADCAST, 1);
 		socket_set_option($this->mdnssocket, IPPROTO_IP, MCAST_JOIN_GROUP, array('group'=>'224.0.0.251', 'interface'=>0));
-		socket_set_option($this->mdnssocket, SOL_SOCKET,SO_RCVTIMEO,array("sec"=>1,"usec"=>0));
+		socket_set_option($this->mdnssocket, SOL_SOCKET,SO_RCVTIMEO,array("sec"=>2,"usec"=>128));
 		$bind = socket_bind($this->mdnssocket, "0.0.0.0", 5353);
 	}
 	
