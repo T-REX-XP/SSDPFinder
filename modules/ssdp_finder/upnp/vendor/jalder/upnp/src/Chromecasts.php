@@ -70,14 +70,12 @@ class Chromecasts
 		$lastpackettime = - 1;
 		$starttime = round(microtime(true) * 1000);
 		$mdns->query("_googlecast._tcp.local", 1, 12, "");
-		$mdns->query("_googlecast._tcp.local", 1, 12, "");
-		$mdns->query("_googlecast._tcp.local", 1, 12, "");
 		$cc = $wait;
 		$filetoget = 1;
 		$dontrequery = 0;
-		set_time_limit($wait * 2);
+		$start = microtime(true);
 		$chromecasts = array();
-		while ($cc > 0) {
+		while ($cc > 0 and microtime(true)-2>$start) {
 			$inpacket = "";
 			while ($inpacket == "") {
 				$inpacket = $mdns->readIncoming();
