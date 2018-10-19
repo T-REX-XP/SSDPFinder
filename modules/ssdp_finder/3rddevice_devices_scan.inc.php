@@ -187,7 +187,7 @@ function Scan_3rddevice()
                     $result[] = [
                     "ID" => $existed["ID"], //existed id Majordomo
                     "TITLE" => $deviceInfo['friendlyname'], //friendly name
-                    "ADDRESS" => getIp($control_url, false), //presentation url (web UI of device),//presentation url (web UI of device)
+                    "ADDRESS" => $control_url, //presentation url (web UI of device),//presentation url (web UI of device)
                     "UUID" => $uuid, 
                     "LOGO" => $logo, //Logo
                     "DESCRIPTION" => 'smart speakers', //description get from xml or field "server"
