@@ -10,16 +10,12 @@ global $namemodule;
 //DebMes($namemodule);
 
 // установлен ли этот модуль
-
 global $installed_module;
 
 // проверяем на наличие модуля
-
-if (!$installed_module)
-    {
+if (!$installed_module and $namemodule) {
 
     // если нету то устанавливаем модуль по названию которое находится в переменной $namemodule
-
     include_once (DIR_MODULES . 'market/market.class.php');
 
     $mkt = new market();
@@ -125,7 +121,7 @@ if (!$installed_module)
         $rec['CURRENT_VERSION'] = $version;
         $rec['IS_INSTALLED'] = 1;
         $rec['LATEST_UPDATE'] = date('Y-m-d H:i:s');
-        if ($rec['ID'])
+        if ($rec['ID'] and $rec['MODULE_NAME'])
             {
             SQLUpdate('plugins', $rec);
             }
@@ -273,7 +269,7 @@ global $updated_hours;
 $rec['USE_TO_SAY'] = 0;
 $rec['UPDATED'] = toDBDate($updated_date) . " $updated_hours:$updated_minutes:00";
 
-if ($rec['ID'])
+if ($rec['ID'] and $rec['LINKED_OBJECT'])
     {
     SQLUpdate($table_name, $rec); // update
     }
