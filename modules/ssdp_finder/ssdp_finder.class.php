@@ -249,8 +249,15 @@ function usual(&$out) {
 * @access public
 */
 function getLocalIp() { 
-  return gethostbyname(trim(`hostname`)); 
+  $s = socket_create(AF_INET, SOCK_DGRAM, SOL_UDP);
+  socket_connect($s ,'8.8.8.8', 53);  // connecting to a UDP address doesn't send packets
+  socket_getsockname($s, $local_ip_address, $port);
+  @socket_shutdown($s, 2);
+  socket_close($s);
+  
+  return $local_ip_address; 
 }
+
 
 
 /**
