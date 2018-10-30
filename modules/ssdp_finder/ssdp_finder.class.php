@@ -751,6 +751,11 @@ function chek_update_drivers($curl='') {
  function install($data='') {
   // подписки на события 
   parent::install();
+  // unsubscribeFromEvent SAY
+  unsubscribeFromEvent($this->name, 'SAY');
+  unsubscribeFromEvent($this->name, 'SAYTO');
+  unsubscribeFromEvent($this->name, 'ASK');
+  unsubscribeFromEvent($this->name, 'SAYREPLY');
  }
 /**
 * Uninstall
@@ -771,11 +776,7 @@ function chek_update_drivers($curl='') {
   SQLExec('DROP TABLE IF EXISTS playlist_render');
   SQLExec('DROP TABLE IF EXISTS ssdp_devices');
   SQLExec('DROP TABLE IF EXISTS mediaservers_playlist');
-  // unsubscribeFromEvent SAY
-  unsubscribeFromEvent($this->name, 'SAY');
-  unsubscribeFromEvent($this->name, 'SAYTO');
-  unsubscribeFromEvent($this->name, 'ASK');
-  unsubscribeFromEvent($this->name, 'SAYREPLY');
+
 
   // удаляем structure in addons для устройства
   if (!file_exists(ROOT.'/modules/devices/addons/SSDPFinder_structure.php')) {
