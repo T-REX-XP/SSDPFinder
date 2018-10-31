@@ -131,9 +131,6 @@
             <div class="controls">
                 <input type="checkbox" name="create_term" [#if TYPE="MediaRenderer" OR TYPE="Chromecast" #] checked [#else#] disabled [#endif#]>
             </div>
-            <div class="controls">
-                <input type="checkbox" name="use_to_say" [#if TYPE="MediaRenderer"#] checked [#else#] disabled [#endif#]>
-            </div>
         </div>
         [#module name="linkedobject" object_field="linked_object" property_field="linked_property" method_field="linked_method"#]
         <div class="form-group">
