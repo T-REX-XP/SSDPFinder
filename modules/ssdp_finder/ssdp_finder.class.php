@@ -815,7 +815,9 @@ ssdp_devices -
  ssdp_devices: LINKED_OBJECT varchar(100) NOT NULL DEFAULT ''
  ssdp_devices: LINKED_PROPERTY varchar(100) NOT NULL DEFAULT ''
  ssdp_devices: LINKED_METHOD varchar(100) NOT NULL DEFAULT ''
+ // свободное поле можна использовать в своих целях
  ssdp_devices: USE_TO_SAY int(1) unsigned NOT NULL DEFAULT 0
+ //
  ssdp_devices: UPDATED datetime
  ssdp_devices: CONTROLADDRESS varchar(255) NOT NULL DEFAULT ''
  
