@@ -115,7 +115,9 @@ if (!$installed_module and $namemodule) {
         $mkt->installUnpacketPlugin(ROOT . 'cms/saverestore/temp' . $folder, $name);
 
         // zapisivaem chto modul ustanovlen
-
+        if (!$name) {
+            return ;
+        };
         $rec = SQLSelectOne("SELECT * FROM plugins WHERE MODULE_NAME LIKE '" . DBSafe($name) . "'");
         $rec['MODULE_NAME'] = $name;
         $rec['CURRENT_VERSION'] = $version;
