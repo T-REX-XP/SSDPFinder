@@ -1,14 +1,12 @@
 <?php
 // Chris Ridings
 // www.chrisridings.com
-//require_once ("CCprotoBuf.php");
-//require_once ("CCDefaultMediaPlayer.php");
-//require_once ("CCPlexPlayer.php");
 namespace jalder\Upnp;
 
 require_once ("mdns.php");
+error_reporting(0);
 
-class Chromecasts
+class Chromecast
 {
 	// Sends a picture or a video to a Chromecast using reverse
 	// engineered castV2 protocol
@@ -52,14 +50,14 @@ class Chromecasts
 		$this->Plex = new CCPlexPlayer($this);
 	}
 	
-	public static function scan($wait = 2)
+	public static function scan($wait = 15)
 	{
 		// Wrapper for scan
-		$result = Chromecasts::scansub($wait);
+		$result = Chromecast::scansub($wait);
 		return $result;
 	}
 	
-	public static function scansub($wait = 2)
+	public static function scansub($wait = 15)
 	{
 		// Performs an mdns scan of the network to find chromecasts and returns an array
 		// Let's test by finding Google Chromecasts
@@ -70,12 +68,14 @@ class Chromecasts
 		$lastpackettime = - 1;
 		$starttime = round(microtime(true) * 1000);
 		$mdns->query("_googlecast._tcp.local", 1, 12, "");
+		$mdns->query("_googlecast._tcp.local", 1, 12, "");
+		$mdns->query("_googlecast._tcp.local", 1, 12, "");
 		$cc = $wait;
 		$filetoget = 1;
 		$dontrequery = 0;
-		$start = microtime(true);
+		set_time_limit($wait * 2);
 		$chromecasts = array();
-		while ($cc > 0 and microtime(true)-2>$start) {
+		while ($cc > 0) {
 			$inpacket = "";
 			while ($inpacket == "") {
 				$inpacket = $mdns->readIncoming();
