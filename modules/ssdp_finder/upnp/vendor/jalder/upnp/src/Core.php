@@ -110,9 +110,9 @@ private function search_ONVIF($sockTimout = '2') {
 	
 // scaniruem google cromecast
 private function search_CHROMECAST($wait = 3) {
-		require_once("Chromecast.php");
+		require_once("Chromecasts.php");
 		//var_dump(Chromecasts::scan());
-		return (Chromecast::scan());
+		return (Chromecasts::scan());
 	}
 	
 	
