@@ -562,8 +562,7 @@ function add_to_terminal($id) {
   $terminal['HOST'] = $this->getIp($ssdpdevice['CONTROLADDRESS'],false);
   $terminal['CANPLAY'] = '1';
 
-  DebMes ($ssdpdevice['LINKED_OBJECT']);
-  if (strpos($ssdpdevice['LINKED_OBJECT'], 'chromecast')) {
+  if (stripos($ssdpdevice['LINKED_OBJECT'], 'hromecast')) {
     $terminal['PLAYER_TYPE'] = 'chromecast';
   } else {
     $terminal['PLAYER_TYPE'] = 'dnla';
@@ -580,7 +579,6 @@ function add_to_terminal($id) {
           SQLInsert('terminals', $terminal);
      }
  }
-
 
 /**
 * ssdp_devices add record to pinghost
