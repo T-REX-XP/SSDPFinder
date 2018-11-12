@@ -558,12 +558,11 @@ function add_to_terminal($id) {
   $ssdpdevice=SQLSelectOne("SELECT * FROM ssdp_devices WHERE ID='".$id."'");
   $terminal=array(); // опции добавления
   $terminal['NAME'] = $ssdpdevice['LINKED_OBJECT'];
-  $terminal['TITLE'] = $ssdpdevice['LINKED_OBJECT'];
+  $terminal['TITLE'] = $ssdpdevice['TITLE'];
   $terminal['HOST'] = $this->getIp($ssdpdevice['CONTROLADDRESS'],false);
   $terminal['CANPLAY'] = '1';
 
-  DebMes ($ssdpdevice['LINKED_OBJECT']);
-  if (strpos($ssdpdevice['LINKED_OBJECT'], 'chromecast')) {
+  if (stripos($ssdpdevice['LINKED_OBJECT'], 'hromecast')) {
     $terminal['PLAYER_TYPE'] = 'chromecast';
   } else {
     $terminal['PLAYER_TYPE'] = 'dnla';
@@ -580,7 +579,6 @@ function add_to_terminal($id) {
           SQLInsert('terminals', $terminal);
      }
  }
-
 
 /**
 * ssdp_devices add record to pinghost
