@@ -75,7 +75,7 @@ class Chromecasts
 		$cc = $wait;
 		$filetoget = 1;
 		$dontrequery = 0;
-		set_time_limit($wait * 2);
+		set_time_limit($wait * 10);
 		$chromecasts = array();
 		while ($cc > 0) {
 			$inpacket = "";
