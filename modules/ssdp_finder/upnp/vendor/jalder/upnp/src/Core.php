@@ -473,7 +473,7 @@ private function parseSearchResponse($response) {
         $body .='</s:Envelope>';
  
         $header = array(
-            'Host: '.$this->getLocalIp().':'.$hostPort,
+            'Host: 127.0.0.1:'.$hostPort,
             'User-Agent: '.$this->user_agent, //fudge the user agent to get desired video format
             'Content-Length: ' . strlen($body),
             'Connection: close',
@@ -509,10 +509,7 @@ private function parseSearchResponse($response) {
     {
         $this->user_agent = $agent;
     }
-    //получаем hostname адрес локального компьютера
-    private function getLocalIp() { 
-      return gethostbyname(trim(`hostname`)); 
-    }
+
 // broadlink added  funktion
     private function bytearray($size){
     	$packet = array();
