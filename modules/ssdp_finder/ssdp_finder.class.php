@@ -244,23 +244,6 @@ function usual(&$out) {
 
 
 /**
-* get local IP 
-*
-* @access public
-*/
-function getLocalIp() { 
-  $s = socket_create(AF_INET, SOCK_DGRAM, SOL_UDP);
-  socket_connect($s ,'8.8.8.8', 53);  // connecting to a UDP address doesn't send packets
-  socket_getsockname($s, $local_ip_address, $port);
-  @socket_shutdown($s, 2);
-  socket_close($s);
-  
-  return $local_ip_address; 
-}
-
-
-
-/**
 * ssdp_devices edit/add
 *
 * @access public

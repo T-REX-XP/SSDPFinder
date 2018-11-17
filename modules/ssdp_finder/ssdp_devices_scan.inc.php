@@ -182,13 +182,6 @@ function getIp($baseUrl, $withPort)
     return $baseUrl;
     }
 
-// получаем hostname адрес локального компьютера
-
-function getLocalIp()
-    {
-    return gethostbyname(trim(`hostname`));
-    }
-
 // проверка на присутствие простого устройства для просканированого устройства
 
 function check_seample_device($device_type)
